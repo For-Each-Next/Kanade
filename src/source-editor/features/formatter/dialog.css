@@ -1,0 +1,146 @@
+/**
+ * @file src/source-editor/features/formatter/dialog.css
+ * Purpose: Arrange related controls in columns; Codex owns component appearance.
+ *
+ * Contents: Layout and accessible labels.
+ */
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__controls {
+    min-width: 0;
+}
+
+/* Keep Codex's viewport width and mobile layout; give desktop fields room. */
+@media (min-width: 640px) {
+    .cdx-dialog.kanade-source-editor-dialog {
+        max-width: 64rem;
+    }
+}
+
+/* Fieldsets and grid items must not inherit the preview's intrinsic width. */
+.kanade-source-editor-dialog .kanade-source-editor-dialog__section,
+.kanade-source-editor-dialog .kanade-source-editor-dialog__dependent,
+.kanade-source-editor-dialog .kanade-source-editor-dialog__columns > * {
+    min-inline-size: 0;
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__example {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    margin-inline: 0;
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__example pre {
+    max-inline-size: 100%;
+    overflow-x: auto;
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-150, 24px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__formatting-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-150, 24px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__wide-group {
+    grid-column: 1 / -1;
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__feedback {
+    display: grid;
+    gap: var(--spacing-50, 8px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__progress {
+    display: grid;
+    gap: var(--spacing-50, 8px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__regex-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__regex-rules {
+    display: grid;
+    gap: var(--spacing-150, 24px);
+}
+
+.kanade-source-editor-dialog .kanade-source-editor-dialog__regex-rule {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--spacing-75, 12px);
+}
+
+@media (max-width: 639px) {
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__regex-actions {
+        flex-direction: column;
+    }
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__columns {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kanade-source-editor-dialog
+        .kanade-source-editor-dialog__formatting-groups {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__footer-bar {
+        display: grid;
+        grid-template-columns: auto 1fr;
+    }
+
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__actions {
+        display: contents;
+    }
+
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__primary {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__more {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__save {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .kanade-source-editor-dialog .kanade-source-editor-dialog__cancel {
+        grid-column: 2;
+        grid-row: 3;
+        justify-self: end;
+    }
+}

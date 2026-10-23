@@ -1,0 +1,1165 @@
+{
+    "capturedAt": "2026-10-17T09:51:23.121Z",
+    "method": "Chromium navigation to actual Chinese Wikipedia pages, native MediaWiki/Vue/Codex/API/assets, built bundle injection, and browser screenshots. No simulated page content or API responses. No wiki saves.",
+    "bundleArtifact": "dist/wpvg_assessor.min.js",
+    "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+    "pages": [
+        {
+            "title": "Category:未评级电子游戏条目",
+            "locale": "en",
+            "url": "https://zh.wikipedia.org/w/index.php?title=Category%3A%E6%9C%AA%E8%AF%84%E7%BA%A7%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%9D%A1%E7%9B%AE&uselang=en&useskin=vector-2022",
+            "config": {
+                "wgPageName": "Category:未评级电子游戏条目",
+                "wgRevisionId": 80842948,
+                "wgUserLanguage": "en",
+                "wgContentLanguage": "zh",
+                "skin": "vector-2022"
+            },
+            "captures": [
+                {
+                    "image": "screenshot01.en.png",
+                    "imageSha256": "c24df053249cf9b1b0ff6eb02d120e463d84ae4cc2ac0979b7a1005029abea91",
+                    "bundleArtifact": "dist/wpvg_assessor.min.js",
+                    "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+                    "deviceScaleFactor": 1,
+                    "viewport": {
+                        "width": 1366,
+                        "height": 784
+                    },
+                    "capturedAt": "2026-10-17T09:51:52.488Z"
+                }
+            ],
+            "bundleArtifact": "dist/wpvg_assessor.min.js",
+            "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+            "browserVersion": "153.0.8010.12",
+            "previewImages": [
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Electronic_sports_pictogram.svg/120px-Electronic_sports_pictogram.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Gold_medal_icon.svg/20px-Gold_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Silver_medal_icon.svg/20px-Silver_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Bronze_medal_icon.svg/20px-Bronze_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Bronze_medal_icon.svg/20px-Bronze_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Electronic_sports_pictogram.svg/60px-Electronic_sports_pictogram.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                }
+            ],
+            "sourceRevisions": [],
+            "edits": []
+        },
+        {
+            "title": "Category:未评级电子游戏条目",
+            "locale": "zh-Hans",
+            "url": "https://zh.wikipedia.org/w/index.php?title=Category%3A%E6%9C%AA%E8%AF%84%E7%BA%A7%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%9D%A1%E7%9B%AE&uselang=zh-cn&useskin=vector-2022",
+            "config": {
+                "wgPageName": "Category:未评级电子游戏条目",
+                "wgRevisionId": 80842948,
+                "wgUserLanguage": "zh-cn",
+                "wgContentLanguage": "zh",
+                "skin": "vector-2022"
+            },
+            "captures": [
+                {
+                    "image": "screenshot02.zh-Hans.png",
+                    "imageSha256": "54b1858a3468a0c3ac8d8262caf32ca72da5059f54e480066b7ee579fa63d620",
+                    "bundleArtifact": "dist/wpvg_assessor.min.js",
+                    "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+                    "deviceScaleFactor": 1,
+                    "viewport": {
+                        "width": 1366,
+                        "height": 784
+                    },
+                    "capturedAt": "2026-10-17T09:52:34.438Z"
+                }
+            ],
+            "bundleArtifact": "dist/wpvg_assessor.min.js",
+            "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+            "browserVersion": "153.0.8010.12",
+            "previewImages": [
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Electronic_sports_pictogram.svg/120px-Electronic_sports_pictogram.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Gold_medal_icon.svg/20px-Gold_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Silver_medal_icon.svg/20px-Silver_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Bronze_medal_icon.svg/20px-Bronze_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Bronze_medal_icon.svg/20px-Bronze_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Electronic_sports_pictogram.svg/60px-Electronic_sports_pictogram.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                }
+            ],
+            "sourceRevisions": [],
+            "edits": []
+        },
+        {
+            "title": "Category:未评级电子游戏条目",
+            "locale": "zh-Hant",
+            "url": "https://zh.wikipedia.org/w/index.php?title=Category%3A%E6%9C%AA%E8%AF%84%E7%BA%A7%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E6%9D%A1%E7%9B%AE&uselang=zh-tw&useskin=vector-2022",
+            "config": {
+                "wgPageName": "Category:未评级电子游戏条目",
+                "wgRevisionId": 80842948,
+                "wgUserLanguage": "zh-tw",
+                "wgContentLanguage": "zh",
+                "skin": "vector-2022"
+            },
+            "captures": [
+                {
+                    "image": "screenshot03.zh-Hant.png",
+                    "imageSha256": "29936cb8816542782fb1650b92e6c636734c86440259ded554fd20cf2ba267d1",
+                    "bundleArtifact": "dist/wpvg_assessor.min.js",
+                    "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+                    "deviceScaleFactor": 1,
+                    "viewport": {
+                        "width": 1366,
+                        "height": 784
+                    },
+                    "capturedAt": "2026-10-17T09:53:19.596Z"
+                }
+            ],
+            "bundleArtifact": "dist/wpvg_assessor.min.js",
+            "bundleSha256": "3041d1bbd2b9658dfb8fc082d098e6333ea2f64f1b6405824988973641b2c191",
+            "browserVersion": "153.0.8010.12",
+            "previewImages": [
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Electronic_sports_pictogram.svg/120px-Electronic_sports_pictogram.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Gold_medal_icon.svg/20px-Gold_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Silver_medal_icon.svg/20px-Silver_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Bronze_medal_icon.svg/20px-Bronze_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Bronze_medal_icon.svg/20px-Bronze_medal_icon.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Electronic_sports_pictogram.svg/60px-Electronic_sports_pictogram.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Chinese_Taipei_for_Olympic_Games.svg/40px-Flag_of_Chinese_Taipei_for_Olympic_Games.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                },
+                {
+                    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                    "loaded": true
+                }
+            ],
+            "sourceRevisions": [],
+            "edits": []
+        }
+    ],
+    "failures": [],
+    "browserVersion": "153.0.8010.12"
+}

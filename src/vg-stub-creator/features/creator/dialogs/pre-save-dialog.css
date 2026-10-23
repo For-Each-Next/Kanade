@@ -1,0 +1,50 @@
+/**
+ * @file src/vg-stub-creator/features/creator/dialogs/pre-save-dialog.css
+ * Purpose: Arranges reviewed save actions and progress rows.
+ * Contents: Dialog width, action groups, and progress layout.
+ */
+
+.kanade-vg-stub-creator-pre-save-dialog.cdx-dialog {
+    max-width: 48rem;
+}
+
+.kanade-vg-stub-creator-pre-save-groups {
+    display: grid;
+    gap: var(--spacing-100, 16px);
+}
+
+.kanade-vg-stub-creator-pre-save-page {
+    display: grid;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-vg-stub-creator-pre-save-title {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-vg-stub-creator-pre-save-list {
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    list-style: none;
+    margin: 0;
+}
+
+.kanade-vg-stub-creator-pre-save-item {
+    margin: 0 -0.35em;
+}
+
+.kanade-vg-stub-creator-pre-save-progress-row {
+    align-items: start;
+    display: grid;
+    gap: 0.4em;
+    grid-template-columns: min-content minmax(0, 1fr);
+}
+
+.kanade-vg-stub-creator-pre-save-status-icon {
+    margin-top: 0.15em;
+}
+
+.kanade-vg-stub-creator-pre-save-note {
+    overflow-wrap: anywhere;
+}

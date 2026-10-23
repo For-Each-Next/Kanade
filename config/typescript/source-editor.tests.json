@@ -1,0 +1,11 @@
+{
+    "extends": "./source-editor.json",
+    "compilerOptions": {
+        "types": ["node", "types-mediawiki"]
+    },
+    "include": [
+        "../../src/source-editor/**/*.ts",
+        "../../tests/source-editor/**/*.ts",
+        "../../scripts/source-editor/**/*.ts"
+    ]
+}

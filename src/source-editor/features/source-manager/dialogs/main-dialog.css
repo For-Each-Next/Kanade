@@ -1,0 +1,159 @@
+/**
+ * @file src/source-editor/features/source-manager/dialogs/main-dialog.css
+ * Purpose: Arrange related controls in columns; Codex owns component appearance.
+ *
+ * Contents: Layout and accessible labels.
+ */
+
+.kanade-source-editor-source-manager__source-lookup {
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__source-lookup-controls {
+    align-items: end;
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.kanade-source-editor-source-manager__source-filters {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-100, 16px);
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kanade-source-editor-source-manager__filter-controls {
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14em), 1fr));
+    min-width: 0;
+}
+
+@media (min-width: 640px) {
+    .kanade-source-editor-source-manager__filter-controls {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .kanade-source-editor-source-manager__filter-controls > * {
+        flex: 1 1 14em;
+        min-width: 0;
+    }
+}
+
+.kanade-source-editor-source-manager__source-reference,
+.kanade-source-editor-source-manager__source-reference-name,
+.kanade-source-editor-source-manager__source-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__source-reference-name,
+.kanade-source-editor-source-manager__source-details {
+    display: block;
+}
+
+.kanade-source-editor-source-manager__sub-reference-details {
+    display: block;
+}
+
+.kanade-source-editor-source-manager__visually-hidden {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.kanade-source-editor-source-manager__source-details {
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__source-table
+    .kanade-source-editor-source-manager__source-actions {
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-source-manager__source-group-headings,
+.kanade-source-editor-source-manager__source-group-main,
+.kanade-source-editor-source-manager__sub-reference-row {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 24% minmax(0, 1fr) 6.5rem;
+}
+
+.kanade-source-editor-source-manager__source-group-headings > div,
+.kanade-source-editor-source-manager__source-group-main > div,
+.kanade-source-editor-source-manager__sub-reference-row > div {
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__sub-reference-row {
+    align-items: stretch;
+}
+
+.kanade-source-editor-source-manager__sub-reference-row
+    > div:not(:first-child) {
+    align-content: center;
+}
+
+.kanade-source-editor-source-manager__reference-reuse-name {
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__reference-reuse-name > small {
+    display: block;
+}
+
+.kanade-source-editor-source-manager__reference-reuse-preview > code {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__reference-reuse-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    justify-content: end;
+}
+
+.kanade-source-editor-source-manager__tools {
+    display: grid;
+    gap: var(--spacing-150, 24px);
+}
+
+.kanade-source-editor-source-manager__tool-launchers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+}
+
+@media (max-width: 639px) {
+    .kanade-source-editor-source-manager__source-lookup-controls {
+        align-items: stretch;
+        grid-template-columns: 1fr;
+    }
+
+    .kanade-source-editor-source-manager__filter-controls {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kanade-source-editor-source-manager__source-group-headings,
+    .kanade-source-editor-source-manager__source-group-main,
+    .kanade-source-editor-source-manager__sub-reference-row {
+        grid-template-columns: 22% minmax(0, 1fr) 4.5rem;
+    }
+
+    .kanade-source-editor-source-manager__source-groups
+        .kanade-source-editor-source-manager__source-actions {
+        flex-wrap: wrap;
+    }
+
+    .kanade-source-editor-source-manager__tool-launchers {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}

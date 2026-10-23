@@ -1,0 +1,7 @@
+/**
+ * @file src/vg-stub-creator/features/creator/dialogs/preview-dialog.css
+ * Purpose: Documents the article preview's shared style ownership.
+ * Contents: Uses the shared source and rendered-preview layout.
+ */
+
+/* Article-preview layout is shared with the page-edit dialog. */

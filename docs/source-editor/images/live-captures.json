@@ -1,0 +1,593 @@
+{
+    "capturedAt": "2026-10-21T13:13:09.637Z",
+    "method": "Actual Wikimedia source pages, native MediaWiki/Vue/Codex/API/assets, current bundle injection, and Chromium screenshots. No simulated article text or API responses. No wiki saves.",
+    "bundleArtifact": "dist/source_editor.min.js",
+    "bundleSha256": "5722b31cce4c368f3becd23e522f77b1ba16251419386627869350f95deaedb2",
+    "captures": {
+        "screenshot01.en.png": {
+            "article": "Nintendo",
+            "revisionId": 1379167316,
+            "timestamp": "2026-10-08T09:10:21Z",
+            "sourceSha256": "054d2c37a9854c83ed3d27095d166938ae6de49433f73fc95c7bac9baadef0ee",
+            "sourceBytes": 271838,
+            "revisionContentSha256": "32f043e74f11eb7cf2a02c951cab3d3c6e9249e8aad720f022ee3ad2bc887a40",
+            "revisionContentBytes": 271837,
+            "nativeTerminalNewline": true,
+            "originalReadOnly": true,
+            "nativeDismissals": [],
+            "nativeEditorActions": [
+                {
+                    "control": "Syntax highlighting",
+                    "label": "Syntax",
+                    "action": "Disable native CodeMirror through its toolbar toggle"
+                }
+            ],
+            "locale": "en",
+            "url": "https://en.wikipedia.org/w/index.php?title=Nintendo&oldid=1379167316&action=edit&veswitched=1&uselang=en&useskin=vector-2022",
+            "config": {
+                "wgPageName": "Nintendo",
+                "wgRevisionId": 0,
+                "wgCurRevisionId": 1380654166,
+                "wgUserLanguage": "en",
+                "wgContentLanguage": "en",
+                "wgWikiID": "enwiki",
+                "skin": "vector-2022"
+            },
+            "state": "Shared article and citation formatting preferences",
+            "panelText": "Source Editor\nFormatting\nReferences\nHighlighting settings\nTools\nFormatting options\nFormat HTML tags\nBeautify tag whitespace and inline CSS.\nRedirects\nExcept in a few cases such as navigation templates, generally do not “fix” redirects.\nReplace redirects with target page titles\nCitation formatting\nFormat citations with the article\nApply citation layout, reference-call syntax, definition spacing, and script-title choices with the article formatting action.\nCitation layout\nInline citations\nBlock citations\nUse {{r}} instead of <ref> when possible\nSeparate reference definitions with a blank line\nAutomatic script-title handling\nFormat and generate script-title parameters\nUse script-title only for languages written in non-Latin scripts\nFor example: ja, ru\nUse script-title for every foreign language\nFor example: de, ja, ru\nUse script-title for every language, including this wiki’s language\nFor example: en, de, ja, ru\nTemplate layout\nAdjust indentation and parameter spacing in multiline templates.\nIndent nested templates\nSpaces per indentation level\nLeave the first nesting level unindented\nFirst parameter on each line\nKeep existing spacing\nAlign values\nRemove extra spacing\nOther parameters on the same line\nKeep existing spacing\nAlign names\nAlign names and values\nRemove extra spacing\nLayout example\n{{Tracklists\n  | 1 = {{tracklist\n    | heading  = Side A | comment = ...\n    | title1 = 春日来信 | note1 = 现场版   | length1 = 3:45\n    | title2 = Home     | note2 = Acoustic | length2 = 2:56\n  }}\n  | 2 = {{tracklist\n    | heading  = Side B | comment = ...\n    | title1 = 漫长的旅途    | note1 = 录音室版 | length1 = 4:08\n    | title2 = Morning light | note2 = Live     | length2 = 3:32\n  }}\n}}\nMore\nCancel\nSave settings\nFormat page",
+            "layout": {
+                "bodyScrollTop": 0,
+                "body": {
+                    "x": 172,
+                    "y": 93,
+                    "width": 1022,
+                    "height": 569
+                },
+                "formattingGroups": [
+                    {
+                        "text": "Formatting options\nFormat HTML tags\nBeautify tag whitespace and inline CSS.",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 139,
+                            "width": 475,
+                            "height": 108
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 139,
+                            "width": 145.765625,
+                            "height": 26
+                        }
+                    },
+                    {
+                        "text": "Redirects\nExcept in a few cases such as navigation templates, generally do not “fix” redirects.\nReplace redirects with target page titles",
+                        "rectangle": {
+                            "x": 695,
+                            "y": 155,
+                            "width": 475,
+                            "height": 92
+                        },
+                        "legend": {
+                            "x": 695,
+                            "y": 155,
+                            "width": 475,
+                            "height": 70
+                        }
+                    },
+                    {
+                        "text": "Citation formatting\nFormat citations with the article\nApply citation layout, reference-call syntax, definition spacing, and script-title choices with the article formatting action.\nCitation layout\nInline citations\nBlock citations\nUse {{r}} instead of <ref> when possible\nSeparate reference definitions with a blank line\nAutomatic script-title handling\nFormat and generate script-title parameters\nUse script-title only for languages written in non-Latin scripts\nFor example: ja, ru\nUse script-title for every foreign language\nFor example: de, ja, ru\nUse script-title for every language, including this wiki’s language\nFor example: en, de, ja, ru",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 287,
+                            "width": 974,
+                            "height": 312
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 287,
+                            "width": 143.09375,
+                            "height": 26
+                        }
+                    },
+                    {
+                        "text": "Template layout\nAdjust indentation and parameter spacing in multiline templates.\nIndent nested templates\nSpaces per indentation level\nLeave the first nesting level unindented\nFirst parameter on each line\nKeep existing spacing\nAlign values\nRemove extra spacing\nOther parameters on the same line\nKeep existing spacing\nAlign names\nAlign names and values\nRemove extra spacing\nLayout example\n{{Tracklists\n  | 1 = {{tracklist\n    | heading  = Side A | comment = ...\n    | title1 = 春日来信 | note1 = 现场版   | length1 = 3:45\n    | title2 = Home     | note2 = Acoustic | length2 = 2:56\n  }}\n  | 2 = {{tracklist\n    | heading  = Side B | comment = ...\n    | title1 = 漫长的旅途    | note1 = 录音室版 | length1 = 4:08\n    | title2 = Morning light | note2 = Live     | length2 = 3:32\n  }}\n}}",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 639,
+                            "width": 974,
+                            "height": 645.15625
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 639,
+                            "width": 453.59375,
+                            "height": 48
+                        }
+                    }
+                ]
+            },
+            "image": "screenshot01.en.png",
+            "imageSha256": "8bd1bd13777154a9b150f8c1c89d51ef0675976ff06549dd733f1a5f64d75a86",
+            "viewport": {
+                "width": 1366,
+                "height": 768
+            },
+            "deviceScaleFactor": 1,
+            "capturedAt": "2026-10-17T04:24:25.120Z",
+            "bundleArtifact": "dist/source_editor.min.js",
+            "bundleSha256": "e2a5602ac2c0fca77dd1504b8adddfd66c0948b1b9c3ac4c8262d4359a9a832d",
+            "apiResponses": [],
+            "assets": [
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=site.styles&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.charinsert.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cmediawiki.ui.button%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=startup&only=scripts&raw=1&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?modules=skins.vector.icons&image=language&variant=progressive&format=original&lang=en&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?modules=skins.vector.icons&image=menu&format=original&lang=en&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.wikiEditor&skin=vector-2022&version=16ndv",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?modules=skins.vector.icons&image=verticalEllipsis&format=original&lang=en&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.gadget.ReferenceTooltips%2Ccharinsert%2CrefToolbar%2Cswitcher&skin=vector-2022&version=uxnqe",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.visualEditor.core.utils.parsing%7Cext.visualEditor.desktopArticleTarget.init%7Cext.visualEditor.progressBarWidget%2CsupportCheck%2CtargetLoader%2CtempWikitextEditorWidget%2Ctrack%2Cve&skin=vector-2022&version=e7mmk",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.CodeMirror%2Ccharinsert%2CeventLogging%2CnavigationTiming%2Cpopups%2CreaderExperiments%2FpreferredSources%2CtestKitchen%2CwikimediaEvents%7Cext.CodeMirror.WikiEditor%2Cinit%2Clib%7Cext.CodeMirror.mode.mediawiki%7Cext.centralNotice.geoIP%7Cext.centralauth.centralautologin%7Cext.checkUser.clientHints%7Cext.cx.eventlogging.campaigns%7Cext.echo.centralauth%7Cext.eventLogging.metricsPlatform%7Cext.uls.interface%2Cpreferences%2Cwebfonts%7Cext.urlShortener.toolbar%7Cext.wikimediaCustomizations.donor%2CdonorAccountCreation%7Cext.wikimediaEvents.testKitchen%7Cjquery%2Coojs%2Coojs-ui-core%2Coojs-ui-widgets%2Csite%7Cjquery.client%2CmakeCollapsible%2CtextSelection%2Cui%7Cjquery.makeCollapsible.styles%7Cmediawiki.String%2CTitle%2Capi%2Cbase%2Ccldr%2Ccookie%2Cexperiments%2CjqueryMsg%2Clanguage%2Crouter%2Cstorage%2Ctemplate%2Cuser%2Cutil%2CvisibleTimeout%2Cwidgets%7Cmediawiki.action.edit.collapsibleFooter%7Cmediawiki.editfont.styles%7Cmediawiki.language.specialCharacters%7Cmediawiki.libs.pluralruleparser%7Cmediawiki.page.ready%7Cmediawiki.page.watch.ajax%7Cmediawiki.widgets.styles%7Cmmv.bootstrap%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui-widgets.icons%7Coojs-ui.styles.icons-content%2Cicons-editing-advanced%2Cicons-editing-citation%2Cicons-editing-core%2Cicons-editing-list%2Cicons-editing-styling%2Cicons-interactions%2Cicons-media%2Cindicators%7Cskins.vector.clientPreferences%2Cjs%7Cskins.vector.icons.js%7Cwikibase.databox.fromWikidata&skin=vector-2022&version=1c0vl",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.gadget.charinsert-core&skin=vector-2022&version=1e46a",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.visualEditor.switching&skin=vector-2022&version=12a9c",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=oojs-ui%2Coojs-ui-toolbars%2Coojs-ui-windows%7Coojs-ui-toolbars.icons%7Coojs-ui-windows.icons%7Coojs-ui.styles.icons-accessibility&skin=vector-2022&version=er7gz",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.centralauth.ForeignApi%7Cext.cite.referencePreviews%7Cext.math.popup%7Cext.popups.main%7Cmediawiki.ForeignApi%7Cmediawiki.ForeignApi.core&skin=vector-2022&version=13b4u",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.uls.common%2Ci18n%2Cime%2Clanguagenames%2Cmediawiki%2Cmessages%7Cjquery.i18n%2Cime%2Culs%7Cjquery.uls.data%2Cgrid&skin=vector-2022&version=42gxy",
+                    "status": 200
+                },
+                {
+                    "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=%40wikimedia%2Fcodex%2Ccodex-styles%2Cvue&skin=vector-2022&version=296v8",
+                    "status": 200
+                }
+            ],
+            "pageErrors": [],
+            "writes": [],
+            "dialogs": [
+                {
+                    "className": "cdx-dialog cdx-dialog--dividers cdx-dialog--fixed-height cdx-dialog--fixed-height-custom wiked-lite-dialog",
+                    "bodyScrollTop": 0
+                }
+            ]
+        },
+        "screenshot02.zh-Hans.png": {
+            "article": "任天堂",
+            "revisionId": 94167581,
+            "timestamp": "2026-09-03T02:14:35Z",
+            "sourceSha256": "e1926b787e4b13559697129b60683fd600e6a4b4bd8d32a81285edaa59ddbb69",
+            "sourceBytes": 96998,
+            "revisionContentSha256": "d482df231fd3e9dea95bf77876e2a7d34296a4f38b06b3853949e1e9745d134d",
+            "revisionContentBytes": 96997,
+            "nativeTerminalNewline": true,
+            "originalReadOnly": true,
+            "nativeDismissals": [],
+            "nativeEditorActions": [],
+            "locale": "zh-Hans",
+            "url": "https://zh.wikipedia.org/w/index.php?title=%E4%BB%BB%E5%A4%A9%E5%A0%82&oldid=94167581&action=edit&veswitched=1&uselang=zh-cn&useskin=vector-2022",
+            "config": {
+                "wgPageName": "任天堂",
+                "wgRevisionId": 0,
+                "wgCurRevisionId": 94167581,
+                "wgUserLanguage": "zh-cn",
+                "wgContentLanguage": "zh",
+                "wgWikiID": "zhwiki",
+                "skin": "vector-2022"
+            },
+            "state": "Shared article and citation formatting preferences",
+            "panelText": "源码编辑器\n格式化\n参考资料\n高亮设定\n工具\n格式化选项\n格式化HTML标签\n美化标签空白及内联CSS代码。\n格式化字词转换规则\n美化-{...}-和{{NoteTA}}的定义规则。\n重定向\n除导航模板等少数场合外，通常请勿「修复」重定向。\n将重定向改为实体标题\n引文排版\n排版条目时同时排版引文\n整理条目时，一并应用引用布局、调用语法、定义间距和 script-title 选项。\n引文布局\n行内引文\n分行引文\n以{{r|source}}取代<ref name=\"source\">\n在参考文献定义之间插入空行\n自动处理script-title参数\n格式化并生成script-title参数\n仅对使用非拉丁文字的语言使用script-title\n例如：ja, ru\n对所有外语使用script-title\n例如：en, ja, ru\n所有语言都使用 script-title，包括本站语言\n例如：zh, en, ja, ru\n模板布局\n调整多行模板的缩进和参数间距。\n嵌套模版缩进\n每级缩进空格数\n首级嵌套不缩进\n每行首个参数\n保留原有间距\n对齐参数值\n移除多余空格\n同一行的后续参数\n保留原有间距\n对齐参数名\n对齐参数名和值\n移除多余空格\n布局示例\n{{Tracklists\n  | 1 = {{tracklist\n    | heading  = Side A | comment = ...\n    | title1 = 春日来信 | note1 = 现场版   | length1 = 3:45\n    | title2 = Home     | note2 = Acoustic | length2 = 2:56\n  }}\n  | 2 = {{tracklist\n    | heading  = Side B | comment = ...\n    | title1 = 漫长的旅途    | note1 = 录音室版 | length1 = 4:08\n    | title2 = Morning light | note2 = Live     | length2 = 3:32\n  }}\n}}\n更多\n取消\n保存设置\n格式化整页",
+            "layout": {
+                "bodyScrollTop": 0,
+                "body": {
+                    "x": 172,
+                    "y": 92,
+                    "width": 1022,
+                    "height": 570
+                },
+                "formattingGroups": [
+                    {
+                        "text": "格式化选项\n格式化HTML标签\n美化标签空白及内联CSS代码。\n格式化字词转换规则\n美化-{...}-和{{NoteTA}}的定义规则。",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 138,
+                            "width": 475,
+                            "height": 120
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 138,
+                            "width": 81.609375,
+                            "height": 26
+                        }
+                    },
+                    {
+                        "text": "重定向\n除导航模板等少数场合外，通常请勿「修复」重定向。\n将重定向改为实体标题",
+                        "rectangle": {
+                            "x": 695,
+                            "y": 154,
+                            "width": 475,
+                            "height": 104
+                        },
+                        "legend": {
+                            "x": 695,
+                            "y": 154,
+                            "width": 391.703125,
+                            "height": 48
+                        }
+                    },
+                    {
+                        "text": "引文排版\n排版条目时同时排版引文\n整理条目时，一并应用引用布局、调用语法、定义间距和 script-title 选项。\n引文布局\n行内引文\n分行引文\n以{{r|source}}取代<ref name=\"source\">\n在参考文献定义之间插入空行\n自动处理script-title参数\n格式化并生成script-title参数\n仅对使用非拉丁文字的语言使用script-title\n例如：ja, ru\n对所有外语使用script-title\n例如：en, ja, ru\n所有语言都使用 script-title，包括本站语言\n例如：zh, en, ja, ru",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 298,
+                            "width": 974,
+                            "height": 302
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 298,
+                            "width": 65.28125,
+                            "height": 26
+                        }
+                    },
+                    {
+                        "text": "模板布局\n调整多行模板的缩进和参数间距。\n嵌套模版缩进\n每级缩进空格数\n首级嵌套不缩进\n每行首个参数\n保留原有间距\n对齐参数值\n移除多余空格\n同一行的后续参数\n保留原有间距\n对齐参数名\n对齐参数名和值\n移除多余空格\n布局示例\n{{Tracklists\n  | 1 = {{tracklist\n    | heading  = Side A | comment = ...\n    | title1 = 春日来信 | note1 = 现场版   | length1 = 3:45\n    | title2 = Home     | note2 = Acoustic | length2 = 2:56\n  }}\n  | 2 = {{tracklist\n    | heading  = Side B | comment = ...\n    | title1 = 漫长的旅途    | note1 = 录音室版 | length1 = 4:08\n    | title2 = Morning light | note2 = Live     | length2 = 3:32\n  }}\n}}",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 640,
+                            "width": 974,
+                            "height": 661.15625
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 640,
+                            "width": 244.8125,
+                            "height": 48
+                        }
+                    }
+                ]
+            },
+            "image": "screenshot02.zh-Hans.png",
+            "imageSha256": "3d6c08bb251d7f92776c22fb96de74849bba5fee5c986c59e7aae022c2b92947",
+            "viewport": {
+                "width": 1366,
+                "height": 768
+            },
+            "deviceScaleFactor": 1,
+            "capturedAt": "2026-10-17T04:25:36.823Z",
+            "bundleArtifact": "dist/source_editor.min.js",
+            "bundleSha256": "e2a5602ac2c0fca77dd1504b8adddfd66c0948b1b9c3ac4c8262d4359a9a832d",
+            "apiResponses": [],
+            "assets": [
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.charinsert.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cmediawiki.ui.button%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.gadget.EditCommon-styles%2CProtectionIndicator%2ChideConversionTab%2ChideNewULSVariantsList-pagestyles%2Cilhpp-initial-pagestyles%2Clarge-font%2CmetaBox-pagestyles%2Ctext-spacing&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=site.styles&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=startup&only=scripts&raw=1&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?modules=skins.vector.icons&image=menu&format=original&lang=zh-cn&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?modules=skins.vector.icons&image=language&variant=progressive&format=original&lang=zh-cn&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?modules=skins.vector.icons&image=verticalEllipsis&format=original&lang=zh-cn&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.gadget.AdvancedSiteNotices%2CDifflink%2CEditCommon%2CEdittools-refToolbar%2CHanAssist%2CNavFrame%2CSpecialWikitext%2CVariantAlly%2CcollapsibleTables%2Cedit0%2ChideNewULSVariantsList%2Cilhpp%2CmetaBox%2CnoteTA%2Cpseudonamespace-UI%2CscrollUpButton%2Cswitcher%2Cunihan-helper%2Cwarn-archive-today&skin=vector-2022&version=6uman",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.visualEditor.core.utils.parsing%7Cext.visualEditor.desktopArticleTarget.init%7Cext.visualEditor.progressBarWidget%2CsupportCheck%2CtargetLoader%2CtempWikitextEditorWidget%2Ctrack%2Cve&skin=vector-2022&version=ovsne",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=codex-styles%2Cjquery%2Coojs%2Coojs-ui%2Coojs-ui-core%2Coojs-ui-toolbars%2Coojs-ui-widgets%2Coojs-ui-windows%2Csite%7Cext.CodeMirror.init%7Cext.centralNotice.geoIP%7Cext.centralauth.centralautologin%7Cext.charinsert%2CeventLogging%2CnavigationTiming%2Cpopups%2CreaderExperiments%2FpreferredSources%2CtestKitchen%2CwikimediaEvents%7Cext.checkUser.clientHints%7Cext.confirmEdit.hCaptcha%7Cext.cx.eventlogging.campaigns%7Cext.echo.centralauth%7Cext.eventLogging.metricsPlatform%7Cext.uls.common%2Ci18n%2Cinterface%2Clanguagenames%2Cmediawiki%2Cmessages%2Cpreferences%2Cwebfonts%7Cext.urlShortener.toolbar%7Cext.wikimediaCustomizations.donor%2CdonorAccountCreation%7Cext.wikimediaEvents.testKitchen%7Cjquery.client%2Ci18n%2CmakeCollapsible%2CtextSelection%2Culs%7Cjquery.makeCollapsible.styles%7Cjquery.uls.data%2Cgrid%7Cmediawiki.String%2CTitle%2Capi%2Cbase%2Ccldr%2Ccookie%2Cexperiments%2Chelplink%2CjqueryMsg%2Clanguage%2Crouter%2Cstorage%2Cuser%2Cutil%2CvisibleTimeout%7Cmediawiki.action.edit.collapsibleFooter%7Cmediawiki.editfont.styles%7Cmediawiki.libs.pluralruleparser%7Cmediawiki.page.ready%7Cmediawiki.page.watch.ajax%7Cmmv.bootstrap%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui-toolbars.icons%7Coojs-ui-widgets.icons%7Coojs-ui-windows.icons%7Coojs-ui.styles.indicators%7Cskins.vector.clientPreferences%2Cjs%7Cskins.vector.icons.js%7Cwikibase.databox.fromWikidata&skin=vector-2022&version=1ef6c",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.wikiEditor&skin=vector-2022&version=i5yp7",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.centralauth.ForeignApi%7Cext.cite.referencePreviews%7Cext.math.popup%7Cext.popups.main%7Cmediawiki.ForeignApi%7Cmediawiki.ForeignApi.core&skin=vector-2022&version=16ahr",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=jquery.ui%7Cmediawiki.language.specialCharacters%7Cmediawiki.template%2Cwidgets%7Cmediawiki.widgets.styles%7Coojs-ui.styles.icons-content%2Cicons-editing-advanced%2Cicons-editing-citation%2Cicons-editing-core%2Cicons-editing-list%2Cicons-editing-styling%2Cicons-media&skin=vector-2022&version=137ca",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.visualEditor.switching&skin=vector-2022&version=c66vi",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=oojs-ui.styles.icons-accessibility&skin=vector-2022&version=cycop",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=%40wikimedia%2Fcodex%2Cvue&skin=vector-2022&version=8neie",
+                    "status": 200
+                }
+            ],
+            "pageErrors": [],
+            "writes": [],
+            "dialogs": [
+                {
+                    "className": "cdx-dialog cdx-dialog--dividers cdx-dialog--fixed-height cdx-dialog--fixed-height-custom wiked-lite-dialog",
+                    "bodyScrollTop": 0
+                }
+            ]
+        },
+        "screenshot03.zh-Hant.png": {
+            "article": "任天堂",
+            "revisionId": 94167581,
+            "timestamp": "2026-09-03T02:14:35Z",
+            "sourceSha256": "e1926b787e4b13559697129b60683fd600e6a4b4bd8d32a81285edaa59ddbb69",
+            "sourceBytes": 96998,
+            "revisionContentSha256": "d482df231fd3e9dea95bf77876e2a7d34296a4f38b06b3853949e1e9745d134d",
+            "revisionContentBytes": 96997,
+            "nativeTerminalNewline": true,
+            "originalReadOnly": true,
+            "nativeDismissals": [],
+            "nativeEditorActions": [],
+            "locale": "zh-Hant",
+            "url": "https://zh.wikipedia.org/w/index.php?title=%E4%BB%BB%E5%A4%A9%E5%A0%82&oldid=94167581&action=edit&veswitched=1&uselang=zh-tw&useskin=vector-2022",
+            "config": {
+                "wgPageName": "任天堂",
+                "wgRevisionId": 0,
+                "wgCurRevisionId": 94167581,
+                "wgUserLanguage": "zh-tw",
+                "wgContentLanguage": "zh",
+                "wgWikiID": "zhwiki",
+                "skin": "vector-2022"
+            },
+            "state": "Shared article and citation formatting preferences",
+            "panelText": "原始碼編輯器\n格式化\n參考資料\n語法凸顯設定\n格式化選項\n格式化HTML標籤\n美化標籤空白及行內CSS程式碼。\n格式化字詞轉換規則\n美化-{...}-和{{NoteTA}}的定義規則。\n重新導向\n除導覽模板等少數場合外，通常請勿「修復」重新導向。\n將重新導向改為目標頁面標題\n引文排版\n排版條目時同時排版引文\n整理條目時，一併套用引用配置、呼叫語法、定義間距與 script-title 選項。\n引文版面配置\n行內引文\n分行引文\n儘可能使用{{r}}，而非<ref>\n在參考資料定義之間插入空行\n自動處理script-title參數\n格式化並產生script-title參數\n僅對使用非拉丁文字的語言使用script-title\n例如：ja, ru\n對所有外語使用script-title\n例如：en, ja, ru\n所有語言都使用 script-title，包括本站語言\n例如：zh, en, ja, ru\n模板版面配置\n調整多行模板的縮排和參數間距。\n巢狀模板縮排\n每層縮排空格數\n第一層巢狀不縮排\n每行第一個參數\n保留原有間距\n對齊參數值\n移除多餘空格\n同一行的後續參數\n保留原有間距\n對齊參數名稱\n對齊參數名稱和值\n移除多餘空格\n版面配置範例\n{{Tracklists\n  | 1 = {{tracklist\n    | heading  = Side A | comment = ...\n    | title1 = 春日来信 | note1 = 现场版   | length1 = 3:45\n    | title2 = Home     | note2 = Acoustic | length2 = 2:56\n  }}\n  | 2 = {{tracklist\n    | heading  = Side B | comment = ...\n    | title1 = 漫长的旅途    | note1 = 录音室版 | length1 = 4:08\n    | title2 = Morning light | note2 = Live     | length2 = 3:32\n  }}\n}}\n更多\n取消\n儲存設定\n格式化整頁",
+            "layout": {
+                "bodyScrollTop": 0,
+                "body": {
+                    "x": 172,
+                    "y": 92,
+                    "width": 1022,
+                    "height": 570
+                },
+                "formattingGroups": [
+                    {
+                        "text": "格式化選項\n格式化HTML標籤\n美化標籤空白及行內CSS程式碼。\n格式化字詞轉換規則\n美化-{...}-和{{NoteTA}}的定義規則。",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 138,
+                            "width": 475,
+                            "height": 120
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 138,
+                            "width": 81.609375,
+                            "height": 26
+                        }
+                    },
+                    {
+                        "text": "重新導向\n除導覽模板等少數場合外，通常請勿「修復」重新導向。\n將重新導向改為目標頁面標題",
+                        "rectangle": {
+                            "x": 695,
+                            "y": 154,
+                            "width": 475,
+                            "height": 104
+                        },
+                        "legend": {
+                            "x": 695,
+                            "y": 154,
+                            "width": 408.015625,
+                            "height": 48
+                        }
+                    },
+                    {
+                        "text": "引文排版\n排版條目時同時排版引文\n整理條目時，一併套用引用配置、呼叫語法、定義間距與 script-title 選項。\n引文版面配置\n行內引文\n分行引文\n儘可能使用{{r}}，而非<ref>\n在參考資料定義之間插入空行\n自動處理script-title參數\n格式化並產生script-title參數\n僅對使用非拉丁文字的語言使用script-title\n例如：ja, ru\n對所有外語使用script-title\n例如：en, ja, ru\n所有語言都使用 script-title，包括本站語言\n例如：zh, en, ja, ru",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 298,
+                            "width": 974,
+                            "height": 302
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 298,
+                            "width": 65.28125,
+                            "height": 26
+                        }
+                    },
+                    {
+                        "text": "模板版面配置\n調整多行模板的縮排和參數間距。\n巢狀模板縮排\n每層縮排空格數\n第一層巢狀不縮排\n每行第一個參數\n保留原有間距\n對齊參數值\n移除多餘空格\n同一行的後續參數\n保留原有間距\n對齊參數名稱\n對齊參數名稱和值\n移除多餘空格\n版面配置範例\n{{Tracklists\n  | 1 = {{tracklist\n    | heading  = Side A | comment = ...\n    | title1 = 春日来信 | note1 = 现场版   | length1 = 3:45\n    | title2 = Home     | note2 = Acoustic | length2 = 2:56\n  }}\n  | 2 = {{tracklist\n    | heading  = Side B | comment = ...\n    | title1 = 漫长的旅途    | note1 = 录音室版 | length1 = 4:08\n    | title2 = Morning light | note2 = Live     | length2 = 3:32\n  }}\n}}",
+                        "rectangle": {
+                            "x": 196,
+                            "y": 640,
+                            "width": 974,
+                            "height": 661.15625
+                        },
+                        "legend": {
+                            "x": 196,
+                            "y": 640,
+                            "width": 244.8125,
+                            "height": 48
+                        }
+                    }
+                ]
+            },
+            "image": "screenshot03.zh-Hant.png",
+            "imageSha256": "3d05fd773e2676ce6949893ad7419a1757da96bc779e3f6ec9a8a908b2c446ce",
+            "viewport": {
+                "width": 1366,
+                "height": 768
+            },
+            "deviceScaleFactor": 1,
+            "capturedAt": "2026-10-17T04:05:20.978Z",
+            "bundleArtifact": "dist/source_editor.min.js",
+            "bundleSha256": "22531a0f14b5d34ffa4475b318289346c44b1ea7ea41c0d86b1f54f7ef7cc565",
+            "apiResponses": [],
+            "assets": [
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.charinsert.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cmediawiki.ui.button%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.gadget.EditCommon-styles%2CProtectionIndicator%2ChideConversionTab%2ChideNewULSVariantsList-pagestyles%2Cilhpp-initial-pagestyles%2Clarge-font%2CmetaBox-pagestyles%2Ctext-spacing&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=site.styles&only=styles&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=startup&only=scripts&raw=1&skin=vector-2022",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?modules=skins.vector.icons&image=menu&format=original&lang=zh-tw&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?modules=skins.vector.icons&image=language&variant=progressive&format=original&lang=zh-tw&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?modules=skins.vector.icons&image=verticalEllipsis&format=original&lang=zh-tw&skin=vector-2022&version=1w2mk",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.gadget.AdvancedSiteNotices%2CDifflink%2CEditCommon%2CEdittools-refToolbar%2CHanAssist%2CNavFrame%2CSpecialWikitext%2CVariantAlly%2CcollapsibleTables%2Cedit0%2ChideNewULSVariantsList%2Cilhpp%2CmetaBox%2CnoteTA%2Cpseudonamespace-UI%2CscrollUpButton%2Cswitcher%2Cunihan-helper%2Cwarn-archive-today&skin=vector-2022&version=6uman",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.visualEditor.core.utils.parsing%7Cext.visualEditor.desktopArticleTarget.init%7Cext.visualEditor.progressBarWidget%2CsupportCheck%2CtargetLoader%2CtempWikitextEditorWidget%2Ctrack%2Cve&skin=vector-2022&version=1bjsr",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=codex-styles%2Cjquery%2Coojs%2Coojs-ui%2Coojs-ui-core%2Coojs-ui-toolbars%2Coojs-ui-widgets%2Coojs-ui-windows%2Csite%7Cext.CodeMirror.init%7Cext.centralNotice.geoIP%7Cext.centralauth.centralautologin%7Cext.charinsert%2CeventLogging%2CnavigationTiming%2Cpopups%2CreaderExperiments%2FpreferredSources%2CtestKitchen%2CwikimediaEvents%7Cext.checkUser.clientHints%7Cext.confirmEdit.hCaptcha%7Cext.cx.eventlogging.campaigns%7Cext.echo.centralauth%7Cext.eventLogging.metricsPlatform%7Cext.uls.common%2Ci18n%2Cinterface%2Clanguagenames%2Cmediawiki%2Cmessages%2Cpreferences%2Cwebfonts%7Cext.urlShortener.toolbar%7Cext.wikimediaCustomizations.donor%2CdonorAccountCreation%7Cext.wikimediaEvents.testKitchen%7Cjquery.client%2Ci18n%2CmakeCollapsible%2CtextSelection%2Culs%7Cjquery.makeCollapsible.styles%7Cjquery.uls.data%2Cgrid%7Cmediawiki.String%2CTitle%2Capi%2Cbase%2Ccldr%2Ccookie%2Cexperiments%2Chelplink%2CjqueryMsg%2Clanguage%2Crouter%2Cstorage%2Cuser%2Cutil%2CvisibleTimeout%7Cmediawiki.action.edit.collapsibleFooter%7Cmediawiki.editfont.styles%7Cmediawiki.libs.pluralruleparser%7Cmediawiki.page.ready%7Cmediawiki.page.watch.ajax%7Cmmv.bootstrap%7Coojs-ui-core.icons%2Cstyles%7Coojs-ui-toolbars.icons%7Coojs-ui-widgets.icons%7Coojs-ui-windows.icons%7Coojs-ui.styles.indicators%7Cskins.vector.clientPreferences%2Cjs%7Cskins.vector.icons.js%7Cwikibase.databox.fromWikidata&skin=vector-2022&version=2fitp",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.centralauth.ForeignApi%7Cext.cite.referencePreviews%7Cext.math.popup%7Cext.popups.main%7Cmediawiki.ForeignApi%7Cmediawiki.ForeignApi.core&skin=vector-2022&version=1eq6m",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.wikiEditor&skin=vector-2022&version=1f58q",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=jquery.ui%7Cmediawiki.language.specialCharacters%7Cmediawiki.template%2Cwidgets%7Cmediawiki.widgets.styles%7Coojs-ui.styles.icons-content%2Cicons-editing-advanced%2Cicons-editing-citation%2Cicons-editing-core%2Cicons-editing-list%2Cicons-editing-styling%2Cicons-media&skin=vector-2022&version=11v87",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.visualEditor.switching&skin=vector-2022&version=zk5n4",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=oojs-ui.styles.icons-accessibility&skin=vector-2022&version=cycop",
+                    "status": 200
+                },
+                {
+                    "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=%40wikimedia%2Fcodex%2Cvue&skin=vector-2022&version=jali6",
+                    "status": 200
+                }
+            ],
+            "pageErrors": [],
+            "writes": [],
+            "dialogs": [
+                {
+                    "className": "cdx-dialog cdx-dialog--dividers cdx-dialog--fixed-height cdx-dialog--fixed-height-custom wiked-lite-dialog",
+                    "bodyScrollTop": 0
+                }
+            ]
+        }
+    },
+    "failures": [
+        {
+            "locale": "zh-Hans",
+            "kind": "manager",
+            "views": ["05", "06", "07", "08"],
+            "error": "browserContext.close: Target page, context or browser has been closed"
+        },
+        {
+            "locale": "zh-Hans",
+            "kind": "highlighting",
+            "views": ["09"],
+            "error": "browser.newContext: Target page, context or browser has been closed"
+        },
+        {
+            "locale": "zh-Hans",
+            "kind": "text-utilities",
+            "views": ["11"],
+            "error": "browser.newContext: Target page, context or browser has been closed"
+        },
+        {
+            "locale": "zh-Hant",
+            "kind": "editor",
+            "views": ["03", "04"],
+            "error": "browser.newContext: Target page, context or browser has been closed"
+        },
+        {
+            "locale": "zh-Hant",
+            "kind": "manager",
+            "views": ["05", "06", "07", "08"],
+            "error": "browser.newContext: Target page, context or browser has been closed"
+        }
+    ],
+    "browserVersion": "153.0.8010.12"
+}

@@ -1,0 +1,81 @@
+/**
+ * @file src/source-editor/features/source-manager/dialogs/tool-dialog.css
+ * Purpose: Arrange related controls in columns; Codex owns component appearance.
+ *
+ * Contents: Layout and accessible labels.
+ */
+
+.kanade-source-editor-source-manager__cs1-message-frame {
+    display: flow-root;
+}
+
+.kanade-source-editor-source-analysis__findings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100, 16px);
+}
+
+.kanade-source-editor-source-analysis__finding-heading > h4 {
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-analysis__radio-options {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-source-analysis__custom-option {
+    align-items: center;
+    display: inline-flex;
+    flex: 1 1 18em;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-source-editor-source-analysis__selection-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    justify-content: start;
+}
+
+.kanade-source-editor-source-analysis__changed-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    justify-content: space-between;
+}
+
+.kanade-source-editor-source-analysis__changed-row > span {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50, 8px);
+}
+
+.kanade-source-editor-source-analysis__occurrence-heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50, 8px);
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-analysis__occurrences small {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 639px) {
+    .kanade-source-editor-source-analysis__custom-option {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .kanade-source-editor-source-analysis__selection-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,70 @@
+{
+    "name": "kanade",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "Four independent Wikimedia editing tools with a shared build and verification setup.",
+    "license": "CC0-1.0",
+    "engines": {
+        "node": "^24.15.0 || >=26.0.0",
+        "npm": ">=11"
+    },
+    "scripts": {
+        "check:dependencies": "node scripts/check-dependencies.mjs",
+        "check": "node scripts/check-identity.mjs --source-only && node scripts/check-docs.mjs && node scripts/check.mjs",
+        "test": "node scripts/test.mjs",
+        "build": "node scripts/build.mjs",
+        "check:dist": "node scripts/check-dist.mjs",
+        "test:ui": "npm run build && node scripts/test-ui.mjs",
+        "verify": "npm run check:dependencies && npm run check && npm test && npm run build && npm run check:dist && npm run check:identity && node scripts/test-ui.mjs",
+        "format": "prettier --write . \"!package-lock.json\"",
+        "format:check": "prettier --check . \"!package-lock.json\"",
+        "lint": "node scripts/check.mjs --lint",
+        "typecheck": "node scripts/check.mjs --types",
+        "check:unused": "node scripts/check.mjs --unused",
+        "check:docs": "node scripts/check-docs.mjs",
+        "check:identity": "node scripts/check-identity.mjs",
+        "update:template-data": "node scripts/source-editor/update-citation-template-data.ts",
+        "terminologies:refresh": "node scripts/vg-stub-creator/refresh-terminologies.mjs"
+    },
+    "devDependencies": {
+        "@eslint/js": "10.0.1",
+        "@playwright/test": "^1.62.1",
+        "@types/html-minifier-terser": "^7.0.2",
+        "@types/node": "^24.19.0",
+        "@vue/compiler-sfc": "3.5.43",
+        "@wikimedia/codex": "2.7.0",
+        "@wikimedia/codex-icons": "2.7.0",
+        "entities": "4.5.0",
+        "esbuild": "^0.28.2",
+        "eslint": "10.11.0",
+        "globals": "17.12.0",
+        "html-minifier-terser": "^7.2.0",
+        "jsdom": "^30.1.1",
+        "knip": "6.38.0",
+        "prettier": "^3.9.9",
+        "stylelint": "^17.14.0",
+        "stylelint-config-recommended": "^18.0.0",
+        "types-mediawiki": "^2.1.0",
+        "typescript": "^6.0.3",
+        "typescript-eslint": "8.70.1",
+        "vue": "3.5.13",
+        "vue-tsc": "3.3.11"
+    },
+    "prettier": {
+        "singleQuote": true,
+        "tabWidth": 4,
+        "overrides": [
+            {
+                "files": [
+                    "*.md",
+                    "*.yml",
+                    "*.yaml"
+                ],
+                "options": {
+                    "tabWidth": 2
+                }
+            }
+        ]
+    }
+}

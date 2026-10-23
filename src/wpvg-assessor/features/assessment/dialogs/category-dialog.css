@@ -1,0 +1,108 @@
+/**
+ * @file src/wpvg-assessor/features/assessment/dialogs/category-dialog.css
+ * Purpose: src / features / assessment / dialogs / category dialog module.
+ *
+ * Table of contents:
+ * 1. Styles and responsive rules
+ */
+
+.kanade-wpvg-assessor-category-dialog.cdx-dialog {
+    width: calc(100vw - 2rem);
+    max-width: none;
+    height: calc(100dvh - 2rem);
+    max-height: calc(100dvh - 2rem);
+}
+
+.kanade-wpvg-assessor-category-dialog .cdx-dialog__body {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.kanade-wpvg-assessor-category-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-75, 0.75rem);
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+.kanade-wpvg-assessor-category-status:empty {
+    display: none;
+}
+
+.kanade-wpvg-assessor-category-title {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-wpvg-assessor-category-preview {
+    flex: 1 1 auto;
+    min-height: 12rem;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color-muted, #dadde3);
+    background: #fff;
+}
+
+.kanade-wpvg-assessor-category-class.cdx-field {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.kanade-wpvg-assessor-category-ratings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-75, 0.75rem);
+}
+
+.kanade-wpvg-assessor-category-rating-group {
+    flex: 0 0 auto;
+    max-width: 100%;
+}
+
+.kanade-wpvg-assessor-category-review {
+    flex: 0 0 auto;
+}
+
+.kanade-wpvg-assessor-category-review summary {
+    cursor: pointer;
+}
+
+.kanade-wpvg-assessor-category-review pre {
+    max-height: 10rem;
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: var(--background-color-neutral-subtle, #f8f9fa);
+    padding: var(--spacing-75, 0.75rem);
+}
+
+.kanade-wpvg-assessor-category-footer {
+    width: 100%;
+}
+
+.kanade-wpvg-assessor-category-help {
+    margin: 0 0 var(--spacing-75, 0.75rem);
+}
+
+.kanade-wpvg-assessor-category-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 0.75rem);
+    justify-content: flex-end;
+}
+
+@media (max-width: 40rem) {
+    .kanade-wpvg-assessor-category-dialog.cdx-dialog {
+        width: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+    }
+
+    .kanade-wpvg-assessor-category-ratings {
+        gap: var(--spacing-50, 0.5rem);
+    }
+}

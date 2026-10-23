@@ -1,0 +1,29 @@
+/**
+ * @file src/vg-stub-creator/features/creator/dialogs/history-dialog.css
+ * Purpose: Arranges saved draft entries across viewport sizes.
+ * Contents: History-entry columns and responsive stacking.
+ */
+
+.kanade-vg-stub-creator-history-list {
+    display: grid;
+    gap: 0.5em;
+}
+
+.kanade-vg-stub-creator-history-entry {
+    align-items: center;
+    display: grid;
+    gap: 0.5em;
+    grid-template-columns: 1fr auto auto auto;
+}
+
+@media (max-width: 639px) {
+    .kanade-vg-stub-creator-history-entry {
+        align-items: stretch;
+        grid-template-columns: 1fr;
+    }
+
+    .kanade-vg-stub-creator-history-entry .cdx-button {
+        max-width: none;
+        width: 100%;
+    }
+}

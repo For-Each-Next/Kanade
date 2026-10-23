@@ -1,0 +1,17 @@
+{
+    "title": "任天堂Switch",
+    "pageid": 5488058,
+    "revid": 94119527,
+    "timestamp": "2026-08-31T10:32:26Z",
+    "fetchedAt": "2026-10-08T12:43:45.244Z",
+    "endpoint": "https://zh.wikipedia.org/api/rest_v1/page/summary/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch",
+    "sourceUrl": "https://zh.wikipedia.org/w/index.php?title=%E4%BB%BB%E5%A4%A9%E5%A0%82Switch&oldid=94119527",
+    "historyUrl": "https://zh.wikipedia.org/w/index.php?title=%E4%BB%BB%E5%A4%A9%E5%A0%82Switch&action=history",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "descriptionSource": "central",
+    "wikibaseItem": "Q19610114",
+    "summaryFile": "nintendo-switch.summary.json",
+    "summarySha256": "1bc41cf25c0749537b478d35f7a3c06a7f91151922e563a5043582cd841b10f5",
+    "description": "Unchanged Wikipedia Page Content Service response for offline browser tests. Live documentation captures request the actual service and record its response separately. No article media are downloaded."
+}

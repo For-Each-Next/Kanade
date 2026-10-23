@@ -1,0 +1,156 @@
+{
+    "identities": [
+        ["azusa"],
+        ["wp", "gadgets"],
+        ["wpg-"],
+        ["wpgSourceEditor"],
+        ["wpgRevCopy"],
+        ["wpgQuickAccess"],
+        ["__wpg_"],
+        ["wik", "ed", "lite"],
+        ["wik", "ed"],
+        ["citation", "formatter"],
+        ["vg", "page", "assessor"],
+        ["mediawiki", "gadgets"]
+    ],
+    "exceptions": [
+        {
+            "id": "external-attribution",
+            "paths": ["README.md", "docs/source-editor/README.md"],
+            "fragment": "Source Editor builds on [Cacycle's wikEd](https://en.wikipedia.org/wiki/User:Cacycle/wikEd).",
+            "reason": "Retains the credited external highlighter and its source URL."
+        },
+        {
+            "id": "external-attribution",
+            "paths": [
+                "scripts/tools.mjs",
+                "dist/source_editor.user.js",
+                "dist/source_editor.min.js"
+            ],
+            "fragment": "Based on Cacycle's wikEd: https://en.wikipedia.org/wiki/User:Cacycle/wikEd",
+            "reason": "Retains the external highlighter attribution in registered metadata and generated artifacts."
+        },
+        {
+            "id": "external-attribution",
+            "paths": ["docs/maintenance.md"],
+            "fragment": "Cacycle's wikEd credit",
+            "reason": "Describes the factual attribution retained by this audit."
+        },
+        {
+            "id": "host-editor-ownership",
+            "paths": ["src/source-editor/types/globals.d.ts"],
+            "fragment": "wikEd?: {",
+            "reason": "Declares the external editor instance so the host retains ownership."
+        },
+        {
+            "id": "host-editor-ownership",
+            "paths": ["src/source-editor/types/globals.d.ts"],
+            "fragment": "useWikEd?: boolean;",
+            "reason": "Declares the external editor activation flag used for ownership checks."
+        },
+        {
+            "id": "host-editor-ownership",
+            "paths": [
+                "src/source-editor/features/editor/surface.ts",
+                "dist/source_editor.user.js",
+                "dist/source_editor.min.js"
+            ],
+            "fragment": "window.wikEd?.useWikEd",
+            "reason": "Checks the externally owned editor before attaching another editing surface."
+        },
+        {
+            "id": "editor-interoperability",
+            "paths": [
+                "src/source-editor/platform/editor-backend.ts",
+                "src/library/mediawiki-edit-box/index.ts",
+                "tests/library/mediawiki-edit-box.test.ts",
+                "tests/source-editor/edit-box.test.ts",
+                "tests/source-editor/editor-backend.test.ts",
+                "tests/source-editor/ui/editor.spec.ts",
+                "docs/architecture.md",
+                "docs/source-editor/architecture.md",
+                "dist/source_editor.user.js",
+                "dist/source_editor.min.js",
+                "dist/vg_stub_creator.user.js",
+                "dist/vg_stub_creator.min.js"
+            ],
+            "fragment": "mediawiki-gadgets.edit-box-backend",
+            "reason": "Preserves the neutral symbol shared with external host editor consumers."
+        },
+        {
+            "id": "citation-capability-path",
+            "paths": [
+                "src/source-editor/domain/api.ts",
+                "src/source-editor/domain/citation-formatter.ts",
+                "tests/source-editor/sub-references.test.ts",
+                "tests/source-editor/reference-namespaces.test.ts",
+                "tests/source-editor/reference-formatter.test.ts",
+                "docs/source-editor/architecture.md",
+                "dist/source_editor.user.js"
+            ],
+            "fragment": "citation-formatter.ts",
+            "reason": "Names the current citation transformation capability rather than a product identity."
+        },
+        {
+            "id": "citation-capability-path",
+            "paths": ["src/source-editor/domain/citation-formatter.ts"],
+            "fragment": "src/source-editor/domain/citation-formatter.ts",
+            "reason": "Keeps the functional module filename and its source header."
+        },
+        {
+            "id": "historical-capture-evidence",
+            "paths": ["docs/source-editor/images/live-captures.json"],
+            "fragment": "\"className\": \"cdx-dialog cdx-dialog--dividers cdx-dialog--fixed-height cdx-dialog--fixed-height-custom wiked-lite-dialog\"",
+            "reason": "Preserves the exact DOM classes observed in historical captures."
+        },
+        {
+            "id": "historical-capture-evidence",
+            "paths": ["docs/source-editor/images/live-captures.json"],
+            "fragment": "\"id\": \"azusa\"",
+            "reason": "Preserves an action identifier recorded in a historical capture."
+        },
+        {
+            "id": "historical-capture-evidence",
+            "paths": ["docs/source-editor/images/live-captures.json"],
+            "fragment": "\"id\": \"azusa-tools\"",
+            "reason": "Preserves an action identifier recorded in a historical capture."
+        },
+        {
+            "id": "historical-capture-evidence",
+            "paths": ["docs/source-editor/images/live-captures.json"],
+            "fragment": "locator('.wiked-lite-dialog')",
+            "reason": "Preserves the exact failed locator in a historical capture error."
+        },
+        {
+            "id": "historical-capture-evidence",
+            "paths": ["docs/source-editor/images/live-captures.json"],
+            "fragment": "\"className\": \"cdx-dialog cdx-dialog--fixed-height cdx-dialog--fixed-height-custom wpg-source-editor-dialog\"",
+            "reason": "Preserves the exact DOM classes observed in captures before the project rename."
+        },
+        {
+            "id": "assessment-source-and-recovery",
+            "paths": [
+                "src/wpvg-assessor/domain/new-page-summary.ts",
+                "src/wpvg-assessor/i18n/index.ts",
+                "src/wpvg-assessor/features/assessment/assessment-summary.ts",
+                "src/wpvg-assessor/app/save-dialog.ts",
+                "src/wpvg-assessor/app/save-assessment.ts",
+                "tests/wpvg-assessor/staged-assessments.test.ts",
+                "tests/wpvg-assessor/i18n.test.ts",
+                "tests/wpvg-assessor/save-assessment.test.ts",
+                "tests/wpvg-assessor/new-page-summary.test.ts",
+                "tests/wpvg-assessor/assessment-summary.test.ts",
+                "dist/wpvg_assessor.user.js",
+                "dist/wpvg_assessor.min.js"
+            ],
+            "fragment": "/vg page assessor.js",
+            "reason": "Retains the real script source URL and recognition of reviewed summaries stored under earlier versions."
+        },
+        {
+            "id": "assessment-source-and-recovery",
+            "paths": ["tests/wpvg-assessor/reviewed-dialog-save.test.ts"],
+            "fragment": "/vg page assessor\\.js/u",
+            "reason": "Verifies the preserved real script source filename in generated edit summaries."
+        }
+    ]
+}

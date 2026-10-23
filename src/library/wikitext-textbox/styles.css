@@ -1,0 +1,46 @@
+/**
+ * @file src/library/wikitext-textbox/styles.css
+ * Purpose: Layer syntax colors beneath a native textarea without changing editing.
+ * Contents: Overlay geometry, transparent native text, caret, and metric preservation.
+ */
+
+.kanade-wikitext-textbox {
+    position: relative;
+}
+
+.kanade-wikitext-textbox-highlight {
+    position: absolute;
+    box-sizing: border-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--kanade-wikitext-textbox-foreground);
+    background: var(--kanade-source-editor-background);
+    border-style: solid;
+    border-color: transparent;
+    pointer-events: none;
+}
+
+/* Syntax colors must not change the native textarea's character metrics. */
+.kanade-wikitext-textbox-highlight span {
+    font: inherit !important;
+    letter-spacing: inherit !important;
+    line-height: inherit !important;
+    text-transform: inherit !important;
+}
+
+.kanade-wikitext-textbox-input {
+    position: relative;
+    color: transparent !important;
+    caret-color: var(--kanade-wikitext-textbox-caret) !important;
+    background: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.kanade-wikitext-textbox-input::selection {
+    color: var(--kanade-wikitext-textbox-foreground);
+    -webkit-text-fill-color: var(--kanade-wikitext-textbox-foreground);
+}
+
+.kanade-wikitext-textbox-input::placeholder {
+    -webkit-text-fill-color: currentColor;
+}

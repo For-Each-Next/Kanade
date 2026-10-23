@@ -1,0 +1,11 @@
+{
+    "extends": "./vg-stub-creator.json",
+    "compilerOptions": {
+        "types": ["node", "types-mediawiki"]
+    },
+    "include": [
+        "../../src/vg-stub-creator/**/*.ts",
+        "../../tests/vg-stub-creator/**/*.ts",
+        "../../scripts/vg-stub-creator/**/*.ts"
+    ]
+}

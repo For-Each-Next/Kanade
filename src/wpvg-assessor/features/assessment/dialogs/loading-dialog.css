@@ -1,0 +1,16 @@
+/**
+ * @file src/wpvg-assessor/features/assessment/dialogs/loading-dialog.css
+ * Purpose: src / features / assessment / dialogs / loading dialog module.
+ *
+ * Table of contents:
+ * 1. Styles and responsive rules
+ */
+
+.kanade-wpvg-assessor-loading-dialog.cdx-dialog {
+    max-width: 24rem;
+}
+
+.kanade-wpvg-assessor-loading-dialog__progress {
+    display: grid;
+    gap: var(--spacing-50, 0.5rem);
+}

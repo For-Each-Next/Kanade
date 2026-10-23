@@ -1,0 +1,158 @@
+{
+    "capturedAt": "2026-10-17T09:53:33.637Z",
+    "method": "Actual Chromium navigation to Wikipedia, native MediaWiki configuration and ResourceLoader Vue/Codex, production userscript injection, visible form interactions, and page screenshots. No replacement host, HTML reconstruction, or simulated API responses. A request guard aborts write actions; native preview POSTs remain read-only.",
+    "artifact": "dist/vg_stub_creator.user.js",
+    "bundleSha256": "da12302fa40b897167ba168eaa65b696fce9b1d41e2dd45f392cbaa6b794e8af",
+    "suppliedInput": "tests/vg-stub-creator/fixtures/toem-2.screenshot.json",
+    "inputMeaning": "User-supplied illustrative Toem 2 values, not independently verified factual metadata. Wikipedia page checks and any source lookups use live services and retain actual success, failure, or unconfirmed results.",
+    "sourceTitle": "信賴鈴音 ～蕭邦之夢～",
+    "sourceRevision": 94743103,
+    "captures": [
+        {
+            "image": "screenshot01.en.png",
+            "imageSha256": "7c4bd11c69cc930bd679226c36804df5414525901283572b98873e4850ebfcd2",
+            "state": "Supplied Facts input on an actual Wikipedia source view; page/category checks use live APIs.",
+            "language": "en",
+            "viewport": {
+                "width": 1024,
+                "height": 768
+            },
+            "deviceScaleFactor": 1,
+            "url": "https://zh.wikipedia.org/w/index.php?title=%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3+%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E&oldid=94743103&action=edit&useskin=vector-2022&uselang=en",
+            "config": {
+                "wgDBname": "zhwiki",
+                "wgPageName": "信賴鈴音_～蕭邦之夢～",
+                "wgAction": "edit",
+                "wgArticleId": 1652190,
+                "wgRevisionId": 0,
+                "wgUserLanguage": "en",
+                "wgContentLanguage": "zh",
+                "skin": "vector-2022"
+            },
+            "source": {
+                "revid": 94743103,
+                "parentid": 94039255,
+                "timestamp": "2026-10-04T02:44:43Z",
+                "revisionContentSha256": "49e623ff1ab18fd7df63fafe2d26dd03c2c09cc5805ef1e4d5907293ee449038",
+                "nativeSourceSha256": "492a55f466a5a9261a7f87917ea3c5ac943b2da05673f3e167edf169f199db6b",
+                "nativeTerminalNewline": true,
+                "originalReadOnly": true
+            },
+            "capturedAt": "2026-10-17T09:53:52.293Z",
+            "bundleSha256": "da12302fa40b897167ba168eaa65b696fce9b1d41e2dd45f392cbaa6b794e8af",
+            "failedRequests": [],
+            "httpErrors": [],
+            "blockedWrites": [],
+            "previewApiRequests": [],
+            "navigationAttempts": [
+                {
+                    "attempt": 1,
+                    "status": 200
+                }
+            ],
+            "metadataLookup": {
+                "settled": true,
+                "visibleText": "Wikidata Q131424377 \nMetacritic toem-2 \nOpenCritic 21441 \nSteam 2900640 ",
+                "reviewReady": true
+            }
+        },
+        {
+            "image": "screenshot02.zh-Hans.png",
+            "imageSha256": "e30aff27c5a5fa0be657e5afdf2bdb2fcb0881e5f36b681beb67f0a605fdf242",
+            "state": "Supplied Facts input on an actual Wikipedia source view; page/category checks use live APIs.",
+            "language": "zh-Hans",
+            "viewport": {
+                "width": 1024,
+                "height": 768
+            },
+            "deviceScaleFactor": 1,
+            "url": "https://zh.wikipedia.org/w/index.php?title=%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3+%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E&oldid=94743103&action=edit&useskin=vector-2022&uselang=zh-cn",
+            "config": {
+                "wgDBname": "zhwiki",
+                "wgPageName": "信賴鈴音_～蕭邦之夢～",
+                "wgAction": "edit",
+                "wgArticleId": 1652190,
+                "wgRevisionId": 0,
+                "wgUserLanguage": "zh-cn",
+                "wgContentLanguage": "zh",
+                "skin": "vector-2022"
+            },
+            "source": {
+                "revid": 94743103,
+                "parentid": 94039255,
+                "timestamp": "2026-10-04T02:44:43Z",
+                "revisionContentSha256": "49e623ff1ab18fd7df63fafe2d26dd03c2c09cc5805ef1e4d5907293ee449038",
+                "nativeSourceSha256": "492a55f466a5a9261a7f87917ea3c5ac943b2da05673f3e167edf169f199db6b",
+                "nativeTerminalNewline": true,
+                "originalReadOnly": true
+            },
+            "capturedAt": "2026-10-17T09:54:21.544Z",
+            "bundleSha256": "da12302fa40b897167ba168eaa65b696fce9b1d41e2dd45f392cbaa6b794e8af",
+            "failedRequests": [],
+            "httpErrors": [],
+            "blockedWrites": [],
+            "previewApiRequests": [],
+            "navigationAttempts": [
+                {
+                    "attempt": 1,
+                    "status": 200
+                }
+            ],
+            "metadataLookup": {
+                "settled": true,
+                "visibleText": "Wikidata Q131424377 \nMetacritic toem-2 \nOpenCritic 21441 \nSteam 2900640 ",
+                "reviewReady": true
+            }
+        },
+        {
+            "image": "screenshot03.zh-Hant.png",
+            "imageSha256": "f56b4f39004654e82d1a5b089ef5af9eb80fcb53a83a5eb61dc3cef1dc622b0f",
+            "state": "Supplied Facts input on an actual Wikipedia source view; page/category checks use live APIs.",
+            "language": "zh-Hant",
+            "viewport": {
+                "width": 1024,
+                "height": 768
+            },
+            "deviceScaleFactor": 1,
+            "url": "https://zh.wikipedia.org/w/index.php?title=%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3+%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E&oldid=94743103&action=edit&useskin=vector-2022&uselang=zh-tw",
+            "config": {
+                "wgDBname": "zhwiki",
+                "wgPageName": "信賴鈴音_～蕭邦之夢～",
+                "wgAction": "edit",
+                "wgArticleId": 1652190,
+                "wgRevisionId": 0,
+                "wgUserLanguage": "zh-tw",
+                "wgContentLanguage": "zh",
+                "skin": "vector-2022"
+            },
+            "source": {
+                "revid": 94743103,
+                "parentid": 94039255,
+                "timestamp": "2026-10-04T02:44:43Z",
+                "revisionContentSha256": "49e623ff1ab18fd7df63fafe2d26dd03c2c09cc5805ef1e4d5907293ee449038",
+                "nativeSourceSha256": "492a55f466a5a9261a7f87917ea3c5ac943b2da05673f3e167edf169f199db6b",
+                "nativeTerminalNewline": true,
+                "originalReadOnly": true
+            },
+            "capturedAt": "2026-10-17T09:54:54.993Z",
+            "bundleSha256": "da12302fa40b897167ba168eaa65b696fce9b1d41e2dd45f392cbaa6b794e8af",
+            "failedRequests": [],
+            "httpErrors": [],
+            "blockedWrites": [],
+            "previewApiRequests": [],
+            "navigationAttempts": [
+                {
+                    "attempt": 1,
+                    "status": 200
+                }
+            ],
+            "metadataLookup": {
+                "settled": true,
+                "visibleText": "Wikidata Q131424377 \nMetacritic toem-2 \nOpenCritic 21441 \nSteam 2900640 ",
+                "reviewReady": true
+            }
+        }
+    ],
+    "failures": [],
+    "browserVersion": "153.0.8010.12"
+}

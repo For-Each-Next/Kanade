@@ -1,0 +1,339 @@
+{
+    "capturedAt": "2026-10-21T12:45:08.525Z",
+    "method": "Actual headless Chromium page.goto, actual MediaWiki/API/CSS/assets, production bundle injection, and page.screenshot. Requests are intercepted only to block wiki writes; no response substitution, setContent, host replacement, or MediaWiki/clipboard mocks.",
+    "viewport": {
+        "width": 1366,
+        "height": 768,
+        "deviceScaleFactor": 1
+    },
+    "bundleSha256": "4631e69aeadd2dc870f9e31dac3196683ea60be090ca1310ccba8ee764ad063d",
+    "pages": {
+        "zh-hans": {
+            "config": {
+                "skin": "vector-2022",
+                "wgPageName": "信賴鈴音_～蕭邦之夢～",
+                "wgRevisionId": 95081087,
+                "wgCurRevisionId": 95081087,
+                "wgDiffOldId": null,
+                "wgDiffNewId": null,
+                "wgContentLanguage": "zh",
+                "wgUserLanguage": "zh-cn",
+                "wgUserVariant": "zh-cn",
+                "wgNamespaceNumber": 0,
+                "wgAction": "view"
+            },
+            "revisionId": 95081087,
+            "timestamp": "2026-10-16T06:05:28Z",
+            "expectedPermalink": "[[:Special:PermaLink/95081087|2026年10月16日 06:05:28]]",
+            "expectedAll": "[[:信賴鈴音 ～蕭邦之夢～]] ([[:Special:PermaLink/95081087|2026年10月16日 06:05:28]])",
+            "fonts": {
+                "wikitext": "monospace",
+                "action": "sans-serif",
+                "parentheses": "monospace"
+            },
+            "expectedPage": "[[:信賴鈴音 ～蕭邦之夢～]]",
+            "boundary": {
+                "parentId": "",
+                "parentClass": "vector-body-before-content",
+                "marginTop": "0px",
+                "marginBottom": "0px"
+            },
+            "nativeVariantPromptDismissed": true,
+            "nativeTopNotice": {
+                "selector": "#siteNotice",
+                "originalText": "维基百科Discord、IRC、LINE、QQ及Telegram等各平台交流群欢迎大家加入。",
+                "method": "Actual native close control click",
+                "control": {
+                    "tag": "BUTTON",
+                    "class": "asn-close-button",
+                    "id": "",
+                    "ariaLabel": "关闭"
+                }
+            },
+            "headingGeometry": {
+                "headingTag": "H2",
+                "textLeft": 264,
+                "textRight": 360,
+                "triggerLeft": 240.171875,
+                "triggerRight": 255.609375,
+                "overflow": "visible",
+                "parentOverflow": "visible",
+                "font": "24px",
+                "hit": true,
+                "direction": "ltr",
+                "viewportWidth": 1366
+            },
+            "sectionId": "遊戲操作",
+            "popupActions": [
+                "复制链接",
+                "复制永久链接",
+                "复制两者",
+                "进阶复制"
+            ],
+            "blockedWrites": [],
+            "image": "screenshot02.zh-Hans.png",
+            "imageSha256": "71cb4f419a8f700a2baeb1fdc11d507ba022660a16a189056cdfa19599331790",
+            "finalUrl": "https://zh.wikipedia.org/zh-cn/%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3_%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E?useskin=vector-2022&uselang=zh-cn",
+            "title": "信赖铃音 ～肖邦之梦～ - 维基百科，自由的百科全书",
+            "capturedAt": "2026-10-21T12:45:58.296Z",
+            "bundleSha256": "4631e69aeadd2dc870f9e31dac3196683ea60be090ca1310ccba8ee764ad063d",
+            "networkAttempts": [],
+            "failedRequests": [],
+            "assets": {
+                "readyState": "complete",
+                "fonts": "loaded",
+                "visibleImages": [
+                    {
+                        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Ambox_important.svg/40px-Ambox_important.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://thumb.wikimedia.org/wikipedia/zh/thumb/a/aa/Eternal_Sonata.jpg/250px-Eternal_Sonata.jpg?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                        "loaded": true
+                    }
+                ],
+                "stylesheets": [
+                    {
+                        "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.cite.styles%7Cext.tmh.player.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cjquery.makeCollapsible.styles%7Cmediawiki.skins.legacy%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles%7Cwikibase.client.init&only=styles&skin=vector-2022",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=ext.gadget.ProtectionIndicator%2ChideConversionTab%2ChideNewULSVariantsList-pagestyles%2Cilhpp-initial-pagestyles%2Clarge-font%2CmetaBox-pagestyles%2Ctext-spacing&only=styles&skin=vector-2022",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://zh.wikipedia.org/w/load.php?lang=zh-cn&modules=site.styles&only=styles&skin=vector-2022",
+                        "loaded": true
+                    }
+                ]
+            }
+        },
+        "advanced": {
+            "config": {
+                "skin": "vector-2022",
+                "wgPageName": "信賴鈴音_～蕭邦之夢～",
+                "wgRevisionId": 95081087,
+                "wgCurRevisionId": 95081087,
+                "wgDiffOldId": null,
+                "wgDiffNewId": null,
+                "wgContentLanguage": "zh",
+                "wgUserLanguage": "zh-tw",
+                "wgUserVariant": "zh-tw",
+                "wgNamespaceNumber": 0,
+                "wgAction": "view"
+            },
+            "revisionId": 95081087,
+            "timestamp": "2026-10-16T06:05:28Z",
+            "expectedPermalink": "[[:Special:PermaLink/95081087|2026年10月16日 06:05:28]]",
+            "expectedAll": "[[:信賴鈴音 ～蕭邦之夢～]] ([[:Special:PermaLink/95081087|2026年10月16日 06:05:28]])",
+            "fonts": {
+                "wikitext": "monospace",
+                "action": "sans-serif",
+                "parentheses": "monospace"
+            },
+            "expectedPage": "[[:信賴鈴音 ～蕭邦之夢～]]",
+            "boundary": {
+                "parentId": "",
+                "parentClass": "vector-body-before-content",
+                "marginTop": "0px",
+                "marginBottom": "0px"
+            },
+            "nativeVariantPromptDismissed": true,
+            "nativeTopNotice": {
+                "selector": "#siteNotice",
+                "originalText": "維基百科志願者互聯交流群（Telegram：@wikipedia_zh_n、Discord及IRC：#wikipedia-zh IRC://互聯）歡迎大家加入。",
+                "method": "Actual native close control click",
+                "control": {
+                    "tag": "BUTTON",
+                    "class": "asn-close-button",
+                    "id": "",
+                    "ariaLabel": "關閉"
+                }
+            },
+            "attribution": "翻譯自[[:w:ja:トラスティベル 〜ショパンの夢〜]]（[[:w:ja:Special:PermaLink/111250103|2026年10月3日 10:04:59]]版）",
+            "dialog": {
+                "width": 672,
+                "left": 347,
+                "right": 1019,
+                "viewportWidth": 1366,
+                "documentWidth": 1366
+            },
+            "viewport": {
+                "width": 1366,
+                "height": 768
+            },
+            "blockedWrites": [],
+            "image": "screenshot03.zh-Hant.png",
+            "imageSha256": "246d42aaab912f20d152bcab8c09ce58bf292d0d8a314f1d72e8c8bb987e0389",
+            "finalUrl": "https://zh.wikipedia.org/zh-tw/%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3_%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E?useskin=vector-2022&uselang=zh-tw",
+            "title": "信賴鈴音 ～蕭邦之夢～ - 維基百科，自由的百科全書",
+            "capturedAt": "2026-10-21T12:46:34.885Z",
+            "bundleSha256": "4631e69aeadd2dc870f9e31dac3196683ea60be090ca1310ccba8ee764ad063d",
+            "networkAttempts": [],
+            "failedRequests": [],
+            "assets": {
+                "readyState": "complete",
+                "fonts": "loaded",
+                "visibleImages": [
+                    {
+                        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Ambox_important.svg/40px-Ambox_important.svg.png?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://thumb.wikimedia.org/wikipedia/zh/thumb/a/aa/Eternal_Sonata.jpg/250px-Eternal_Sonata.jpg?utm_source=zh.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                        "loaded": true
+                    }
+                ],
+                "stylesheets": [
+                    {
+                        "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.cite.styles%7Cext.tmh.player.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cjquery.makeCollapsible.styles%7Cmediawiki.skins.legacy%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles%7Cwikibase.client.init&only=styles&skin=vector-2022",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=ext.gadget.ProtectionIndicator%2ChideConversionTab%2ChideNewULSVariantsList-pagestyles%2Cilhpp-initial-pagestyles%2Clarge-font%2CmetaBox-pagestyles%2Ctext-spacing&only=styles&skin=vector-2022",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://zh.wikipedia.org/w/load.php?lang=zh-tw&modules=site.styles&only=styles&skin=vector-2022",
+                        "loaded": true
+                    }
+                ]
+            }
+        },
+        "english": {
+            "config": {
+                "skin": "vector-2022",
+                "wgPageName": "Eternal_Sonata",
+                "wgRevisionId": 1376010866,
+                "wgCurRevisionId": 1376010866,
+                "wgDiffOldId": null,
+                "wgDiffNewId": null,
+                "wgContentLanguage": "en",
+                "wgUserLanguage": "en",
+                "wgUserVariant": null,
+                "wgNamespaceNumber": 0,
+                "wgAction": "view"
+            },
+            "revisionId": 1376010866,
+            "timestamp": "2026-09-21T13:15:07Z",
+            "expectedPermalink": "[[:w:en:Special:PermaLink/1376010866|September 21, 2026 at 13:15:07]]",
+            "expectedAll": "[[:w:en:Eternal Sonata]] ([[:w:en:Special:PermaLink/1376010866|September 21, 2026 at 13:15:07]])",
+            "fonts": {
+                "wikitext": "monospace",
+                "action": "sans-serif",
+                "parentheses": "monospace"
+            },
+            "expectedPage": "[[:w:en:Eternal Sonata]]",
+            "boundary": {
+                "parentId": "",
+                "parentClass": "vector-body-before-content",
+                "marginTop": "0px",
+                "marginBottom": "0px"
+            },
+            "source": {
+                "revid": 1376010866,
+                "parentid": 1371516430,
+                "timestamp": "2026-09-21T13:15:07Z",
+                "slots": {
+                    "main": {
+                        "contentmodel": "wikitext",
+                        "contentformat": "text/x-wiki",
+                        "content": "{{Short description|2007 video game}}\n{{Infobox video game\n| title = Eternal Sonata\n| image = Eternal Sonata.jpg\n| caption = Xbox 360 cover art used in North America and Europe\n| developer = [[tri-Crescendo]]\n| publisher = [[Namco Bandai Games]]{{efn|Released under the [[Namco]] brand outside North America.}}\n| director = [[Hiroya Hatsushiba]]\n| producer = [[Hideo Baba]]<br />Shinji Noguchi\n| artist = Nozomi Shibahara\n| composer = [[Motoi Sakuraba]]\n| writer = Hiroya Hatsushiba\n| engine = \n| released = '''Xbox 360'''<br />{{vgrelease|JP|June 14, 2007<ref>{{Cite web |last=Gantayat |first=Anoop |date=2007-06-14 |title=Trusty Bell Launch Party |url=https://www.ign.com/articles/2007/06/14/trusty-bell-launch-party |access-date=2023-03-26 |website=IGN |language=en |archive-date=2023-03-26 |archive-url=https://web.archive.org/web/20230326030308/https://www.ign.com/articles/2007/06/14/trusty-bell-launch-party |url-status=live}}</ref>|NA|September 17, 2007<ref>{{Cite web |last=Geddes |first=Ryan |date=2007-09-17 |title=Eternal Sonata Takes the Stage |url=https://www.ign.com/articles/2007/09/17/eternal-sonata-takes-the-stage |access-date=2023-03-26 |website=IGN |language=en |archive-date=2023-03-26 |archive-url=https://web.archive.org/web/20230326030309/https://www.ign.com/articles/2007/09/17/eternal-sonata-takes-the-stage |url-status=live}}</ref>|EU|October 19, 2007<ref>{{Cite news |date=2007-11-01 |title=Xbox 360: 12 Games of Christmas |language=en-gb |work=Eurogamer.net |url=https://www.eurogamer.net/xbox-360-12-games-of-christmas-article |access-date=2023-03-26 |archive-date=2022-10-13 |archive-url=https://web.archive.org/web/20221013164551/https://www.eurogamer.net/xbox-360-12-games-of-christmas-article |url-status=live}}</ref>|AU|November 12, 2007<ref>{{Cite web |date=2007-10-25 |title=Eternal Sonata ANZ Demo On Xbox Live |url=https://www.kotaku.com.au/2007/10/eternal_sonata_demo_on_xbox_live/ |access-date=2023-03-26 |website=Kotaku Australia |language=en-AU |archive-date=2023-03-26 |archive-url=https://web.archive.org/web/20230326030309/https://www.kotaku.com.au/2007/10/eternal_sonata_demo_on_xbox_live/ |url-status=usurped}}</ref>}}'''PlayStation 3'''{{vgrelease|JP|September 18, 2008<ref>{{Cite web |title=Eternal Sonata hits Japan in September, features tons of new content |url=https://www.engadget.com/2008-06-26-eternal-sonata-hits-japan-in-september-features-tons-of-new-con.html |access-date=2023-03-26 |website=Engadget |date=26 June 2008 |language=en-US |archive-date=2023-03-26 |archive-url=https://web.archive.org/web/20230326030309/https://www.engadget.com/2008-06-26-eternal-sonata-hits-japan-in-september-features-tons-of-new-con.html |url-status=live}}</ref>|NA|October 21, 2008<ref>{{Cite web |author=I. G. N. Staff |date=2008-10-21 |title=Namco Bandai Games Ships Eternal Sonata for PlayStation 3 |url=https://www.ign.com/articles/2008/10/21/namco-bandai-games-ships-eternal-sonata-for-playstation-3 |access-date=2023-03-26 |website=IGN |language=en |archive-date=2023-03-26 |archive-url=https://web.archive.org/web/20230326030309/https://www.ign.com/articles/2008/10/21/namco-bandai-games-ships-eternal-sonata-for-playstation-3 |url-status=live}}</ref>|EU|February 13, 2009<ref>{{Cite news |date=2009-02-12 |title=New PAL Releases Roundup - 13/02/09 |language=en-gb |work=Eurogamer.net |url=https://www.eurogamer.net/new-pal-releases-roundup-13020 |access-date=2023-03-26 |archive-date=2023-03-25 |archive-url=https://web.archive.org/web/20230325004239/https://www.eurogamer.net/new-pal-releases-roundup-13020 |url-status=live}}</ref>|AU|February 19, 2009}}\n| genre = [[Role-playing video game|Role-playing]]\n| modes = [[Single-player]], [[multiplayer]]\n| platforms = [[Xbox 360]], [[PlayStation 3]]\n}}\n{{Nihongo foot|'''''Eternal Sonata'''''|トラスティベル 〜ショパンの夢〜|Torasuti Beru ~Shopan no Yume~|'''''Trusty Bell: Chopin's Dream'''''|lead=yes|group=lower-alpha}} is a [[role-playing video game|role-playing]] [[video game]] developed by [[tri-Crescendo]] and published by [[Bandai Namco Games]]. The game was originally released on [[Xbox 360]] in 2007, followed by an expanded version releasing on [[PlayStation 3]] the following year.<ref name=\"nbgiannounce\">{{cite web|url=http://ps3.ign.com/articles/820/820146p1.html|title=Namco Bandai Announcement for PS3|date=14 September 2007 |access-date=2007-09-14|archive-date=2012-08-19|archive-url=https://web.archive.org/web/20120819034536/http://ps3.ign.com/articles/820/820146p1.html|url-status=live}}</ref><ref name=\"Namco Bandai News\">{{cite web|title=E3 – Namco Bandai News|url=http://www.rpgamer.com/news/Q3-2008/071508b.html|access-date=2008-07-15|archive-url=https://web.archive.org/web/20080720090815/http://www.rpgamer.com/news/Q3-2008/071508b.html|archive-date=2008-07-20|url-status=dead}}</ref><ref>[http://www.namcobandaigames.eu/en/press/30/ Eternal Sonata to Charm Its Way onto PlayStation 3 in Europe] {{webarchive |url=https://web.archive.org/web/20081226185930/http://www.namcobandaigames.eu/en/press/30/ |date=December 26, 2008}}</ref>\n\nThe story follows the [[Polish people|Polish]] romantic [[pianist]] and [[composer]] [[Frédéric Chopin]], who died of [[tuberculosis]] at the age of 39, and his adventure in a fictional world that he dreams of as he is dying, which is influenced by his life and music and in which he and others are playable characters. The game's battle system focuses on musical elements and character-unique special attacks. Light and darkness affect the appearance and abilities of enemies on the battlefield, as well as the types of magic that can be cast.<ref>{{cite web | url=http://www.1up.com/do/previewPage?cId=3158051 | title=1UP.com – Eternal Sonata Preview | work=Alice Liang | access-date=2007-03-17 | archive-url=https://web.archive.org/web/20070927195632/http://www.1up.com/do/previewPage?cId=3158051 | archive-date=2007-09-27 | url-status=dead}}</ref>\n\nThe game features a selection of Chopin's compositions performed by pianist [[Stanislav Bunin]], with original compositions composed and arranged by [[Motoi Sakuraba]]. It is notable for its use of classical piano pieces, educational cutscenes featuring real paintings and photographs, in contrast to its cel-shaded graphics, and lush landscape design.\n\n== Gameplay ==\n{{More citations needed section|date=August 2023}}\n''Eternal Sonata'' follows general conventions of the [[role-playing video game|role-playing]] genre; the player controls a party of up to twelve characters to explore the world, interact with its inhabitants, buy and sell equipment at shops, and encounter monsters while in the field.<ref>{{Cite web|url=https://arstechnica.com/gaming/2007/09/game-review-eternal-sonata-xbox-360/|title=Game Review: Eternal Sonata (Xbox 360)|last=Caron|first=Frank|date=2007-09-28|website=Ars Technica|language=en-us|access-date=2019-10-25|archive-date=2019-10-25|archive-url=https://web.archive.org/web/20191025125549/https://arstechnica.com/gaming/2007/09/game-review-eternal-sonata-xbox-360/|url-status=live}}</ref> These encounters are visible and the player can choose to avoid the encounter, if possible, as well as gain the advantage in battle by approaching them from behind. Experience points are awarded to all members of the party, though at a reduced rate for those not involved in combat, and characters improve in various statistics and learn special combat skills as they level up. Weapons, armor, and accessories can be used to improve these statistics, which can be purchased through money earned in combat, found in chests, or by selling equipment and [[photograph]]s which Beat can take during battle. The player can also find Score Pieces scattered about the world, which represent short musical phrases. Various [[non-player character|NPCs]] in the game will offer to perform with the party, requiring the player to match a Score Piece to the phrase they offer, with the resulting composition being ranked. Discordant matches will result in no reward, but close or perfect matches will gain a bonus item from the NPC.\n\n=== Combat ===\n[[File:Eternal-sonata-screenshot.jpg|thumb|240px|left|Combat in ''Eternal Sonata'' takes place in both lit and shaded areas, affecting the skills the player can use.]]\nWhile the main combat system is turn-based, using only three characters within the party, it also incorporates elements of an [[action game]].<ref>{{Cite web|url=http://www.nbcnews.com/id/21312989/ns/technology_and_science-games/t/eternal-sonata-folklore-dare-aim-high/|title='Eternal Sonata,' 'Folklore' dare to aim high|last=Benedetti|first=Winda|date=2007-10-17|website=msnbc.com|language=en|access-date=2019-10-25|archive-date=2019-10-28|archive-url=https://web.archive.org/web/20191028052450/http://www.nbcnews.com/id/21312989/ns/technology_and_science-games/t/eternal-sonata-folklore-dare-aim-high/|url-status=dead}}</ref> Each character's turn is preceded by \"Tactical Time\", a period of time during which the player decides what action they take. Once the player initiates an action or \"Tactical Time\" expires, a function of the Party Class Level, they have a limited amount of time, indicated by an Action Gauge, to move the character, attack the enemy, or use recovery skills or items. Regular attacks are made at melee or ranged distances depending on the character's weapon and add to the Action Gauge as well as to the party's \"Echoes\" meter. Special skills, which include offensive attacks and recovery skills, consume generated Echoes, with the effect becoming more powerful with more Echoes. When a character defends against an attack, there is a short period before the attack where the player can press a button to block some damage from the attack or to  counterattack and interrupt the monster's turn. Recovery and other one-time-use items are stored in a common pouch with a limited capacity; the player must \"set\" items in the pouch so that they can be cycled through and triggered during battle.\n\nLight and dark areas on the battlefield, created by the time of day, environment, and the shadows of characters and monsters, affect combat. Party members have special skills that are active in lit and dark areas, with the effect changing depending on the area. Monsters also have powers depending on whether the area is lit or dark, while others will change form when moving between lit and dark areas. The player can manipulate the nature of areas using special items, but this can also be affected by monsters or by dynamic changes on the battlefield, such as the shadow of a cloud moving across the ground.\n\nAs the player progresses through the game, they increase their Party Class Level, which grants bonuses but imposes limitations on combat. For example, one Party Class improvement increases the number of slots for character's special skills, but reduces the amount of Tactical Time and time available in the Action Gauge. The Level cannot be altered by the player in their first playthrough, but can be adjusted in Encore Mode.\n\n== Plot ==\nThe game takes place mainly within Chopin's dream world, with brief segments in the real world where he is on his deathbed.<ref>{{Cite web|url=https://www.geek.com/games/eternal-sonata-is-bizarre-even-by-jrpg-standards-1736454/|title=Eternal Sonata is Bizarre Even By JRPG Standards|date=2018-04-11|website=Geek.com|language=en-US|access-date=2019-10-25|archive-date=2019-10-25|archive-url=https://web.archive.org/web/20191025125547/https://www.geek.com/games/eternal-sonata-is-bizarre-even-by-jrpg-standards-1736454/|url-status=dead}}</ref> The story is divided into eight chapters, each represented by one of Chopin's compositions and related to events in his life. The dream sequences combine the game's fictional narrative with elements drawn from Chopin's biography and musical works.\n\nChopin meets Polka, a young girl who possesses magic and will soon die from her illness. She also sells floral powder, but her business is being threatened by the introduction of the cheaper mineral powder, which is mined by Forte's ruler, Count Waltz. After being shunned by the citizens of Ritardando, who believe that her magic is related to her illness, she decides that she wants to do something with her life before she dies. The party sets out to meet with Count Waltz regarding the mineral powder and to stop the mining of Mt. Rock, which is damaging Agogo Forest. Over time, they learn that Waltz intends to use the mineral powder to create an army of soldiers and lead an insurrection against Forte's enemy, Baroque. They head for Forte, but are stopped and taken to its dungeon, as it was alerted to the arrival of the rebel group Andantino. After escaping, the party meets up with Andantino, but is spotted by Forte personnel and escapes by jumping off of a bridge into a river. Half of the party and Andantino head for their hideout Andante, while the other half is rescued by Prince Crescendo of Baroque. Upon reaching Baroque, the party discusses the situation, as Forte threatens war, but Baroque wants peace. Crescendo considers a plan to assassinate Count Waltz, but it is soon discarded.\n\nThat half of the party returns to Ritardando to reunite with the party, while Allegretto leaves to retrieve Polka from her village. The party heads for Baroque and decides to explore Aria Temple; upon returning to Baroque, they find that Crescendo and Serenade are missing and learn that they left for Forte to turn themselves in to prevent war. On their way to Forte, they fight Crescendo, Serenade, and Count Waltz, who completes a potion that transforms his partner, Legato, into a monster. Realizing that the world is in danger, the party follows Waltz and Legato to the city of the dead, Elegy Of The Moon, where souls lost to the mineral powder dwell. At Double Reed Tower, they fight and defeat them before facing Chopin, who he believes that this is the only way to put his soul to rest. Realizing that it is the only way to save the world, Polka jumps off a cliff and is reborn younger, but soon ages and embraces Allegretto. Back in the real world, Chopin dies and he plays his piano in a blooming sea of nocturnal flowers called 'Heaven's Mirror', composing a song inspired by Polka.\n\n=== Characters ===\nCharacters in ''Eternal Sonata'', with the exception of real-world people such as Chopin, are named after musical terms.\n{{Hatnote|Note: Character names link to their respective musical terms, not to articles on the characters themselves.}}\n* {{nihongo|[[Frédéric Chopin|Frédéric François Chopin]]|フレデリック・フランソワ・ショパン|Furederikku Furansowa Shopan}}: A renowned composer and pianist who meets Polka in the dream world and decides to help her. Over the course of the story, he begins to question whether or not the dream world is reality. He is 39 years old, the age Chopin was when he died.<br />''Voiced by:'' [[Mitsuaki Madono]] (Japanese); [[Patrick Seitz]] (English)<ref>{{Cite web|url=http://retrowaretv.com/cams-eye-view-eternal-sonata-for-the-xbox360-and-ps3-review/|title=Retroware TV Cam's Eye View: Eternal Sonata for the Xbox360 and PS3 review.|language=en|access-date=2019-10-25|archive-date=2019-10-25|archive-url=https://web.archive.org/web/20191025130105/http://retrowaretv.com/cams-eye-view-eternal-sonata-for-the-xbox360-and-ps3-review/|url-status=live}}</ref>\n* {{nihongo|[[Polka]]|ポルカ|Poruka}}: A young girl who sells floral powder in Ritardando. She possesses powerful magic abilities, which will soon kill her and have caused her to be shunned by others. Despite this, she seeks to do something with her life before she dies while using her magic to help others. She is 14 years old, the same age that Chopin's sister Emilia was when she died.<br />''Voiced by:'' [[Aya Hirano]] (Japanese); [[Erin Fitzgerald]] (English)\n* {{nihongo|[[Allegretto]]|アレグレット|Areguretto}}: A thief who is kind and steals to feed children who cannot feed themselves. While he knows that this is not a permanent solution, he does so in hopes that they will not go hungry or poor like he has. <br />''Voiced by:'' [[Hiro Shimono]] (Japanese); [[Sam Riegel]] (English)<ref>{{Cite web|url=https://www.rpgsite.net/interview/2874-sam-riegel-interview|title=Sam Riegel Interview {{!}} RPG Site|website=www.rpgsite.net|access-date=2019-10-25|archive-date=2019-10-25|archive-url=https://web.archive.org/web/20191025125550/https://www.rpgsite.net/interview/2874-sam-riegel-interview|url-status=live}}</ref>\n* {{nihongo|[[Beat (music)|Beat]]|ビート|Bīto}}: A boy who lives with Allegretto in Ritardando and treasures the camera his father gave him. He is cheerful and gets along well with others. <br />''Voiced by:'' [[Yumiko Kobayashi]] (Japanese); [[Mona Marshall]] (English)\n* {{nihongo|[[Viola]]|ビオラ|Biora}}: A shepherd who the party meets in the countryside. She is a tough talker and, due to being older than the others, can fend for herself. She has a pet named [[String instrument#Bowing|Arco]], who tags along with the group. <br />''Voiced by:'' [[Hoko Kuwashima]] (Japanese); [[Megan Hollingshead]] (English)\n* {{nihongo|[[Salsa (music)|Salsa]]|サルサ|Sarusa}}: A guardian of the Agogo Forest along with her sister March, who the party meets while imprisoned in Forte Castle's dungeons. She is brash, outspoken, and energetic.<br />''Voiced by:'' [[Mika Kanai]] (Japanese); Amy Gross (English)\n* {{nihongo|[[March (music)|March]]|マーチ|Māchi}}: Salsa's twin sister and a guardian of the Agogo Forest. In contrast to Salsa, she is more reasonable and gentle.<br />''Voiced by:'' [[Chiwa Saito]] (Japanese); Amy Gross (English)\n* {{nihongo|[[Jazz]]|ジルバ|Jiruba|his Japanese name is a transliteration<!---NOT an abbreviation---> of \"[[jitterbug]]\"}}: The leader of the revolutionary group Andantino, who is quiet and serious and worries about the damage Count Waltz is causing through mineral powder and the processes to mine it.<br />''Voiced by:'' [[Joji Nakata]] (Japanese); [[D.C. Douglas]] (English)\n* {{nihongo|[[Falsetto]]|ファルセット|Farusetto}}: Jazz's lieutenant in Andantino, who is perceptive and tough and has known him since childhood.<br />''Voiced by:'' [[Tomoe Hanba]] (Japanese); [[Julie Ann Taylor]] (English)\n* {{nihongo|[[Claves]]|クラベス|Kurabesu}}: Jazz's girlfriend and a soldier of Andantino, who is also a spy for Forte but comes to regret her position. She is later murdered by Rondo for treason, but can be revived. <br />''Voiced by:'' [[Mie Sonozaki]] (Japanese); [[Tara Platt]] (English)\n* {{nihongo|[[Crescendo]]|クレッシェンド|Kuresshendo}}: The prince of Baroque, who replaces his father as Baroque's leader due to his sickness and later rescues Polka, Beat, Chopin, and Salsa after they fall into Adagio River. He is playable in the PlayStation 3 version.<br />''Voiced by:'' [[Katsuyuki Konishi]] (Japanese); [[Cam Clarke]] (English)\n* {{nihongo|[[Serenade]]|セレナーデ|Serenāde}}: Prince Crescendo's fiancée, who initially works as a spy for Forte, but leaves Forte to join Baroque. She is playable in the PlayStation 3 version.<br />''Voiced by:'' [[Fumiko Orikasa]] (Japanese); [[Stephanie Sheh]] (English)\n\n== Development ==\nDirector Hiroya Hatsushiba stated:<ref>{{cite web|url=http://kotaku.com/gaming/we-want-to-know/chopins-role-in-eternal-sonata-explained-287143.php |title=We Want To Know: Chopin's Role in Eternal Sonata Explained |publisher=Kotaku.com |access-date=2008-10-27 |url-status=dead |archive-url=https://web.archive.org/web/20081230064852/http://kotaku.com/gaming/we-want-to-know/chopins-role-in-eternal-sonata-explained-287143.php |archive-date=December 30, 2008}}</ref>\n\n{{blockquote|People who play games and people who love classical music are not necessarily sharing [the] same type of interests. Most people in Japan know the name of [Frederic] Chopin; however, most of the people who know of Chopin think he is just some kind of a great music composer without knowing any more about him. Most of them have heard Chopin's music but not a lot could put his name to it immediately. By creating a colorful fantasy world in Chopin's dream, I was hoping that people would get into this game easily and also come to know how great Chopin's music is.}}\n\nFor the localization, the game's text was proofread by the Frédéric Chopin Society in [[Warsaw]]. The localization team wanted to be as historically accurate as possible, without losing the original message of the script.<ref>{{cite web |url=http://blogs.ign.com/EternalSonata/2007/09/12/66074/ |title=Eternal Sonata – Lost in Translation |publisher=Blogs.ign.com |access-date=2008-10-27 |url-status=dead |archive-url=https://web.archive.org/web/20081008011709/http://blogs.ign.com/EternalSonata/2007/09/12/66074/ |archive-date=2008-10-08}}</ref>\n\n[[Entertainment Software Rating Board|ESRB]] posted their rating for ''Eternal Sonata'' in April 2007,<ref>{{cite web|url=http://www.joystiq.com/2007/04/23/esrb-lists-eternal-sonata-on-xbox-360-and-playstation-3/|title=ESRB lists Eternal Sonata on Xbox 360 … and PlayStation 3|publisher=Joystiq|first=Christopher|last=Grant|date=2007-04-23|access-date=2008-10-27|archive-date=2007-10-23|archive-url=https://web.archive.org/web/20071023054551/http://www.joystiq.com/2007/04/23/esrb-lists-eternal-sonata-on-xbox-360-and-playstation-3/|url-status=live}}</ref> listing the game as being intended for release on Xbox 360 and PlayStation 3. However, when news of this quickly spread, the ESRB removed the listing entirely. On September 11, Bandai Namco's official site listed ''Eternal Sonata'' as coming soon to PlayStation 3, yet also listed the Xbox 360 version as being \"available now\". Again, as news quickly spread, the information was removed.<ref>{{cite web|title=Namco Bandai site shows Eternal Sonata and Beautiful Katamari coming to PS3|url=http://www.joystiq.com/2007/09/11/namco-bandai-site-shows-eternal-sonata-and-beautiful-katamari-co/|access-date=2007-09-14|archive-date=2011-06-29|archive-url=https://web.archive.org/web/20110629163547/http://www.joystiq.com/2007/09/11/namco-bandai-site-shows-eternal-sonata-and-beautiful-katamari-co/|url-status=live}}</ref> The following day, scans from ''[[Famitsu]]'' were released, confirming the game as being released for the PlayStation 3.<ref>{{cite web|title=Famitsu Scans|url=http://www.jeux-france.com/images0_4_21765.html|access-date=2007-09-14|archive-date=2008-04-30|archive-url=https://web.archive.org/web/20080430111902/http://www.jeux-france.com/images0_4_21765.html|url-status=live}}</ref> Bandai Namco later officially confirmed ''Eternal Sonata'' for the PlayStation 3, and was scheduled for release in 2008.<ref name=\"nbgiannounce\" />\n\nThere are features exclusive for the PlayStation 3 version. This includes new playable characters, Crescendo and Serenade, who played a major role in the plot of the game, but were not playable in the Xbox 360 version. It also includes a new clothing system, in which the player can freely change a few characters' costumes, specifically those of Allegretto, Beat and Polka – the three characters that are controllable in the field at various points in the game.<ref>{{cite web|title=Official Website for the PS3 Version|url=http://namco-ch.net/trustybell_ps3/index.php|access-date=2008-07-13|archive-url=https://web.archive.org/web/20080517112445/http://namco-ch.net/trustybell_ps3/index.php|archive-date=2008-05-17|url-status=dead}}</ref> The other extras are the two dungeons, Lament Mirror and Church of EZI, the former of which is compulsory.\n\n''Eternal Sonata'' features a large soundtrack, mostly composed by Motoi Sakuraba, with seven of Chopin's compositions performed by Russian pianist [[Stanislav Bunin]] and presented in 5.1 surround sound. Featured music of Chopin's include [[Étude Op. 10, No. 12 (Chopin)|Étude Op. 10, No. 12]], [[Étude Op. 10, No. 3 (Chopin)|Étude Op. 10, No. 3]] and [[Polonaise Op. 53 (Chopin)|Polonaise Op. 53]]. A [[Japanese language|Japanese]] [[aria]] composed by Sakuraba titled {{nihongo|\"Heaven's Mirror\"|鏡天花|Kyōtenka}} is also performed by Akiko Shinada for the soundtrack. The game's background music was released in Japan as the four-disc album {{nihongo|''Trusty Bell: Chopin's Dream Original Score''|トラスティベル 〜ショパンの夢〜 オリジナルスコア|Torasuti Beru ~Shopan no Yume~ Orijinaru Sukoa}} on July 25, 2007, under the [[King Records (Japan)|King Records]] label.\n\n== Manga ==\nA [[manga]] adaptation of ''Eternal Sonata'' was drawn by Mimei Kuroi and published by [[ASCII Media Works]] under their [[Dengeki Comics]] comic imprint, and the chapters were collected into a single [[tankōbon]] on September 27, 2008.<ref>{{cite web |url=http://asciimw.jp/search/mode/item/cd/B0804700 |title=Trusty Bell ~Chopin no Yume~ |publisher=[[ASCII Media Works]] |language=ja |access-date=2009-06-13 |archive-date=2009-11-15 |archive-url=https://web.archive.org/web/20091115001834/http://asciimw.jp/search/mode/item/cd/B0804700 |url-status=live}}</ref> While it deviates from the game's story drastically, it does reach the same conclusion; in addition, Viola, Falsetto and Claves do not appear at any point in the manga due to the condensation of the altered story, and the roles of Salsa and March are greatly reduced, with the two appearing only briefly and not joining the party.\n\n== Reception ==\n{{Video game reviews\n| GR = X360: 80%<ref name=\"GR_X360\">{{cite web |url=https://www.gamerankings.com/xbox360/934162-eternal-sonata/index.html |title=Eternal Sonata for Xbox 360 |website=[[GameRankings]] |publisher=[[CBS Interactive]] |access-date=2021-06-25 |archive-url=https://web.archive.org/web/20191209015659/https://www.gamerankings.com/xbox360/934162-eternal-sonata/index.html |archive-date=2019-12-09 |url-status=dead}}</ref><br />PS3: 82%<ref name=\"GR_PS3\">{{cite web |url=https://www.gamerankings.com/ps3/943325-eternal-sonata/index.html |title=Eternal Sonata for PlayStation 3 |website=[[GameRankings]] |publisher=[[CBS Interactive]] |access-date=2021-06-25 |archive-url=https://web.archive.org/web/20191209011503/https://www.gamerankings.com/ps3/943325-eternal-sonata/index.html |archive-date=2019-12-09 |url-status=dead}}</ref>\n| MC = X360: 79/100<ref name=\"MC_X360\">{{cite web |url=https://www.metacritic.com/game/eternal-sonata/critic-reviews/?platform=xbox-360 |title=Eternal Sonata for Xbox 360 Reviews |website=[[Metacritic]] |publisher=[[Red Ventures]] |access-date=2021-06-25 |archive-date=2021-08-28 |archive-url=https://web.archive.org/web/20210828105834/https://www.metacritic.com/game/xbox-360/eternal-sonata |url-status=live}}</ref><br />PS3: 80/100<ref name=\"MC_PS3\">{{cite web |url=https://www.metacritic.com/game/eternal-sonata/critic-reviews/?platform=playstation-3 |title=Eternal Sonata for PlayStation 3 Reviews |website=[[Metacritic]] |publisher=[[Red Ventures]] |access-date=2021-06-25 |archive-date=2021-04-26 |archive-url=https://web.archive.org/web/20210426202833/https://www.metacritic.com/game/playstation-3/eternal-sonata |url-status=live}}</ref>\n}}\n\n''[[Famitsu]]'' rated the game 9/9/9/8, for a total score of 35/40.<ref name=\"famitsuscores\">{{cite web|url=http://www.gamesarefun.com/news.php?newsid=7857|title=GamesAreFun Famitsu Scores|access-date=June 20, 2007|archive-url=https://web.archive.org/web/20070928030417/http://www.gamesarefun.com/news.php?newsid=7857|archive-date=September 28, 2007|url-status=dead|df=mdy-all}}</ref>\nDuring its release week, the Xbox 360 version the game reached second place on the Japanese sales charts at 49,334 copies.<ref name=\"GAFweek1SALES\">[http://www.gamesarefun.com/news.php?newsid=7911 GamesAreFun Japanese Sales] {{Webarchive|url=https://web.archive.org/web/20070928021949/http://www.gamesarefun.com/news.php?newsid=7911 |date=2007-09-28}} 6/11-6/17. Retrieved June 20, 2007</ref><ref>{{cite web | author=Jenkins, David | date=June 21, 2007 | title=360 And PS3 Experience Japanese Chart Comeback | url=https://www.gamedeveloper.com/game-platforms/360-and-ps3-experience-japanese-chart-comeback | work=Gamasutra.com | access-date=2009-09-07 | archive-date=2008-12-21 | archive-url=https://web.archive.org/web/20081221155011/http://www.gamasutra.com/php-bin/news_index.php?story=14407 | url-status=live}}</ref> The following week, it had dropped to 35th.<ref>{{cite web |url=http://www.psxextreme.com/ps3-news/1445.html |title=PS3 News: Media Create Japan Software Sales: June 18th–24th |publisher=Psxextreme.com |access-date=2008-10-27 |archive-url=https://web.archive.org/web/20080517142534/http://www.psxextreme.com/ps3-news/1445.html |archive-date=2008-05-17 |url-status=dead}}</ref><ref>{{cite web|url=http://kotaku.com/gaming/soupy-sales/simple-2000-the-japanese-hardware-chart-273421.php |title=Simple 2000: The Japanese Hardware Chart |publisher=Kotaku.com |access-date=2008-10-27 |url-status=dead |archive-url=https://web.archive.org/web/20080929063647/http://kotaku.com/gaming/soupy-sales/simple-2000-the-japanese-hardware-chart-273421.php |archive-date=September 29, 2008}}</ref> The PlayStation 3 version debuted on Japanese sales charts at number four with around 34,000 copies sold.<ref>{{cite web | author=Jenkins, David | date=September 25, 2008 | title=Japanese Charts: Pokémon Platinum Is Super Effective | url=http://gamasutra.com/php-bin/news_index.php?story=20394 | work=Gamasutra.com | access-date=2009-09-07 | archive-date=2009-02-20 | archive-url=https://web.archive.org/web/20090220143150/http://www.gamasutra.com/php-bin/news_index.php?story=20394 | url-status=dead}}</ref> ''Famitsu'' reported that year-end Japanese sales of the game reached about 70,435 copies on the Xbox 360 in 2007 and 53,314 copies on the PlayStation 3 in 2008.<ref>{{cite web|title=GEIMIN.NET／2007年テレビゲームソフト売り上げTOP500（ファミ通版） |url=http://geimin.net/da/db/2007_ne_fa/index.php |work=Geimin.net |language=ja |access-date=2009-09-07 |url-status=dead |archive-url=https://web.archive.org/web/20151017183611/http://geimin.net/da/db/2007_ne_fa/index.php |archive-date=October 17, 2015}}</ref><ref>{{cite web|title=GEIMIN.NET／2008年テレビゲームソフト売り上げTOP500（ファミ通版） |url=http://geimin.net/da/db/2008_ne_fa/index.php |work=Geimin.net |language=ja |access-date=2009-09-07 |url-status=dead |archive-url=https://web.archive.org/web/20150923055208/http://geimin.net/da/db/2008_ne_fa/index.php |archive-date=September 23, 2015}}</ref>\n\nAt [[E3 2007]], it won ''[[GameTrailers]]''{{'s}} award for Best Role-Playing Game<ref name=\"GTcomE32007RPG\">{{cite web|url=http://www.gametrailers.com/player/22619.html |title=GameTrailers Best of E3 2007 |access-date=August 6, 2007 |url-status=dead |archive-url=https://web.archive.org/web/20070920162345/http://www.gametrailers.com/player/22619.html |archive-date=September 20, 2007}}</ref> and ''[[IGN]]''{{'s}} award for Best Original Score on Xbox 360, and was a runner-up in Best RPG, Best Artistic Design on Xbox 360 and Best Use Of Sound on Xbox 360.<ref name=\"IGNbestE3\">{{cite web|url= http://xbox360.ign.com/articles/806/806808p4.html|title= IGN: Xbox 360 Best of E3 2007 Awards|date= 21 July 2007|access-date= March 20, 2008|archive-date= October 31, 2007|archive-url= https://web.archive.org/web/20071031022037/http://xbox360.ign.com/articles/806/806808p4.html|url-status= live}}</ref>\n\nIn 2007, ''Eternal Sonata'' was nominated for [[Spike Video Game Awards]] for Best RPG, but lost to ''[[Mass Effect (video game)|Mass Effect]]''.\n\n[[11th Annual Interactive Achievement Awards|In 2008]], the [[Academy of Interactive Arts & Sciences]] named ''Eternal Sonata'' as one of the nominees for 2007's \"[[D.I.C.E. Award for Role-Playing Game of the Year|Role-Playing Game of the Year]]\", but eventually lost to ''[[Mass Effect (video game)|Mass Effect]]''.<ref>{{cite web | url=https://www.interactive.org/awards/award_category_details.asp?idAward=2008&idGameAwardType=122 | title=2008 Awards Category Detail - Roleplaying Game of the Year | author=Academy of Interactive Arts & Sciences | author-link=Academy of Interactive Arts & Sciences | access-date=April 8, 2020 | archive-date=March 10, 2022 | archive-url=https://web.archive.org/web/20220310015203/https://www.interactive.org/awards/award_category_details.asp?idAward=2008&idGameAwardType=122 | url-status=live}}</ref>\n\nIn Europe and the U.S., it received many high reviews. [[GameRankings]] gave the PlayStation 3 version an average aggregate score of 82% based on 28 reviews,<ref name=\"GR_PS3\" /> and the Xbox 360 version 80% based on 59 reviews.<ref name=\"GR_X360\" /> [[Metacritic]] gave the PlayStation 3 version an average aggregate score of 80/100 based on 34 reviews,<ref name=\"MC_PS3\" /> and the Xbox 360 version 79/100 based on 56 reviews.<ref name=\"MC_X360\" /> ''[[GameSpot]]'' gave it an 8.5 out of 10, praising its magnificent visual design, stunning musical score, inventive battle system and great cast, though it admitted that the story is completely linear.<ref name=autogenerated1>{{cite web|url=http://www.gamespot.com/reviews/eternal-sonata-review/1900-6178914/|access-date=January 7, 2016|publisher=Gamespot|title=Eternal Sonata Review|archive-date=January 17, 2016|archive-url=https://web.archive.org/web/20160117172508/http://www.gamespot.com/reviews/eternal-sonata-review/1900-6178914/|url-status=live}}</ref> ''IGN'' gave the Xbox 360 version an 8.3 out of 10, claiming that it had some of the best visuals on the 360 and had great combat. They also said that \"the soundtrack is astounding\" and claimed the story did a great job of educating the player about [[Frédéric Chopin]], but the game was criticized for its linearity and for the lack of exploration.<ref>{{cite web|url=http://xbox360.ign.com/articles/819/819923p1.html|title=Eternal Sonata Review|date=13 September 2007 |publisher=IGN.com|access-date=2008-12-18|archive-date=2008-12-18|archive-url=https://web.archive.org/web/20081218160003/http://xbox360.ign.com/articles/819/819923p1.html|url-status=live}}</ref> ''IGN'' gave the PlayStation 3 version a higher 8.7 out of 10 and the Editor's Choice Award, with praise for its extension of the storyline, the inclusion of new playable characters, and the inclusion of other extras, such as new dungeons and customizable characters.<ref>{{cite web|url=http://ps3.ign.com/articles/923/923711p1.html|title=Eternal Sonata Review (PS3)|date=24 October 2008 |publisher=IGN.com|access-date=2008-12-18|archive-date=2012-08-17|archive-url=https://web.archive.org/web/20120817060739/http://ps3.ign.com/articles/923/923711p1.html|url-status=live}}</ref> ''[[X-Play]]'' gave the game a 3 out of 5 praising the combat, soundtrack and visuals but complained that there were too many mini games, a poor story and too many [[role-playing video game]] clichés.<ref>{{cite web|url=http://www.g4tv.com/xplay/reviews/1638/Eternal_Sonata.html|title=X-Play Eternal Sonata Review|publisher=G4tv.com|access-date=2008-12-18|archive-date=2017-12-28|archive-url=https://web.archive.org/web/20171228040846/http://www.g4tv.com/xplay/reviews/1638/Eternal_Sonata.html|url-status=live}}</ref> Johansen Quijano-Cruz of ''Eludamos: Journal for Computer Game Culture'' reviewed the game from an artistic and literary perspective, praising it as an excellent role-playing game, particularly for the social criticism conveyed by its storyline. He regards it as a primary example of a video game that \"makes powerful statements about the society in which we live\" and \"incorporates, analyzes, interprets, and offers critical commentary of certain aspects of society\".<ref>Johansen Quijano-Cruz (2009), [http://journals.sfu.ca/eludamos/index.php/eludamos/article/viewArticle/68/131 Chopin's Dream as Reality – A Critical Reading of Eternal Sonata] {{Webarchive|url=https://web.archive.org/web/20120312134354/http://journals.sfu.ca/eludamos/index.php/eludamos/article/viewArticle/68/131 |date=2012-03-12}}, ''Eludamos Journal for Computer Game Culture'' '''3''' (2), pp. 209–218</ref>\n== Music ==\n{{Expand section|lacks a  featured classical music compositions and a video game soundtrack|date=February 2026}}\nThe music is mostly featured a classical piano compositions.\n==Notes==\n{{notelist}}\n\n== References ==\n{{Reflist|30em}}\n\n== External links ==\n{{Wikiquote}}\n* [https://sonata-form.com Sonata form] {{Webarchive|url=https://web.archive.org/web/20210301040329/https://sonata-form.com/ |date=2021-03-01 }}\n* [https://web.archive.org/web/20080517112518/http://namco-ch.net/trusty_bell/index.php Official Japanese website]\n* [https://web.archive.org/web/20080517112445/http://namco-ch.net/trustybell_ps3/index.php Official Japanese website for the PlayStation 3 version]\n* [https://web.archive.org/web/20070701070745/http://eternalsonata.namcobandaigames.com/ Official North American website]\n\n{{Chopin}}\n\n[[Category:2007 video games]]\n[[Category:Cooperative video games]]\n[[Category:Dengeki Comics]]\n[[Category:Video games based on real people]]\n[[Category:Cultural depictions of Frédéric Chopin]]\n[[Category:Bandai Namco games]]\n[[Category:PlayStation 3 games]]\n[[Category:Fantasy video games]]\n[[Category:Role-playing video games]]\n[[Category:Shōnen manga]]\n[[Category:Tri-Crescendo games]]\n[[Category:Video games scored by Motoi Sakuraba]]\n[[Category:Video games developed in Japan]]\n[[Category:Video games featuring female protagonists]]\n[[Category:Video games with cel-shaded animation]]\n[[Category:Xbox 360 games]]\n[[Category:Works about pianos and pianists]]\n[[Category:Multiplayer and single-player video games]]"
+                    }
+                }
+            },
+            "blockedWrites": [],
+            "image": "screenshot01.en.png",
+            "imageSha256": "44120d364e1968785f73535fd81f3e479495e4993452789e1c9411765de14e99",
+            "finalUrl": "https://en.wikipedia.org/wiki/Eternal_Sonata?useskin=vector-2022&uselang=en",
+            "title": "Eternal Sonata - Wikipedia",
+            "capturedAt": "2026-10-21T12:45:34.583Z",
+            "bundleSha256": "4631e69aeadd2dc870f9e31dac3196683ea60be090ca1310ccba8ee764ad063d",
+            "networkAttempts": [],
+            "failedRequests": [],
+            "assets": {
+                "readyState": "complete",
+                "fonts": "loaded",
+                "visibleImages": [
+                    {
+                        "url": "https://thumb.wikimedia.org/wikipedia/en/thumb/a/aa/Eternal_Sonata.jpg/250px-Eternal_Sonata.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+                        "loaded": true
+                    }
+                ],
+                "stylesheets": [
+                    {
+                        "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=ext.cite.parsoid.styles%7Cext.cite.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cjquery.makeCollapsible.styles%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles%7Cwikibase.client.init&only=styles&skin=vector-2022",
+                        "loaded": true
+                    },
+                    {
+                        "url": "https://en.wikipedia.org/w/load.php?lang=en&modules=site.styles&only=styles&skin=vector-2022",
+                        "loaded": true
+                    }
+                ]
+            }
+        }
+    },
+    "skinChecks": [],
+    "failures": [],
+    "browserVersion": "153.0.8010.12",
+    "availableSkins": [
+        {
+            "code": "vector-2022",
+            "name": "Vector (2022)",
+            "default": true
+        },
+        {
+            "code": "vector",
+            "name": "Vector legacy (2010)"
+        },
+        {
+            "code": "monobook",
+            "name": "MonoBook"
+        },
+        {
+            "code": "modern",
+            "name": "Modern",
+            "unusable": true
+        },
+        {
+            "code": "cologneblue",
+            "name": "Cologne Blue",
+            "unusable": true
+        },
+        {
+            "code": "timeless",
+            "name": "Timeless"
+        },
+        {
+            "code": "minerva",
+            "name": "MinervaNeue"
+        },
+        {
+            "code": "contenttranslation",
+            "name": "contenttranslation",
+            "unusable": true
+        },
+        {
+            "code": "fallback",
+            "name": "Fallback",
+            "unusable": true
+        },
+        {
+            "code": "apioutput",
+            "name": "ApiOutput",
+            "unusable": true
+        },
+        {
+            "code": "authentication-popup",
+            "name": "Authentication popup",
+            "unusable": true
+        },
+        {
+            "code": "json",
+            "name": "SkinJSON",
+            "unusable": true
+        }
+    ],
+    "browserArguments": ["--disable-http2"],
+    "bundleArtifact": "dist/rev_copy.min.js"
+}

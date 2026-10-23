@@ -1,0 +1,766 @@
+{{About|任天堂公司|被稱呼為任天堂的遊戲機|紅白機}}
+{{pp-sock|expiry=2027-11-30T21:43:50+00:00|small=yes}}
+{{Refimprove|time=2020-08-04T06:44:50+00:00}}
+{{NoteTA
+| G1 = IT
+| G2 = Games
+| G3 = Nintendo
+| 1 = zh-cn:出租车; zh-tw:計程車; zh-hk:的士; zh-sg:德士;
+| 2 = zh-cn:街机;zh-tw:機台;zh-hk:街機;
+| 3 = zh-cn:首席執行官; zh-tw:執行長; zh-hk:首席執行官;
+| 4 = zh-cn:激光; zh-tw:雷射; zh-hk:鐳射;
+| 5 = zn-ch:软件; zh-tw:軟體;
+| 6 = zh-cn:照明娱乐; zh-tw:照明娛樂; zh-hk:光映娛樂;
+| 7 = zh-cn:超级马力欧兄弟大电影; zh-tw:超級瑪利歐兄弟電影版; zh-hk:超級瑪利歐兄弟大電影;
+}}
+{{Infobox company
+| name = 任天堂株式會社
+| name_en = Nintendo Co., Ltd.
+| native_name = 任天堂株式会社
+| native_name_lang = ja
+| other_name = 
+| former_name = 任天堂骨牌<br/><small>（1889年至1933年）</small><br/>山內任天堂合夥公司<br/><small>（1933年至1947年）</small><br/>丸福株式會社<br/><small>（1947年至1949年）</small><br/>丸福歌留多銷售株式會社<br/><small>（1949年至1950年）</small><br/>任天堂歌留多株式會社<br/><small>（1950年至1951年）</small><br/>任天堂骨牌株式會社<br/><small>（1951年至1963年）</small>
+| logo = Nintendo.svg
+| logo_size = 250px
+| logo_caption = 2016年至今的任天堂商標
+| image = File:Headquarters of Nintendo Co., Ltd.jpg
+| image_size = 250px
+| image_caption = 位於[[京都]]的任天堂總部
+| type = [[上市公司]]
+| traded_as = {{tyo|7974}}<br />{{Ose|7974}}<br />{{otcbb|NTDOY}}<br />{{FWB|NTO}}<br />{{NASDAQ|NTDOY}}
+| foundation = {{Start date and age|df=yes|1889|09|23}}<br/>（創業）<br/>{{Start date and age|df=yes|1947|11|20}}<ref>{{Cite web|url=https://www.nikkei.com/nkd/company/gaiyo/?scode=7974|title=任天堂（株）企業プロフィール|publisher=[[日本經濟新聞]]|accessdate=2014-10-10|archive-date=2024-12-27|archive-url=https://web.archive.org/web/20241227032629/https://www.nikkei.com/nkd/company/gaiyo/?scode=7974|dead-url=no}}</ref><br/>（現公司法人成立）
+| founder = [[山内房治郎]]
+| location = {{JPN}} 〒601-8501<br/>[[京都府]][[京都市]][[南區 (京都市)|南區]]上鳥羽鉾立町11番地1號<br />
+{{Coord|34|58|11|N|135|45|22.3|E|type:landmark_region:JP|display=inline,title}}
+| key_people = [[古川俊太郎]]（代表董事社長）<br />[[宮本茂]]（代表董事研究員）
+| industry = [[电子游戏产业]]、[[消費電子產品|遊戲主機]]、[[電子遊戲|遊戲軟體]]
+| products = 電子遊戲發行製作與遊戲設備研發
+| services = {{Unbulleted list
+| [[任天堂eShop]]
+| [[任天堂Switch Online]]
+}}
+| revenue = {{Increase}} 1兆7,589億日圓（2021年9月期）<ref name=kessan />
+| operating_income = {{Increase}} 6,789億日圓（2021年9月期）<ref name=kessan />
+| num_employees = 單體：2,941名<br />全體：8,109名<br />（截至2024年9月未）<ref>{{Cite web |url=https://www.nintendo.co.jp/corporate/outline/index.html |title=存档副本 |accessdate=2016-11-19 |archive-date=2013-02-12 |archive-url=https://web.archive.org/web/20130212035659/http://www.nintendo.co.jp/corporate/outline/index.html |dead-url=no }}</ref>
+| owner = {{ubl|[[日本Master Trust信託銀行]]（17%）|[[摩根大通]]（10%）|[[沙烏地阿拉伯公共投資基金]]（8%）|日本Custody銀行（6%）}}
+| parent = 
+| divisions = [[任天堂企劃製作本部]]<br />任天堂平台技術開發本部<br />任天堂商業發展部
+| subsid = {{Collapsible list|title=子公司列表
+| [[任天堂软件技术]]
+| [[任天堂欧洲研发部]]
+| [[1-UP工作室]]
+| [[Monolith Soft]]
+| [[Nintendo Cube]]
+| [[Retro工作室|Retro Studios]]
+| [[Next Level Games]]
+| [[SRD (公司)|SRD]]
+| Shiver Entertainment
+| 任天堂新加坡工作室
+| Mario Club
+| 任天堂銷售
+| [[任天堂影業]]
+| [[任天堂之星]]
+| {{lang|en|Nintendo of America Inc.}}（美國）
+| {{lang|en|Nintendo of Canada Ltd.}}（加拿大）
+| {{lang|en|Nintendo of Europe SE}}（德國）
+| {{lang|en|Nintendo France S.A.R.L}}（法國）
+| {{lang|en|Nintendo Benelux B.V.}}（荷蘭）
+| {{lang|en|Nintendo Ibérica, S.A.}}（西班牙）
+| {{lang|en|Nintendo Australia Pty. Ltd.}}（澳大利亞）
+| [[韓國任天堂|韓国任天堂株式会社]]（韓國）
+| [[任天堂（香港）|任天堂（香港）有限公司]]（香港、澳門）
+| [[台灣任天堂|台灣任天堂股份有限公司]]（台灣）<ref>{{cite news|url=https://www.cna.com.tw/news/afe/202502180109.aspx|title=存档副本|accessdate=2025-02-18|archive-date=2025-02-21|archive-url=https://web.archive.org/web/20250221115525/https://www.cna.com.tw/news/afe/202502180109.aspx|dead-url=no}}</ref>
+| [[神游科技|iQue, Ltd.]]（中國大陆）
+| 任天堂系統（持80%股份）
+| [[寶可夢公司]]（持三份之一股份）
+}}
+| capital = 100億6540万日圓<br />（截至2019年3月31日）<ref name=kessan>{{Cite web |url=https://www.nintendo.co.jp/ir/pdf/2017/170427.pdf |title=任天堂株式會社平成29年3月期決算短信 |accessdate=2017-08-02 |archive-date=2017-07-22 |archive-url=https://web.archive.org/web/20170722212917/https://www.nintendo.co.jp/ir/pdf/2017/170427.pdf |dead-url=no }}</ref>
+| market_value = 
+| accounting_period = 每年3月31日
+| major_shareholder = 日本Master Trust信托銀行（16.48%）<br />摩根大通银行（10.41%）<br />日本Custody銀行（5.76%）<br />[[京都銀行]]（4.19%）<br />野村信托銀行（3.62%）<br />美國道富銀行（3.92%）<br/>[[花旗銀行]]（1.75%）<br />[[新加坡政府投資公司]]（1.58%）<br/>（截至2024年9月30日）
+| homepage = {{URL|https://www.nintendo.com/jp/}}
+| local_code_name = JP
+| local_code = 1130001011420|
+| profit = {{Increase}} 4,803億日圓（2021年3月期）<ref name=kessan />
+| net_asset = 
+| P/E ratio = 
+| earnings per share = 
+}}
+
+'''任天堂株式会社'''（{{jpn|j=任天堂株式会社|kn=にんてんどう|rm=Nintendō}}）是一家主要从事[[电子游戏]]的开发、制造与发行的[[日本]]百年企業。于1889年在日本[[京都市]]创立，最初以生產[[花札]]（賭博用的手牌）起家，後續也嘗試多種行業，1970年代後期投入[[電子遊戲產業]]，在[[掌上遊戲機]]「[[Game & Watch]]」與[[街机|街機遊戲]]《[[大金刚 (游戏)|咚奇剛]]》取得商業成功後，娛樂事業也逐漸大眾化而走上正途，於1983年推出[[家用游戏机|家用遊戲機]]「[[红白机|Family Computer]]」與在1985年推出遊戲《[[超级马力欧兄弟]]》亦取得空前的成功，且旗下有多個著名IP，包括[[瑪利歐系列|瑪利歐]]、[[薩爾達傳說系列|薩爾達傳說]]、[[動物森友會系列|動物森友會]]、[[斯普拉遁系列|斯普拉遁]]及[[皮克敏系列|皮克敏]]等，为世界知名的電子遊戲主機與軟體開發商，亦是世界目前游戏主机三大生产商之一。
+
+== 概要 ==
+任天堂由[[山內房治郎]]於1889年9月23日成立，最初主要是生產[[花札]]紙牌，此後一直維持此種經營方式至1960年代。此後任天堂進行了一系列業務多樣化嘗試，其中包括組建出租车公司、經營賓館和出售真空吸塵器等等。1970年代，任天堂最終進入電視遊戲業務<ref>{{cite web |url=http://news.mydrivers.com/1/201/201522.htm |title=十大巨頭初始業務：諾基亞造紙三星賣百貨 |website= |date=2011-08-10 |access-date= |archive-url=https://web.archive.org/web/20120118222209/http://news.mydrivers.com/1/201/201522.htm  |archive-date=2012-01-18}}</ref>，確定了作為玩具廠商的地位，並推出了“Ultra Band”、“光線槍SP”等熱門商品。 1980年，發售[[掌上遊戲機]]「[[Game & Watch]]」，取得巨大成功。 1983年，發售「[[红白机|Family Computer]]」。1985年，其在FC上推出的遊戲《[[超级马力欧兄弟]]》取得極大成功，在全世界範圍內受到巨大歡迎。任天堂由此奠定了在遊戲市場的不敗地位。在2008年，從遊戲軟件銷售的比率上看，在日本及全世界範圍內，均佔據第一的位置。截至2010年，現有遊戲硬件的銷售量無論掌機還是家用機，均列世界第一。同時，其並未放棄傳統的玩具生產，且在這一領域的發展規模在同業廠商中亦屬最大級別。任天堂亦曾長時間持有[[美國職棒大聯盟]]的[[西雅圖水手隊]]<ref>{{Cite news|url=http://www.nikkei.com/article/DGXMZO00292890Q6A430C1000000/|title=任天堂、マリナーズ持ち分売却決定の舞台裏|newspaper=日本経済新聞 電子版|accessdate=2018-02-02|language=ja|archive-date=2017-09-20|archive-url=https://web.archive.org/web/20170920190741/https://www.nikkei.com/article/DGXMZO00292890Q6A430C1000000/|dead-url=no}}</ref>。
+
+公司自身並不擁有遊戲機製造工廠。以前是由位於日本國內的外包廠商的工廠進行生產與組裝，而現在則是在位於[[中國大陸]]的生產合作工廠（[[鴻海科技集團]]下屬之[[鴻海精密工業]]）進行製造。
+
+任天堂自社开发的游戏中有超過一百款在日本地区取得了百万以上销量<ref name=":0">{{Cite book|title=2016 CESAゲーム白書|last=|first=|publisher=[[CESA]]|year=2016|isbn=|location=日本|pages=226}}</ref>。此外，在海外地区亦有相当大的影响力，许多游戏的全球销量可达到千万以上<ref name=":0" />，例如《[[Wii Sports]]》的全球销量为8290万份<ref>{{Cite web|url=https://www.nintendo.co.jp/ir/sales/software/wii.html|title=株主・投資家向け情報：販売データ - 主要ソフト販売実績 Wii用ソフト|accessdate=2018-02-06|author=|date=|work=www.nintendo.co.jp|publisher=|language=ja|archive-date=2017-10-14|archive-url=https://web.archive.org/web/20171014233725/https://www.nintendo.co.jp/ir/sales/software/wii.html|dead-url=no}}</ref>。除了销售成绩良好之外，任天堂游戏在业界与玩家中均有良好的口碑。根据游戏评分汇总网站[[GameRankings]]的统计，史上汇总评分最高的电子游戏前五名均出自任天堂之手<ref>{{Cite web|url=https://www.gamerankings.com/browse.html|title=Reviews and News Articles - GameRankings|accessdate=2018-02-06|work=www.gamerankings.com|archive-date=2018-03-21|archive-url=https://web.archive.org/web/20180321231639/http://www.gamerankings.com/browse.html|dead-url=no}}</ref>。
+
+任天堂一直維持著20%以上的利潤率，在日本的大企業中絕無僅有{{NoteTag|如[[豐田汽車]]為10%左右，與一般企業相比已經相當高的[[NTT DoCoMo]]也只有大約17%。競爭對手索尼電腦娛樂（現[[索尼互動娛樂]]）則僅有2.8%左右。}}。作為銷售額超一兆日元的超大型企業，僱員僅有5,000人左右，所以每位僱員平均創造的銷售額也很高（約為豐田汽車的5倍）<ref>{{Cite web |url=http://moneyzine.jp/article/detail/126622 |title=トヨタの5倍超、従業員1人で10億稼ぐ高収益企業「任天堂の究極目標」 |accessdate=2011-01-29 |archive-date=2011-01-29 |archive-url=https://web.archive.org/web/20110129064754/http://moneyzine.jp/article/detail/126622 |dead-url=no }}</ref>。另外，其作為如此大規模的企業而不進行任何財界活動，可謂是特立獨行。
+
+任天堂已開發的家用游戏机包括[[Color TV-Game]]、[[红白机|Family Computer]]、[[超級任天堂|Super Famicom]]、[[任天堂64]]、[[任天堂GameCube]]、[[Wii]]和[[Wii U]]，而[[掌上遊戲機]]則包括[[Game & Watch]]、[[Virtual Boy]]、[[Game Boy家族|Game Boy系列]]、[[任天堂DS家族|任天堂DS系列]]和[[任天堂3DS家族|任天堂3DS系列]]、與可攜式家用遊戲機的[[任天堂Switch]]（包括衍伸掌上型游戏机[[任天堂Switch Lite]]）和[[任天堂Switch 2]]。任天堂本公司及第二方（包括控股子公司以及参股公司）开发了许多知名游戏系列与作品；亦创造了众多知名虚拟游戏角色。 
+
+自1983年Family Computer发售起至2024年12月，任天堂已在全球售出超过59.17億份游戏软件，超过8.61亿台游戏主机<ref name="ゲーム専用機販売実績">{{cite web|title=ゲーム専用機販売実績|url=https://www.nintendo.co.jp/ir/finance/hard_soft/index.html|accessdate=2018-03|author=|date=2018-03|publisher=任天堂|archive-url=https://web.archive.org/web/20180921111220/https://www.nintendo.co.jp/ir/finance/hard_soft/index.html|archive-date=2018-09-21|dead-url=no}}</ref>。隨著電子遊戲事業的成功，任天堂亦向日本以外地區发展，现已在美国、歐洲、[[韓國任天堂|韓國]]、[[任天堂（香港）|香港]]和[[台灣任天堂|台灣]]等地有多家海外子公司。{{-}}
+
+== 歷史 ==
+
+=== 創立（1889年－1968年） ===
+
+==== 起源於製造花札（1889年－1929年） ====
+[[File:Nintendo 1889.jpg|thumb|right|180px|1889年任天堂在京都成立後的第一代總部，位於[[京都市]][[下京區]]鍵屋町]]
+[[File:NintendoCards.jpg|thumb|left|180px|任天堂出產的[[花札]]]]
+任天堂最初名為“任天堂骨牌”，它於1889年後期，由[[山内房治郎]]成立<ref name="Company History" >{{Cite news|url=https://www.nintendo.co.jp/corporate/history/index.html|title=任天堂株式会社：会社の沿革|newspaper=任天堂ホームページ|accessdate=2017-11-21|language=ja|archive-date=2019-10-04|archive-url=https://web.archive.org/web/20191004205145/https://www.nintendo.co.jp/corporate/history/index.html|dead-url=no}}</ref>。“任天堂”一名普遍被认为是取自成语“成败由天”（{{Langx|ja|運を天に任せる}}<ref>{{Cite web |title=山内溥｜人物｜NHKアーカイブス |url=https://www2.nhk.or.jp/archives/articles/?id=D0009250494_00000 |website=山内溥｜人物｜NHKアーカイブス |language=ja |last=NHK |access-date=2025-04-16 |archive-date=2026-02-03 |archive-url=https://web.archive.org/web/20260203233021/https://www2.nhk.or.jp/archives/articles/?id=D0009250494_00000 |url-status=live }}</ref><ref>{{Cite web |title=任天堂、故・山内前社長の歴史から透ける、任天堂躍進の秘密と成長神話への陰り |url=https://www.excite.co.jp/news/article/Bizjournal_201309_post_2976/ |website=エキサイトニュース |date=2013-09-25 |language=ja |access-date=2025-04-16 |archive-date=2026-03-13 |archive-url=https://web.archive.org/web/20260313004120/https://www.excite.co.jp/news/article/Bizjournal_201309_post_2976/ |url-status=live }}</ref>），但没有确切的证据能印证这个说法，即使是身为山内家后人的[[山内溥]]也不明白这个名字的真正含义<ref>{{Cite web |title="Nintendo" Probably Doesn't Mean What You Think It Does |url=https://kotaku.com/nintendo-probably-doesnt-mean-what-you-think-it-does-5649625 |website=Kotaku |date=2017-08-03 |language=en |last=Ashcraft |first=Brian |access-date=2025-04-16 |archive-date=2020-08-06 |archive-url=https://web.archive.org/web/20200806005013/https://kotaku.com/nintendo-probably-doesnt-mean-what-you-think-it-does-5649625 |url-status=live }}</ref>。任天堂於京都，出產和銷售一種稱為[[花札]]的紙牌遊戲。這個紙牌是手工製造，不久便開始流行，後來山内房治郎為了應付大量需求，聘請了助手去大量出產紙牌。
+
+1902年，任天堂制造了日本第一张扑克牌<ref name="Company History" />。
+
+==== 業務擴張（1929年－1951年） ====
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = Nintendo headquarters in 1930s.jpg
+| alt1              = 
+| caption1          = 樓高兩層建於1930年，1933年正式啟用的第二代總部大樓，為第一代總部正門右邊建築物拆卸後重建而成（如上圖所示）並使用至1959年後一直空置多年，左邊部份已於2004年拆卸。目前已改建成為酒店「丸福樓」
+| image2            = Nintendo former headquarter plate Kyoto.jpg
+| alt2              = 
+| caption2          = 舊山內任天堂公司英文門牌，設於第二代總部大樓的正門旁邊
+}}
+
+1929年，山内房治郎退休，他讓他的女婿，[[山內積良|山内積良]]接管公司成為社長。
+
+1930年，樓高兩層，第一代總部右邊建築物拆卸後重建的鋼筋混凝土大樓竣工<ref name="marufukuro" >{{cite web |url=https://nordot.app/866607055390277632?c=39546741839462401 |title=京都の任天堂旧本社に高級ホテル 「丸福樓」4月開業 |website=共同通信 |date= |access-date=2022年2月16日 |archive-url=https://web.archive.org/web/20220518023705/https://nordot.app/866607055390277632?c=39546741839462401  |archive-date=2022-05-18}}</ref>。
+
+1933年，山內積良與另一家公司建立了一家合資企業，任天堂骨牌更名為「山內任天堂合夥公司」，鋼筋混凝土大樓正式啟用並成為第二代總部。
+
+1947年11月20日，山內積良在京都市東山區今熊野東瓦町成立「丸福株式會社」<ref name="Company History" />，銷售花札紙牌，以及另外數款曾在任天堂引進的紙牌，該公司最終成為現今任天堂的商業模式。
+
+[[File:Nintendo 1949 New Year staff commemoration.webp|left|thumb|180px|任天堂員工於1949年在日本京都[[伏見稻荷大社]]舉行新年活動前合影。]]
+
+山內積良的孫子[[山内溥]]，於1949年成為任天堂社長。
+
+1951年重新命名公司為「任天堂骨牌株式會社」<ref name="Company History" />。
+
+==== 多樣化發展（1952年－1968年） ====
+[[File:Nintendo Kyoto Research Center (Former headquarters) - panoramio.jpg|thumb|180px|位於京都市東山區福稻上高松町的任天堂京都研究中心，1959年至2000年間成為任天堂第三代總部]]
+1952年10月，任天堂於京都市東山區福稻上高松町設置工場<ref name="Company History" />。
+
+1953年，任天堂成功製造日本第一張塑料撲克牌，並開始量産<ref name="Company History" />。
+
+1956年，山内溥參觀了[[美國撲克牌公司|美國紙牌公司]]，他發現這家世界上最大的紙牌公司不太注重業務的發展，他因而抓住這個機會，大力推銷自家的紙牌產品。
+
+1959年，得到了華特迪士尼製作公司（現為[[华特迪士尼公司|華特迪士尼公司]]）的注意，並和迪士尼建立了合作關係，以生產迪士尼卡通形象的撲克牌展開全球性銷售，這個合作使得任天堂於一年內售出最少60萬張紙牌。任天堂本社於同年9月搬遷至工場，成為第三代總部<ref name="Company History" />。
+
+1962年1月，任天堂於[[大阪證券交易所]]市場第二部和[[京都證券交易所]]上市。
+
+1963年10月，任天堂骨牌公司改名為「任天堂株式會社」<ref name="Company History" />，並開始試驗其他業務領域。於1963年至1968年其間，任天堂成立計程車公司<ref>{{Cite web |last1=Bunting |first1=Geoffrey |title=The birthplace of Nintendo |url=https://www.gamesindustry.biz/the-birthplace-of-nintendo |website=GamesIndustry.biz |accessdate=2024-02-29 |language=en |date=2022-05-02 |archive-date=2023-01-23 |archive-url=https://web.archive.org/web/20230123182255/https://www.gamesindustry.biz/the-birthplace-of-nintendo |dead-url=no }}</ref>，以及生產玩具，遊戲和其他數種物品（包括吸塵機）。
+[[File:Nintendo Ultra Machine.jpg|thumb|140px|left|任天堂於1967年發行的投球機玩具《{{le|超級機器|Ultra Machine}}》]]
+
+=== 起步（1969年－1979年） ===
+[[File:Nintendo_tvgame_6.jpg|thumb|180px|1977年推出的[[Color TV-Game|Color TV Game]]是任天堂首次涉足家用遊戲機領域]]
+1969年，任天堂建立了遊戲部門，在京都府宇治市小倉町神樂田設置「任天堂宇治工場」。隨後多年，任天堂出產數款成功的玩具和遊戲，其中最著名的[[光線槍]]和{{le|超級怪手|Ultra Hand}}（一種輔助臂玩具）。大多數發明概念源自一位任天堂職員[[橫井軍平]]。
+
+1973年，任天堂再次將光線槍的概念擴展，發展了「{{le|雷射軀體射擊系統|Laser Clay Shooting System}}」<ref name="Company History" />，它使用了[[太阳能电池]]來模擬「虛擬鴿子」來射擊。雷射軀體射擊系統亦促使另外一個很大的成功，因此在同年任天堂成立子公司「任天堂休閒系統」（{{lang|ja|任天堂レジャーシステム株式会社}}，Nintendo Leisure System Co., Ltd），負責該系統的維修保養和銷售，而後亦負責街機遊戲的銷售和出產賭桌<ref>{{cite web|url=http://blog.beforemario.com/2014/10/nintendo-casino-tables-early-1970s.html|title=beforemario: Nintendo casino tables (early 1970s)|publisher=beforemario|accessdate=2014-10-08|dead-url=no|archive-date=2021-06-08|archive-url=https://web.archive.org/web/20210608161126/http://blog.beforemario.com/2014/10/nintendo-casino-tables-early-1970s.html}}</ref>。翌年任天堂利用相同的概念，重新應用於《荒野槍手》。它亦是一個雷射槍遊戲。荒野槍手當時亦出口至[[美國]]和[[歐洲]]。
+
+1975年，發行自任天堂建立遊戲部門後首款[[街機]]遊戲《{{lj|EVR Race|EVRレース}}》<ref>{{cite web|url=https://www.nintendo.co.jp/wii/interview/r7pj/vol1/|title=社長が訊く『PUNCH-OUT!!』|publisher=任天堂|accessdate=2014-11-24|archive-date=2020-12-26|archive-url=https://web.archive.org/web/20201226111648/https://www.nintendo.co.jp/wii/interview/r7pj/vol1/|dead-url=no}}</ref>，是一款由當時還是[[任天堂开发第二部|R&D 2]]員工[[竹田玄洋]]首次開發的賽馬模擬遊戲，亦是電子遊戲史上第一款使用[[视频]]的賽馬遊戲<ref>{{cite web|url=http://blog.beforemario.com/2012/06/nintendo-evr-race-evr-1975.html|title=beforemario: Nintendo EVR Race（EVRレース, 1975）|publisher=beforemario|accessdate=2012-06-30|archive-date=2023-01-15|archive-url=https://web.archive.org/web/20230115142224/http://blog.beforemario.com/2012/06/nintendo-evr-race-evr-1975.html|dead-url=no}}</ref>，其後以相同的設備開發賽車遊戲<ref>{{Cite web|url=http://blog.beforemario.com/2017/09/the-evr-mystery-solved-sort-of.html|title=beforemario: The EVR mystery solved (sort of)|publisher=beforemario|accessdate=2017-09-17|archive-date=2023-01-22|archive-url=https://web.archive.org/web/20230122092930/http://blog.beforemario.com/2017/09/the-evr-mystery-solved-sort-of.html|dead-url=no}}</ref>。期間山内溥開始研究一些新的美國潮流，研究一些能夠接駁到[[電視]]來玩簡單遊戲的設備，這就是家用電子遊戲機。一些公司如[[雅達利]]（Atari Inc.），已經憑著《[[乓]]》（Pong）的電視遊戲機版本在這個範疇上得到一些成功，山内溥決定這將會是任天堂發展良好的業務。同年，他與[[美格福斯|Magnavox]]通過談判達成協議，容許任天堂出產和銷售一種類似與[[米罗华奥德赛|Magnavox Odyssey]]一樣簡單的電視遊戲平台。由于任天堂沒有需要的設備來製造這些機器，他們與[[三菱電機]]成立了協定，希望它協助製造。
+
+1977年6月1日，任天堂与三菱电机合作开发，推出了家用游戏机“[[Color TV-Game]] 6”<ref>{{Cite book|url=https://www.worldcat.org/oclc/53241869|title=High score! : the illustrated history of electronic games|last=1948-|first=DeMaria, Rusel,|date=2004|publisher=McGraw-Hill/Osborne|year=|isbn=9780072231724|edition=2nd ed|location=New York|pages=|chapter=|oclc=53241869|access-date=2017-11-21|archive-date=2007-09-29|archive-url=https://web.archive.org/web/20070929122707/http://worldcat.org/oclc/53241869|dead-url=no}}</ref>，内置6个简单的球类游戏（如网球等），一周后又随之推出了内置15个游戏的“Color TV-Game 15”<ref>{{Cite news|url=http://trendy.nikkeibp.co.jp/article/special/20080929/1019222/|title=【任天堂「ファミコン」はこうして生まれた】  第3回：70年代後半の専用LSIゲーム機時代|last=日経トレンディネット|date=2008-09-30|newspaper=日経トレンディネット|accessdate=2017-11-21|language=ja|archive-date=2014-05-22|archive-url=https://web.archive.org/web/20140522051549/http://trendy.nikkeibp.co.jp/article/special/20080929/1019222/|dead-url=no}}</ref>，兩款遊戲機的合计销量超过一百万台。[[宮本茂]]于同年进入任天堂工作，刚入职时仅在企划部负责麻将标签设计等小工作<ref>{{Cite web|url=http://www.nindori.com/interview/150/index.html|title=ニンドリドットコム～宮本茂さんインタビュー～|accessdate=2017-11-21|date=2006-09-02|deadurl=yes|archiveurl=https://web.archive.org/web/20060902091638/http://www.nindori.com/interview/150/index.html|archivedate=2006-09-02}}</ref>。
+[[File:Shigeru Miyamoto GDC 2007.jpg|thumb|left||upright=0.75|[[宮本茂]]於1977年加入任天堂（攝於2007年）]]
+
+此后，任天堂还推出了内置赛车游戏的家用游戏机“Color TV-Game Racing 112”，内置[[打磚塊|打砖块]]游戏的“Color TV-Game Block Breaker”和内置[[黑白棋]]游戏的“Computer TV-Game”。
+
+横井军平在新干线上看到有人百無聊賴地按[[计算器]]按钮，由此提出了开发“打发闲暇时间的小型游戏机”的提案<ref>{{Cite web|url=http://www.mtc.pref.kyoto.jp/ce_press/no917/lecture.htm|title=京都府中小企業技術センター {{!}} 当センターは、課題解決に向けた様々な取組みにより、中小企業の成長発展を支援する公設機関です。|accessdate=2017-11-21|work=www.mtc.pref.kyoto.jp|language=ja|archive-url=https://web.archive.org/web/20080317191149/http://www.mtc.pref.kyoto.jp/ce_press/no917/lecture.htm|archive-date=2008-03-17|dead-url=yes}}</ref>。
+
+=== 街機與Game & Watch時期（1980年－1982年） ===
+[[File:Game and watch parachute.JPG|thumb|180px|right|由[[橫井軍平]]設計的攜帶型遊戲機[[Game & Watch]]，讓任天堂取得商業的成功並度過破產危機]]
+[[File:Donkey Kong arcade at the QuakeCon 2005.png|thumb|180px|left|《咚奇剛》最初版本的街機，遊戲中玩家操縱的工匠角色，稱為“跳躍人”（Jumpman，現稱“[[瑪利歐 (角色)|瑪利歐]]”），最終成為了知名的遊戲角色]]
+
+1980年4月，任天堂於[[美国]][[紐約]]成立首間海外子公司“Nintendo of America Inc.”<ref name="Company History" />。1980年4月28日，任天堂推出了每台内置一個遊戲的掌上遊戲機“[[Game & Watch]]”。與同系後續型號在全球售出四千多萬台，取得空前成功，使任天堂還清了近70億日元的借款，實現40億日元的黑字<ref>{{Cite book|url=https://www.worldcat.org/oclc/900218395|title=任天堂コンプリートガイド 玩具編|last=山崎|first=功|last2=|first2=|date=|publisher=主婦の友|year=|isbn=9784072947579|location=|pages=|chapter=Nintendo konpurito gaido. Omochahen.|oclc=900218395}}</ref>。
+
+同在1980年，因應{{le|大型電玩黃金年代|Golden age of arcade video games}}，任天堂開始大量生產[[街機]]遊戲。這些街機遊戲大多數均配備[[光線槍]]，例如《{{le|史立夫|Sheriff (video game)}}》（Sheriff）和《{{le|煉獄之火|Heli Fire}}》（Heli Fire）。不過，當一隻異形街機遊戲《{{le|雷达范围|Radar Scope}}》（Radar Scope）於商業決定上失敗後，[[宮本茂]]將這個趨勢改變。宮本完全改變了方向，在[[橫井軍平]]幫助下，開始發展《[[大金刚 (游戏)|咚奇剛]]》，遊戲裡的工匠，試圖拯救在猩猩手上的女朋友。起初任天堂的同事表示不滿，但發表《咚奇剛》後得到空前成功，賣出6萬5千套，成為該年最受歡迎遊戲。
+
+同年期間，任天堂從其他成功的公司上得到靈感，如[[雅達利]]，設定新的工作目標，更多進階的[[卡匣]]電視遊戲平台。他們知道其他公司已發展了合帶系統而且成功，這平台比以往的更優秀，而價格仍是合理。
+
+在1982年，任天堂推出了《咚奇剛》的續集－《[[大金刚Jr.|咚奇剛Jr.]]》，同樣是套[[街機]]遊戲。它仍然暢銷，售出大約3萬5千套。這年他們亦於[[华盛顿州|華盛頓]][[雷德蒙]]成立任天堂美國分公司，並與[[紐約]]分公司合併<ref name="Company History" />。
+
+由横井軍平設計，1982年上市的Game & Watch《咚奇剛》诞生的“[[十字键]]”獲任天堂沿用至今。
+
+=== Family Computer時期（1983年－1988年） ===
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = Nintendo-Famicom-Console-FL.jpg
+| alt1              = 
+| caption1          = 1983年推出的FC遊戲機，在蓬勃的日本經濟下得到成功
+| image2            = Nes-console-with-controller.jpg
+| alt2              = 
+| caption2          = FC遊戲機打入美國市場的美規版，即NES游戏机，歐洲地區亦使用此規格打入市場
+}}
+
+1983年7月15日，任天堂推出“[[紅白機|Family Computer]]”（通稱為“紅白機”），這是首次嘗試的卡帶式[[家用游戏机]]平台。這系統非常成功，兩個月內售出超過50萬部，價格大約100美元。这款游戏机带来了先进的游戏开发理念和革命性游戏技术，使其成为电视游戏真正鼻祖。FC上市之後，[[世嘉]]同期的遊戲機[[SG-1000]]被徹底壓制。不過FC上市不久，被发现由于FC游戏机芯片问题容易死机，為了挽救任天堂的聲譽，時任社長[[山内溥|山內溥]]決定回收主機，因此而損失了15億日元。不過這起事件讓任天堂樹立了卓越的品牌形象，次年FC重新上市後於一年內賣出了165萬台。
+
+1983年7月21日，任天堂於[[東京證券交易所]]市場第一部上市，取代大阪證券交易所和京都證券交易所。
+
+FC遊戲機亦計劃於1983年在美國推出。但是，在美國的家用遊戲市場上，充斥著很多[[劣質遊戲]]，導致[[1983年美国游戏业大萧条|遊戲業大蕭條]]，美國市場完全不能生存。任天堂決定避免這個情況，只容許FC遊戲，使用{{le|10NES|CIC (Nintendo)#10NES}}鎖碼系統，並加上他們品質標誌「Seal of Quality」才可出售，以防一些未經註冊的FC遊戲流出。同年任天堂於[[京都府]][[宇治市]]槙島町薗場設置「宇治工場」<ref name="Company History" />（為避免與位於小倉町神樂田的宇治工場混淆，於1988年更名為「任天堂宇治小倉工場」）。
+
+1984年，FC遊戲機延續空明成功。同時，任天堂亦為突如其來的流行遇到問題：「他們沒有資源將FC遊戲機，同時開發遊戲和發售。」為改善這情況，山內決定將員工分為四個組別：[[任天堂開發第一部|開發第一部]]（R&D 1）、[[任天堂开发第二部|開發第二部]]（R&D 2）、{{le|任天堂綜合開發本部|Nintendo Integrated Research & Development|開發第三部}}（R&D 3，2000年6月更名為「任天堂綜合開發本部」）和[[任天堂情報開發本部|開發第四部]]（R&D 4，1989年更名為「任天堂情報開發本部」）。R&D 1由橫井軍平領導，R&D 2由[[上村雅之]]領導，R&D 3由竹田玄洋領導，而R&D 4則由宮本茂領導。利用這些小組，山內希望任天堂生產低成本高品質的遊戲。同時山內決定讓[[Hudson Soft]]、[[南夢宮]]、[[太東]]、[[卡普空]]、[[Jaleco]]和[[科樂美]]六家第三方軟體開發商加入開發FC遊戲，獲當時業界稱為「六大遊戲軟件商」，首個第三方開發者是[[Hudson Soft]]，它容許製造卡匣遊戲於FC遊戲機上使用（首款是來自[[家用電腦]]遊戲的移植作品《[[牛奶與花生]]》）。同年任天堂推出“[[任天堂對戰系統]]”，採用FC遊戲改編成雙玩家對戰的街機平台。
+
+1985年，任天堂公布將會在全球推出FC遊戲機。由第三方開發者開發的高質素的遊戲確保本地化，美國任天堂公司限制第三方開發者每年只可推出5款遊戲。[[科樂美]]於美國的子公司{{le|Ultra Games}}挑戰這條規則，增加每年推出的數量；其他開發商亦都跟隨相同手法。在這年同時，《[[超级马力欧兄弟]]》這套FC遊戲亦推出日本市場，獲得空前成功。
+
+任天堂於1985年10月18日，在紐約區推出“Nintendo Entertainment System”（簡稱“NES”）來測試市場反應，後快獲得成功，在1986年2月，便開始在全國地區以郵寄方式發售NES及另外15個遊戲。在美國和[[加拿大]]，它比其他競爭對手賣出更多遊戲機。歐洲地區同樣以美版NES為名在1986年9月1日推出。這年在日本亦推出FC遊戲機的外接配件“[[FC磁碟機]]”，並新推出了《[[薩爾達傳說 (遊戲)|薩爾達傳說]]》、《[[银河战士 (游戏)|密特羅德]]》、《[[光神话 帕尔提娜之镜]]》、《[[超级马力欧兄弟]]》的正統續作《[[超级马力欧兄弟2]]》及科樂美的《[[惡魔城 (遊戲)|惡魔城]]》等遊戲。
+
+隨著任天堂專注家用遊戲機市場，1986年宣佈-{退出}-日本街機市場，任天堂休閒系統公司亦於翌年解散。歐美地區方面，於1986年8月推出「{{le|PlayChoice-10}}」（一款與歐美版NES部份遊戲兼容的街機平台），與任天堂對戰系統維持著任天堂街機市場至1992年才完全結束<ref>{{cite web|url=https://archive.org/details/cashbox56unse_0/page/28|title=Nintendo Will No Longer Produce Coin-Op Equipment|publisher=[[Cashbox (magazine)|Cashbox]]|date=1992-09-05|accessdate=2019-12-08}}</ref><ref>{{cite web|url=https://archive.org/details/cashbox56unse_1/page/28|title=Nintendo Stops Games Manufacturing; But Will Continue Supplying Software|publisher=[[Cashbox (magazine)|Cashbox]]|date=1992-09-12|accessdate=2019-12-08}}</ref>（任天堂對戰系統早於1990年停產）。
+
+1988年，美國任天堂的《[[Nintendo Power]]》雜誌揭幕，它包含每月任天堂的新聞和宣傳遊戲。首期發行是7/8月號，主題為NES遊戲《[[超级马力欧兄弟USA|Super Mario Bros. 2]]》。Nintendo Power出版24年之後於2012年12月停刊。
+
+=== Game Boy與超級任天堂時期（1989年－1995年） ===
+[[File:Game-Boy-FL.jpg|thumb|180px|1989年推出的卡匣式[[掌上遊戲機|掌機]][[Game Boy]]，開啟了任天堂在[[掌上遊戲機|掌機]]市場的龍頭地位]]
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = Nintendo-Super-Famicom-Set-FL.jpg
+| alt1              = 
+| caption1          = 日版[[超級任天堂]]的主機及遊戲手掣
+| image2            = SNES-Mod1-Console-Set.jpg
+| alt2              = 
+| caption2          = 美版超级任天堂：SNES的主機及遊戲手掣
+}}
+
+1989年4月21日在日本推出“[[Game Boy]]”，這是首次嘗試卡匣式的[[掌上遊戲機]]，在日本以外推出時隨機附上《[[俄罗斯方块 (Game Boy)|俄羅斯方塊]]》卡匣（至今仍是最受歡迎遊戲之一）。[[Game Boy]]銷售非常良好，至今仍是全球銷量第二的掌上遊戲機（僅次於[[任天堂DS]]）。1989年亦是任天堂成立第100年和發佈FC遊戲機後代“[[超級任天堂]]”的一年。
+
+1990年2月，任天堂於[[西德]]（現[[德国]]）成立子公司「Nintendo of Europe GmbH」（現Nintendo of Europe SE）<ref name="Company History" />。
+
+超級任天堂在1990年11月21日於日本推出。這部遊戲機獲得空前成功，在3日內全量售出。《[[超級瑪利歐世界]]》亦同時推出，並得到空前成功。1991年8月，超級任天堂於美國推出，取名「[[超級任天堂|Super Nintendo Entertainment System]]」（簡稱“SNES”），而1992年亦於歐洲推出。
+
+超級任天堂跟隨前一代，低價格和高技術規格。控制器經過改良，有著數顆新按鈕。
+
+在日本和歐洲，超級任天堂輕易地控制了市場。在北美洲，SNES最終以《[[超級瑪利歐]]》、《[[薩爾達傳說]]》、《[[街頭霸王2]]》及《[[最終幻想]]》系列等遊戲，從後趕上[[世嘉]]的「Genesis」（北美版[[Mega Drive]]）遊戲機。而在美國，Genesis遊戲機的銷售數量，僅勝SNES遊戲機少許，然而SNES遊戲機全球的銷售數量卻高於它。
+
+1991年1月14日，任天堂於[[台灣]]成立子公司「[[任天堂溥天|任天堂溥天股份有限公司]]」（成立時為「溥天股份有限公司」，「溥天」名稱取自時任任天堂社長「山內'''溥'''」和「任'''天'''堂」）。
+
+1991年，世嘉在開發了為其[[16位元]]平台的[[Mega-CD]]後，任天堂於是與[[索尼]]商量，設計[[超级任天堂CD-ROM转接器|超級任天堂的CD-ROM光碟機]]，但他們同時亦為索尼獲得一切CD-ROM的利益，以及擔心索尼有機會進入遊戲界而喪失合作的主導權；故此，任天堂終止與索尼的合作，改投[[飛利浦]]。任天堂宣佈，他們與飛利浦結盟，雖然超級任天堂加入了光碟機，但大眾沒有太大反應，最終合作計劃告吹，同時取消超級任天堂的[[CD-ROM]]光碟機計劃；而索尼則開始研究和引入新產品「[[PlayStation]]」。
+
+1992年，任天堂開發第一部（R&D 1）開始計劃一部虛擬現實的平台，代號為“VR32”，後來名稱改為“[[Virtual Boy]]”。社長[[山内溥]]亦於該年購入[[西雅圖水手隊]]的股份。
+
+1993年，任天堂發佈了一個代號為“Project Reality”的計劃，這計劃為一個[[64位元]]平台，平台提供全[[三維電腦圖形]]環境與角色的能力。1994年，任天堂亦提出在美國的Project Reality將會改稱為“Ultra 64”。Ultra 64這名字是來自任天堂的[[街機]][[格鬥遊戲]]《殺手輓歌》，以及賽車遊戲《Cruisin' USA》。殺手輓歌稍後於SNES遊戲機推出。不久，任天堂意識到他們為這平台選錯了名稱，因為[[科樂美]]一早已有這名稱版權，而且只有科樂美有著版權推出一系列以Ultra的系統，如“Ultra Football”和“Ultra Tennis”等。所以於1995年，任天堂將名稱改為“[[任天堂64]]”，並宣佈將於1996年推出；稍後亦向傳媒和大眾展示了系統和遊戲的預覽，包括《[[超級瑪利歐64]]》。
+
+1994年，[[娛樂軟件分級委員會|ESRB]]創立後，[[北美]]任天堂分部緩和了引至流血以及暴力的嚴厲政策。任天堂於該年購入英國遊戲開發公司[[Rare]]（同時加上「Rareware」的商標）的49%股權（至2002年9月21日將股權賣出，三日後Rare由美國科技公司[[微軟]]以3.75億美元收購）。
+
+[[File:Virtual-Boy-wController.jpg|thumb|right|180px|1995年推出的[[Virtual Boy]]，結果以失敗告終]]
+
+1995年，任天堂在日本推出了Virtual Boy。這款遊戲機銷售並不理想，但任天堂仍希望它繼續推出遊戲，並於美國推出，惜銷量仍不理想。同年，任天堂發覺自己已處於競爭劣勢，例如世嘉的[[32位元]]遊戲機[[世嘉土星]]，以及索尼的[[32位元]]遊戲機[[PlayStation]]。任天堂主機的市場佔有率逐漸下跌。
+
+=== 任天堂64與GBC時期（1996年－2000年） ===
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = N64-Console-Set.png
+| alt1              = 
+| caption1          = [[任天堂64]]的[[主機]]及遊戲[[手把]]
+| image2            = Nintendo-Game-Boy-Color-FL.jpg
+| alt2              = 
+| caption2          = [[Game Boy Color]]
+}}
+
+1996年2月27日，《[[寶可夢 紅／綠]]》於日本推出，並獲得優秀的銷售成績。
+
+1996年6月21日，任天堂開設官方網站。
+
+1996年6月23日，[[任天堂64]]於日本推出，在發售初期取得優秀的銷售成績，首日即售出超過50萬部；可是，缺少遊戲軟體的配合（隨著主機同時發售的軟體只有《[[超級瑪利歐64]]》、《[[飛行俱樂部64]]》和只限日本發行的《[[羽生善治#電子遊戲作品|最強羽生將棋]]》），數星期後便銷量停滯，第一方遊戲還要等數個月才能推出。
+
+1996年7月21日，任天堂推出比Game Boy體積還要細小的“[[Game Boy Pocket]]”。在推出數月後，由於Virtual Boy的失敗，最終於短短一年的時間，停止了Virtual Boy所有的開發計劃，這個遊戲機為他們帶來徹底失敗。同年，在任天堂任職31年，曾經設計Game Boy遊戲機的橫井軍平於同年8月15日辭去其部長職位並離開任天堂。稍後，橫井軍平利用了設計Game Boy時的經驗，參與了競爭對手的遊戲機[[WonderSwan]]設計。
+
+1996年9月29日，任天堂於美國和加拿大推出N64，短短3個月便賣出170萬部，一些抱著懷疑態度的第三方遊戲生產商，利用傳媒的炒作趁機賺取可觀收入。
+
+1997年春季，人們期待已久的64DD主力遊戲《薩爾達傳說64》（後續改名為《[[薩爾達傳說 時之笛]]》）將以卡匣形式推出，這使得許多人相信，64DD永遠不會推出。稍後，任天堂否認了這傳聞，並表示將於1997年底，同時推出該遊戲的卡匣版和64DD版；數星期後，任天堂宣布將64DD的發布日期推遲至1998年3月。
+
+1997年10月4日，一年前辭去任天堂工作的前[[任天堂開發第一部|開發第一部]]部長[[橫井軍平]]於車禍中逝世；當時他因為車輛拋錨，下車檢查汽車損壞情況，在檢查時被另一輛汽車撞倒，傷重不治。
+
+1997年10月20日，任天堂剛於4個月前宣佈，停止開放16位元遊戲機的開發後，於北美地區推出SNES遊戲機的簡化版本「New-Style Super NES」（SNS-101）。
+
+1997年11月，任天堂在自家舉辦的「{{le|Nintendo Space World}}」展覽會上，展示了可試玩的《薩爾達傳說 時之笛》，並宣布卡帶版在1998年推出，但同時宣布64DD的推出日期再次被推遲至1998年6月。
+
+1998年3月27日，於日本推出SFC遊戲機的簡化版本「Super Famicom Jr.」（簡稱SFC Jr）。
+
+1998年4月14日，任天堂推出了“[[Game Boy Light]]”，這款Game Boy帶有背景發光功能，能夠在光線不足的地方遊玩。不久，任天堂亦推出了Game Boy首批週邊產品－相機及印表機，儘管其解析度較低，這兩款產品仍大受歡迎。
+
+1998年10月21日，“[[Game Boy Color]]”（簡稱「GBC」）於日本推出，並在數月後於歐美地區推出。
+
+1998年11月21日，《薩爾達傳說 時之笛》N64卡匣版在日本推出，並獲得空前成功，成為日本權威遊戲雜誌《[[Fami通]]》史上第一款獲評滿分（40分）的遊戲。而64DD版本後來以《薩爾達傳說 時之笛 裹》作為其《時之笛》的伸延作品，惜因最終64DD推行失敗而取消發行。
+
+1999年12月1日，在多次延遲下，任天堂終推出了“[[64DD]]”。
+
+稍後，歐洲委員會通過了法律，規定任天堂公司不得再向歐洲軟件公司，發放生產[[相容性|兼容]]任天堂遊戲的許可，而N64遊戲的開發商不必再專為N64製作遊戲。法律還禁止任天堂公司獨霸卡帶式遊戲市場的生產權利。
+
+1999年，任天堂公布了代號名為“Dolphin”（海豚）的新遊戲機計劃，此機基於[[IBM]][[CPU]]速度達400[[MHz]]，Gekko的銅製微型晶片製造，他們希望於2000年聖誕節前推出。任天堂亦公布了改進型的Game Boy計劃，此為[[32位元]]的攜帶型系統，可與[[行動電話]]聯絡，登錄[[網際網路]]，並承諾此機將向下兼容Game Boy及Game Boy Color的遊戲軟體。
+
+2000年2月14日，[[霍華德·林肯]]辭去了任天堂美國分部的執行長職務。
+
+2000年3月1日，任天堂和日本廣告公司[[电通|電通]]合資創立[[Nintendo Cube|NDcube]]（2010年電通取消持股，公司重組後NDcube正式成為任天堂旗下的子公司，2024年9月1日更名為Nintendo Cube）。
+
+2000年6月30日，出資創立Brownie Brown工作室（在2013年2月1日更名為[[1-UP工作室]]）。
+
+2000年11月，位於京都府京都市南區上鳥羽鉾立町，樓高6層的第四代任天堂總部大樓落成啟用<ref name="Company History" />，至今仍是公司的總部所在地。第三代舊總部改為「任天堂京都研究中心」（{{lang|ja|任天堂京都リサーチセンター}}，Nintendo Kyoto Research Center）。
+
+=== GBA與GameCube時期（2001年－2003年） ===
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = Nintendo-Game-Boy-Advance-Purple-FL.jpg
+| alt1              = 
+| caption1          = [[Game Boy Advance]]
+| image2            = GameCube-Set.jpg
+| alt2              = 
+| caption2          = [[任天堂GameCube]]的[[主機]]及遊戲[[手把]]
+}}
+
+2001年3月21日，任天堂推出了“[[Game Boy Advance]]”（簡稱「GBA」），北美地區於6月11日推出，歐洲地區則於6月22日推出市場。任天堂亦在2001年9月14日於日本推出電視遊戲機“[[任天堂GameCube]]”，這部遊戲機稍後於北美（2001年11月18日）和歐洲（2002年5月5日）地區發售。
+
+2002年5月2日，任天堂收購美國遊戲開發公司[[Retro工作室|Retro Studios]]成為旗下子公司<ref>{{cite web |url=http://www.gamespot.com/news/2863826.html |title=Nintendo makes Retro Studios a full subsidiary |first=Shane |last=Satterfield |date=May 2, 2002 |website=[[GameSpot]] |access-date=April 2, 2011 |archive-url=https://web.archive.org/web/20120125205602/http://www.gamespot.com/news/2863826.html |archive-date=2012-01-25 |dead-url=no }}</ref>。
+
+[[File:Iwata-e3-2006 crop.jpg|thumb|left|upright=0.9|[[岩田聰]]（攝於2006年）]]
+
+2002年5月24日，任天堂宣佈時任社長山內溥退休，並由原任經營企畫部部長[[岩田聰]]接任新任社長，是首位非山內家族出身的任天堂社長。同年，任天堂及美籍華人科學家[[颜维群]]創立[[神遊科技]]公司，此公司負責在中國大陸地區，以[[iQue]]品牌，製造和發售任天堂的遊戲機和遊戲軟體。
+
+=== DS與Wii時期（2004年 - 2010年） ===
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = Nintendo-DS-Fat-Blue.jpg
+| alt1              = 
+| caption1          = [[任天堂DS]]
+| image2            = Wii-console.jpg
+| alt2              = 
+| caption2          = [[Wii]]主機及[[Wii遙控器|遙控器]]
+}}
+
+2004年5月，任天堂公布新型的攜帶型遊戲機計劃，作為[[Game Boy家族]]的後續機種“[[任天堂DS]]”；它具備了上方的顯示螢幕、與下方的第二個筆觸式屏幕，且亦具備顯示[[三維電腦圖形]]的能力，雖然它的硬體並不支援[[材質過濾]]，但仍比起任天堂64的圖形能力更為出眾。
+
+2004年11月21日，任天堂DS正式推出。
+
+社長岩田聰合併了所有任天堂軟件設計師於EAD部門，這做法能分配更多資源到[[宮本茂]]。直至2015年，任天堂內部發展部門包括以下四個部門：
+
+* '''[[任天堂情報開發本部]]'''
+** 將[[任天堂開發第一部]]和[[任天堂开发第二部|任天堂開發第二部]]併入，並分成5個獨立的工作小組和於東京分店增設「東京製作部」。
+
+* '''任天堂綜合開發本部'''
+** 2012年將負責[[掌上遊戲機]]研發的「任天堂開發技術部」併入。
+
+* '''[[任天堂企划开发本部]]'''
+** 2003年9月30日增設，分成4個獨立的工作小組和「環境製作部」。
+
+* '''任天堂系統開發本部'''
+** 1997年增設。
+
+2005年4月7日，任天堂於[[香港]]成立子公司「[[任天堂（香港）|任天堂（香港）有限公司]]」。
+
+2005年5月14日，任天堂於[[紐約]][[洛克菲勒中心]]成立首間零售商店，名為「[[紐約任天堂|Nintendo World]]」（於2016年重新命名為「Nintendo New York」）。樓高兩層，並包含許多[[GameCube]]、[[Game Boy Advance]]、[[任天堂DS]]和即將於9月發售的“[[Game Boy Micro]]”等相關東西；此外，亦放置著任天堂以前的商品，如任天堂首件產品－[[花札]]卡牌。他們計劃於美國開設更多商店，並於[[洛杉磯]]、[[達拉斯]]、[[波士頓]]和[[費城]]、[[三藩市]]、[[聖路易市|聖路易]]、[[华盛顿哥伦比亚特区|華盛頓]]和[[芝加哥]]開設分店。
+
+2005年5月的E3展覽中，任天堂展示他們的「次世代」系統原型，代號稱為“Nintendo Revolution”（隔年公佈名稱為[[Wii]]），它的控制器隱藏四個月後在[[東京電玩展]]才亮相。
+
+2006年1月26日，任天堂閃電發表了任天堂DS的改良版“[[任天堂DS Lite]]”。任天堂DS Lite的尺寸為133.0 x 73.9 x 21.5mm，比現有任天堂DS的148.7 x 84.7 x 28.9mm顯得更細小。體積總共縮小了42%，而重量則由原本的275克減至218克，只佔原本任天堂DS重量約80%，根據官方消息，任天堂DS Lite於2006年3月2日於日本當地發售。
+
+2006年4月28日，任天堂正式公布開發代號Nintendo Revolution的新主機名稱為“[[Wii]]”。
+
+2006年7月7日，任天堂於[[韓國]]成立子公司「[[韓國任天堂|韓國任天堂株式會社]]」。
+
+2006年11月19日Wii正式在美國發售，售價250美元。
+
+2006年12月2日Wii正式在日本發售，售價25000日元。
+
+2006年12月8日Wii正式在歐洲發售，售價250歐元，在英國為179英鎊（約265歐元）。
+
+2007年5月6日，任天堂從[[万代南梦宫娱乐|萬代南夢宮遊戲]]（現萬代南夢宮娛樂）收購[[Monolith Soft]]。
+
+2008年10月2日“[[任天堂DSi]]”正式公布，增大螢幕尺寸到3.25英寸，設兩個30萬像素的攝像頭，及一些網路功能。11月1日正式在日本發售。
+
+2009年10月30日“[[任天堂DSi#任天堂DSi LL|任天堂DSi LL]]”正式公布。增大螢幕尺寸到4.2英寸，DSi LL比DSi長了3厘米，寬了近2厘米。11月21日正式在日本發售。
+
+2010年3月23日發布消息稱將於2011年3月底前發售一款可用裸眼方式遊玩3D影像遊戲的新型可攜式遊戲機“[[任天堂3DS]]”。新聞稿指出，任天堂3DS是任天堂於全球累計賣出達1億2,500萬部（截至2009年12月底止）的任天堂DS系列（DS + DS Lite + DSi +DSi LL）的後繼機種。除可玩任天堂3DS專用遊戲外，兼容任天堂DS的遊戲軟體。3DS將使用[[夏普]]的[[视差障壁]]（Parallax barrier）3D液晶面板，並加強機能和加入更多功能。
+
+2010年6月16日在[[E3电子娱乐展|E3]] 2010上的發表會公開了任天堂3DS的外觀、功能、遊戲陣容，其中超過20家全球知名遊戲廠商加入開發計畫，像是[[惡靈古堡]]、[[潛龍諜影]]、[[快打旋風系列 (格鬥遊戲)|快打旋風]]、[[王國之心]]、[[戰國無雙]]等知名家用機遊戲都會登陸任天堂3DS。發表會結束後，大量工作人員在場提供實機給試玩，人潮不亞於當年的Wii。3DS相比DS系列性能大為提昇，畫面更勝Wii，並搭載了裸眼3D螢幕、陀螺儀、動態感應器等等新配備，還加入了新功能。
+
+[[File:E3 2010 Nintendo Media Event - Legend of Zelda Skyward Sword demo machines rise from the floor.jpg|thumb|left|180px|2010年E3展上的3DS發表會]]
+
+2010年9月29日舉辦了任天堂會議「Nintendo Conference 2010」，展出關於任天堂DS、Wii、任天堂3DS的相關資訊。其中以任天堂3DS為最大焦點，並公布其價格為25,000日圓（含稅），日本地區將在2011年2月26日發售，歐美地區預定3月推出。
+
+=== 3DS與Wii U時期（2011年－2016年） ===
+{{Multiple image
+| align             = right
+| total_width       = 360
+| image1            = Nintendo-3DS-AquaOpen.png
+| alt1              = 
+| caption1          = [[任天堂3DS]]
+| image2            = Wii U Console and Gamepad.png
+| alt2              = 
+| caption2          = [[Wii U]]主機及[[Wii U控制器|控制器]]
+}}
+
+2011年1月8日～1月10日舉辦了[[任天堂3DS]]體驗會「Nintendo World 2011」，並公布了3DS首發陣容，包含《[[任天狗狗＋貓貓]]》、《[[戰國無雙 編年史]]》、《[[實感賽車3D]]》等等。數日後亦在歐美舉辦發表會，公布了歐洲、北美地區的發售日、資訊和價格。
+
+2011年2月26日，3DS正式在日本發售，售價為25,000日圓（含稅）。
+
+2011年6月8日，在[[E3电子娱乐展|E3]] 2011上的發表會公開了任天堂新一代的家用機“[[Wii U]]”，其主機特色依舊是遊戲控制器：[[Wii U]]的控制器內嵌一個6.2英寸的觸屏，更可將主機畫面直接傳輸到手把中。
+
+2011年7月28日，任天堂社長岩田聰宣布3DS從2011年8月11日開始，為更進一步拓展3DS的遊戲人口和陣容、以及對年末商戰的策略，售價將從25,000[[日圓]]（含稅）降到15,000日圓（含稅），並對在這之前購買的用戶提供了10款FC、10款GBA共20款遊戲作為補償以感謝用戶支持。此舉距離3DS發售不到半年，降價1萬日圓也令眾多玩家們不滿。
+
+2011年9月13日，任天堂舉辦了「Nintendo 3DS Conference 2011」，發表3DS將在2011年10月20日推出新顏色「'''迷濛粉紅'''」（{{lang|ja|ミスティピンク}}，Misty Pink），同時發表會上也公開了很多遊戲作品和實際畫面與資訊，包含[[瑪利歐系列]]、[[聖火降魔錄系列]]、[[铁拳系列|鐵拳系列]]、[[最終幻想系列]]、[[動物森友會系列]]、[[初音未來]]系列、[[SD鋼彈]]系列、[[三國無雙]]系列等。其中以日本熱門共鬥遊戲[[魔物獵人系列]]的新作《[[魔物獵人3G]]》及《[[魔物獵人4]]》引起了話題<ref>{{cite web |url=http://www.nintendo.co.jp/n10/conference2011/index.html |title=「ニンテンドー3DSカンファレンス2011（ニンテンドー3DS新製品発表会）」出展情報を公開 |website=Nintendo |date= |access-date= |archive-url=https://web.archive.org/web/20110923145109/http://www.nintendo.co.jp/n10/conference2011/index.html  |archive-date=2011-09-23}}</ref>。
+
+2012年4月26日，任天堂公佈2011年財報，因硬件降價及匯率等原因，淨虧損432億日圓。是任天堂自80年代公佈財報以來首次虧損<ref>{{cite web |url=http://tech.hexun.com/2012-04-26/140835359.html |title=任天堂30多年來首現虧損淨虧432億日圓 |website=和訊網 |date= |access-date= |archive-url=https://web.archive.org/web/20130801110314/http://tech.hexun.com/2012-04-26/140835359.html  |archive-date=2013-08-01}}</ref>。
+
+2012年6月6日，任天堂在美國洛杉磯舉行的[[E3遊戲展|E3遊戲展2012]]上主要公佈了Wii U主機的更多細節，包括了以Mii形像作為核心的“[[Miiverse]]”遊戲社交網絡服務、新的遊戲手把Wii U Pro Controller以及進行了多處修改的最終版屏幕手把“[[Wii U控制器|Wii U GamePad]]”等。
+
+2012年6月22日，任天堂在“Nintendo Direct 2012.6.22”網路發表會上公佈了新版3DS——3DS LL/XL。3DS LL/XL最大的特點是擴大了雙屏尺寸，使畫面的3D立體感增強；並解決瞭如“壓屏”之類的普通3DS存在的硬件缺陷；此外3DS LL/XL還加大電池容量使在屏幕增大1.9倍之後續航時間依舊比普通3DS要長。出於成本考慮，只有日版3DS LL將需單獨購買充電器。
+
+2012年9月14日，任天堂宣布“[[Wii U]]”於美國、歐洲以及日本的上市日期分別為同年11月18日、30日及12月8日。
+
+2013年8月28日，任天堂公佈了「[[任天堂2DS]]」主機，主機採用一體化設計，取消裸眼3D顯示。 10月12日2DS在美國和歐洲地區發售。
+
+2014年3月12日，任天堂在日本京都的總部北側，耗資165億日圓歷時5年興建的新辦公大樓“任天堂開發中心”正式落成啟用。
+
+2014年5月31日，台灣分公司[[任天堂溥天]]宣布解散。相關業務窗口會轉移至[[任天堂（香港）|任天堂（香港）]]負責，未來仍會繼續在台提供任天堂商品與服務，至於代理經銷與售後服務部分則仍繼續由代理商[[展碁國際]]負責。
+
+2014年8月29日，任天堂公佈任天堂3DS系列的加強版主機「[[新任天堂3DS]]」及「[[新任天堂3DS XL]]」。新型號提升了一定的機能，添加了視域更廣的裸眼3D屏幕、右搖桿、近場通信功能等新功能。
+
+2014年11月起，開始發售內置[[近場通信]]芯片的週邊模型「[[Amiibo]]」，能夠存取或讀取對應的遊戲資料，其中《[[任天堂明星大亂鬥3DS/Wii U]]》為首款對應該周邊的遊戲<ref>{{Cite web|title=【E3 14】Mii 與女神參戰《任天堂明星大亂鬥》 對應新週邊玩偶「amiibo」|url=https://gnn.gamer.com.tw/detail.php?sn=98397|accessdate=2020-07-28|last=巴哈姆特|work=巴哈姆特電玩資訊站|archive-date=2020-07-28|archive-url=https://web.archive.org/web/20200728211405/https://gnn.gamer.com.tw/detail.php?sn=98397|dead-url=no}}</ref>。Amiibo在上市後也迅速獲得商業成功。
+
+2015年3月17日，任天堂和日本移動遊戲運營商[[DeNA]]聯合召開發布會，宣布雙方將在多平台娛樂方面展開合作，任天堂將提供自家的遊戲系列供DeNA製作相關智能手機及其他平台遊戲；雙方將通過股權換購的方式加強聯盟。此外任天堂還首次提及了新遊戲主機的代號為“NX”，並在2016年正式公佈<ref>{{cite web |url=http://www.nintendo.co.jp/corporate/release/2015/150317/index.html |title=任天堂株式会社&株式会社ディー・エヌ・エー業務・資本提携共同記者発表 |website=任天堂 |date=2015-03-17 |access-date=2015-03-17 |archive-url=https://web.archive.org/web/20150317084516/http://www.nintendo.co.jp/corporate/release/2015/150317/index.html  |archive-date=2015-03-17}}</ref>。
+
+2015年7月13日，時任社長[[岩田聰]]於7月11日因罹患[[膽管癌]]病逝，享年55歲<ref>{{cite web |url=http://www.chinatimes.com/realtimenews/20150713001699-260408 |title=日本任天堂55歲社長岩田聰膽管癌逝 |website=中時電子報 |date= |access-date= |archive-url=https://web.archive.org/web/20150714000426/http://www.chinatimes.com/realtimenews/20150713001699-260408  |archive-date=2015-07-14}}</ref><ref>{{cite web |url=http://www.appledaily.com.tw/realtimenews/article/new/20150713/646826/ |title=任天堂社長岩田聰病逝　享年55歲 |website=台灣蘋果日報 |date= |access-date= |archive-url=https://web.archive.org/web/20150713092440/http://www.appledaily.com.tw/realtimenews/article/new/20150713/646826/  |archive-date=2015-07-13}}</ref>。[[宮本茂]]與[[竹田玄洋]]共同代理臨時社長。
+
+2015年9月14日，任天堂宣布由原任常務董事的[[君岛达己]]擔任新任社長；宮本茂與竹田玄洋將擔任新設立的代表董事創意研究員和代表董事技術研究員職位。而公司架構將於9月16日起進行調整變動<ref>{{cite web |url=http://www.nintendo.co.jp/ir/pdf/2015/150914.pdf |title=代表取締役の異動および役員の委嘱・管掌・担当変更に関するお知らせ |website=Nintendo |date=2015-09-14 |access-date=2015-09-16 |archive-url=https://web.archive.org/web/20180124181304/http://www.nintendo.co.jp/ir/pdf/2015/150914.pdf  |archive-date=2018-01-24}}</ref>。現時任天堂內部發展部門包括以下三個部門：
+
+* '''[[任天堂企划制作本部]]'''
+** 將[[任天堂情報開發本部]]和[[任天堂企划开发本部|任天堂企劃開發本部]]併入，並分成9個獨立的工作小組（原本有10個，第一製作組在2020年併入第二製作組，並在2023年更名為「協助開發製作組」）和增設以製作手機遊戲相關為主的「移動遊戲製作組」。
+
+* '''任天堂平台技術開發本部'''
+** 將任天堂綜合開發本部和任天堂系統開發本部併入。
+
+* '''任天堂商業發展部'''
+** 新設部門，主要負責構建任天堂旗下各類業務的商業模式。
+
+2016年4月27日，任天堂北美宣佈出售西雅圖水手隊90%的股份給商人約翰·斯坦頓領銜的財團，任天堂僅保留球隊10%股份，而球隊CEO、前任天堂北美主席霍華德·林肯將退而擔任球隊董事<ref>{{cite web |url=http://www.seattletimes.com/sports/mariners/nintendo-to-sell-90-percent-interest-in-mariners-to-group-led-by-john-stanton/ |title=Mariners to be sold by Nintendo to ownership group led by John Stanton |website=SeattleTimes |date=2016-04-27 |access-date=2016-08-11 |archive-url=https://web.archive.org/web/20200425091824/http://www.seattletimes.com/sports/mariners/nintendo-to-sell-90-percent-interest-in-mariners-to-group-led-by-john-stanton/  |archive-date=2020-04-25}}</ref>。任天堂在Twitter宣布代號為「NX」的全新家用機已暫定於2017年3月發售<ref>{{cite web |url=https://twitter.com/Nintendo/status/725219957395447808 |title=任天堂株式会社在Twitter的推文 |website=Twitter |date= |access-date=2016-09-09 |archive-url=https://web.archive.org/web/20161009053111/https://twitter.com/Nintendo/status/725219957395447808  |archive-date=2016-10-09}}</ref>。
+
+[[File:App-augmented-reality-game-gps-163042 (cropped).jpg|thumb|left|upright=0.7|《[[Pokémon Go]]》註冊介面]]
+
+2016年7月，由任天堂和[[寶可夢公司]]授權美國軟件開發公司[[Niantic]]開發運營的《[[Pokémon GO]]》開始陸續在全球上線，遊戲獲得空前關注度並成為全球性熱點，遊戲在發售後一個月內其下載量超過1億次<ref>{{cite web |url=https://www.engadget.com/2016/08/01/pokemon-go-100-million-downloads/ |title='Pokémon Go' hits 100 million downloads |website=Engadget |date=2016-08-01 |access-date=2016-08-11 |archive-url=https://web.archive.org/web/20160802100930/https://www.engadget.com/2016/08/01/pokemon-go-100-million-downloads/  |archive-date=2016-08-02}}</ref>。
+
+2016年8月，任天堂宣布收購日本物流銷售公司JESNET，收購金額約為4650萬美元<ref>{{cite web |url=https://www.destructoid.com/nintendo-acquires-jesnet-for-46-5-million-382643.phtml |title=Nintendo acquires JESNET for $46.5 million |website=Destructoid |date=2016-08-25 |access-date=2017-02-01 |archive-url=https://web.archive.org/web/20160826063127/https://www.destructoid.com/nintendo-acquires-jesnet-for-46-5-million-382643.phtml  |archive-date=2016-08-26}}</ref>。任天堂表示，收購的動機是希望JESNET能夠協助任天堂的企業理念，藉此通过旗下商品和服務為全世界更多人帶去快樂與微笑。收購於2017年4月3日完成並將公司更名為「任天堂銷售」（{{lang|ja|任天堂販売株式会社}}，Nintendo Sales Co., Ltd）
+
+2016年10月20日，任天堂公司正式透過3分鐘的宣傳影片，正式公布代號“NX”的新遊戲主機「[[任天堂Switch]]」與詳細資訊<ref>{{cite web |url=https://twitter.com/Nintendo/status/788900045089181696 |title=任天堂株式会社在Twitter的推文 |website= |date= |access-date= |archive-url=https://web.archive.org/web/20161020040625/https://twitter.com/Nintendo/status/788900045089181696  |archive-date=2016-10-20}}</ref>。
+
+2016年11月30日，任天堂宣布將與[[環球主題樂園及度假村|環球影城]]合作，將在位於[[日本環球影城|日本大阪]]、[[好萊塢環球影城|美國洛杉磯]]和[[佛羅里達環球影城|美國佛羅里達]]的環球影城內建設任天堂主題樂園“[[超级任天堂世界]]”<ref>{{cite web |url=http://www.japantimes.co.jp/news/2016/11/30/business/universal-studios-parks-osaka-orlando-hollywood-add-nintendo-attractions/ |title=Universal Studios parks to add Nintendo attractions |website=JapanTimes |date=2016-11-30 |access-date=2017-01-20 |archive-url=https://web.archive.org/web/20170202042038/http://www.japantimes.co.jp/news/2016/11/30/business/universal-studios-parks-osaka-orlando-hollywood-add-nintendo-attractions/  |archive-date=2017-02-02}}</ref>。
+
+=== Switch時期（2017年－2024年） ===
+[[File:Nintendo-Switch-Console-Docked-wJoyConRB.jpg|thumb|right|180px|[[任天堂Switch]]于2017年3月3日发售]]
+2017年1月13日，任天堂在东京举行发布会，公布了新主机「[[任天堂Switch]]」的详细信息和相关游戏演示。并确定游戏机于3月3日在日本、北美、欧洲和香港发售，同年9月20日宣布于12月1日在韩国与台湾发售。
+
+2017年1月31日，任天堂宣布Wii U停止生產。
+
+2017年4月28日，任天堂公布了3DS家族的新型号「[[新任天堂2DS XL/LL]]」。相当于取消裸眼3D显示的[[新任天堂3DS|新任天堂3DS XL/LL]]。新型号于同年7月发售<ref>{{cite web |url=http://www.4gamer.net/games/990/G999018/20170428003/ |title=New 3DS LLの3D立体視機能を省き，より軽い「Newニンテンドー2DS LL」が7月13日発売へ。2色展開で価格は1万4980円（税別） |website=4Gamer |date=2017-04-28 |access-date=2017-04-28 |archive-url=https://web.archive.org/web/20170428042326/http://www.4gamer.net/games/990/G999018/20170428003/  |archive-date=2017-04-28}}</ref>。
+
+2017年6月29日，任天堂代表董事技術研究員[[竹田玄洋]]宣佈退休，並於翌日擔任特別顧問一職，原任代表董事創意研究員的宮本茂成為代表董事研究員。
+
+2018年4月26日，任天堂於人事異動公告中宣布[[君岛达己]]社長于同年6月28日任期结束后离任，並由原任執行常務董事的[[古川俊太郎]]接任新任社长。君岛达己則退任擔任顧問一職。
+
+2018年4月27日，任天堂正式公開與日本遊戲開發公司[[Cygames]]共同開發及發行的首款智慧型手機遊戲《[[Dragalia Lost ～失落的龍絆～]]》，于同年9月27日在美日台港澳上架<ref>{{Cite web|url=https://topics.nintendo.co.jp/c/article/9b5a7299-49be-11e8-b311-063b7ac45a6d.html|title=任天堂とCygamesのアクションRPG|accessdate=|author=|date=2018-04-27|publisher=|archive-url=https://web.archive.org/web/20180427184643/https://topics.nintendo.co.jp/c/article/9b5a7299-49be-11e8-b311-063b7ac45a6d.html|archive-date=2018-04-27|dead-url=yes}}</ref>。營運四年半後，於2022年11月30日結束服務。
+
+2018年9月19日，「[[任天堂Switch Online]]」網絡服務開始正式營運。
+
+2018年12月，任天堂北美前第三方關係負責人Damon Baker宜佈離職任天堂，並在2019年1月加入了微軟的Xbox部門擔任組合負責人<ref>{{cite web |url=https://variety.com/2019/gaming/news/damon-baker-joins-xbox-1203120655/ |title=Former Nintendo Exec Damon Baker Joins Xbox as Head of Portfolio |website=Variety |date=2019-01-28 |access-date=2020-04-24 |archive-url=https://web.archive.org/web/20200424073849/https://variety.com/2019/gaming/news/damon-baker-joins-xbox-1203120655/  |archive-date=2020-04-24}}</ref>。
+
+2019年2月，美國任天堂宣布北美主席兼首席运营官[[雷吉·菲尔斯-埃米]]宣布于同年4月15日卸任，結束他在任天堂超過15年的生涯。其職位後續由原任銷售和市場行銷執行副總裁{{le|道格·鲍瑟|Doug Bowser}}接任<ref>{{cite web |url=https://www.polygon.com/2019/2/21/18235072/nintendo-reggie-fils-aime-retires-doug-bowser-president |title=Reggie Fils-Aime retiring from Nintendo |website=Polygon |date=2019-02-21 |access-date=2020-04-24 |archive-url=https://web.archive.org/web/20190417085227/https://www.polygon.com/2019/2/21/18235072/nintendo-reggie-fils-aime-retires-doug-bowser-president  |archive-date=2019-04-17}}</ref>。
+
+2019年4月26日，任天堂與中國控股公司[[腾讯]]共同宣布雙方合作，由騰訊在中國大陸發行「Nintendo Switch」主機<ref>{{Cite web|title=任天堂與騰訊發表將合作在中國銷售 Nintendo Switch 主機|url=https://gnn.gamer.com.tw/9/178739.html|accessdate=2019-05-18|work=巴哈姆特電玩資訊站|language=zh-tw|archive-url=https://web.archive.org/web/20190518050733/https://gnn.gamer.com.tw/9/178739.html|archive-date=2019-05-18|dead-url=yes}}</ref><ref>{{Cite news|url=https://gb-www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=565098|title=任天堂Switch正式揮軍大陸　Lite版本9月助攻　 USB-PD IC、利基型記憶體封測量能大增|work=[[电子时报]]|date=2019-07-26|language=zh-cn|accessdate=2022-08-02|archive-date=2022-08-13|archive-url=https://web.archive.org/web/20220813105419/https://gb-www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=565098|dead-url=no}}</ref>。同年12月10日，中國大陸版Nintendo Switch开启贩售，首發遊戲含《[[新超级马里奥兄弟U|New 超級瑪利歐兄弟 U 豪華版]]》並在數周內上市了《[[瑪利歐賽車8 豪華版]]》、《[[超级马力欧 奥德赛]]》等作品。
+
+2019年7月10日，任天堂公佈了任天堂Switch的縮小版攜帶專用新機種「[[任天堂Switch Lite]]」，機身採本體與控制器一體化設計，新機種於同年9月20日推出<ref>{{Cite web|url=https://gnn.gamer.com.tw/8/182468.html|title=Nintendo Switch 縮小版攜帶專用新機種「Nintendo Switch Lite」正式發表 預定 9 月上市|accessdate=2019-07-10|work=巴哈姆特電玩資訊站|archive-url=https://web.archive.org/web/20190711031850/https://gnn.gamer.com.tw/8/182468.html|archive-date=2019-07-11|dead-url=yes}}</ref>。首發包含黃、灰、藍綠等三款主機配色、2020年3月21日推出珊瑚色、2021年5月7日推出藍色，並陸續與其他遊戲合作推出特殊外觀的機種。
+
+2019年11月22日，任天堂於[[東京都]][[巴而可|澀谷PARCO]]開幕繼紐約旗艦店「Nintendo New York」後的第二間零售商店，名為「[[東京任天堂|Nintendo Tokyo]]」，店內除了販售任天堂遊戲主機、遊戲軟體與周邊商品之外，同時也會不定期舉辦遊戲體驗活動<ref>{{cite web |url=https://www.businessinsider.com/nintendo-tokyo-japan-store-tour-photos-2019-11 |title=Nintendo's first store in Japan opens this Friday, and it looks like a Nintendo-lover's paradise — here's what it's like inside |website=BusinessInsider |date=2019-11-20 |access-date=2020-04-24 |archive-url=https://web.archive.org/web/20200424073908/https://www.businessinsider.com/nintendo-tokyo-japan-store-tour-photos-2019-11  |archive-date=2020-04-24}}</ref>。
+
+2020年1月，任天堂宣布将[[任天堂企划制作本部#第八組|EPD第八組]]（原[[任天堂情報開發本部#東京製作部|EAD東京製作部]]）、[[1-UP工作室]]、[[GAME FREAK]]和[[HAL研究所]] 4個位於東京的工作室统一到同一辦公大樓，設於東京都千代田区神田錦町的神田Square大楼，以增强各工作室之间的协調效率<ref>{{cite web |url=https://www.nintendo.co.jp/ir/pdf/2020/200131_2.pdf |title=「経営方針説明会／2020年3月期 第3四半期決算説明会 プレゼンテーション資料」Page12 |website=任天堂株式会社 |date=2020-01-31 |access-date=2020-04-24 |archive-url=https://web.archive.org/web/20200501012132/https://www.nintendo.co.jp/ir/pdf/2020/200131_2.pdf  |archive-date=2020-05-01}}</ref><ref>{{cite web |url=https://www.siliconera.com/pokemon-developer-game-freak-office-is-moving-closer-to-nintendos-headquarters/ |title=Pokémon Developer Game Freak Is Moving Closer to Nintendo’s Headquarters |website=Siliconera |date=2020-02-02 |access-date=2020-04-24 |archive-url=https://web.archive.org/web/20200424073923/https://www.siliconera.com/pokemon-developer-game-freak-office-is-moving-closer-to-nintendos-headquarters/  |archive-date=2020-04-24}}</ref>。
+
+2020年9月16日，任天堂宣布3DS系列停止生產<ref>{{Cite web|url=https://gnn.gamer.com.tw/detail.php?sn=203364|title=Nintendo 3DS 主機全系列宣布停產 一代經典純掌上型遊樂器主機邁入歷史|date=2020-09-17|publisher=[[巴哈姆特电玩资讯站]]|accessdate=2020-09-17|author=Sam|language=zh-tw|archive-date=2020-09-21|archive-url=https://web.archive.org/web/20200921100112/https://gnn.gamer.com.tw/detail.php?sn=203364|dead-url=no}}</ref>。
+
+2021年1月5日，任天堂宣布收購加拿大遊戲開發公司[[Next Level Games]]成為旗下子公司，此案於3月1日完成收購。
+
+[[File:Super Nintendo World Theme Park at USJ Osaka Evening Sky.jpg|thumb|left|180px|任天堂第一個主題樂園「[[超級任天堂世界]]」於2021年3月18日在[[日本環球影城]]園區內開幕]]
+
+2021年3月18日，位於日本大阪[[日本環球影城|環球影城]]內的[[超级任天堂世界]]主題樂園正式開幕<ref>{{Cite web|url=https://topics.nintendo.co.jp/article/37fb795b-70d4-4631-9fc4-f0f8c14b77f5|title=「ユニバーサル・スタジオ・ジャパン」の新エリア『スーパー・ニンテンドー・ワールド™』が、本日グランドオープン。|date=2021-03-18|publisher=任天堂|language=ja|dead-url=no|access-date=2021-03-18|archive-date=2021-06-08|archive-url=https://web.archive.org/web/20210608161441/https://topics.nintendo.co.jp/article/37fb795b-70d4-4631-9fc4-f0f8c14b77f5}}</ref>。
+
+2021年4月7日，任天堂（香港）宣布在台灣成立子公司「香港商任天堂香港有限公司台灣分公司」。
+
+2021年7月6日，任天堂公佈任天堂Switch的新版機種「[[任天堂Switch#OLED版|任天堂Switch OLED]]」，並於同年10月8日上市。
+
+2022年2月24日，任天堂宣布收購長年合作夥伴[[SRD (公司)|株式會社SRD]]的所有股份，並於同年4月1日完成此收購案。
+
+2022年3月29日，位於[[京都市]][[下京區]]鍵屋町的任天堂舊總部大樓（建於1930年的第二代總部大樓）改裝而成的酒店「丸福樓」和展現任天堂創業理念的博物館「dNa」正式開幕<ref name="marufukuro" />。
+
+2022年4月12日，任天堂宣布耗資50億日元，購入位於京都市南區上鳥羽鉾立町11番2外5筆（前創業支援工廠與原資器材・防災中心西側用地，任天堂總部西北位置）的土地並興建樓高12層的「任天堂第二開發中心」，預計2027年12月竣工<ref>{{Cite web|url=https://www.nintendo.co.jp/corporate/release/2022/220412.html|title=本社隣接市有地の取得について|date=2022-04-12|publisher=任天堂株式会社|dead-url=no|access-date=2022-04-13|archive-date=2022-05-17|archive-url=https://web.archive.org/web/20220517153031/https://www.nintendo.co.jp/corporate/release/2022/220412.html}}</ref>。
+
+2022年7月14日，任天堂宣布收購CG動畫製作公司Dynamo Pictures的所有股份，並成為旗下子公司。該收購案於同年10月3日完成，並將公司更名為「[[任天堂影業]]」（{{lang|ja|ニンテンドーピクチャーズ株式会社}}，Nintendo Pictures Co., Ltd.）<ref>{{Cite web |date=2022-07-14 |title=任天堂、「ニンテンドーピクチャーズ株式会社」を設立へ。映像制作会社「ダイナモピクチャーズ」を買収、子会社化を予定 |url=https://news.denfaminicogamer.jp/news/220714o |website=電ファミニコゲーマー – ゲームの面白い記事読んでみない？ |language=ja |access-date=2022-07-14 |archive-date=2022-08-13 |archive-url=https://web.archive.org/web/20220813122609/https://news.denfaminicogamer.jp/news/220714o |dead-url=no }}</ref>。
+
+2022年11月8日，任天堂宣布與DeNA成立合資公司「{{lj|任天堂系統|ニンテンドーシステムズ}}」（{{lang|ja|ニンテンドーシステムズ株式会社}}，Nintendo System Co., Ltd.），以強化旗下業務的數位化為目標，將投入相關的研究、開發與運用以及創造附加價值。公司於2023年4月3日正式設立，由任天堂出資80%、DeNA出資20%，資本額50億日元，並由佐佐木哲也擔任代表董事社長<ref>{{Cite web |date=2022-11-08 |title=株式会社ディー・エヌ・エーとの合弁会社設立及び特定子会社の異動に関するお知らせ |url=https://www.nintendo.co.jp/ir/pdf/2022/221108_4.pdf |website=任天堂株式会社 |access-date=2022-11-08 |archive-date=2023-01-15 |archive-url=https://web.archive.org/web/20230115102009/https://www.nintendo.co.jp/ir/pdf/2022/221108_4.pdf |dead-url=no }}</ref>。
+
+2023年3月28日，任天堂關閉3DS與Wii U的eShop，僅保留重新下載已購買軟體與更新功能<ref>{{Cite web|title=有關Nintendo 3DS系列之「Nintendo eShop」服務結束日期通告|url=https://www.nintendo.com.hk/support/information/2022/0216.html|access-date=2023-04-27|website=任天堂(香港)有限公司網站|language=|archive-date=2023-04-27|archive-url=https://web.archive.org/web/20230427141450/https://www.nintendo.com.hk/support/information/2022/0216.html|dead-url=no}}</ref>。
+
+2023年4月5日，任天堂與美國動畫工作室[[照明娛樂]]共同製作，[[環球影業]]（照明娛樂的母公司）發行的電影《[[超級瑪利歐兄弟電影版]]》於院線上映，並成為史上最賣座的電子遊戲改編電影<ref>{{Cite web|last=Dellatto|first=Marisa|date=2023-04-16|title=Weekend Box Office: ‘Super Mario Bros. Movie’ Earns Over $180 Million Worldwide In Another Massive Weekend|url=https://www.forbes.com/sites/marisadellatto/2023/04/16/weekend-box-office-super-mario-bros-movie-earns-over-180-million-worldwide-in-another-massive-weekend/|access-date=2023-04-17|website=Forbes|language=en|archive-date=2023-04-16|archive-url=https://web.archive.org/web/20230416164715/https://www.forbes.com/sites/marisadellatto/2023/04/16/weekend-box-office-super-mario-bros-movie-earns-over-180-million-worldwide-in-another-massive-weekend/|dead-url=no}}</ref>。
+
+2024年5月7日 - 任天堂社长[[古川俊太郎]]從任天堂社交媒体账号[[X (2023年公司)|X]]宣布在2025财年（2024年4月-2025年3月）内公布任天堂Switch的後繼型號。<ref>{{cite web |url=https://hk.news.yahoo.com/nintendo-switch-confirmed-within-2024-fiscal-year-094920407.html |title=任天堂確認 Switch 後繼機種將在 2024 財年內發表 |website=Yahoo!Tech |date=2024-05-07 |access-date=2024-05-21 |archive-url=https://web.archive.org/web/20240516071259/https://hk.news.yahoo.com/nintendo-switch-confirmed-within-2024-fiscal-year-094920407.html  |archive-date=2024-05-16}}</ref>
+
+2024年5月21日，任天堂宣布从瑞典控股公司[[拥抱者集团]]手中以100%股份收购了美國游戏工作室Shiver Entertainment，它曾移植任天堂Switch版《[[霍格華茲的傳承|霍格華茲的傳承]]》、《[[真人快打1]]》等遊戲。<ref>{{cite web |url=https://www.gematsu.com/2024/05/nintendo-to-acquire-shiver-entertainment-from-embracer-group |title=Nintendo to acquire Shiver Entertainment from Embracer Group |website=Gematsu |date=2024-05-21 |access-date=2024-05-21 |archive-url=https://web.archive.org/web/20240617134250/https://www.gematsu.com/2024/05/nintendo-to-acquire-shiver-entertainment-from-embracer-group  |archive-date=2024-06-17}}</ref>
+
+[[File:Nintendo Museum Entrance.jpg|thumb|left|180px|任天堂首次建立的電子遊戲博物館「[[任天堂博物館]]」於2024年10月2日正式開幕]]
+
+2024年10月2日，位於日本[[京都府]][[宇治市]]小倉町神樂田的原「任天堂宇治小倉工場」（建於1969年）改建的「[[任天堂博物館]]」正式開幕<ref>{{Cite web|title=「ニンテンドーミュージアム」10月2日オープン！　巨大コントローラーでゲームもできるぞ|url=https://news.yahoo.co.jp/articles/a0e55895c14ced9628c7b2cb8eeffeb521711100|access-date=2024-08-20|website=Yahoo!ニュース|dead-url=no|archive-date=2024-08-20|archive-url=https://web.archive.org/web/20240820004218/https://news.yahoo.co.jp/articles/a0e55895c14ced9628c7b2cb8eeffeb521711100}}</ref>。
+
+2024年10月31日，任天堂宣佈在Android和iOS平台上推出「[[任天堂音乐]]」，是一款提供任天堂電子遊戲系列配樂收聽的音樂串流應用軟件（任天堂Switch Online會員限定）<ref>{{Cite news|url=https://3c.ltn.com.tw/news/59971|title=任天堂音樂App來了！回憶殺遊戲配樂免費聽、一類人專屬福利|author=吳佩樺|work=自由時報|date=2024-10-31|accessdate=2024-11-19|language=zh-tw|archive-date=2024-12-07|archive-url=https://web.archive.org/web/20241207173704/https://3c.ltn.com.tw/news/59971|dead-url=no}}</ref>。
+
+=== Switch 2時期（2025年－至今） ===
+[[File:Nintendo Switch 2 20250605 HOF4954 RAW-Export.png|thumb|right|180px|[[任天堂Switch 2]]於2025年6月5日發售]]
+2025年1月16日，任天堂正式公佈任天堂Switch的後繼型號「[[任天堂Switch 2]]」。首次曝光片段除卻展示各種有別於前代機種的硬件配置外，亦包含《[[瑪利歐賽車世界]]》相關的全新遊戲內容<ref>{{cite news |script-title=ja:【Switch2】ニンテンドースイッチ2正式発表。発売日は2025年。世界各都市で体験会も開催 |url=https://www.famitsu.com/article/202501/29901 |accessdate=2025-01-16 |work=[[Fami通|ファミ通]] |date=2025-01-16 |language=ja |archive-date=2025-02-02 |archive-url=https://web.archive.org/web/20250202201750/https://www.famitsu.com/article/202501/29901 |dead-url=no }}</ref>。
+
+2025年2月10日，任天堂宣布在[[台灣]]成立「[[台灣任天堂|台灣任天堂股份有限公司]]」以作為日本任天堂株式會社的子公司之一，為自任天堂溥天解散後時隔11年再次於台灣成立的子公司，並於同年4月1日起正式將任天堂（香港）負責的台灣地區業務移交至該公司<ref>{{Cite news|url=https://www.nintendo.tw/support/information/2025/0218.html|title=「台灣任天堂股份有限公司」設立公告|author=|work=香港商任天堂香港有限公司台灣分公司|date=2025-02-18|language=zh-tw|accessdate=2025-02-18|archive-date=2025-02-27|archive-url=https://web.archive.org/web/20250227011019/https://www.nintendo.tw/support/information/2025/0218.html|dead-url=no}}</ref>。
+
+2025年4月2日，任天堂在[[任天堂直面會|直面會]]上公布了新主机[[任天堂Switch 2]]的详细信息和相关游戏演示。并确定游戏机于6月5日在全球發售<ref name=":1">{{Cite web |title=Nintendo Direct Nintendo Switch 2 |url=https://www.nintendo.com/successor/zh-tw/nintendo-direct/index.html |access-date=2025-01-16 |archive-date=2025-02-09 |archive-url=https://web.archive.org/web/20250209184916/https://www.nintendo.com/successor/zh-tw/nintendo-direct/index.html |dead-url=no }}</ref>。
+
+2025年8月27日，任天堂宣布將已於同年4月1日由原任天堂與HAL研究所合資子公司業務重組後並合併成為任天堂全資子公司的「Warpstar」，更名為「任天堂之星」（{{lang|ja|ニンテンドースターズ株式会社}}，Nintendo Stars Inc.），除了繼續[[星之卡比系列]]IP的二次利用事業外，亦負責未來任天堂IP電影的二次利用事業<ref>{{Cite press release |title=任天堂IPを用いた映画における二次利用事業の強化について |publisher=任天堂株式會社 |date=2025-08-27 |url=https://www.nintendo.co.jp/corporate/release/2025/250827.html |accessdate=2025-08-27 |archive-date=2026-07-03 |archive-url=https://web.archive.org/web/20260703194417/https://www.nintendo.co.jp/corporate/release/2025/250827.html |url-status=live }}</ref>。
+
+2025年11月27日，任天堂宣布將以股權轉讓方式從[[万代南梦宫娱乐]]收購曾參與《[[斯普拉遁3]]》開發的萬代南夢宮新加坡工作室（Bandai Namco Studios Singapore，簡稱BNSS）。BNSS已於2026年4月1日率先取得80%的股份，待營運穩定後再完成剩餘股份的轉讓。收購完成後，BNSS將更名為任天堂新加坡工作室（Nintendo Studios Singapore）<ref name=NintendoStudiosSG>{{Cite web|title=Nintendo announces plans to acquire a Bandai Namco studio long-rumored to be the original Metroid Prime 4 developers|url=https://www.gamesradar.com/platforms/nintendo/nintendo-announces-plans-to-acquire-a-bandai-namco-studio-long-rumored-to-be-the-original-metroid-prime-4-developers/|website=GamesRadar+|date=2025-11-27|access-date=2025-11-27|language=en|first=Scott|last=McCrae|archive-date=2025-11-27|archive-url=https://web.archive.org/web/20251127130925/https://www.gamesradar.com/platforms/nintendo/nintendo-announces-plans-to-acquire-a-bandai-namco-studio-long-rumored-to-be-the-original-metroid-prime-4-developers/|url-status=live}}</ref><ref>{{cite web|url=https://www.nintendo.co.jp/corporate/release/en/2025/251127.html|title=Acquisition of Shares in a Singapore-Based Entity to Strengthen Development Structure|date=2025-11-27|work=Nintendo Co., Ltd.|access-date=2025-11-28|archive-date=2025-11-28|archive-url=https://web.archive.org/web/20251128151438/https://www.nintendo.co.jp/corporate/release/en/2025/251127.html|url-status=live}}</ref>。
+
+== 歷代商標 ==
+<gallery heights="100px" widths="100px">
+File:Nintendo.png| 1889年至1950年
+File:Nintendo Marufuku logo.jpg| 1889年至1957年
+File:Nintendo - 1950.png| 1950年至1960年
+File:Nintendo - 1960.svg| 1960年至1965年
+File:Nintendo - 1965.png| 1965年至1970年
+File:Nintendo - 1967.png| 1967年至1975年
+File:Nintendo - 1968.png| 1968年至1975年
+File:Nintendo Logo 1970.png| 1970年至1975年
+File:Nintendo - 1972.png| 1972年
+File:Nintendo red logo.svg| 1975年至2006年
+File:Nintendo gray logo.svg| 2006年至2016年
+File:Nintendo.svg| 2016年至今
+</gallery>
+
+== 主要產品 ==
+{{Main|任天堂電子遊戲機列表}}
+{{VG timeline
+| 1977 = [[Color TV-Game]]
+| 1980 = [[Game & Watch]]
+| 1983 = [[紅白機]]
+| 1989 = [[Game Boy]]
+| 1990 = [[超級任天堂]]
+| 1995 = [[Virtual Boy]]
+| 1996a = [[任天堂64]]
+| 1996b =[[Game Boy Pocket]]
+| 1998a = [[Game Boy Light]]
+| 1998b = [[Game Boy Color]]
+| 2001a = [[Game Boy Advance]]
+| 2001b = [[任天堂GameCube]]
+| 2003 = [[Game Boy Advance SP]]
+| 2004 = [[任天堂DS]]
+| 2005 = [[Game Boy Micro]]
+| 2006a = [[任天堂DS Lite]]
+| 2006b = [[Wii]]
+| 2008 = [[任天堂DSi]]
+| 2009 = [[任天堂DSi LL|任天堂DSi LL/XL]]
+| 2011a = [[任天堂3DS]]
+| 2011b = [[Wii|Wii Family Edition]]
+| 2012a = [[任天堂3DS LL|任天堂3DS LL/XL]]
+| 2012b = [[Wii U]]
+| 2012c = [[Wii Mini]]
+| 2013 = [[任天堂2DS]]
+| 2014a = [[新任天堂3DS]]
+| 2014b = [[新任天堂3DS LL|新任天堂3DS LL/XL]]
+| 2017a = [[任天堂Switch]]
+| 2017b = [[新任天堂2DS LL|新任天堂2DS LL/XL]]
+| 2019 = [[任天堂Switch Lite]]
+| 2021 = [[任天堂Switch#OLED版|任天堂Switch OLED]]
+| 2025 = [[任天堂Switch 2]]
+}}
+
+=== 家用遊戲機 ===
+* [[Color TV-Game|Color TV-Game 15和Color TV-Game 6]]（1977年）
+* [[红白机]]（1983年）
+* [[超級任天堂]]（1990年）
+* [[任天堂64]]（1996年）
+: [[神遊機]]（2003年）
+* [[任天堂GameCube]]（2001年）
+* [[Wii]]（2006年）
+: [[Wii#Wii Family Edition|Wii Family Edition]]（2011年）
+: [[Wii Mini]]（2012年）
+* [[Wii U]]（2012年）
+
+=== 可携式家用機 ===
+* [[任天堂Switch]]（2017年）
+: [[任天堂Switch#OLED版|任天堂Switch OLED]]（2021年）
+* [[任天堂Switch 2]]（2025年）
+
+=== 掌上遊戲機 ===
+* [[Game & Watch]]（1980年） 
+* [[Game Boy]]（1989年）  
+: [[Game Boy Pocket]]（1996年）   
+: [[Game Boy Light]]（1998年）   
+: [[Game Boy Color]]（1998年）  
+* [[Game Boy Advance|GAME BOY ADVANCE]]（2001年）  
+: [[Game Boy Advance SP|GAME BOY ADVANCE SP]]（2003年）   
+: [[Game Boy Micro|GAME BOY micro]]（2005年）  
+* [[任天堂DS]]（2004年）  
+: [[任天堂DS Lite]]（2006年）  
+: [[任天堂DSi]]（2008年）  
+: [[任天堂DSi LL|任天堂DSi LL/XL]]（2009年）  
+* [[任天堂3DS]]（2011年）  
+: [[任天堂3DS LL|任天堂3DS LL/XL]]（2012年） 
+: [[任天堂2DS]]（2013年）  
+* [[新任天堂3DS]]（2014年）  
+: [[新任天堂3DS LL|新任天堂3DS LL/XL]]（2014年） 
+: [[新任天堂2DS LL|新任天堂2DS LL/XL]]（2017年）
+* [[任天堂Switch Lite]]（2019年）
+
+=== 主要遊戲軟體 ===
+{{Main|任天堂電子遊戲系列列表}}
+{{col-begin}}
+{{col-2}}
+* [[瑪利歐系列|瑪利歐]]
+* [[大金剛系列|咚奇剛]]
+* [[薩爾達傳說系列|薩爾達傳說]]
+* [[銀河戰士系列|密特羅德]]
+* [[聖火降魔錄系列|Fire Emblem]]
+* [[星之卡比系列|星之卡比]]
+* [[星際火狐系列|星際火狐]]
+
+{{col-2}}
+* [[寶可夢系列|寶可夢]]
+* [[動物森友會系列|動物森友會]]
+* [[皮克敏系列|皮克敏]]
+* [[節奏天國系列|節奏天國]]
+* [[Tomodachi Life 朋友收集|Tomodachi Life 朋友收集]]
+* [[異度神劍系列|異度神劍]]
+* [[Splatoon系列|斯普拉遁]]
+{{col-end}}
+
+== 公司職員 ==
+
+=== 歷任社長 ===
+* 首任社長（1889—1929）：[[山內房治郎]]
+* 第二任社長（1929—1949）：[[山內積良]]
+* 第三任社長（1949—2002）：[[山内溥]]
+* 第四任社長（2002—2015）：[[岩田聰]]
+* 第五任社長（2015—2018）：[[君岛达己]]
+* 第六任社長（2018—）：[[古川俊太郎]]
+
+=== 執行董事 ===
+* [[古川俊太郎]]（任天堂社长）
+* [[宮本茂]]（代表董事研究員）
+* [[高桥伸也 (游戏制作人)|高橋伸也]]（企劃製作本部統括部長）
+* [[小泉欢晃]]（企劃制作本部長）
+* [[別府裕介]] （經營企劃本部長）
+* [[高橋成行]]（管理本部長）
+* [[大和聰]]（營業本部長）
+* [[田中晉]]（業務本部長）
+* [[進士仁一]]（製造本部長）
+* [[塩田興]]（平台技術開發本部長）
+* [[柴田聰]]（任天堂歐洲社長）
+* {{le|戴文·普里查德|Devon Pritchard}}（任天堂北美社長）
+
+=== 非執行董事一覽 ===
+* 松本匡治（常務；管理本部長兼總務本部長兼財務部長）
+* 鈴木英一（常務；海外本部長）
+* [[君岛达己|君島達己]]（常務；經營統括本部長兼總務本部長）
+* 河原和雄（營業本部東京分店長兼東京分店管理部長）
+* 竹村薫（人事本部長兼人事部長）
+* [[竹田玄洋]]（特別顧問）
+* [[手塚卓志]]（企劃製作本部高級管理）
+
+== 軟體開發工作室 ==
+{{Main|任天堂開發團隊}}
+
+=== 第一方 ===
+* [[任天堂企划制作本部|任天堂企劃製作本部]]—[[瑪利歐系列]]、[[薩爾達傳說系列]]、[[動物森友會系列]]、[[斯普拉遁系列]]、[[皮克敏系列]]、[[星際火狐系列]]、[[Wii系列]]（[[Wii Sports]]、[[Wii Fit]]、[[Wii Music]]）、[[ARMS (游戏)|ARMS]]、[[健身环大冒险]]
+* [[任天堂網路服務開發部]]—[[任天堂eShop]]、[[任天堂Network]]、[[任天堂Switch Online]]
+* [[任天堂软件技术|任天堂軟件技術開發部]]—[[瑪利歐vs.咚奇剛系列]]
+
+=== 第二方（控股子公司） ===
+* [[1-UP工作室]]（原Brownie Brown工作室）—魔法假日、魔法學院、[[地球冒險3]]（協助開發）
+* [[Monolith Soft]]—[[靈光守護者]]、[[异度神剑系列|異度神劍系列]]
+* [[Nintendo Cube]]（原NDcube）—F-ZERO DX、Tube Slider、Wii Party系列、[[瑪利歐派對系列]]、[[世界遊戲大全51]]
+* [[Retro工作室|Retro Studios]]—[[银河战士Prime|密特羅德究極系列]]、[[大金刚系列|咚奇剛系列]]
+* [[Next Level Games]]—[[瑪利歐體育遊戲列表#瑪利歐激戰前鋒|瑪利歐激戰前鋒系列]]、[[拳无虚发系列|拳无虚发]]Wii版、路易吉洋樓系列
+* [[SRD]]—第一方遊戲開發協助
+* Shiver Entertainment—多部第三方的任天堂Switch版本游戏移植
+* 任天堂新加坡工作室—[[斯普拉遁3]]（協助開發）、[[Tomodachi Life 朋友收集 夢想生活]]（協助開發）
+
+=== 第二方（參股公司） ===
+* [[HAL研究所]]—[[星之卡比系列]]、羅羅大冒險
+* [[Intelligent Systems]]—[[聖火降魔錄系列|Fire Emblem系列]]、[[紙片瑪利歐系列]]、[[任天堂战争系列|任天堂戰爭系列]]、[[瓦力欧制造系列|瓦利欧制造系列]]
+* [[Camelot|Camelot Software Planning]]—[[瑪利歐高爾夫64|瑪利歐高爾夫]]、[[瑪利歐網球系列]]、[[黃金太陽系列]]
+* [[Creatures]]—[[宝可梦]]系列衍生游戏
+* [[Cygames]]—[[失落的龍絆]]
+* [[DeNA]]—任天堂Android/iOS游戏开发协助
+* [[GAME FREAK]]—[[宝可梦系列|寶可夢系列]]
+* Genius Sonority—Pokémon Colosseum、Pokémon XD、Pokémon Trozei、Pokémon Battle Revolution（Wii寶可夢作品）
+* {{le|Good-Feel}}—[[瓦利歐樂園Shake]]、[[毛线卡比|毛線卡比]]、[[耀西的毛線世界]]、[[耀西的手工世界]]、[[碧姬公主 表演時刻！]]
+* [[Grezzo]]—主要製作[[薩爾達傳說系列]]遊戲。
+* Headstrong Games—[[軍隊戰爭]]
+* {{le|Jupiter (遊戲公司)|Jupiter Corporation|Jupiter}}—[[化石超進化]]、[[寶可夢彈珠台]]、绘图方块系列
+* [[Niantic]]—[[Pokémon GO]]、皮克敏Bloom
+* [[Noise (公司)|Noise]]—[[組合機器人|組合機器人系列]]
+* [[Paon]]—[[咚奇剛：搖擺之王]]、[[咚奇剛：叢林攀越者]]、[[咚奇剛 木桶噴射]]
+* Shin'en—納米漂移系列
+* [[Sora (公司)|Sora]]—[[任天堂明星大亂鬥系列]]
+
+=== 前子公司及合作夥伴 ===
+* [[AlphaDream]]（於2019年10月1日破產解散）—[[马里奥角色扮演游戏列表#马力欧与路易吉RPG系列|马里奥&路易吉RPG系列]]
+* {{le|Ambrella|Ambrella}}（于2020年10月16日由[[Creatures]]收购并解散）—嘿，皮卡丘！、[[精灵宝可梦频道 ～和皮卡丘一起！～|寶可夢頻道]]、{{le|寶可夢衝刺|Pokémon Dash}}、[[大家的寶可夢牧場]]、宝可梦乱斗系列
+* {{le|Artoon|Artoon}}（于2010年由母公司{{le|AQ互动|AQ Interactive}}合并并解散）—[[耀西的萬有引力]]、[[耀西岛DS]]
+* [[Cing]]（於2010年破產解散）— Another code：[[Another Code 兩段記憶|兩段記憶]]、[[Another Code: R 記憶之門|R 記憶之門]]
+* {{le|Fuse Games|Silverball Studios}}（于2009年破产重组为Silverball Studios）—[[瑪利歐彈珠世界]]、[[銀河戰士Prime彈珠台|密特羅德Prime彈珠台]]
+* [[Sora (公司)|Project Sora]]（於2009年1月22日成立至2012年6月30日解散）—[[新·光神話 帕爾提娜之鏡]]
+* [[Rare|Rare Ltd.]]（於2002年9月24日給[[微軟]]收購）— 咚奇剛系列，[[黄金眼007|黃金眼007]]，[[完美黑暗]]，[[班卓熊大冒险|班卓熊大冒險]]
+* [[硅骑士工作室|矽騎士工作室]]（於2004年結束第二方合約）—永恆黑暗：聖潔的安魂曲（無盡黑暗），[[合金装备 孪蛇]]
+* [[Skip|skip Ltd.]]（於2020年解散）—[[小小機器人|小小機器人系列]]、[[特世紀]]、[[彩虹隊長]]
+* [[任天堂溥天]]（於2014年解散）—任天堂台灣分公司
+* [[三美電機]]—硬體最大外部供應商
+
+== 任天堂直面會 ==
+{{Main|任天堂直面會}}
+[[File:Nintendo Direct logo.svg|thumb|200px|縮略圖|right|2017年4月13日任天堂直面会開始使用的最新主標誌]]
+於2011年10月21日在日本和北美地區首播，由任天堂製作的網絡直播節目，其後播放地區又拓展至歐洲、大洋洲、韓國和中華地區，內容圍繞介紹新遊戲和講解部份已推出遊戲追加的新內容，除原來的直面會，更有特定主題及獨立遊戲相關直面會。節目由多位主持擔任，最初由已故任天堂社長[[岩田聰]]擔任主持，現時主持以兩位開發部長兼董事[[小泉欢晃|小泉歡晃]]及[[高桥伸也 (游戏制作人)|高橋伸也]]為主。
+
+== 注释 ==
+{{NoteFoot}}
+
+== 參考文獻 ==
+{{Reflist|30em}}
+
+== 外部連結 ==
+{{Commons category|Nintendo|任天堂}}
+* [https://www.nintendo.com/region-selector/ Nintendo官網] {{Wayback|url=https://www.nintendo.com/region-selector/ |date=20250303135908}}
+* [https://www.nintendo.com/jp/ 任天堂日本] {{Wayback|url=https://www.nintendo.com/jp/ |date=20031126032420}} {{ja}}
+* [https://www.nintendo.com/us/ 任天堂美國] {{Wayback|url=https://www.nintendo.com/us/ |date=20090216134938}} {{en}}
+* [https://www.nintendo.com/hk/ 任天堂香港] {{Wayback|url=https://www.nintendo.com/hk/ |date=20250304062755}} {{zh}}
+* [https://www.nintendo.com/tw/ 任天堂台灣] {{Wayback|url=https://www.nintendo.com/tw/ |date=20250304062756}} {{zh}}
+* [https://www.nintendoswitch.com.cn/ 任天堂中國大陸 - 騰訊科技股份有限公司] {{Wayback|url=https://www.nintendoswitch.com.cn/ |date=20200602154306}} {{zh}}
+* [https://www.ique.com/ 任天堂中國大陸子公司 - 神遊科技（中國）有限公司] {{Wayback|url=https://www.ique.com/ |date=19961222070907}} {{zh}}
+
+{{任天堂}}
+{{Nintendo hardware}}
+{{任天堂开发团队}}
+{{任天堂游戏系列}}
+{{TOPIX 100}}
+{{日經平均指數}}
+{{Electronics industry in Japan}}
+{{主要电子游戏公司}}
+{{Portal bar|任天堂|电子游戏|電子學|經濟|企業|日本}}
+{{规范控制}}
+{{DEFAULTSORT:Nintendo}}
+
+[[Category:任天堂| ]]
+[[Category:總部在日本的跨國公司]]
+[[Category:京都市公司]]
+[[Category:日本品牌]]
+[[Category:日本電子遊戲公司]]
+[[Category:電子遊戲公司]]
+[[Category:電子遊戲發行商]]
+[[Category:1889年成立的公司]]
+[[Category:1962年首次公開募股]]
+[[Category:金搖桿獎得主]]

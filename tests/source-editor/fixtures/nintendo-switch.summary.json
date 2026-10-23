@@ -1,0 +1,49 @@
+{
+    "type": "standard",
+    "title": "任天堂Switch",
+    "displaytitle": "<span lang=\"zh\" dir=\"ltr\"><span class=\"mw-page-title-main\">任天堂Switch</span></span>",
+    "namespace": {
+        "id": 0,
+        "text": ""
+    },
+    "wikibase_item": "Q19610114",
+    "titles": {
+        "canonical": "任天堂Switch",
+        "normalized": "任天堂Switch",
+        "display": "<span lang=\"zh\" dir=\"ltr\"><span class=\"mw-page-title-main\">任天堂Switch</span></span>"
+    },
+    "pageid": 5488058,
+    "thumbnail": {
+        "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Nintendo_Switch_logo.svg/langzh-330px-Nintendo_Switch_logo.svg.png?utm_source=zh.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "width": 330,
+        "height": 330
+    },
+    "originalimage": {
+        "source": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Nintendo_Switch_logo.svg/langzh-960px-Nintendo_Switch_logo.svg.png?utm_source=zh.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "width": 512,
+        "height": 512
+    },
+    "lang": "zh",
+    "dir": "ltr",
+    "revision": "94119527",
+    "tid": "cb64d430-c224-11f1-9ba1-05631711cfb1",
+    "timestamp": "2026-08-31T10:32:26Z",
+    "description": "任天堂於2017年3月發布的家用電子遊戲機",
+    "description_source": "central",
+    "content_urls": {
+        "desktop": {
+            "page": "https://zh.wikipedia.org/wiki/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch",
+            "revisions": "https://zh.wikipedia.org/wiki/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch?action=history",
+            "edit": "https://zh.wikipedia.org/wiki/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch?action=edit",
+            "talk": "https://zh.wikipedia.org/wiki/Talk:%E4%BB%BB%E5%A4%A9%E5%A0%82Switch"
+        },
+        "mobile": {
+            "page": "https://zh.wikipedia.org/wiki/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch",
+            "revisions": "https://zh.wikipedia.org/wiki/Special:History/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch",
+            "edit": "https://zh.wikipedia.org/wiki/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch?action=edit",
+            "talk": "https://zh.wikipedia.org/wiki/Talk:%E4%BB%BB%E5%A4%A9%E5%A0%82Switch"
+        }
+    },
+    "extract": "任天堂Switch 是日本任天堂公司出品的電子遊戲機，於2017年3月3日在日本、北美、歐洲和香港發售，同年12月1日在南韓和台湾发售，2019年12月10日在中国大陆发售。擁有可拆卸控制器和可分離式主機，遊戲載體使用了專用卡匣。主机處理器使用基於NVIDIA Tegra X1的定制系统芯片，這也是任天堂首次採用NVIDIA的芯片，同時也是任天堂首次採用ARM架構芯片。開發期中的主機於2015年3月17日以「NX」代號首次公佈，在2016年10月20日首次於網路影片上公開正式名稱任天堂Switch和其造型。\n",
+    "extract_html": "<p><b>任天堂Switch</b> 是日本任天堂公司出品的電子遊戲機，於2017年3月3日在日本、北美、歐洲和香港發售，同年12月1日在南韓和台湾发售，2019年12月10日在中国大陆发售。擁有可拆卸控制器和可分離式主機，遊戲載體使用了專用卡匣。主机處理器使用基於NVIDIA Tegra X1的定制系统芯片，這也是任天堂首次採用NVIDIA的芯片，同時也是任天堂首次採用ARM架構芯片。開發期中的主機於2015年3月17日以「NX」代號首次公佈，在2016年10月20日首次於網路影片上公開正式名稱任天堂Switch和其造型。\n</p>"
+}

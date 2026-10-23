@@ -1,0 +1,103 @@
+/**
+ * @file tests/wpvg-assessor/app-startup.test.ts
+ * Purpose: Startup error reporting at the page-assessor UI boundary.
+ *
+ * Table of contents:
+ * 1. Imports
+ * 2. StartupFailureFixture
+ * 3. Test scenarios
+ * 4. reportStartupFailures
+ * 5. verifyStartupFailure
+ * 6. createLogOutput
+ */
+
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import {
+    createLogger,
+    type LogOutput,
+} from '../../src/library/logging/logger.ts';
+import type { ActionNotification } from '../../src/library/notifications/contracts.ts';
+import { initializePageAssessorRuntime } from './interface-fixture.ts';
+
+interface StartupFailureFixture {
+    initialize(): void;
+    loadDependencies(): Promise<void>;
+    message: string;
+}
+
+test(
+    'reports loader and initialization failures without rejecting',
+    reportStartupFailures,
+);
+
+async function reportStartupFailures(): Promise<void> {
+    const cases = [
+        {
+            initialize() {
+                assert.fail('Initialization ran after ResourceLoader failed.');
+            },
+            loadDependencies: () => Promise.reject(new Error('loader down')),
+            message: 'Unable to start Article Assessor: loader down',
+        },
+        {
+            initialize() {
+                throw new Error('initialization broke');
+            },
+            loadDependencies: () => Promise.resolve(),
+            message: 'Unable to start Article Assessor: initialization broke',
+        },
+    ];
+
+    for (const fixture of cases) {
+        await verifyStartupFailure(fixture);
+    }
+}
+
+async function verifyStartupFailure(
+    fixture: StartupFailureFixture,
+): Promise<void> {
+    const errors: unknown[][] = [];
+    const notifications: ActionNotification[] = [];
+    const logger = createLogger('wpvg-assessor-test', {
+        level: 'error',
+        output: createLogOutput(errors),
+    });
+
+    await assert.doesNotReject(() =>
+        initializePageAssessorRuntime(
+            {
+                logger,
+                notify(notification) {
+                    notifications.push(notification);
+                },
+            },
+            fixture.loadDependencies,
+            fixture.initialize,
+        ),
+    );
+
+    assert.match(
+        String(errors[0]?.[0]),
+        /\[wpvg-assessor-test\] initialize\.failed$/u,
+    );
+    assert.deepEqual(notifications, [
+        {
+            key: 'initialize-failed',
+            message: fixture.message,
+            type: 'error',
+        },
+    ]);
+}
+
+function createLogOutput(errors: unknown[][]): LogOutput {
+    return {
+        debug() {},
+        error(...values) {
+            errors.push(values);
+        },
+        info() {},
+        warn() {},
+    };
+}

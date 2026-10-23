@@ -1,0 +1,16 @@
+/**
+ * @file src/vg-stub-creator/features/creator/dialogs/category-view-dialog.css
+ * Purpose: Constrains the category-view dialog and its embedded page.
+ * Contents: Owned dialog width and category iframe layout.
+ */
+
+.kanade-vg-stub-creator-category-view-dialog.cdx-dialog {
+    max-width: 60em;
+}
+
+.kanade-vg-stub-creator-category-view {
+    border: 1px solid var(--border-color-base, #a2a9b1);
+    box-sizing: border-box;
+    height: 70vh;
+    width: 100%;
+}

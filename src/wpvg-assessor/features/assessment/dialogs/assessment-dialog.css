@@ -1,0 +1,135 @@
+/**
+ * @file src/wpvg-assessor/features/assessment/dialogs/assessment-dialog.css
+ * Purpose: src / features / assessment / dialogs / assessment dialog module.
+ *
+ * Table of contents:
+ * 1. Styles and responsive rules
+ */
+
+.kanade-wpvg-assessor-dialog.cdx-dialog {
+    max-width: 76rem;
+}
+
+.kanade-wpvg-assessor-dialog__actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: var(--spacing-75, 0.75rem);
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.kanade-wpvg-assessor-dialog__actions--stacked {
+    flex-direction: column;
+}
+
+.kanade-wpvg-assessor-dialog__body {
+    display: grid;
+    gap: var(--spacing-150, 1.5rem);
+}
+
+.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-description {
+    margin: 0;
+}
+
+.kanade-wpvg-assessor-status-region:empty {
+    display: none;
+}
+
+.kanade-wpvg-assessor-status-region {
+    display: grid;
+    gap: var(--spacing-75, 0.75rem);
+}
+
+.kanade-wpvg-assessor-assessment-grid {
+    display: grid;
+    gap: var(--spacing-150, 1.5rem);
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kanade-wpvg-assessor-controls,
+.kanade-wpvg-assessor-source,
+.kanade-wpvg-assessor-registration {
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-staged-reviews {
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-staged-review + .kanade-wpvg-assessor-staged-review {
+    margin-block-start: var(--spacing-150, 1.5rem);
+}
+
+.kanade-wpvg-assessor-staged-review summary {
+    overflow-wrap: anywhere;
+}
+
+.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-staged-source {
+    background-color: var(--background-color-neutral-subtle, #f8f9fa);
+    border: var(--border-width-base, 1px) solid
+        var(--border-color-muted, #dadde3);
+    direction: ltr;
+    font-family: var(--font-family-monospace, monospace);
+    font-size: var(--font-size-small, 0.875rem);
+    line-height: var(--line-height-medium, 1.6);
+    margin: 0;
+    overflow-wrap: anywhere;
+    padding: var(--spacing-75, 0.75rem);
+    white-space: pre-wrap;
+}
+
+.kanade-wpvg-assessor-staged-summary {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-section-title {
+    margin: 0 0 var(--spacing-75, 0.75rem);
+}
+
+.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-field-title {
+    margin: 0 0 var(--spacing-25, 0.25rem);
+}
+
+.kanade-wpvg-assessor-rating-grid {
+    display: grid;
+    gap: var(--spacing-100, 1rem);
+    grid-template-columns: minmax(0, 1fr);
+    margin-block-start: var(--spacing-100, 1rem);
+}
+
+.kanade-wpvg-assessor-section {
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-check-list,
+.kanade-wpvg-assessor-choice-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--spacing-50, 0.5rem);
+}
+
+.kanade-wpvg-assessor-custom-class-row {
+    align-items: center;
+    display: grid;
+    flex-basis: 100%;
+    grid-template-columns: max-content minmax(0, 8rem);
+}
+
+.kanade-wpvg-assessor-custom-class-input {
+    min-width: 0;
+}
+
+.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-comparison-help {
+    margin-block-end: var(--spacing-50, 0.5rem);
+}
+
+.kanade-wpvg-assessor-registration-choice,
+.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-registration-message {
+    margin-block: var(--spacing-100, 1rem) 0;
+}
+
+.kanade-wpvg-assessor-list-review {
+    margin-block-start: var(--spacing-100, 1rem);
+}

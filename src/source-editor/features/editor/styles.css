@@ -1,0 +1,705 @@
+/**
+ * @file src/source-editor/features/editor/styles.css
+ * Purpose: src / features / editor / styles module.
+ *
+ * Table of contents:
+ * 1. Styles and responsive rules
+ */
+
+.kanade-source-editor-frame,
+.kanade-source-editor-editor {
+    --kanade-source-editor-background: rgb(255, 255, 255);
+    --kanade-source-editor-caret: rgb(32, 33, 34);
+    --kanade-source-editor-foreground: rgb(32, 33, 34);
+    --kanade-source-editor-missing-link: rgb(186, 0, 0);
+}
+
+.kanade-source-editor-frame {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 16rem;
+    overflow: hidden;
+    color-scheme: light dark;
+    background: var(--kanade-source-editor-background);
+    border: var(--border-width-base, 1px) var(--border-style-base, solid)
+        var(--border-color-base, rgb(162, 169, 177));
+    border-radius: var(--border-radius-base, 2px);
+    resize: vertical;
+}
+
+.kanade-source-editor-frame:not([data-kanade-source-editor-ready='true']) {
+    visibility: hidden;
+}
+
+.kanade-source-editor-frame:focus {
+    outline: var(--border-width-thick, 2px) var(--border-style-base, solid)
+        var(--border-color-progressive--focus, rgb(51, 102, 204));
+    outline-offset: -2px;
+}
+
+.kanade-source-editor-frame-document {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    color-scheme: light dark;
+    background: var(--kanade-source-editor-background, rgb(255, 255, 255));
+}
+
+.kanade-source-editor-editor {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+    min-height: 100%;
+    padding: var(--spacing-75, 12px);
+    overflow: auto;
+    color: var(--kanade-source-editor-foreground);
+    color-scheme: light dark;
+    caret-color: var(--kanade-source-editor-caret);
+    font-family: monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    background: var(--kanade-source-editor-background);
+    border: 0;
+    outline: 0;
+    tab-size: 4;
+}
+
+.kanade-source-editor-frame-overlay {
+    position: fixed;
+    z-index: 800;
+    inset: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Hide owned textareas from Find-in-page and override native CodeMirror visibility. */
+.kanade-source-editor-native,
+#wpTextbox1.kanade-source-editor-native {
+    display: none !important;
+}
+
+.kanade-source-editor-token--missing {
+    color: var(--kanade-source-editor-missing-link, rgb(186, 0, 0)) !important;
+}
+
+.kanade-source-editor-token--unchecked {
+    color: var(--kanade-source-editor-foreground, rgb(32, 33, 34)) !important;
+}
+
+.kanade-source-editor-token--page-missing {
+    color: var(--kanade-source-editor-missing-link, rgb(186, 0, 0)) !important;
+}
+
+/* Flat highlight spans keep overlapping note syntax at one small level. */
+.kanade-source-editor-editor--small-reference-text
+    .kanade-source-editor-token--reference,
+.kanade-source-editor-editor--small-reference-text
+    .kanade-source-editor-token--footnote,
+.kanade-source-editor-editor--small-reference-text
+    .kanade-source-editor-token--small-reference-comment {
+    font-size: 0.86em;
+}
+
+.kanade-source-editor-tooltip {
+    --kanade-source-editor-tooltip-bridge-left: 0;
+    --kanade-source-editor-tooltip-bridge-width: 100%;
+    --kanade-source-editor-tooltip-tail-left: 26px;
+
+    position: fixed;
+    box-sizing: border-box;
+    width: min(27em, calc(100vw - 24px));
+    padding: 0;
+    color: var(--color-base);
+    font-family: sans-serif;
+    font-size: 0.82em;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    pointer-events: auto;
+}
+
+.kanade-source-editor-tooltip::before {
+    position: absolute;
+    left: var(--kanade-source-editor-tooltip-bridge-left);
+    width: var(--kanade-source-editor-tooltip-bridge-width);
+    height: 10px;
+    pointer-events: auto;
+    content: '';
+}
+
+.kanade-source-editor-tooltip__visual {
+    position: relative;
+}
+
+.kanade-source-editor-tooltip__surface {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    max-height: 44vh;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    background: var(--background-color-base);
+    border: 1px solid var(--border-color-base);
+    border-radius: 2px;
+    box-shadow: 0 20px 48px var(--box-shadow-color-alpha-base);
+}
+
+.kanade-source-editor-tooltip__tail {
+    position: absolute;
+    z-index: 2;
+    left: calc(var(--kanade-source-editor-tooltip-tail-left) - 6px);
+    box-sizing: border-box;
+    width: 12px;
+    height: 12px;
+    background: var(--background-color-base);
+    transform: rotate(45deg);
+    pointer-events: auto;
+}
+
+.kanade-source-editor-tooltip--above::before {
+    top: 100%;
+}
+
+.kanade-source-editor-tooltip--above .kanade-source-editor-tooltip__visual {
+    animation: kanade-source-editor-tooltip-in-down 0.2s ease forwards;
+}
+
+.kanade-source-editor-tooltip--above .kanade-source-editor-tooltip__tail {
+    bottom: -5px;
+    border-right: 1px solid var(--border-color-base);
+    border-bottom: 1px solid var(--border-color-base);
+}
+
+.kanade-source-editor-tooltip--below::before {
+    bottom: 100%;
+}
+
+.kanade-source-editor-tooltip--below .kanade-source-editor-tooltip__visual {
+    animation: kanade-source-editor-tooltip-in-up 0.2s ease forwards;
+}
+
+.kanade-source-editor-tooltip--below .kanade-source-editor-tooltip__tail {
+    top: -5px;
+    border-top: 1px solid var(--border-color-base);
+    border-left: 1px solid var(--border-color-base);
+}
+
+.kanade-source-editor-tooltip--closing.kanade-source-editor-tooltip--above
+    .kanade-source-editor-tooltip__visual {
+    animation: kanade-source-editor-tooltip-out-up 0.2s ease forwards;
+}
+
+.kanade-source-editor-tooltip--closing.kanade-source-editor-tooltip--below
+    .kanade-source-editor-tooltip__visual {
+    animation: kanade-source-editor-tooltip-out-down 0.2s ease forwards;
+}
+
+.kanade-source-editor-tooltip__title {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 0.7em 0.85em 0.55em;
+    color: var(--color-emphasized);
+    font-size: 1.05em;
+    font-weight: 700;
+    line-height: 1.3;
+    background: var(--background-color-base);
+    border: 0;
+    border-bottom: 1px solid var(--border-color-muted);
+}
+
+.kanade-source-editor-tooltip__citation-title {
+    padding: 0.65em 0.85em 0;
+    color: var(--color-emphasized);
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.kanade-source-editor-tooltip__body {
+    padding: 0.55em 0.75em 0.7em;
+}
+
+.kanade-source-editor-tooltip__note {
+    padding: 0.7em 0.9em;
+    white-space: pre-wrap;
+    color: var(--kanade-source-editor-foreground);
+}
+
+.kanade-source-editor-tooltip__details {
+    padding: 0.7em 0.9em;
+    border-bottom: 1px solid var(--border-color-muted);
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.kanade-source-editor-tooltip__details-label {
+    display: block;
+    margin-bottom: 0.35em;
+}
+
+.kanade-source-editor-tooltip__code {
+    display: inline;
+    color: var(--kanade-source-editor-foreground);
+    background: var(--kanade-source-editor-background);
+    font-family: monospace;
+}
+
+.kanade-source-editor-tooltip__missing {
+    margin: 0;
+    padding: 0.7em 0.9em;
+    color: var(--color-subtle);
+}
+
+.kanade-source-editor-tooltip__row {
+    display: block;
+    padding: 0.18em 0 0.18em 2em;
+    border: 0;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    text-indent: -2em;
+    white-space: pre-wrap;
+}
+
+.kanade-source-editor-tooltip__row:last-child {
+    padding-bottom: 0;
+}
+
+.kanade-source-editor-tooltip__key {
+    display: inline;
+    margin-inline-end: 0.65em;
+    color: var(--color-emphasized);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.kanade-source-editor-tooltip__key:not(:first-child) {
+    margin-inline-start: 2em;
+}
+
+.kanade-source-editor-tooltip__value {
+    display: inline;
+    color: var(--kanade-source-editor-foreground);
+    font-family: monospace;
+    font-weight: normal;
+}
+
+.kanade-source-editor-tooltip__citation-title
+    .kanade-source-editor-tooltip__add {
+    margin-inline-start: 0.4em;
+    font-weight: normal;
+}
+
+.kanade-source-editor-tooltip__source-link {
+    color: inherit;
+    cursor: text;
+    text-decoration: none;
+}
+
+.kanade-source-editor-tooltip__key--modified,
+.kanade-source-editor-tooltip__value--modified,
+.kanade-source-editor-tooltip__details--modified,
+.kanade-source-editor-tooltip__note--modified {
+    background: var(--background-color-progressive-subtle);
+    border-radius: 2px;
+    box-shadow: inset 0 -2px var(--border-color-progressive);
+}
+
+.kanade-source-editor-tooltip__edit,
+.kanade-source-editor-tooltip__add {
+    padding: 0.15em 0.3em;
+    border: 0;
+    border-radius: 2px;
+    background: var(--background-color-transparent);
+    color: var(--color-base);
+    font: inherit;
+    text-indent: 0;
+    cursor: pointer;
+}
+
+.kanade-source-editor-tooltip__edit {
+    margin-inline-start: 0.3em;
+}
+
+.kanade-source-editor-tooltip__edit:hover:not([aria-disabled='true']),
+.kanade-source-editor-tooltip__add:hover:not([aria-disabled='true']) {
+    background: var(--background-color-button-quiet--hover);
+    color: var(--color-base--hover);
+}
+
+.kanade-source-editor-tooltip__edit:active:not([aria-disabled='true']),
+.kanade-source-editor-tooltip__add:active:not([aria-disabled='true']) {
+    background: var(--background-color-button-quiet--active);
+    color: var(--color-emphasized);
+}
+
+.kanade-source-editor-tooltip__duplicate {
+    margin-inline-end: 0.3em;
+    color: var(--color-warning);
+}
+
+.kanade-source-editor-tooltip__actions {
+    display: inline-block;
+    white-space: nowrap;
+    text-indent: 0;
+}
+
+.kanade-source-editor-tooltip__icon {
+    display: inline-block;
+    width: 0.85em;
+    height: 0.85em;
+    fill: currentColor;
+    vertical-align: -0.1em;
+}
+
+.kanade-source-editor-tooltip__icon-rtl,
+.kanade-source-editor-tooltip__icon:dir(rtl)
+    .kanade-source-editor-tooltip__icon-ltr {
+    display: none;
+}
+
+.kanade-source-editor-tooltip__icon:dir(rtl)
+    .kanade-source-editor-tooltip__icon-rtl {
+    display: inline;
+}
+
+.kanade-source-editor-tooltip__icon--flip-rtl:dir(rtl) {
+    transform: scaleX(-1);
+}
+
+.kanade-source-editor-tooltip__add {
+    margin: 0.4em 0.75em 0.7em;
+}
+
+.kanade-source-editor-tooltip [aria-disabled='true'] {
+    color: var(--color-disabled);
+    cursor: not-allowed;
+}
+
+.kanade-source-editor-tooltip button:focus-visible,
+.kanade-source-editor-tooltip__edit-input:focus-visible {
+    outline: 2px solid var(--border-color-progressive--focus);
+    outline-offset: 1px;
+}
+
+.kanade-source-editor-tooltip__edit-form {
+    padding: 0.6em 0.9em;
+    white-space: normal;
+    text-indent: 0;
+}
+
+.kanade-source-editor-tooltip__edit-input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0.35em 0 0.7em;
+    border: 1px solid var(--border-color-base);
+    border-radius: 2px;
+    padding: 0.4em;
+    background: var(--background-color-base);
+    color: var(--color-base);
+    font: inherit;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.kanade-source-editor-tooltip__edit-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+textarea.kanade-source-editor-tooltip__edit-input {
+    min-height: calc(3.6em + 2px);
+    line-height: 1.4;
+}
+
+.kanade-source-editor-tooltip__edit-actions button {
+    padding: 0.3em 0.7em;
+    border: 1px solid var(--border-color-base);
+    border-radius: 2px;
+    background: var(--background-color-interactive-subtle);
+    color: var(--color-base);
+    font: inherit;
+    cursor: pointer;
+}
+
+.kanade-source-editor-tooltip__edit-actions button:hover {
+    background: var(--background-color-interactive-subtle--hover);
+}
+
+.kanade-source-editor-tooltip__edit-actions button:active {
+    background: var(--background-color-interactive-subtle--active);
+}
+
+.kanade-source-editor-tooltip__edit-error {
+    color: var(--color-error);
+}
+
+.kanade-source-editor-tooltip__inline-target {
+    cursor: text;
+}
+
+.kanade-source-editor-tooltip__inline-target:empty::after {
+    display: inline-block;
+    min-width: 2em;
+    min-height: 1em;
+    content: '';
+}
+
+.kanade-source-editor-tooltip__inline-target:focus-visible {
+    outline: 2px solid var(--border-color-progressive--focus);
+    outline-offset: 1px;
+}
+
+.kanade-source-editor-tooltip__inline-add {
+    margin: 0 0 0 0.3em;
+}
+
+.kanade-source-editor-tooltip__inline-editor {
+    display: inline;
+    background: var(--background-color-progressive-subtle);
+    border-radius: 2px;
+    box-decoration-break: clone;
+}
+
+.kanade-source-editor-tooltip__row
+    > .kanade-source-editor-tooltip__inline-editor:not(:first-child) {
+    margin-inline-start: 2em;
+}
+
+.kanade-source-editor-tooltip__surface
+    > .kanade-source-editor-tooltip__inline-editor {
+    display: block;
+    padding: 0.7em 0.9em;
+}
+
+.kanade-source-editor-tooltip__inline-editor
+    > .kanade-source-editor-tooltip__note {
+    display: inline;
+    padding: 0;
+}
+
+.kanade-source-editor-tooltip__inline-draft {
+    padding: 0.3em 0.75em;
+    white-space: pre-wrap;
+}
+
+.kanade-source-editor-tooltip__inline-target[contenteditable] {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    white-space: pre-wrap;
+}
+
+.kanade-source-editor-tooltip__inline-target[data-kanade-source-editor-placeholder]:empty::after {
+    content: attr(data-kanade-source-editor-placeholder);
+    color: var(--color-subtle);
+    font-weight: normal;
+}
+
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__edit-actions {
+    display: inline;
+    white-space: nowrap;
+}
+
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__edit-error:not([hidden]) {
+    display: block;
+    white-space: normal;
+}
+
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__edit-actions
+    button,
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__inline-edit:not([hidden]),
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__inline-add {
+    display: inline;
+    margin: 0;
+    margin-inline-start: 0.3em;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+}
+
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__edit-actions
+    button:hover:not(:disabled),
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__inline-edit:hover:not(
+        [aria-disabled='true']
+    ),
+.kanade-source-editor-tooltip--lightweight
+    .kanade-source-editor-tooltip__inline-add:hover:not(
+        [aria-disabled='true']
+    ) {
+    text-decoration: underline;
+}
+
+.kanade-source-editor-tooltip__link {
+    display: inline;
+    color: var(--color-link);
+    overflow-wrap: anywhere;
+    cursor: text;
+    text-decoration: none;
+}
+
+.kanade-source-editor-page-preview {
+    --kanade-source-editor-page-preview-tail-left: 26px;
+    --kanade-source-editor-page-preview-bridge-left: 0;
+    --kanade-source-editor-page-preview-bridge-width: 100%;
+
+    position: fixed;
+    z-index: 1;
+    box-sizing: border-box;
+    width: min(330px, calc(100vw - 24px));
+    color: var(--kanade-source-editor-foreground, rgb(32, 33, 34));
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    pointer-events: auto;
+}
+
+.kanade-source-editor-page-preview__surface {
+    box-sizing: border-box;
+    max-height: calc(100vh - 24px);
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid rgb(162, 169, 177);
+    border-radius: 3px;
+    padding: 14px 16px;
+    background: var(--kanade-source-editor-background, white);
+    box-shadow: 0 3px 12px rgb(0 0 0 / 16%);
+}
+
+.kanade-source-editor-page-preview::before {
+    position: absolute;
+    left: var(--kanade-source-editor-page-preview-bridge-left);
+    width: var(--kanade-source-editor-page-preview-bridge-width);
+    height: 10px;
+    content: '';
+}
+
+.kanade-source-editor-page-preview__tail {
+    position: absolute;
+    left: calc(var(--kanade-source-editor-page-preview-tail-left) - 6px);
+    box-sizing: border-box;
+    width: 12px;
+    height: 12px;
+    background: var(--kanade-source-editor-background, white);
+    transform: rotate(45deg);
+}
+
+.kanade-source-editor-page-preview--above::before {
+    top: 100%;
+}
+
+.kanade-source-editor-page-preview--below::before {
+    bottom: 100%;
+}
+
+.kanade-source-editor-page-preview--above
+    .kanade-source-editor-page-preview__tail {
+    bottom: -5px;
+    border-right: 1px solid rgb(162, 169, 177);
+    border-bottom: 1px solid rgb(162, 169, 177);
+}
+
+.kanade-source-editor-page-preview--below
+    .kanade-source-editor-page-preview__tail {
+    top: -5px;
+    border-top: 1px solid rgb(162, 169, 177);
+    border-left: 1px solid rgb(162, 169, 177);
+}
+
+.kanade-source-editor-page-preview__title {
+    display: block;
+    color: rgb(32, 51, 204);
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.kanade-source-editor-page-preview__title:hover {
+    text-decoration: underline;
+}
+
+.kanade-source-editor-page-preview__description {
+    margin-top: 2px;
+    color: rgb(84, 89, 93);
+    font-size: 0.9em;
+}
+
+.kanade-source-editor-page-preview__extract {
+    display: -webkit-box;
+    margin: 10px 0 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
+
+@keyframes kanade-source-editor-tooltip-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes kanade-source-editor-tooltip-in-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes kanade-source-editor-tooltip-out-up {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes kanade-source-editor-tooltip-out-down {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .kanade-source-editor-tooltip .kanade-source-editor-tooltip__visual {
+        animation: none;
+    }
+}

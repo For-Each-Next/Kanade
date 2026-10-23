@@ -1,0 +1,77 @@
+/**
+ * @file src/rev-copy/features/revision-row/row.css
+ * Purpose: Scope responsive wikitext and inline action-link styles to RevCopy.
+ *
+ * Table of contents:
+ * 1. Row layout
+ * 2. Plain inline code
+ * 3. Copy actions
+ * 4. Focus and loading feedback
+ * 5. Print visibility
+ */
+
+.kanade-rev-copy-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5em 0.75em;
+    margin: 0;
+    font-size: 0.875em;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+code.kanade-rev-copy-page,
+code.kanade-rev-copy-permalink,
+.kanade-rev-copy-revision-wikitext {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font-family: var(--font-family-monospace, monospace);
+    font-size: 1em;
+}
+
+.kanade-rev-copy-row code[role='button'] {
+    cursor: text;
+    user-select: text;
+}
+
+.kanade-rev-copy-actions {
+    display: inline;
+    min-width: 0;
+}
+
+.kanade-rev-copy-action-bracket,
+.kanade-rev-copy-action-separator {
+    color: var(--color-subtle, #54595d);
+}
+
+.kanade-rev-copy-action {
+    color: var(--color-progressive, #36c);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.kanade-rev-copy-action:hover {
+    text-decoration: underline;
+}
+
+.kanade-rev-copy-action:focus-visible,
+.kanade-rev-copy-row code[role='button']:focus-visible {
+    outline: 2px solid var(--color-progressive, #36c);
+    outline-offset: 2px;
+}
+
+.kanade-rev-copy-action[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: default;
+}
+
+@media print {
+    .kanade-rev-copy-row {
+        display: none;
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "enwikiTitle": "Toem 2",
+    "registerNewPage": true,
+    "pageName": "摄影冒险2",
+    "name": "摄影冒险2",
+    "englishName": "Toem 2",
+    "developers": "Something We Made",
+    "publishers": "=",
+    "platforms": "[[Windows]]; [[macOS]]; [[Linux]]; [[任天堂Switch]]; [[任天堂Switch 2]]; [[PlayStation 5]]",
+    "year": "2026年",
+    "genres": "[[冒险游戏|冒险]]",
+    "metacriticScore": "PC:81",
+    "metacriticScoreSourceUrl": "https://www.metacritic.com/game/toem-2/",
+    "openCriticRecommend": "88",
+    "openCriticRecommendSourceUrl": "https://opencritic.com/game/21441/-",
+    "additionalProse": "游戏为《[[TOEM]]》（2021年）的续作。",
+    "localizedName": {
+        "name": "摄影冒险2",
+        "official": true,
+        "hans": true,
+        "sourceUrl": "https://store.steampowered.com/app/2900640/?l=schinese"
+    },
+    "selectedStubTags": ["adventure-videogame-stub"]
+}

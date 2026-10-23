@@ -1,0 +1,134 @@
+/**
+ * @file src/rev-copy/features/section-links/styles.css
+ * Purpose: Hang section copy controls in the margin without moving native heading text.
+ *
+ * Table of contents:
+ * 1. Hanging heading control and focus
+ * 2. Copy options popup
+ * 3. Print behavior
+ */
+
+.kanade-rev-copy-section-control {
+    position: relative;
+    display: inline;
+    user-select: none;
+}
+
+.kanade-rev-copy-section-positioned {
+    position: relative;
+}
+
+.kanade-rev-copy-section-page-heading > .kanade-rev-copy-section-control {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    block-size: 1lh;
+}
+
+#mw-content-text
+    :is(
+        h2,
+        h3,
+        h4,
+        h5,
+        h6
+    ).kanade-rev-copy-section-heading.kanade-rev-copy-section-unclipped,
+:is(
+    #firstHeading,
+    h1.mw-first-heading,
+    h1.firstHeading
+).kanade-rev-copy-section-unclipped {
+    overflow: visible;
+}
+
+#mw-content-text
+    .kanade-rev-copy-section-heading.kanade-rev-copy-section-flow-root,
+:is(
+    #firstHeading,
+    h1.mw-first-heading,
+    h1.firstHeading
+).kanade-rev-copy-section-flow-root {
+    display: flow-root;
+}
+
+.kanade-rev-copy-section-trigger {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0.35em;
+    opacity: 0;
+    text-decoration: none;
+}
+
+.kanade-rev-copy-section-page-heading .kanade-rev-copy-section-trigger {
+    font-size: min(1em, 1rem);
+    inset-inline-end: 0.2em;
+}
+
+.kanade-rev-copy-section-heading:hover .kanade-rev-copy-section-trigger,
+.kanade-rev-copy-section-heading:focus-within .kanade-rev-copy-section-trigger,
+.kanade-rev-copy-section-control.is-open .kanade-rev-copy-section-trigger {
+    opacity: 1;
+}
+
+.kanade-rev-copy-section-trigger,
+.kanade-rev-copy-section-action {
+    color: var(--color-progressive, #36c);
+    cursor: pointer;
+}
+
+.kanade-rev-copy-section-trigger:focus-visible,
+.kanade-rev-copy-section-action:focus-visible {
+    outline: 2px solid var(--border-color-progressive, #36c);
+    outline-offset: 2px;
+}
+
+.kanade-rev-copy-section-trigger[aria-disabled='true'] {
+    color: var(--color-disabled, #72777d);
+    cursor: wait;
+}
+
+.kanade-rev-copy-section-popup {
+    position: absolute;
+    inset-block-start: calc(100% + 0.2rem);
+    inset-inline-start: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color-base, #a2a9b1);
+    border-radius: 2px;
+    background: var(--background-color-base, #fff);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+    color: var(--color-base, #202122);
+    font-family: var(--font-family-base, sans-serif);
+    font-size: 0.875rem;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.6;
+}
+
+.kanade-rev-copy-section-action {
+    text-decoration: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.kanade-rev-copy-section-action:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+    .kanade-rev-copy-section-trigger {
+        font-size: min(1em, 1rem);
+        inset-inline-end: 0.2em;
+    }
+}
+
+@media print {
+    .kanade-rev-copy-section-control {
+        display: none;
+    }
+}

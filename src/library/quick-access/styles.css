@@ -1,0 +1,31 @@
+/**
+ * @file src/library/quick-access/styles.css
+ * Purpose: Position the shared quick-access controls within the page viewport.
+ * Contents: Dock layout, action limits, and print visibility.
+ */
+
+.kanade-quick-access {
+    position: fixed;
+    inset-block-end: calc(16px + env(safe-area-inset-bottom, 0px));
+    inset-inline-end: calc(16px + env(safe-area-inset-right, 0px));
+    z-index: 90;
+    max-inline-size: calc(100vw - 32px);
+    max-block-size: calc(100dvh - 32px);
+    overflow: auto;
+}
+.kanade-quick-access__actions {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    min-inline-size: 0;
+}
+.kanade-quick-access__actions > * {
+    max-inline-size: 100%;
+}
+@media print {
+    .kanade-quick-access {
+        display: none;
+    }
+}

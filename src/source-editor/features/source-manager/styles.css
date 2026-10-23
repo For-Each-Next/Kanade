@@ -1,0 +1,92 @@
+/**
+ * @file src/source-editor/features/source-manager/styles.css
+ * Purpose: Arrange related controls in columns; Codex owns component appearance.
+ *
+ * Contents: Layout and accessible labels.
+ */
+
+/* Keep the owned desktop width when the host loads Codex after these styles. */
+@media (min-width: 640px) {
+    .cdx-dialog.kanade-source-editor-source-manager,
+    .cdx-dialog.kanade-source-editor-source-manager__draft-dialog,
+    .cdx-dialog.kanade-source-editor-source-manager__tool-dialog {
+        max-width: 64rem;
+    }
+}
+
+.kanade-source-editor-source-manager__dialog-body-content {
+    display: flow-root;
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__loading {
+    display: grid;
+    gap: 0.35em;
+}
+
+.kanade-source-editor-source-manager__existing-row {
+    align-items: center;
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.kanade-source-editor-source-manager__existing-summary {
+    display: grid;
+    gap: var(--spacing-25, 4px);
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__existing-name,
+.kanade-source-editor-source-manager__existing-title,
+.kanade-source-editor-source-manager__existing-meta {
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__existing-title {
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__field-error {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__source-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-source-manager__footer {
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kanade-source-editor-source-manager__footer-actions {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    justify-content: end;
+    min-width: 0;
+}
+
+@media (max-width: 639px) {
+    .kanade-source-editor-source-manager__existing-row {
+        align-items: start;
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .kanade-source-editor-source-manager__existing-row
+        > .kanade-source-editor-source-manager__source-actions {
+        grid-column: 2;
+    }
+
+    .kanade-source-editor-source-manager__footer-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

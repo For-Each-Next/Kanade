@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible problem in a Kanade tool.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Include only public or synthetic examples. Remove account details, tokens,
+        unpublished drafts, and other personal information. Report security issues
+        privately to the project owner; do not publish exploit details here.
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Affected tool
+      options:
+        - Source Editor
+        - Revision Copy
+        - Article Creator
+        - Article Assessor
+        - Shared build or installation
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Version and environment
+      description: Kanade version, wiki, browser, interface language, and installation method.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include a public page/revision or a small synthetic source example where useful.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Describe the result and any visible error. Do not reproduce a live save just to gather evidence.
+    validations:
+      required: true

@@ -1,0 +1,689 @@
+/**
+ * @file src/vg-stub-creator/features/creator/dialogs/main-dialog.css
+ * Purpose: Arranges responsive article fields, metadata controls, and dialog review content.
+ *
+ * Table of contents:
+ * 1. Styles and responsive rules
+ */
+
+.kanade-vg-stub-creator-dialog.cdx-dialog {
+    max-width: 72rem;
+}
+
+.kanade-vg-stub-creator-dialog
+    fieldset:not(.kanade-vg-stub-creator-metadata-section) {
+    border: var(--border-width-base, 1px) solid
+        var(--border-color-base, #a2a9b1);
+    min-width: 0;
+    padding: var(--spacing-75, 12px) var(--spacing-100, 16px);
+}
+
+.kanade-vg-stub-creator-fields-grid {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-100, 16px) var(--spacing-150, 24px);
+    grid-template-columns: minmax(0, 1fr);
+    margin-block-end: var(--spacing-150, 24px);
+}
+
+.kanade-vg-stub-creator-field-column {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-form-field--wide {
+    grid-column: 1 / -1;
+}
+
+.kanade-vg-stub-creator-field-layout,
+.kanade-vg-stub-creator-field-inputs {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-metadata-editor,
+.kanade-vg-stub-creator-metadata-section {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-metadata-list,
+.kanade-vg-stub-creator-metadata-reference-list,
+.kanade-vg-stub-creator-source-list {
+    list-style: none;
+    margin: 0;
+    padding-inline-start: 0;
+}
+
+.kanade-vg-stub-creator-metadata-item {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-metadata-name {
+    align-items: center;
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    max-width: 100%;
+    min-width: 0;
+}
+
+/* prettier-ignore */
+.kanade-vg-stub-creator-fields-grid .kanade-vg-stub-creator-metadata-item-name-input.cdx-text-input {
+    flex: 0 1 12rem;
+    width: 12rem;
+}
+
+.kanade-vg-stub-creator-metadata-related,
+.kanade-vg-stub-creator-metadata-extras {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-metadata-related {
+    display: contents;
+}
+
+.kanade-vg-stub-creator-metadata-extras {
+    margin-block-start: var(--spacing-50, 8px);
+}
+
+.kanade-vg-stub-creator-metadata-references {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-metadata-reference-list > li,
+.kanade-vg-stub-creator-source-list > li {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-metadata-reference-list a,
+.kanade-vg-stub-creator-source-list a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-vg-stub-creator-source-list > li > .cdx-button {
+    flex-shrink: 0;
+}
+
+.kanade-vg-stub-creator-dialog .kanade-vg-stub-creator-related-section {
+    display: contents;
+    margin: 0;
+}
+
+.kanade-vg-stub-creator-related-list {
+    display: contents;
+    list-style: none;
+    margin: 0;
+}
+
+.kanade-vg-stub-creator-related-item {
+    align-items: center;
+    display: flex;
+    flex: 0 1 auto;
+    gap: var(--spacing-50, 8px);
+    max-width: 100%;
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-related-value {
+    align-items: center;
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-vg-stub-creator-fields-grid
+    .kanade-vg-stub-creator-related-value
+    > .cdx-text-input {
+    flex: 0 1 12rem;
+    width: 12rem;
+}
+
+/* prettier-ignore */
+.kanade-vg-stub-creator-fields-grid .kanade-vg-stub-creator-related-entry.cdx-text-input {
+    flex: 0 1 16rem;
+    width: 16rem;
+}
+
+.kanade-vg-stub-creator-dialog .kanade-vg-stub-creator-related-link {
+    align-items: center;
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    max-width: 100%;
+    min-height: var(--max-height-chip, 1.375rem);
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.kanade-vg-stub-creator-dialog .kanade-vg-stub-creator-related-link:hover {
+    cursor: pointer;
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-related-link:focus-visible {
+    outline: var(--outline-base--focus, 1px solid transparent);
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-related-link:is(
+        :link,
+        :visited,
+        :hover,
+        :focus,
+        :active
+    ) {
+    color: var(--color-progressive, #36c);
+    text-decoration: none;
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-related-link--missing:is(
+        :link,
+        :visited,
+        :hover,
+        :focus,
+        :active
+    ) {
+    color: var(--color-link-red, #d73333);
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-related-link--unchecked:is(
+        :link,
+        :visited,
+        :hover,
+        :focus,
+        :active
+    ) {
+    color: var(--color-base, #202122);
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-related-link--disabled:is(
+        :link,
+        :visited,
+        :hover,
+        :focus,
+        :active
+    ) {
+    color: var(--color-subtle, #54595d);
+    text-decoration: line-through;
+}
+
+.kanade-vg-stub-creator-dialog a:is(:link, :visited, :hover, :focus, :active) {
+    text-decoration: none;
+}
+
+.kanade-vg-stub-creator-dialog.kanade-vg-stub-creator-dialog--link-modifier
+    a:hover {
+    text-decoration: underline;
+}
+
+.kanade-vg-stub-creator-dialog.kanade-vg-stub-creator-dialog--link-modifier
+    .kanade-vg-stub-creator-related-link--disabled:hover {
+    text-decoration: underline line-through;
+}
+
+.kanade-vg-stub-creator-related-toolbar {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    margin-block-end: var(--spacing-100, 16px);
+}
+
+.kanade-vg-stub-creator-related-page-action.cdx-button {
+    flex: 0 0 auto;
+}
+
+.kanade-vg-stub-creator-fields-grid .cdx-text-input,
+.kanade-vg-stub-creator-fields-grid .cdx-text-area {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+.kanade-vg-stub-creator-dialog-body {
+    position: relative;
+}
+
+.kanade-vg-stub-creator-dialog-mask {
+    align-items: center;
+    background-color: color-mix(
+        in srgb,
+        var(--background-color-base, #fff) 88%,
+        transparent
+    );
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    position: absolute;
+    z-index: 2;
+}
+
+.kanade-vg-stub-creator-dialog-mask-panel {
+    max-width: min(24em, calc(100% - 2em));
+    width: 18em;
+}
+
+.kanade-vg-stub-creator-dialog-mask-text {
+    margin: 0.75em 0 0;
+    text-align: center;
+}
+
+.kanade-vg-stub-creator-dialog section {
+    margin-bottom: 1.5em;
+}
+
+.kanade-vg-stub-creator-dialog table {
+    margin: 0.5em 0;
+    width: 100%;
+}
+
+.kanade-vg-stub-creator-dialog th {
+    white-space: nowrap;
+}
+
+.kanade-vg-stub-creator-dialog .cdx-table {
+    max-width: 100%;
+}
+
+/* prettier-ignore */
+
+.kanade-vg-stub-creator-icon-button.cdx-button {
+    min-width: 2em;
+}
+
+.kanade-vg-stub-creator-field-controls {
+    display: grid;
+    gap: 0.5em;
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-field-controls--with-move {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+@media (max-width: 40em) {
+    .kanade-vg-stub-creator-metadata-name {
+        flex: 1 1 100%;
+    }
+
+    .kanade-vg-stub-creator-metadata-related {
+        display: flex;
+        flex: 1 1 100%;
+    }
+
+    .kanade-vg-stub-creator-metadata-item-name-input.cdx-text-input {
+        flex-grow: 1;
+    }
+
+    .kanade-vg-stub-creator-field-controls--with-move {
+        grid-template-columns: 1fr;
+    }
+}
+
+.kanade-vg-stub-creator-steam-helper {
+    display: grid;
+    gap: 0.75em;
+    margin-bottom: 0.5em;
+}
+
+.kanade-vg-stub-creator-steam-row {
+    align-items: start;
+    display: grid;
+    gap: 0.75em;
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.kanade-vg-stub-creator-steam-row--suggestions {
+    align-items: center;
+}
+
+.kanade-vg-stub-creator-steam-row > .cdx-button {
+    align-self: start;
+}
+
+.kanade-vg-stub-creator-steam-actions {
+    justify-self: start;
+}
+
+.kanade-vg-stub-creator-steam-suggestion {
+    overflow-wrap: anywhere;
+}
+
+.kanade-vg-stub-creator-steam-links {
+    margin: 0;
+}
+
+.kanade-vg-stub-creator-name-search {
+    margin: 0;
+}
+
+.kanade-vg-stub-creator-name-search > li:not(:first-child) {
+    margin-top: 0.35em;
+}
+
+.kanade-vg-stub-creator-horizontal-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.kanade-vg-stub-creator-horizontal-list-item:not(:first-child)::before {
+    content: ' · ';
+    white-space: pre;
+}
+
+.kanade-vg-stub-creator-name-settings-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    margin: 0;
+}
+
+.kanade-vg-stub-creator-name-fields {
+    display: grid;
+    gap: var(--spacing-100, 16px);
+    margin-block-end: var(--spacing-150, 24px);
+}
+
+.kanade-vg-stub-creator-dialog .kanade-vg-stub-creator-name-card.cdx-field,
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-name-lookup-group.cdx-field {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-card-heading {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    width: 100%;
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-name-usage-row.cdx-button {
+    max-width: none;
+    min-width: 0;
+    width: 100%;
+}
+
+.kanade-vg-stub-creator-name-usage-content {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-usage-chips {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    gap: var(--spacing-25, 4px);
+    min-width: 0;
+    position: relative;
+}
+
+.kanade-vg-stub-creator-name-usage-chip {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.kanade-vg-stub-creator-name-usage-chip::after {
+    box-sizing: border-box;
+    inset-block-start: calc(100% + var(--spacing-25, 4px));
+    inset-inline-start: 0;
+    max-width: 100%;
+    pointer-events: none;
+    position: absolute;
+    text-align: start;
+    white-space: normal;
+    width: max-content;
+    z-index: 3;
+}
+
+.kanade-vg-stub-creator-name-usage-chip:hover::after {
+    content: attr(title);
+}
+
+.kanade-vg-stub-creator-name-card-actions {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--spacing-75, 12px);
+    margin-inline-start: auto;
+}
+
+.kanade-vg-stub-creator-name-source-row {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-name-source-row
+    > .cdx-field {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-detail-field {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-card .cdx-text-input,
+.kanade-vg-stub-creator-name-card .cdx-text-area,
+.kanade-vg-stub-creator-name-lookup-group .cdx-text-input {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+.kanade-vg-stub-creator-name-markets {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-roles-grid {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role,
+.kanade-vg-stub-creator-name-role-page-status {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-main,
+.kanade-vg-stub-creator-name-redirect-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50, 8px) var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-main
+    > .kanade-vg-stub-creator-name-role-control,
+.kanade-vg-stub-creator-name-redirect-row
+    > .kanade-vg-stub-creator-name-role-control {
+    flex: 1 1 20rem;
+}
+
+.kanade-vg-stub-creator-name-role {
+    display: grid;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-vg-stub-creator-name-conversion-chips {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50, 8px);
+    max-width: 100%;
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-other-use-chip {
+    max-width: 18rem;
+}
+
+.kanade-vg-stub-creator-name-role-page-matches {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-25, 4px) var(--spacing-75, 12px);
+    max-width: 100%;
+}
+
+.kanade-vg-stub-creator-name-role-control {
+    align-items: center;
+    display: grid;
+    gap: var(--spacing-75, 12px);
+    grid-template-columns: fit-content(18rem) minmax(0, 1fr);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-choice {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50, 8px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-value {
+    align-items: center;
+    display: flex;
+    gap: var(--spacing-50, 8px);
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-value > .cdx-text-input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-name-role-value
+    > .kanade-vg-stub-creator-name-role-page-link {
+    flex-shrink: 0;
+}
+
+.kanade-vg-stub-creator-name-role-page-checks {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    max-width: 100%;
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-dialog
+    .kanade-vg-stub-creator-name-role-page-link:is(
+        :link,
+        :visited,
+        :hover,
+        :focus,
+        :active
+    ) {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--spacing-25, 4px);
+    max-width: 100%;
+}
+
+.kanade-vg-stub-creator-visually-hidden {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.kanade-vg-stub-creator-name-official-checkbox {
+    margin-inline-end: 0;
+}
+
+.kanade-vg-stub-creator-article-field-text textarea,
+textarea.kanade-vg-stub-creator-article-field-text {
+    min-height: 2.25em;
+    resize: vertical;
+}
+
+.kanade-vg-stub-creator-preview-card {
+    margin: 1em 0;
+}
+
+.kanade-vg-stub-creator-preview-card-description {
+    margin: 0 0 0.5em;
+}
+
+.kanade-vg-stub-creator-preview-card-text {
+    font-family: monospace;
+    font-size: 0.8125em;
+    line-height: 1.4;
+    margin: 0;
+    max-height: 14em;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.kanade-vg-stub-creator-citation {
+    margin: 1.25em 0;
+}
+
+@media (min-width: 60em) {
+    .kanade-vg-stub-creator-fields-grid--columns,
+    .kanade-vg-stub-creator-name-source-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 40em) {
+    .kanade-vg-stub-creator-steam-row {
+        grid-template-columns: 1fr;
+    }
+
+    .kanade-vg-stub-creator-name-source-row,
+    .kanade-vg-stub-creator-name-roles-grid,
+    .kanade-vg-stub-creator-name-role-control {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .kanade-vg-stub-creator-name-role-page-checks {
+        flex-basis: 100%;
+    }
+
+    .kanade-vg-stub-creator-name-card-heading {
+        align-items: start;
+        flex-wrap: wrap;
+    }
+}

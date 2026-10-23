@@ -1,0 +1,264 @@
+/**
+ * @file src/library/wikitext-highlighting/tokens.css
+ * Purpose: Share syntax token colors and emphasis without editor workflows.
+ * Contents: Token palettes; legacy class and color-variable names preserve compatibility.
+ */
+
+.kanade-source-editor-token--comment {
+    color: rgb(0, 0, 0) !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    text-decoration: none !important;
+    background: rgb(255, 240, 208) !important;
+}
+
+.kanade-source-editor-token--html-content-0,
+.kanade-source-editor-token--html-content-1,
+.kanade-source-editor-token--html-content-2,
+.kanade-source-editor-token--html-content-3,
+.kanade-source-editor-token--html-content-4 {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--html-content-0 {
+    background: rgb(246, 246, 246);
+    background: color-mix(
+        in srgb,
+        var(--kanade-source-editor-background) 96%,
+        var(--kanade-source-editor-foreground)
+    );
+}
+
+.kanade-source-editor-token--html-content-1 {
+    background: rgb(228, 228, 228);
+    background: color-mix(
+        in srgb,
+        var(--kanade-source-editor-background) 88%,
+        var(--kanade-source-editor-foreground)
+    );
+}
+
+.kanade-source-editor-token--html-content-2 {
+    background: rgb(218, 218, 218);
+    background: color-mix(
+        in srgb,
+        var(--kanade-source-editor-background) 83.5%,
+        var(--kanade-source-editor-foreground)
+    );
+}
+
+.kanade-source-editor-token--html-content-3,
+.kanade-source-editor-token--html-content-4 {
+    background: rgb(208, 208, 208);
+    background: color-mix(
+        in srgb,
+        var(--kanade-source-editor-background) 79%,
+        var(--kanade-source-editor-foreground)
+    );
+}
+
+.kanade-source-editor-token--html-tag {
+    color: var(--kanade-source-editor-foreground);
+    background: rgb(232, 232, 232);
+}
+
+.kanade-source-editor-token--pre {
+    color: rgb(32, 33, 34);
+    font-style: normal;
+    font-weight: normal;
+    background: transparent;
+}
+
+.kanade-source-editor-token--block-literal {
+    color: rgb(32, 33, 34);
+    font-style: normal;
+    font-weight: normal;
+    background: rgb(246, 246, 246) !important;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--math {
+    color: rgb(32, 33, 34);
+    font-style: normal;
+    font-weight: normal;
+    background: rgb(232, 240, 255) !important;
+}
+
+.kanade-source-editor-token--score {
+    color: rgb(32, 33, 34);
+    font-style: normal;
+    font-weight: normal;
+    background: rgb(255, 248, 224) !important;
+}
+
+.kanade-source-editor-token--nowiki {
+    color: rgb(32, 33, 34);
+    font-style: normal;
+    font-weight: normal;
+    background: rgb(248, 232, 232) !important;
+}
+
+.kanade-source-editor-token--heading {
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.kanade-source-editor-token--heading-2 {
+    font-size: 1.55em;
+    font-weight: normal;
+}
+
+.kanade-source-editor-token--heading-3 {
+    font-size: 1.32em;
+    font-weight: normal;
+}
+
+.kanade-source-editor-token--heading-2.kanade-source-editor-token--heading-text {
+    text-decoration-line: underline;
+    text-decoration-style: double;
+    text-underline-offset: 0.2em;
+}
+
+.kanade-source-editor-token--heading-3.kanade-source-editor-token--heading-text {
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-underline-offset: 0.2em;
+}
+
+.kanade-source-editor-token--heading-4 {
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+.kanade-source-editor-token--table {
+    color: rgb(119, 119, 119);
+}
+
+.kanade-source-editor-token--link,
+.kanade-source-editor-token--category,
+.kanade-source-editor-token--link-helper {
+    color: rgb(0, 0, 170);
+}
+
+.kanade-source-editor-token--link-text,
+.kanade-source-editor-token--link-helper {
+    font-weight: 600;
+}
+
+.kanade-source-editor-token--foreign-title {
+    color: var(--kanade-source-editor-foreground);
+    font-weight: normal;
+}
+
+.kanade-source-editor-token--wiki-markup,
+.kanade-source-editor-token--template-delimiter {
+    color: rgb(119, 119, 119);
+}
+
+.kanade-source-editor-token--file {
+    color: rgb(0, 0, 238);
+}
+
+.kanade-source-editor-token--file,
+.kanade-source-editor-token--file-link,
+.kanade-source-editor-token--image-template {
+    background: rgba(199, 255, 149, 0.75) !important;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--url {
+    color: rgb(0, 0, 238);
+}
+
+.kanade-source-editor-token--reference {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    font-style: normal;
+    background: rgb(243, 225, 247) !important;
+}
+
+/* Citation palettes also apply to references embedded in explanatory notes. */
+.kanade-source-editor-token--reference.kanade-source-editor-token--reference-blue {
+    background: rgb(230, 242, 255) !important;
+}
+
+.kanade-source-editor-token--reference.kanade-source-editor-token--reference-pink {
+    background: rgb(243, 225, 247) !important;
+}
+
+.kanade-source-editor-token--template-0 {
+    background: rgb(246, 246, 246);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--template-1 {
+    background: rgb(228, 228, 228);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--template-2 {
+    background: rgb(218, 218, 218);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--template-3,
+.kanade-source-editor-token--template-4 {
+    background: rgb(208, 208, 208);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--module-name,
+.kanade-source-editor-token--template-name {
+    color: rgb(85, 0, 153);
+    font-weight: bold;
+}
+
+.kanade-source-editor-token--parser-function {
+    color: rgb(255, 0, 0);
+}
+
+.kanade-source-editor-token--entity {
+    color: rgb(255, 0, 0);
+}
+
+.kanade-source-editor-token--parameter {
+    color: rgb(153, 0, 0);
+    font-style: normal;
+}
+
+.kanade-source-editor-token--language-conversion {
+    background: rgb(246, 246, 246);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.kanade-source-editor-token--language-variant {
+    font-style: italic;
+}
+
+.kanade-source-editor-token--bold {
+    font-weight: bold;
+}
+
+.kanade-source-editor-token--italic {
+    font-style: italic;
+}
+
+.kanade-source-editor-token--wiki-markup.kanade-source-editor-token--bold,
+.kanade-source-editor-token--wiki-markup.kanade-source-editor-token--italic {
+    font-style: normal;
+    font-weight: normal;
+}
+
+.kanade-source-editor-token--list {
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+    background: rgb(246, 246, 246);
+}

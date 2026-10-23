@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - name: Validate the annotated release checkpoint
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = tag
+          test "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" = "$GITHUB_SHA"
+      - name: Validate the release version
+        id: version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { appendFileSync, readFileSync } from 'node:fs';
+          const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
+          const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'));
+          const version = manifest.version;
+          const match = typeof version === 'string' && /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/u.exec(version);
+          assert.ok(match && !match[1]?.split('.').some((part) => /^0\d+$/u.test(part)), 'Invalid semantic version');
+          assert.equal(process.env.RELEASE_TAG, `v${version}`);
+          assert.equal(lock.version, version);
+          assert.equal(lock.packages[''].version, version);
+          appendFileSync(process.env.GITHUB_OUTPUT, `prerelease=${Boolean(match[1])}\n`);
+          NODE
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distribution
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: distribution
+          path: dist/
+      - name: Publish the project release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+        run: |
+          release_options=()
+          if [ "$RELEASE_PRERELEASE" = true ]; then
+            release_options+=(--prerelease --latest=false)
+          fi
+          gh release create "$RELEASE_TAG" dist/*.user.js dist/*.min.js dist/LICENSE.txt dist/manifest.json --verify-tag --generate-notes "${release_options[@]}"

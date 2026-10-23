@@ -1,0 +1,89 @@
+/**
+ * @file src/vg-stub-creator/features/creator/dialogs/shared.css
+ * Purpose: Arranges creator previews and responsive dialog actions.
+ * Contents: Preview columns, rendered source, and action layout.
+ */
+
+.kanade-vg-stub-creator-preview-dialog.cdx-dialog {
+    max-width: 88rem;
+}
+
+.kanade-vg-stub-creator-form-field,
+.kanade-vg-stub-creator-preview-summary {
+    max-width: 40rem;
+}
+
+.kanade-vg-stub-creator-preview-layout {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-150, 24px);
+    margin-block-end: var(--spacing-150, 24px);
+}
+
+.kanade-vg-stub-creator-preview-layout > .cdx-field {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-preview-result {
+    min-width: 0;
+}
+
+.kanade-vg-stub-creator-preview-result-title {
+    margin: 0 0 0.25em;
+}
+
+.kanade-vg-stub-creator-preview-rendered {
+    background-color: var(--background-color-base, #fff);
+    border: 1px solid var(--border-color-subtle, #eaecf0);
+    max-height: 35vh;
+    overflow: auto;
+    padding: var(--spacing-100, 16px);
+}
+
+@media (min-width: 960px) {
+    .kanade-vg-stub-creator-preview-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .kanade-vg-stub-creator-preview-rendered {
+        max-height: 60vh;
+    }
+}
+
+.kanade-vg-stub-creator-dialog-footer {
+    display: flex;
+    gap: var(--spacing-75, 12px);
+    justify-content: space-between;
+    width: 100%;
+}
+
+.kanade-vg-stub-creator-dialog-footer-actions,
+.kanade-vg-stub-creator-dialog-footer-peer-actions {
+    display: flex;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-vg-stub-creator-dialog-footer-actions {
+    margin-inline-start: auto;
+}
+
+@media (max-width: 639px) {
+    .kanade-vg-stub-creator-dialog-footer,
+    .kanade-vg-stub-creator-dialog-footer-actions,
+    .kanade-vg-stub-creator-dialog-footer-peer-actions {
+        align-items: stretch;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .kanade-vg-stub-creator-dialog-footer .cdx-button,
+    .kanade-vg-stub-creator-dialog-footer .cdx-menu-button {
+        max-width: none;
+        width: 100%;
+    }
+
+    .kanade-vg-stub-creator-dialog-footer .cdx-menu-button > .cdx-button {
+        max-width: none;
+        width: 100%;
+    }
+}

@@ -1,0 +1,11 @@
+/**
+ * @file src/source-editor/features/source-manager/dialogs/parameter-alias-dialog.css
+ * Purpose: Arrange related controls in columns; Codex owns component appearance.
+ *
+ * Contents: Layout and accessible labels.
+ */
+
+.kanade-source-editor-source-manager__parameter-alias-fields {
+    display: grid;
+    gap: var(--spacing-150, 24px);
+}

@@ -1,0 +1,56 @@
+/**
+ * @file src/rev-copy/features/advanced-copy/styles.css
+ * Purpose: Space advanced-copy fields while retaining Codex controls and skin tokens.
+ *
+ * Contents: Dialog width, field flow, generated wikitext, and print behavior.
+ */
+
+.kanade-rev-copy-advanced-dialog {
+    max-width: 42rem;
+}
+
+.kanade-rev-copy-advanced-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100, 1rem);
+    min-width: 0;
+}
+
+.kanade-rev-copy-advanced-form > .cdx-field {
+    min-width: 0;
+}
+
+.kanade-rev-copy-advanced-form .cdx-text-input,
+.kanade-rev-copy-advanced-form .cdx-text-area {
+    width: 100%;
+}
+
+.kanade-rev-copy-advanced-page-inputs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    align-items: end;
+    gap: var(--spacing-75, 0.75rem);
+}
+
+.kanade-rev-copy-advanced-page-input {
+    min-width: 0;
+}
+
+.kanade-rev-copy-advanced-output-control {
+    position: relative;
+}
+
+.kanade-rev-copy-advanced-progress {
+    position: absolute;
+    inset-block-start: 1px;
+    inset-inline: 1px;
+    height: 0.25rem;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+@media print {
+    .kanade-rev-copy-advanced-dialog {
+        display: none;
+    }
+}

@@ -1,0 +1,28 @@
+/**
+ * @file src/rev-copy/platform/mediawiki/notification.css
+ * Purpose: Position copy-success feedback independently of host notification areas.
+ * Contents: Scoped toast placement and print visibility.
+ */
+
+#kanade-rev-copy-copy-notification .cdx-toast,
+.kanade-rev-copy-notification-fallback {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    bottom: auto;
+    left: auto;
+    z-index: 1000;
+    width: fit-content;
+    max-width: calc(100vw - 2rem);
+    margin: 0;
+    transform: none;
+}
+#kanade-rev-copy-copy-notification .cdx-toast {
+    max-width: min(32rem, calc(100vw - 2rem));
+}
+@media print {
+    #kanade-rev-copy-copy-notification,
+    .kanade-rev-copy-notification-fallback {
+        display: none;
+    }
+}

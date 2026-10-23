@@ -1,0 +1,121 @@
+<!--
+@file src/wpvg-assessor/features/assessment/dialogs/category-dialog.vue
+Purpose: src / features / assessment / dialogs / category dialog module.
+
+Table of contents:
+1. Template
+-->
+
+<template>
+    <cdx-dialog
+        v-model:open="batchOpen"
+        class="kanade-wpvg-assessor-category-dialog"
+        :title="msg('batch.title')"
+        :lang="interfaceLocale"
+        :close-button-label="msg('dialog.cancel')"
+        :fixed-height="true"
+        @update:open="onBatchOpenChange"
+    >
+        <div class="kanade-wpvg-assessor-category-body" :aria-busy="batchBusy">
+            <div
+                class="kanade-wpvg-assessor-category-status"
+                aria-live="polite"
+                aria-atomic="true"
+            >
+                <cdx-message v-if="batchError" type="error">{{
+                    batchError
+                }}</cdx-message>
+                <cdx-progress-bar
+                    v-if="batchBusy"
+                    :aria-label="msg('batch.loading')"
+                />
+            </div>
+            <template v-if="batchArticle">
+                <h2 class="kanade-wpvg-assessor-category-title">
+                    {{ batchArticleLabel }}
+                </h2>
+                <iframe
+                    :key="batchArticle.state.talkTitle"
+                    class="kanade-wpvg-assessor-category-preview"
+                    :title="msg('batch.articlePreview')"
+                    sandbox=""
+                    referrerpolicy="no-referrer"
+                    :srcdoc="batchDocument"
+                ></iframe>
+                <cdx-field
+                    :is-fieldset="true"
+                    class="kanade-wpvg-assessor-category-class"
+                    :disabled="batchBusy"
+                >
+                    <template #label>{{ msg('batch.class') }}</template>
+                    <div class="kanade-wpvg-assessor-category-ratings">
+                        <cdx-button-group
+                            v-for="(buttons, index) in batchButtonGroups"
+                            :key="index"
+                            class="kanade-wpvg-assessor-category-rating-group"
+                            :buttons="buttons"
+                            :aria-label="
+                                buttons.map((button) => button.label).join(', ')
+                            "
+                            :disabled="batchBusy"
+                            @click="onBatchAction"
+                        />
+                    </div>
+                </cdx-field>
+                <details class="kanade-wpvg-assessor-category-review">
+                    <summary>{{ msg('batch.reviewLead') }}</summary>
+                    <pre>{{ batchPreview }}</pre>
+                    <cdx-field :disabled="batchBusy">
+                        <template #label>{{
+                            msg('dialog.talkSummary')
+                        }}</template>
+                        <cdx-text-input
+                            :model-value="batchSummary"
+                            :disabled="batchBusy"
+                            @update:model-value="setBatchSummary"
+                        />
+                    </cdx-field>
+                </details>
+            </template>
+            <cdx-message v-else-if="!batchBusy && !batchError" type="notice">{{
+                batchPendingSaves > 0
+                    ? msg('batch.pendingSaves', { count: batchPendingSaves })
+                    : batchFinished
+                      ? msg('batch.finished')
+                      : msg('batch.empty')
+            }}</cdx-message>
+        </div>
+        <template #footer>
+            <div class="kanade-wpvg-assessor-category-footer">
+                <p class="kanade-wpvg-assessor-category-help">
+                    {{ msg('batch.help') }}
+                </p>
+                <p
+                    v-if="batchArticle && batchPendingSaves > 0"
+                    class="kanade-wpvg-assessor-category-help"
+                    role="status"
+                >
+                    {{
+                        msg('batch.pendingSaves', { count: batchPendingSaves })
+                    }}
+                </p>
+                <div class="kanade-wpvg-assessor-category-actions">
+                    <cdx-button
+                        action="default"
+                        weight="quiet"
+                        @click="onBatchCancel"
+                        >{{ msg('dialog.cancel') }}</cdx-button
+                    >
+                    <cdx-button
+                        v-if="batchError && !batchArticle"
+                        action="progressive"
+                        weight="primary"
+                        :disabled="batchBusy"
+                        @click="onBatchRetry"
+                        >{{ msg('batch.retry') }}</cdx-button
+                    >
+                </div>
+            </div>
+        </template>
+    </cdx-dialog>
+</template>

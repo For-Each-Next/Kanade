@@ -1,0 +1,47 @@
+{{ArticleHistory
+| action1       = PR
+| action1date   = 2025年3月18日
+| action1link   = #同行评审
+| action1result = reviewed
+| action1oldid  = 86487617
+| action2       = GAN
+| action2date   = 2025-03-25
+| action2link   = #優良條目評選
+| action2result = listed
+| action2oldid  = 86570158
+| action3       = WAR
+| action3date   = 2025-04-29
+| action3link   = #甲級條目評審
+| action3result = approved
+| action3oldid  = 87034039
+| action4       = FAN
+| action4date   = 2025-05-13
+| action4link   = #典範條目評選
+| action4result = promoted
+| action4oldid  = 87270839
+| maindateFA    = 2025-06-03
+| dykdate       = 2025-03-19
+| dykentry      = [[武士道 (公司)|武士道]]启动《[[BanG Dream!]]》[[跨媒体制作]]企划后，{{Lj|Craft Egg}}对其颇有兴趣，而于2017年'''[[BanG_Dream!_少女樂團派對|推出了哪款音乐游戏]]'''？
+}}
+{{WikiProject banner shell|class=FA|
+{{WikiProject Video games |importance=Low}}
+{{ACG專題|importance=low}}
+{{音乐专题|importance=low}}
+{{日本专题|importance=low}}
+}}
+{{Section sizes|bytes_heatmap=ignore_ldr}}
+{{Maintained|{{User0|深鸣}}}}
+{{Translated page |1=en |2=BanG Dream! Girls Band Party! |3=多数内容为直接翻译，「玩法」章节根据来源重组，其他章节有所修改 |version=1261825527 |insertversion=86415282}}
+{{Copied
+| from1       = BanG Dream! 少女樂團派對
+| from_oldid1 = 86860415
+| to1         = 《BanG Dream! 少女乐团派对！》的开发
+| to_oldid1   = 86861415
+| date1       = 2025年4月16日
+| from2       = BanG Dream! 少女樂團派對
+| from_oldid2 = 87013970
+| to2         = BanG Dream!
+| to_diff2    = 87014671
+| to_oldid2   = 87013068
+| date2       = 2025年4月27日
+}}

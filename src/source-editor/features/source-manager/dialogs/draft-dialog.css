@@ -1,0 +1,132 @@
+/**
+ * @file src/source-editor/features/source-manager/dialogs/draft-dialog.css
+ * Purpose: Arrange related controls in columns; Codex owns component appearance.
+ *
+ * Contents: Layout and accessible labels.
+ */
+
+.kanade-source-editor-source-manager__draft-editor {
+    display: grid;
+    gap: var(--spacing-150, 24px);
+    min-inline-size: 0;
+}
+
+.kanade-source-editor-source-manager__draft-header {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-150, 24px);
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kanade-source-editor-source-manager__reference-identity {
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__reference-name-preview {
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__parameter-editor,
+.kanade-source-editor-source-manager__parameter-list {
+    display: grid;
+    gap: var(--spacing-100, 16px);
+}
+
+.kanade-source-editor-source-manager__parameter-editor {
+    container-type: inline-size;
+}
+
+.kanade-source-editor-source-manager__parameter-list {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.kanade-source-editor-source-manager__parameter-table-header,
+.kanade-source-editor-source-manager__parameter-table-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__parameter-row {
+    align-items: start;
+    display: grid;
+    gap: var(--spacing-100, 16px);
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+}
+
+.kanade-source-editor-source-manager__parameter-cell {
+    min-width: 0;
+}
+
+.kanade-source-editor-source-manager__draft-header > *,
+.kanade-source-editor-source-manager__parameter-editor,
+.kanade-source-editor-source-manager__parameter-list,
+.kanade-source-editor-source-manager__parameter-row {
+    min-inline-size: 0;
+}
+
+.kanade-source-editor-source-manager__parameter-alias-caption {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__parameter-alias-action--excluded::after {
+    display: grid;
+}
+
+.kanade-source-editor-source-manager__original-source pre,
+.kanade-source-editor-source-manager__source-preview {
+    display: block;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-source-editor-source-manager__original-source pre {
+    max-width: 100%;
+    overflow: auto;
+}
+
+.kanade-source-editor-source-manager__alias-suggestion {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50, 8px);
+}
+
+.kanade-source-editor-source-manager__alias-suggestion-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+}
+
+.kanade-source-editor-source-manager__external-link {
+    align-items: center;
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+    min-width: var(--min-size-interactive-pointer, 32px);
+}
+
+.kanade-source-editor-source-manager__parameter-actions {
+    align-items: start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-75, 12px);
+}
+
+@container (min-width: 42rem) {
+    .kanade-source-editor-source-manager__parameter-list {
+        grid-template-columns: min-content minmax(min-content, 1fr) fit-content(
+                12rem
+            );
+    }
+}
+
+@media (max-width: 639px) {
+    .kanade-source-editor-source-manager__draft-header,
+    .kanade-source-editor-source-manager__parameter-list {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

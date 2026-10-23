@@ -1,0 +1,30 @@
+# Dependencies and generated distributions.
+node_modules/
+/dist/
+
+# Verification output and disposable tool caches.
+/test-results/
+/playwright-report/
+/blob-report/
+/coverage/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# Local npm diagnostics.
+npm-debug.log*
+
+# Local editor, assistant, and operating-system files.
+/.idea/
+/.ai/
+.DS_Store
+._*
+*.swp
+*.swo
+*~
+
+# Local environment values may contain credentials or machine-specific paths.
+.env
+.env.*
+!.env.example
+!.env.*.example

@@ -1,0 +1,13 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "types": ["node", "types-mediawiki"]
+    },
+    "include": [
+        "../../src/library/**/*.ts",
+        "../../tests/library/**/*.ts",
+        "../../scripts/build-assets.ts",
+        "../../tests/build/**/*.ts",
+        "../../playwright.config.ts"
+    ]
+}

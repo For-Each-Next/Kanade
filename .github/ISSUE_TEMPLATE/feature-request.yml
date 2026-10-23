@@ -1,0 +1,27 @@
+name: Feature request
+description: Describe a contributor workflow that Kanade could improve.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and affected workflow
+      description: Who encounters the problem, in which tool and wiki, and what is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired result
+      description: Give a concrete example of the behavior that would help.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing alternatives
+      description: Mention relevant Wikimedia features, tools, or workarounds you have tried.
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints
+      description: Note language, device, accessibility, connection, or data-recovery needs.

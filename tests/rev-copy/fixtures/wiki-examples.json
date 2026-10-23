@@ -1,0 +1,219 @@
+{
+    "homeWiki": "w:zh",
+    "retrievedAt": "2026-10-07T09:16:11.231Z",
+    "description": "Pinned live revision metadata from each Wikimedia Action API. Observed configs and boundary excerpts come from the pinned HTML when available. Short text excerpts supply provenance for local visual fixtures and are not full page snapshots.",
+    "examples": [
+        {
+            "key": "zh",
+            "host": "zh.wikipedia.org",
+            "page": "Intel 1103",
+            "pageId": 9599124,
+            "namespace": 0,
+            "revision": 94203973,
+            "parent": 94203875,
+            "timestamp": "2026-09-05T12:00:26Z",
+            "language": "zh",
+            "prefix": "",
+            "excerpt": "Intel 1103是由英特尔（Intel）开发及制造的动态随机存储器（DRAM）集成电路。芯片于1970年10月面世，是最早的商业化DRAM集成电路。",
+            "sourceUrl": "https://zh.wikipedia.org/wiki/Intel_1103",
+            "permalinkUrl": "https://zh.wikipedia.org/w/index.php?title=Intel_1103&oldid=94203973",
+            "apiSourceUrl": "https://zh.wikipedia.org/w/api.php?action=query&prop=revisions&revids=94203973&rvprop=ids%7Ctimestamp&format=json&formatversion=2",
+            "apiResponse": {
+                "batchcomplete": true,
+                "query": {
+                    "pages": [
+                        {
+                            "pageid": 9599124,
+                            "ns": 0,
+                            "title": "Intel 1103",
+                            "revisions": [
+                                {
+                                    "revid": 94203973,
+                                    "parentid": 94203875,
+                                    "timestamp": "2026-09-05T12:00:26Z"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "observedConfig": {
+                "wgPageContentLanguage": "zh",
+                "wgRevisionId": 94203973,
+                "wgCurRevisionId": 94203973,
+                "wgPageName": "Intel_1103",
+                "wgTitle": "Intel 1103",
+                "wgArticleId": 9599124,
+                "wgNamespaceNumber": 0,
+                "wgIsArticle": true,
+                "wgAction": "view"
+            },
+            "contentBoundaryExcerpt": "<div class=\"vector-body-before-content\">\n\t\t\t\t\t\t\t<div class=\"mw-indicators\">\n\t\t<div id=\"mw-indicator-noteTA-f3e2a619\" class=\"mw-indicator\"><div class=\"mw-parser-output\"><span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"本页使用了标题或全文手工转换\"><img alt=\"本页使用了标题或全文手工转换\" src=\"//thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Zh_conversion_icon_m.svg/40px-Zh_conversion_icon_m.svg.png?utm_source=zh.wikipedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail\" decoding=\"async\" loading=\"lazy\" width=\"35\" height=\"22\" class=\"mw-file-element\" srcset=\"//thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Zh_conversion_icon_m.svg/120px-Zh_conversion_icon_m.svg.png?utm_source=zh.wikipedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x\" data-file-width=\"32\" data-file-height=\"20\" /></span></span></div></div>",
+            "contentBoundaryExcerptKind": "Opening HTML excerpt, not a complete standalone fragment",
+            "excerptKind": "Short source excerpt for visual provenance",
+            "apiResponseKind": "Normalized response retaining live revision metadata; normalization records omitted"
+        },
+        {
+            "key": "en",
+            "host": "en.wikipedia.org",
+            "page": "Intel 1103",
+            "pageId": 11977298,
+            "namespace": 0,
+            "revision": 1342192065,
+            "parent": 1327569959,
+            "timestamp": "2026-03-07T16:05:03Z",
+            "language": "en",
+            "prefix": "w:en:",
+            "excerpt": "The Intel 1103 is a dynamic random-access memory (DRAM) integrated circuit (IC) developed and fabricated by Intel.",
+            "sourceUrl": "https://en.wikipedia.org/wiki/Intel_1103",
+            "permalinkUrl": "https://en.wikipedia.org/w/index.php?title=Intel_1103&oldid=1342192065",
+            "apiSourceUrl": "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&revids=1342192065&rvprop=ids%7Ctimestamp&format=json&formatversion=2",
+            "apiResponse": {
+                "batchcomplete": true,
+                "query": {
+                    "pages": [
+                        {
+                            "pageid": 11977298,
+                            "ns": 0,
+                            "title": "Intel 1103",
+                            "revisions": [
+                                {
+                                    "revid": 1342192065,
+                                    "parentid": 1327569959,
+                                    "timestamp": "2026-03-07T16:05:03Z"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "observedConfig": {
+                "wgPageContentLanguage": "en",
+                "wgRevisionId": 1342192065,
+                "wgCurRevisionId": 1342192065,
+                "wgPageName": "Intel_1103",
+                "wgTitle": "Intel 1103",
+                "wgArticleId": 11977298,
+                "wgNamespaceNumber": 0,
+                "wgIsArticle": true,
+                "wgAction": "view"
+            },
+            "contentBoundaryExcerpt": "<div class=\"vector-body-before-content\">\n\t\t\t\t\t\t\t<div class=\"mw-indicators\">\n\t\t</div>\n\n\t\t\t\t\t\t<div id=\"siteSub\" class=\"noprint\">From Wikipedia, the free encyclopedia</div>\n\t\t\t\t\t\t<div id=\"contentSub\"><div id=\"mw-content-subtitle\"><div class=\"cdx-message--warning mw-revision cdx-message cdx-message--block\" aria-live=\"polite\"><span class=\"cdx-message__icon\"></span><div class=\"cdx-message__content\"><div id=\"mw-revision-info-current\"><b>This is the <a href=\"/wiki/Help:Page_history\" title=\"Help:Page history\">current revision</a> of this page, as edited by <span id=\"mw-revision-name\"><a href=\"/wiki/User:AeroVolk,_Parody_of_DeroVolk\" class=\"mw-userlink\" title=\"User:AeroVolk, Parody of DeroVolk\" data-mw-revid=\"1342192065\"><bdi>AeroVolk, Parody of DeroVolk</bdi></a> <span class=\"mw-usertoollinks\">(<a href=\"/wiki/User_talk:AeroVolk,_Parody_of_DeroVolk\" class=\"mw-usertoollinks-talk\" title=\"User talk:AeroVolk, Parody of DeroVolk\">talk</a> | <a href=\"/wiki/Special:Contributions/AeroVolk,_Parody_of_DeroVolk\" class=\"mw-usertoollinks-contribs\" title=\"Special:Contributions/AeroVolk, Parody of DeroVolk\">contribs</a>)</span></span> at <span id=\"mw-revision-date\">16:05, 7 March 2026</span><span id=\"mw-revision-summary\"> <span class=\"comment\">(added <a href=\"/wiki/Category:Products_and_services_discontinued_in_1979\" title=\"Category:Products and services discontinued in 1979\">Category:Products and services discontinued in 1979</a> using <a href=\"/wiki/Wikipedia:HC\" class=\"mw-redirect\" title=\"Wikipedia:HC\">HotCat</a>)</span></span>. The present address (URL) is a <a href=\"/wiki/Help:Permanent_link\" title=\"Help:Permanent link\">permanent link</a> to this version.</b><span id=\"revision-info-current-plain\" style=\"display: none;\">Revision as of 16:05, 7 March 2026 by <a href=\"/wiki/User:AeroVolk,_Parody_of_DeroVolk\" class=\"mw-userlink\" title=\"User:AeroVolk, Parody of DeroVolk\" data-mw-revid=\"1342192065\"><bdi>AeroVolk, Parody of DeroVolk</bdi></a> <span class=\"mw-usertoollinks\">(<a href=\"/wiki/User_talk:AeroVolk,_Parody_of_DeroVolk\" class=\"mw-usertoollinks-talk\" title=\"User talk:AeroVolk, Parody of DeroVolk\">talk</a> | <a href=\"/wiki/Special:Contributions/AeroVolk,_Parody_of_DeroVolk\" class=\"mw-usertoollinks-contribs\" title=\"Special:Contributions/AeroVolk, Parody of DeroVolk\">contribs</a>)</span> <span class=\"comment\">(added <a href=\"/wiki/Category:Products_and_services_discontinued_in_1979\" title=\"Category:Products and services discontinued in 1979\">Category:Products and services discontinued in 1979</a> using <a href=\"/wiki/Wikipedia:HC\" class=\"mw-redirect\" title=\"Wikipedia:HC\">HotCat</a>)</span></span></div><div id=\"mw-revision-nav\">(<a href=\"/w/index.php?title=Intel_1103&amp;diff=prev&amp;oldid=1342192065\" title=\"Intel 1103\">diff</a>) <a href=\"/w/index.php?title=Intel_1103&amp;direction=prev&amp;oldid=1342192065\" title=\"Intel 1103\">← Previous revision</a> | Latest revision (diff) | Newer revision → (diff)</div></div>",
+            "contentBoundaryExcerptKind": "Opening HTML excerpt, not a complete standalone fragment",
+            "excerptKind": "Short source excerpt for visual provenance",
+            "apiResponseKind": "Normalized response retaining live revision metadata; normalization records omitted"
+        },
+        {
+            "key": "ja",
+            "host": "ja.wikipedia.org",
+            "page": "インテル 1103",
+            "pageId": 4865089,
+            "namespace": 0,
+            "revision": 106733410,
+            "parent": 103574776,
+            "timestamp": "2025-10-06T08:41:52Z",
+            "language": "ja",
+            "prefix": "w:ja:",
+            "excerpt": "1103 はインテル社が開発・製造したダイナミック・ランダム・アクセス・メモリ (DRAM) 集積回路 (IC) である。",
+            "sourceUrl": "https://ja.wikipedia.org/wiki/%E3%82%A4%E3%83%B3%E3%83%86%E3%83%AB_1103",
+            "permalinkUrl": "https://ja.wikipedia.org/w/index.php?title=%E3%82%A4%E3%83%B3%E3%83%86%E3%83%AB_1103&oldid=106733410",
+            "apiSourceUrl": "https://ja.wikipedia.org/w/api.php?action=query&prop=revisions&revids=106733410&rvprop=ids%7Ctimestamp&format=json&formatversion=2",
+            "apiResponse": {
+                "batchcomplete": true,
+                "query": {
+                    "pages": [
+                        {
+                            "pageid": 4865089,
+                            "ns": 0,
+                            "title": "インテル 1103",
+                            "revisions": [
+                                {
+                                    "revid": 106733410,
+                                    "parentid": 103574776,
+                                    "timestamp": "2025-10-06T08:41:52Z"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "observedConfig": {
+                "wgPageContentLanguage": "ja",
+                "wgRevisionId": 106733410,
+                "wgCurRevisionId": 106733410,
+                "wgPageName": "インテル_1103",
+                "wgTitle": "インテル 1103",
+                "wgArticleId": 4865089,
+                "wgNamespaceNumber": 0,
+                "wgIsArticle": true,
+                "wgAction": "view"
+            },
+            "contentBoundaryExcerpt": "<div class=\"vector-body-before-content\">\n\t\t\t\t\t\t\t<div class=\"mw-indicators\">\n\t\t</div>\n\n\t\t\t\t\t\t<div id=\"siteSub\" class=\"noprint\">出典: フリー百科事典『ウィキペディア（Wikipedia）』</div>\n\t\t\t\t\t\t<div id=\"contentSub\"><div id=\"mw-content-subtitle\"><div class=\"cdx-message--warning mw-revision cdx-message cdx-message--block\" aria-live=\"polite\"><span class=\"cdx-message__icon\"></span><div class=\"cdx-message__content\"><div id=\"mw-revision-info-current\"><p><b>2025年10月6日 (月) 08:41; <a href=\"/wiki/%E5%88%A9%E7%94%A8%E8%80%85:Gv4lec\" class=\"mw-userlink\" title=\"利用者:Gv4lec\" data-mw-revid=\"106733410\"><bdi>Gv4lec</bdi></a> <span class=\"mw-usertoollinks\">(<a href=\"/w/index.php?title=%E5%88%A9%E7%94%A8%E8%80%85%E2%80%90%E4%BC%9A%E8%A9%B1:Gv4lec&amp;action=edit&amp;redlink=1\" class=\"mw-usertoollinks-talk new\" title=\"利用者‐会話:Gv4lec (存在しないページ)\">会話</a> | <a href=\"/wiki/%E7%89%B9%E5%88%A5:%E6%8A%95%E7%A8%BF%E8%A8%98%E9%8C%B2/Gv4lec\" class=\"mw-usertoollinks-contribs\" title=\"特別:投稿記録/Gv4lec\">投稿記録</a>)</span> による版 <span class=\"comment\">(<span class=\"autocomment\"><a href=\"#解説\">→<bdi dir=\"ltr\">解説</bdi></a></span>)</span>（日時は<a href=\"/wiki/%E7%89%B9%E5%88%A5:%E5%80%8B%E4%BA%BA%E8%A8%AD%E5%AE%9A\" title=\"特別:個人設定\">個人設定</a>で未設定なら<a href=\"/wiki/%E5%8D%94%E5%AE%9A%E4%B8%96%E7%95%8C%E6%99%82\" title=\"協定世界時\">UTC</a>）</b></p><div id=\"revision-info-current-plain\" style=\"display: none;\"><a href=\"/wiki/%E5%88%A9%E7%94%A8%E8%80%85:Gv4lec\" class=\"mw-userlink\" title=\"利用者:Gv4lec\" data-mw-revid=\"106733410\"><bdi>Gv4lec</bdi></a> <span class=\"mw-usertoollinks\">(<a href=\"/w/index.php?title=%E5%88%A9%E7%94%A8%E8%80%85%E2%80%90%E4%BC%9A%E8%A9%B1:Gv4lec&amp;action=edit&amp;redlink=1\" class=\"mw-usertoollinks-talk new\" title=\"利用者‐会話:Gv4lec (存在しないページ)\">会話</a> | <a href=\"/wiki/%E7%89%B9%E5%88%A5:%E6%8A%95%E7%A8%BF%E8%A8%98%E9%8C%B2/Gv4lec\" class=\"mw-usertoollinks-contribs\" title=\"特別:投稿記録/Gv4lec\">投稿記録</a>)</span>による2025年10月6日 (月) 08:41時点の版 <span class=\"comment\">(<span class=\"autocomment\"><a href=\"#解説\">→<bdi dir=\"ltr\">解説</bdi></a></span>)</span></div></div>",
+            "contentBoundaryExcerptKind": "Opening HTML excerpt, not a complete standalone fragment",
+            "excerptKind": "Short source excerpt for visual provenance",
+            "apiResponseKind": "Normalized response retaining live revision metadata; normalization records omitted"
+        },
+        {
+            "key": "commons",
+            "host": "commons.wikimedia.org",
+            "page": "Category:Intel 1103",
+            "pageId": 49532913,
+            "namespace": 14,
+            "revision": 339992055,
+            "parent": 310337539,
+            "timestamp": "2019-02-21T13:44:28Z",
+            "language": "en",
+            "prefix": "c:",
+            "excerpt": "Intel 1103 — dynamic random-access memory (DRAM) integrated circuit (IC) developed and fabricated by Intel. Media in category \"Intel 1103\".",
+            "sourceUrl": "https://commons.wikimedia.org/wiki/Category:Intel_1103",
+            "permalinkUrl": "https://commons.wikimedia.org/w/index.php?title=Category%3AIntel_1103&oldid=339992055",
+            "apiSourceUrl": "https://commons.wikimedia.org/w/api.php?action=query&prop=revisions&revids=339992055&rvprop=ids%7Ctimestamp&format=json&formatversion=2",
+            "apiResponse": {
+                "batchcomplete": true,
+                "query": {
+                    "pages": [
+                        {
+                            "pageid": 49532913,
+                            "ns": 14,
+                            "title": "Category:Intel 1103",
+                            "revisions": [
+                                {
+                                    "revid": 339992055,
+                                    "parentid": 310337539,
+                                    "timestamp": "2019-02-21T13:44:28Z"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "observedConfig": {
+                "wgPageContentLanguage": "en",
+                "wgRevisionId": 339992055,
+                "wgCurRevisionId": 339992055,
+                "wgPageName": "Category:Intel_1103",
+                "wgTitle": "Intel 1103",
+                "wgArticleId": 49532913,
+                "wgNamespaceNumber": 14,
+                "wgIsArticle": true,
+                "wgAction": "view"
+            },
+            "contentBoundaryExcerpt": "<div class=\"vector-body-before-content\">\n\t\t\t\t\t\n\t\t\t\t\t\t<div id=\"siteSub\" class=\"noprint\">From Wikimedia Commons, the free media repository</div>\n\t\t\t\t\t\t<div id=\"contentSub\"><div id=\"mw-content-subtitle\"><div class=\"cdx-message--warning mw-revision cdx-message cdx-message--block\" aria-live=\"polite\"><span class=\"cdx-message__icon\"></span><div class=\"cdx-message__content\"><div id=\"mw-revision-info\">Revision as of 13:44, 21 February 2019 by <a href=\"/wiki/User:YiFeiBot\" class=\"mw-userlink\" title=\"User:YiFeiBot\" data-mw-revid=\"339992055\"><bdi>YiFeiBot</bdi></a> <span class=\"mw-usertoollinks\">(<a href=\"/wiki/User_talk:YiFeiBot\" class=\"mw-usertoollinks-talk\" title=\"User talk:YiFeiBot\">talk</a> | <a href=\"/wiki/Special:Contributions/YiFeiBot\" class=\"mw-usertoollinks-contribs\" title=\"Special:Contributions/YiFeiBot\">contribs</a>)</span> <span class=\"comment\">(Bot: Migrating 1 langlinks, now provided by <a href=\"https://www.wikidata.org/wiki/\" class=\"extiw\" title=\"d:\">Wikidata</a> on <a href=\"https://www.wikidata.org/wiki/q16997075\" class=\"extiw\" title=\"d:q16997075\">d:q16997075</a>)</span></div><div id=\"mw-revision-nav\">(<a href=\"/w/index.php?title=Category:Intel_1103&amp;diff=prev&amp;oldid=339992055\" title=\"Category:Intel 1103\">diff</a>) <a href=\"/w/index.php?title=Category:Intel_1103&amp;direction=prev&amp;oldid=339992055\" title=\"Category:Intel 1103\">← Older revision</a> | Latest revision (diff) | Newer revision → (diff)</div></div>",
+            "contentBoundaryExcerptKind": "Opening HTML excerpt, not a complete standalone fragment",
+            "excerptKind": "Short source excerpt for visual provenance",
+            "apiResponseKind": "Normalized response retaining live revision metadata; normalization records omitted"
+        }
+    ],
+    "assets": {
+        "intelC1103": {
+            "sourceUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Intel_C1103.jpg/330px-Intel_C1103.jpg",
+            "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Intel_C1103.jpg",
+            "apiMetadataUrl": "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&titles=File%3AIntel_C1103.jpg&iiprop=url%7Cextmetadata&iiurlwidth=320&format=json&formatversion=2",
+            "author": "Thomas Nguyen (Pttn / Stelo.xyz)",
+            "license": "CC BY-SA 4.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "adaptations": "Wikimedia-generated thumbnail, resized for the local article fixture.",
+            "dataUrl": "data:image/jpeg;base64,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"
+        }
+    }
+}
