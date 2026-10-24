@@ -205,6 +205,57 @@ test('batch preparation consolidates default summaries for newly registered page
     assert.equal(fixture.registrations[0]?.summary, batch.registrationSummary);
 });
 
+test('long batch summaries prioritize articles and count only newly registered namespace pages', async () => {
+    const fixture = createFixture();
+    const source =
+        '[[:m:User:For Each ... Next/global.js/vg page assessor.js|🍄]]';
+    const creationDate = new Date('2026-09-30T12:00:00Z');
+    const existingFile = 'File:Already listed.png';
+    const snapshot = createListSnapshot();
+    snapshot.text = prepareNewPageListRegistration({
+        text: snapshot.text,
+        title: existingFile,
+        namespaceNumber: 6,
+        creationDate,
+    }).proposedText;
+    fixture.setList(snapshot);
+    const pages = [
+        { title: existingFile, namespace: 6 },
+        { title: `File:${'遊戲截圖'.repeat(20)}.png`, namespace: 6 },
+        { title: 'Category:Games', namespace: 14 },
+        { title: 'File:Second screenshot.png', namespace: 6 },
+        { title: 'First game', namespace: 0 },
+        { title: 'Earlier game', namespace: 0 },
+    ];
+    for (const page of pages) {
+        const state = createState(page.title);
+        state.subjectInfo.namespaceNumber = page.namespace;
+        const review = createReview(page.title);
+        review.listSummary = buildNewPageListSummary(page.title, creationDate);
+        await fixture.workflow.stage(state, review);
+    }
+    const current = createState('Second game');
+    const review = createReview(current.subjectTitle);
+    review.listSummary = buildNewPageListSummary(
+        current.subjectTitle,
+        creationDate,
+    );
+    const batch = await fixture.workflow.prepare(current, review);
+    assert.equal(
+        batch.registrationSummary,
+        `Register [[First game]] (Sept 30), [[Second game]] (Sept 30), 2 files and 1 category ${source}`,
+    );
+    assert.ok(Buffer.byteLength(batch.registrationSummary) <= 255);
+    assert.deepEqual(fixture.writes, []);
+    for (const { title } of pages) {
+        assert.ok(batch.registration?.proposedText.includes(title));
+    }
+    await fixture.workflow.save(api, batch, () => undefined);
+    assert.equal(fixture.registrations.length, 1);
+    assert.equal(fixture.registrations[0]?.summary, batch.registrationSummary);
+    assert.equal(fixture.workflow.count(), 0);
+});
+
 test('batch submission writes one exact reviewed registration before each exact reviewed talk draft', async () => {
     const fixture = createFixture();
     const firstReview = createReview('First game');

@@ -1,6 +1,6 @@
 # Architecture
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-10-24.
 
 <!-- toc:start -->
 
@@ -73,10 +73,21 @@ Assessor modules.
   Batch preparation refreshes the registration list and composes one proposed
   list edit; submission retains unfinished drafts after partial failures.
   `domain/new-page-summary.ts` composes one English registration summary from
-  pages actually added, keeping each page's UTC creation date and one script
-  marker. It recognizes stored English and Chinese defaults from older drafts
-  so those summaries consolidate too. Distinct custom summaries remain in the
-  combined summary, which is saved with the prepared batch.
+  pages actually added, keeping UTC creation dates on listed links and one script
+  marker. Full summaries are retained through 255 UTF-8 bytes, including the
+  marker and any custom text. Longer summaries prioritize article links in
+  their original order, followed by counts of files, categories, templates,
+  modules, drafts, and other pages. Counts reserve their space before article
+  links are selected; omitted articles become a remaining-article count.
+  Namespace classification uses the shared Chinese Wikipedia title policy,
+  including localized aliases and article titles containing ordinary colons.
+  An oversized single-page default also becomes a count. Stored full English
+  and Chinese defaults and new compact defaults consolidate from their original
+  page entries, preserving accurate counts across staged drafts.
+  Distinct custom summaries remain intact, even when they leave insufficient
+  space for the minimal generated counts within the budget. This deterministic
+  formatting changes no source entries, stored drafts, or write preconditions;
+  the prepared batch retains the exact summary passed to the save adapter.
   `archive-new-pages.ts` prepares immutable source and annual-destination reviews
   through the typed operations in `archive-contracts.ts`. Saving checks all page
   snapshots including revision IDs, writes archives in sequence, and removes source records only after
@@ -246,6 +257,15 @@ duplicate activation, canceled or stale preparation, cross-tab locking,
 registration conflicts, and partial-save recovery.
 
 ## Build and verification
+
+AI assistance covered the registration-summary byte limit, article priority,
+namespace counts, and documentation. Focused regressions cover the 254/255/256
+UTF-8-byte boundaries, CJK and supplementary characters, namespace aliases,
+omitted articles, legacy defaults, and custom text. The staged workflow test
+checks that only newly added pages are counted, all registered source entries
+remain present, and the prepared summary reaches the save unchanged. The full
+verification pipeline also exercises offline browser workflows and rebuilt
+distributions; independent human review remains a release check.
 
 The shared Node.js build compiles ES2024 browser JavaScript with esbuild,
 injects validated template-only Vue markup and scoped CSS, and creates compact and readable outputs. A separate readable userscript includes a Chinese

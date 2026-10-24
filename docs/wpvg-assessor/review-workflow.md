@@ -1,6 +1,6 @@
 # Review workflow
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-10-24.
 
 The gadget opens from the page tools on Chinese Wikipedia. It resolves the
 subject and talk titles, reads the subject's creation information, loads the
@@ -109,10 +109,16 @@ check the updated queue and choose **Submit** again to prepare a fresh batch.
 
 Default registration summaries consolidate the pages actually added into one
 English list of links and UTC creation dates, with one **Register** and one
-script marker. Already registered pages contribute no summary entry. Defaults
-stored in English or Chinese by earlier versions consolidate the same way.
+script marker. Full summaries up to 255 UTF-8 bytes keep all links and dates.
+Longer summaries list article links first and replace file, category, template,
+module, draft, and other-page links with counts. If necessary, remaining articles
+are counted after the first links that fit. Already registered pages contribute
+no summary entry. Defaults stored in English or Chinese by earlier versions
+consolidate the same way.
 Manually entered per-page registration summaries are retained in the combined
-summary. Edit them on the individual pages before staging or submitting.
+summary, with their space reserved before selecting article links. Custom text
+can exceed the automatic byte budget. Edit it on the individual pages before
+staging or submitting.
 
 Canceling batch preparation ignores its late results and leaves the queued
 drafts intact. Submission checks that the queued drafts still match the

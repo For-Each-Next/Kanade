@@ -5,10 +5,10 @@ wiki articles: **Source Editor**, **Revision Copy**, **Article Creator**, and
 **Article Assessor**. Install the tools you need; each opens in its supported wiki
 and page context. Source, dependencies, verification, and versioning share one root.
 
-**Last reviewed:** 2026-10-21. **Status:** development at version 0.1.0.
-Published releases and project contacts are not yet available.
+**Last reviewed:** 2026-10-24. **Status:** development at version 0.1.1.
+Source and tagged release automation are hosted in the [project repository][repository].
 [Maintenance](docs/maintenance.md) records release readiness and ownership gaps.
-See the [changelog](CHANGELOG.md) for version 0.1.0 release notes.
+See the [changelog](CHANGELOG.md) for version 0.1.1 release notes.
 
 Start with [installation](#install-and-use), [configuration and data](#configuration-and-data),
 or [contributing](CONTRIBUTING.md). The [maintenance guide](docs/maintenance.md)
@@ -17,7 +17,7 @@ records project ownership, external dependencies, recovery, and release readines
 ## Tools
 
 Build from this checkout, then use the installation scripts linked below in
-`dist/`. Published downloads will be linked here when a release is available.
+`dist/`. Tagged builds are published to [GitHub releases][releases] after verification.
 
 | Distribution                                      | Purpose                                                    | Userscript manager                                      | Wiki script                                           |
 | ------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------- |
@@ -212,3 +212,5 @@ screenshot provenance.
 [wikimedia-projects]: https://meta.wikimedia.org/wiki/Wikimedia_projects
 [vue]: https://vuejs.org/guide/introduction.html
 [codex]: https://doc.wikimedia.org/codex/latest/
+[repository]: https://github.com/For-Each-Next/Kanade
+[releases]: https://github.com/For-Each-Next/Kanade/releases

@@ -1,6 +1,6 @@
 # Development guide
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-10-24.
 
 This is the authoritative development guide for Kanade.
 [Documentation](documentation.md) defines shared and tool-specific writing rules.
@@ -235,7 +235,7 @@ does not publish files or edit live wiki pages.
 
 ## Version control and releases
 
-Use `trunk` as the default branch. The current root version is 0.1.0; local
+Use `trunk` as the default branch. The current root version is 0.1.1; local
 cleanup does not publish a release. Preserve a recoverable source checkpoint
 before broad changes. Once a remote and baseline are established, start each
 task from current `trunk` on a branch such as

@@ -13,8 +13,9 @@ not a security certification or a record of completed human review.
 
 ## Project and contacts
 
-Kanade is in development at root version 0.1.0. A public project remote,
-release, issue tracker, and named maintainer have not been configured.
+Kanade is in development at root version 0.1.1. The [project repository][repository]
+hosts source and tagged release automation. A named maintainer and dedicated
+project contacts are not yet documented.
 The project owner must arrange
 review and handoff until project contacts are established. No second maintainer,
 substitute with release access, private vulnerability channel, or completed
@@ -201,16 +202,19 @@ criterion; **Pending** identifies work without recorded completion. These
 statuses do not assert public publication, a successful remote CI run, security
 compliance, or WCAG conformance.
 
+Repository and version metadata were updated on 2026-10-24; other criteria
+retain their recorded assessment until separately reviewed.
+
 | Release criterion                          | Status  | Evidence or remaining work                                                                                                                                                                              |
 | ------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Repository and free license                | Partial | Root [LICENSE](../LICENSE) and [third-party notices](../THIRD-PARTY-NOTICES.md) exist. A Kanade remote and public baseline are not configured.                                                          |
+| Repository and free license                | Present | Root [LICENSE](../LICENSE), [third-party notices](../THIRD-PARTY-NOTICES.md), and the configured [project repository][repository].                                                                      |
 | Purpose, installation, and execution       | Present | Root [README](../README.md), four tool guides, and shared [development](development.md).                                                                                                                |
 | Configuration and production documentation | Present | Tool configuration/workflow guides, runtime-host requirements, and release procedure.                                                                                                                   |
 | Critical-function automated tests          | Present | `tests/source-editor/`, `tests/rev-copy/`, `tests/vg-stub-creator/`, and `tests/wpvg-assessor/`; root verification includes offline browser scenarios. A test suite is not evidence of every live host. |
 | Continuous integration                     | Partial | [CI workflow](../.github/workflows/ci.yml) is configured for pushes and pull requests. A successful hosted baseline run is not recorded here.                                                           |
 | Reproducible deployment                    | Present | Root lockfile, scripted builds, artifact checks, and annotated-tag [release workflow](../.github/workflows/release.yml). Publication still requires pushing an authorized tag.                          |
 | Secrets and access management              | Partial | Browser writes use host authentication; release publication uses the workflow's `GITHUB_TOKEN`. Repository permissions, account recovery, and access review still need a maintainer handoff record.     |
-| Identified maintainer/contact              | Partial | A Kanade maintainer, project contact, and remote have not been configured; review currently requires the project owner.                                                                                 |
+| Identified maintainer/contact              | Partial | A named Kanade maintainer and dedicated project contact are not documented; review currently requires the project owner.                                                                                |
 | More than one person able to maintain      | Pending | No additional maintainer or completed newcomer onboarding is documented.                                                                                                                                |
 | Security review                            | Partial | Boundary validation, CSRF-token writes, stale-result protection, and protected-write regression tests exist. Dedicated human security review is not recorded.                                           |
 | Basic accessibility verified               | Partial | Shared UI policy, keyboard behavior, translated accessible labels, and browser scenarios exist. Manual screen-reader review and a complete contrast/accessibility assessment are pending.               |
@@ -313,3 +317,4 @@ require an AI provider.
 [citoid]: https://www.mediawiki.org/wiki/Citoid
 [wayback]: https://archive.org/help/wayback_api.php
 [tech-news]: https://meta.wikimedia.org/wiki/Tech/News
+[repository]: https://github.com/For-Each-Next/Kanade

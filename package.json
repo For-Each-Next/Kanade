@@ -1,6 +1,6 @@
 {
     "name": "kanade",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "type": "module",
     "description": "Four independent Wikimedia editing tools with a shared build and verification setup.",

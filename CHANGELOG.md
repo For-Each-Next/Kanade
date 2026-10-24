@@ -3,6 +3,18 @@
 Notable changes to Kanade are recorded here. All four tools share one project
 version and are built as independently installable scripts.
 
+## 0.1.1 - 2026-10-24
+
+### Fixed
+
+- **Article Assessor:** generated new-page registration summaries now fit within
+  255 UTF-8 bytes, including dates and the script marker. Longer summaries list
+  article links first and count files, categories, templates, modules, drafts,
+  and other pages. Articles that do not fit are counted without cutting links.
+- Compact summaries recognize Chinese namespace aliases and consolidate defaults
+  retained in older staged drafts. Custom reviewed summaries remain intact,
+  including custom text that exceeds the automatic byte budget.
+
 ## 0.1.0 - 2026-10-23
 
 Initial release of Kanade.

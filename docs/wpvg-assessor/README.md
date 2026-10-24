@@ -1,6 +1,6 @@
 # Article Assessor
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-10-24.
 
 Assess video-game articles on Chinese Wikipedia and maintain the WikiProject's
 new-page records. The tool saves reviewed edits using your logged-in wiki account.
@@ -46,8 +46,12 @@ before staging or submitting it.
 Generated edit summaries use English in every interface language. Batch
 registration combines page links and UTC creation dates in one summary, such as
 `Register [[First game]] (Sept 6), [[Second game]] (Sept 6) and [[Third game]] (Sept 7)`.
-The script marker appears once. You can edit each page's summary before staging
-or submitting it; custom registration summaries are retained in the combined edit.
+The script marker appears once. If the full summary exceeds 255 UTF-8 bytes,
+article links come first, followed by counts such as `2 files and 1 category`.
+Only the first article links that fit are listed; remaining articles are counted.
+The byte budget includes dates and the script marker; common CJK characters use
+three bytes each. You can edit each page's summary before staging or submitting
+it; custom registration summaries are retained even if they exceed that budget.
 
 On the unassessed video-game category, choose **Batch assess articles** and read
 the article preview. **Choosing a class saves that assessment immediately and
