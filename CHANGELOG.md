@@ -3,6 +3,13 @@
 Notable changes to Kanade are recorded here. All four tools share one project
 version and are built as independently installable scripts.
 
+## 0.1.2 - 2026-11-04
+
+### Added
+
+- **Article Assessor:** open the page's assessment, batch assessment, or archive
+  interface directly with the `wpvg-assessor=1` URL query parameter.
+
 ## 0.1.1 - 2026-10-24
 
 ### Fixed

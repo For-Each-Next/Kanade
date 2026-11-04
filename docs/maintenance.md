@@ -13,7 +13,7 @@ not a security certification or a record of completed human review.
 
 ## Project and contacts
 
-Kanade is in development at root version 0.1.1. The [project repository][repository]
+Kanade is in development at root version 0.1.2. The [project repository][repository]
 hosts source and tagged release automation. A named maintainer and dedicated
 project contacts are not yet documented.
 The project owner must arrange

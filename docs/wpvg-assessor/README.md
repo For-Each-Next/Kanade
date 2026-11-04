@@ -22,6 +22,11 @@ from page tools on an article or talk page. Disable the userscript or remove its
 `common.js` code to uninstall it. Labels support English, both Chinese variants,
 Japanese, and Russian.
 
+To open the appropriate Assessor interface directly, add `?wpvg-assessor=1` to
+the page URL, or `&wpvg-assessor=1` if it already has a query string. The tool
+must be installed and the page must be supported. Opening the interface does
+not submit an edit.
+
 Page tools show **Batch assess articles** on the unassessed category or
 **Archive tool** on the new-page list.
 

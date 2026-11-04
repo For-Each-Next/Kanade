@@ -191,6 +191,11 @@ complete reference-tag values, and idempotent updates; an old/new differential
 check covered 88 source variants. AI assistance covered this consolidation.
 
 Native page tools provide the assessment, category, and archive entrypoints.
+The `wpvg-assessor=1` URL query opens the same page-specific interface after
+host modules load and the normal wiki and namespace checks pass. It does not
+submit an edit, and leaves the URL intact. The existing dialog lifecycle and
+focus fallback apply to this entrypoint. AI assistance covered this entrypoint
+and its regression coverage.
 Removing the duplicate bottom-right actions keeps page navigation in the host's
 tools menu and removes Assessor's quick-access registration from startup.
 Closing restores focus to the invoking portlet anchor. Dialog requests, category

@@ -5,10 +5,10 @@ wiki articles: **Source Editor**, **Revision Copy**, **Article Creator**, and
 **Article Assessor**. Install the tools you need; each opens in its supported wiki
 and page context. Source, dependencies, verification, and versioning share one root.
 
-**Last reviewed:** 2026-10-24. **Status:** development at version 0.1.1.
+**Last reviewed:** 2026-10-24. **Status:** development at version 0.1.2.
 Source and tagged release automation are hosted in the [project repository][repository].
 [Maintenance](docs/maintenance.md) records release readiness and ownership gaps.
-See the [changelog](CHANGELOG.md) for version 0.1.1 release notes.
+See the [changelog](CHANGELOG.md) for version 0.1.2 release notes.
 
 Start with [installation](#install-and-use), [configuration and data](#configuration-and-data),
 or [contributing](CONTRIBUTING.md). The [maintenance guide](docs/maintenance.md)

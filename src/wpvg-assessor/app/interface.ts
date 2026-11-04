@@ -100,6 +100,11 @@ function init(): void {
 
     installDialogStyles();
     addToolboxLink();
+    if (
+        new URLSearchParams(window.location.search).get('wpvg-assessor') === '1'
+    ) {
+        openPageDialog();
+    }
 }
 
 function addToolboxLink(): void {
@@ -130,6 +135,10 @@ function handleToolboxClick(event: Event): void {
             ? event.currentTarget
             : null;
     getRuntime().logger.info('toolbox-link.activated');
+    openPageDialog();
+}
+
+function openPageDialog(): void {
     (isNewPageList()
         ? openArchiveDialog()
         : isUnassessedCategory()
