@@ -76,6 +76,11 @@ test('independent owners share one ordered dock and obsolete disposers preserve 
     });
     f.register({ id: 'source-editor-tools', label: 'Tools', activate() {} });
     f.register({
+        id: 'source-editor-references',
+        label: 'References',
+        activate() {},
+    });
+    f.register({
         id: 'source-editor',
         label: 'Editor',
         activate() {
@@ -97,7 +102,13 @@ test('independent owners share one ordered dock and obsolete disposers preserve 
         [
             ...f.document.querySelectorAll('[data-kanade-quick-access-action]'),
         ].map((button) => button.dataset.kanadeQuickAccessAction),
-        ['source-editor', 'source-editor-tools', 'example', 'navigation'],
+        [
+            'source-editor',
+            'source-editor-references',
+            'source-editor-tools',
+            'example',
+            'navigation',
+        ],
     );
     f.document
         .querySelector('[data-kanade-quick-access-action="source-editor"]')

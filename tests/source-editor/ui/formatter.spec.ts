@@ -1841,6 +1841,48 @@ for (const [locale, label] of [
     });
 }
 
+for (const [width, height] of [
+    [375, 667],
+    [683, 768],
+    [1366, 768],
+]) {
+    test(`the References shortcut opens the shared manager and follows editor ownership at ${width}px`, async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width, height });
+        const source = '<ref name="Book">{{cite book|title=Example}}</ref>';
+        await mountFormatter(page, { source, open: false });
+        const shortcut = page.locator(
+            '[data-kanade-quick-access-action="source-editor-references"]',
+        );
+        await expect(shortcut).toHaveAccessibleName('References');
+        await expect(shortcut).toHaveAttribute('title', 'Manage references');
+        await expect(page.locator('#kanade-quick-access button')).toHaveText([
+            'Format',
+            'References',
+            'Tools',
+        ]);
+        await shortcut.focus();
+        await page.keyboard.press('Enter');
+        const manager = page.locator('.kanade-source-editor-source-manager');
+        await expect(manager).toBeVisible();
+        await expect(manager).toContainText('Example');
+        await expect(page.locator('#wpTextbox1')).toHaveValue(source);
+        await page.keyboard.press('Escape');
+        await expect(manager).toBeHidden();
+        await expect(shortcut).toBeFocused();
+        await page.addScriptTag({
+            path: `${projectRoot}dist/source_editor.min.js`,
+        });
+        await expect(shortcut).toHaveCount(1);
+        await page.evaluate(() => {
+            document.getElementById('wpTextbox1')?.remove();
+            (window as any).mw.hook('wikipage.content').fire(document.body);
+        });
+        await expect(page.locator('#kanade-quick-access')).toHaveCount(0);
+    });
+}
+
 test('the Format shortcut preserves native input composition and works after composition ends', async ({
     page,
 }) => {
@@ -3020,14 +3062,26 @@ async function mountFormatter(
                 field.value = '1';
                 document.getElementById('editform')?.append(field);
             }
-            const hook = {
-                add() {
-                    return hook;
-                },
-                remove() {
-                    return hook;
-                },
-            };
+            const hooks = new Map<string, Set<() => void>>();
+            function hook(name: string) {
+                const callbacks = hooks.get(name) ?? new Set<() => void>();
+                hooks.set(name, callbacks);
+                const owner = {
+                    add(callback: () => void) {
+                        callbacks.add(callback);
+                        return owner;
+                    },
+                    remove(callback: () => void) {
+                        callbacks.delete(callback);
+                        return owner;
+                    },
+                    fire() {
+                        for (const callback of callbacks) callback();
+                        return owner;
+                    },
+                };
+                return owner;
+            }
             const notifications: NativeNotification[] = [];
             (globalThis as any).__notifications = notifications;
             (globalThis as any).mw = {
@@ -3074,7 +3128,7 @@ async function mountFormatter(
                     }
                 },
                 config: { get: (key: string) => settings[key] },
-                hook: () => hook,
+                hook,
                 loader: {
                     using: async () => (name: string) =>
                         name === 'vue'

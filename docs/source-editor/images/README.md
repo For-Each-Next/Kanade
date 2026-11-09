@@ -1,6 +1,6 @@
 # Source Editor screenshot inventory
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-09.
 
 Source Editor has one image collection for source editing, formatting,
 reference management, and text utilities. The maintained collection contains
@@ -16,6 +16,13 @@ Article and citation text retain their actual source wording.
 Additional interface states remain covered by offline browser tests. This
 collection keeps one view per language to limit the maintained documentation
 images while retaining language coverage.
+
+The three maintained formatting views were regenerated on 2026-11-09 from the
+0.1.3 build and inspected at their native 1366 × 768 size. The shared quick-access
+row behind the dialog includes Format, References, and Tools. Captures retained
+the verified native source and read-only state, and no wiki writes occurred.
+The ledger preserves unrelated historical failures for capture profiles outside
+this maintained view.
 
 ## Image inventory
 

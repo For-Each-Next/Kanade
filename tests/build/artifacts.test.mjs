@@ -53,7 +53,12 @@ const expectedNoticeSections = {
         'Article Creator catalogs',
         'MIT: Codex icon software',
     ],
-    'wpvg-assessor': ['Wikimedia data', 'MediaWiki site configuration'],
+    'wpvg-assessor': [
+        'Codex icons',
+        'Wikimedia data',
+        'MediaWiki site configuration',
+        'MIT: Codex icon software',
+    ],
 };
 const outputs = await Promise.all(
     tools.map((tool) =>
@@ -643,4 +648,59 @@ test('Revision Copy preserves its own ResourceLoader queue startup', () => {
     const fixture = pageFixture(tools.find(({ id }) => id === 'rev-copy'));
     assert.equal(fixture.window.starts, 1);
     assert.equal(fixture.timers.size, 0);
+});
+
+test('host-independent launchers run before readiness and can stop host startup', async () => {
+    const tool = tools.find(({ id }) => id === 'wpvg-assessor');
+    for (const proceed of [false, true]) {
+        const pageBootstrap = `var kanadePageBootstrap = { startBeforeHost() { window.launcherStarted = true; return ${proceed}; } };`;
+        const artifacts = await createArtifacts({
+            tool,
+            compact: 'window.fixtureStarted = true;',
+            pageBootstrap,
+            version,
+            license,
+            compactLicense,
+        });
+        const window = {};
+        runInNewContext(artifacts.get(`${tool.basename}.min.js`), { window });
+        assert.equal(window.launcherStarted, true);
+        assert.equal(window.fixtureStarted, proceed ? true : undefined);
+        const timers = [];
+        window.setTimeout = (callback) => {
+            timers.push(callback);
+            return 1;
+        };
+        window.addEventListener = () => {};
+        window.removeEventListener = () => {};
+        window.clearTimeout = () => {};
+        window.fixtureStarted = undefined;
+        const document = {
+            createElement: () => ({ textContent: '', remove() {} }),
+            documentElement: {
+                appendChild(script) {
+                    runInNewContext(script.textContent, { window });
+                },
+            },
+        };
+        runInNewContext(artifacts.get(`${tool.basename}.user.js`), {
+            document,
+        });
+        assert.equal(window.launcherStarted, true);
+        assert.equal(window.fixtureStarted, undefined);
+        assert.equal(timers.length, proceed ? 1 : 0);
+        if (proceed) {
+            window.mw = {
+                config: { get() {} },
+                loader: { using() {} },
+                hook() {},
+            };
+            timers.shift()();
+            assert.equal(window.fixtureStarted, true);
+        }
+        assert.doesNotMatch(
+            artifacts.get(`${tool.basename}.user.js`),
+            /aranami\.toolforge\.org/u,
+        );
+    }
 });

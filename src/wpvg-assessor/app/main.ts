@@ -215,9 +215,14 @@ function initialize(): void {
         saveReviewedDialog: saveReviewedState,
         staging: {
             ...staging,
-            async save(api, batch, reportPhase) {
+            async save(api, batch, reportPhase, reportProgress) {
                 try {
-                    return await staging.save(api, batch, reportPhase);
+                    return await staging.save(
+                        api,
+                        batch,
+                        reportPhase,
+                        reportProgress,
+                    );
                 } finally {
                     cache.invalidate();
                 }

@@ -5,6 +5,7 @@
  * Contents: Host startup, page actions, asynchronous dialog loading, and scoped mounts.
  */
 
+import { consumeAssessorLauncher } from '../platform/browser/source-links.ts';
 import { loadHostModules } from '../../library/mediawiki-runtime/modules.ts';
 
 import type { PageAssessorRuntime } from './dialog-contracts.ts';
@@ -34,6 +35,7 @@ import {
 
 const STYLE_ID = 'kanade-wpvg-assessor-styles';
 
+let activeAssessmentRestore: (() => void) | null = null;
 let activeDialogCleanup: (() => void) | null = null;
 let dialogGeneration = 0;
 let runtime: PageAssessorRuntime | null = null;
@@ -100,9 +102,7 @@ function init(): void {
 
     installDialogStyles();
     addToolboxLink();
-    if (
-        new URLSearchParams(window.location.search).get('wpvg-assessor') === '1'
-    ) {
+    if (consumeAssessorLauncher(window)) {
         openPageDialog();
     }
 }
@@ -139,6 +139,10 @@ function handleToolboxClick(event: Event): void {
 }
 
 function openPageDialog(): void {
+    if (activeAssessmentRestore != null) {
+        activeAssessmentRestore();
+        return;
+    }
     (isNewPageList()
         ? openArchiveDialog()
         : isUnassessedCategory()
@@ -339,6 +343,9 @@ function mountAssessmentDialog(
             currentNamespace: mw.config.get('wgNamespaceNumber'),
             onClose,
             onSaved: refreshPage,
+            registerRestore(handler) {
+                activeAssessmentRestore = handler;
+            },
             runtime: assessorRuntime,
             state,
         }),

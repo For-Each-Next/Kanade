@@ -3,6 +3,34 @@
 Notable changes to Kanade are recorded here. All four tools share one project
 version and are built as independently installable scripts.
 
+## 0.1.3 - 2026-11-09
+
+### Added
+
+- **Source Editor:** open reference management directly from the shared quick
+  access controls, with focus restoration to its launcher.
+- **Article Assessor:** launch assessments from Chinese Wikipedia article and
+  talk-page links in PetScan results and the project new-page list. PetScan runs
+  its link integration without loading a MediaWiki runtime.
+- **Article Assessor:** review and edit staged pages in a batch confirmation,
+  remove individual queued drafts, and minimize the assessment dialog while
+  keeping its current draft.
+
+### Changed
+
+- **Article Assessor:** pace staged assessment saves across tabs, retain unfinished
+  drafts after errors, and show summaries describing changed values and selections.
+- **Article Assessor:** keep leading talk-page notices and article history above
+  project assessment banners while preserving discussion text.
+- Build all four tool pairs at the shared project version **0.1.3**. The supplied
+  Aranami-specific hotfix is excluded.
+
+### Fixed
+
+- **Source Editor:** escape reference-name delimiters and literal entity sequences
+  consistently when formatting, naming, inserting, and reusing references, without
+  unnecessarily escaping bare ampersands.
+
 ## 0.1.2 - 2026-11-04
 
 ### Added

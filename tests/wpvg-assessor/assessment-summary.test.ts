@@ -57,7 +57,7 @@ test('all configured summary labels stay English in a Traditional Chinese interf
 
     assert.equal(
         buildEditSummary(assessment),
-        'Tag project banners (FA-Class): Video games (Top-importance; ' +
+        'Tag project banners (FA): Video games (Top; ' +
             'Pokemon, Minecraft, Square Enix, Sega, Nintendo, miHoYo; ' +
             'Reassess, Needs infobox, Needs cover/image, Needs screenshot), ' +
             'Fictional Characters, ACG, Biography, Company, Films, Music ' +
@@ -88,8 +88,8 @@ test('summary translates supplied known project labels and preserves unknown sou
             { id: 'biography', label: '傳記' },
             { id: 'existing:來源專題', label: '來源專題' },
         ]),
-        'Tag project banners (未來等級-Class): ' +
-            'Video games (來源重要度-importance), Biography, 來源專題 ' +
+        'Tag project banners (未來等級): ' +
+            'Video games (來源重要度), Biography, 來源專題 ' +
             sourceLink,
     );
 });
@@ -103,12 +103,54 @@ test('out-of-scope shared assessment and actual banner removal stay English', ()
 
     assert.equal(
         buildEditSummary(assessment, undefined, source),
-        'Update shared assessment (B-Class): Biography; ' +
-            'remove Video games banner ' +
+        'Update assessment: Start→B; remove Video games banner; add Biography ' +
             sourceLink,
     );
     assert.equal(
         buildEditSummary(assessment, undefined, ''),
-        `Update shared assessment (B-Class): Biography ${sourceLink}`,
+        `Update shared assessment (B): Biography ${sourceLink}`,
+    );
+});
+
+test('summaries describe changed values and flags without repeating unchanged selections', () => {
+    const source =
+        '{{WPVG|class=Start|importance=Low|Nintendo=yes|reassess=yes}}';
+    const assessment = createDefaultAssessment(projectConfig, source);
+    assessment.className = 'B';
+    assessment.importance = 'High';
+    assessment.maintenance.reassess = false;
+    assessment.maintenance.cover = true;
+    assert.equal(
+        buildEditSummary(assessment, undefined, source),
+        `Update assessment: Start→B; Video games (Low→High; remove Reassess; add Needs cover/image) ${sourceLink}`,
+    );
+    assert.equal(
+        buildEditSummary(
+            createDefaultAssessment(projectConfig, source),
+            undefined,
+            source,
+        ),
+        `Update assessment ${sourceLink}`,
+    );
+});
+
+test('summaries retain removed unknown project names and omit an invented previous class', () => {
+    const source = '{{WPBS|1={{WPVG|importance=Low}}{{WikiProject 來源專題}}}}';
+    const assessment = createDefaultAssessment(projectConfig, source);
+    assessment.className = 'C';
+    assessment.otherProjects['existing:wikiproject 來源專題'] = false;
+    assert.equal(
+        buildEditSummary(assessment, undefined, source),
+        `Update assessment: C; remove 來源專題 ${sourceLink}`,
+    );
+});
+
+test('adding a VG banner reports only the added assessment and preserves the source marker once', () => {
+    const source = '{{WPBS|class=B|1={{WikiProject Biography}}}}';
+    const assessment = createDefaultAssessment(projectConfig, source);
+    assessment.importance = 'Mid';
+    assert.equal(
+        buildEditSummary(assessment, undefined, source),
+        `Update assessment: add Video games (Mid) ${sourceLink}`,
     );
 });

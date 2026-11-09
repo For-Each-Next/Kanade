@@ -1,6 +1,6 @@
 # Source Editor control panel
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-09.
 
 Open an article in **Edit source** and choose **Source Editor** in page tools. Its
 **Formatting**, **References**, **Highlighting settings**, and **Tools** tabs share one
@@ -13,7 +13,9 @@ MediaWiki.
 For one-click formatting, use **Format** at the bottom right. It applies the
 current accepted or saved settings to selected text, or the whole section/page
 when nothing is selected. Review the editor result and use normal editor undo if
-needed. The adjacent **Tools** shortcut opens its panel tab. To change formatting
+needed. The adjacent **References** shortcut opens the integrated reference manager
+with the same source, selection, and accepted settings. **Tools** opens its panel
+tab. To change formatting
 settings, open **Source Editor** in page tools. Formatting never publishes edits.
 
 The panel uses the wiki's Vue and [Wikimedia Codex][codex] components. The

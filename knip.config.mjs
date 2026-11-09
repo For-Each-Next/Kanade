@@ -20,10 +20,13 @@ const packageCommands = Object.values(packageInfo.scripts).flatMap((command) =>
 export default {
     entry: [
         'src/library/types/**/*.d.ts!',
-        ...tools.flatMap(({ directory, assets }) => [
+        ...tools.flatMap(({ directory, assets, pageBootstrapEntrypoint }) => [
             `src/${directory}/index.ts!`,
             `src/${directory}/app/browser.ts!`,
             `src/${directory}/types/**/*.d.ts!`,
+            ...(pageBootstrapEntrypoint
+                ? [`src/${directory}/${pageBootstrapEntrypoint}!`]
+                : []),
             ...Object.values(assets)
                 .filter((filename) => filename.endsWith('.vue'))
                 .map((filename) => `src/${directory}/${filename}!`),

@@ -215,7 +215,7 @@ for (const compactFirst of [false, true]) {
             page.locator(
                 '#kanade-quick-access [data-kanade-quick-access-action]',
             ),
-        ).toHaveCount(2);
+        ).toHaveCount(3);
         await expect(
             page.locator('[data-kanade-quick-access-action="wpvg-assessor"]'),
         ).toHaveCount(0);
@@ -354,7 +354,7 @@ for (const [width, height] of [
         await expect(tools).toBeVisible();
         await expect(
             dock.locator('[data-kanade-quick-access-action]'),
-        ).toHaveCount(2);
+        ).toHaveCount(3);
         expect(
             await dock
                 .locator('[data-kanade-quick-access-action]')
@@ -363,7 +363,11 @@ for (const [width, height] of [
                         item.getAttribute('data-kanade-quick-access-action'),
                     ),
                 ),
-        ).toEqual(['source-editor', 'source-editor-tools']);
+        ).toEqual([
+            'source-editor',
+            'source-editor-references',
+            'source-editor-tools',
+        ]);
         await expect(
             page.locator('[data-kanade-quick-access-action="rev-copy"]'),
         ).toHaveCount(0);

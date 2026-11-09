@@ -109,7 +109,7 @@ import {
 } from './reference-containers.ts';
 import {
     decodeReferenceAttribute,
-    escapeReferenceDetails,
+    escapeReferenceName,
     formatReferenceDetailsAttribute,
     formatReferenceGroupAttribute,
 } from './ref-attributes.ts';
@@ -2003,7 +2003,7 @@ function isReferenceSectionComment(comment: string): boolean {
  * @returns Full ref tag.
  */
 function buildDefinitionTag(definition: ReferenceDefinition): string {
-    const name = escapeReferenceDetails(definition.finalName);
+    const name = escapeReferenceName(definition.finalName);
     const details = formatReferenceDetailsAttribute(
         definition.listDefinedDetails,
     );
@@ -2024,7 +2024,8 @@ function buildDefinitionTag(definition: ReferenceDefinition): string {
 function buildReuseTag(name: string, group: string, details?: string): string {
     const groupAttribute = formatReferenceGroupAttribute(group);
     const detailsAttribute = formatReferenceDetailsAttribute(details);
-    return `<ref name="${escapeReferenceDetails(name)}"${groupAttribute}${detailsAttribute} />`;
+    const escapedName = escapeReferenceName(name);
+    return `<ref name="${escapedName}"${groupAttribute}${detailsAttribute} />`;
 }
 
 /**

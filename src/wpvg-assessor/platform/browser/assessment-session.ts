@@ -37,6 +37,7 @@ export function createAssessmentSessionStore(
 ): AssessmentSessionStore {
     const key = `${KEY_PREFIX}${encodeURIComponent(identity)}`;
     const queueKey = `${QUEUE_PREFIX}${encodeURIComponent(identity)}`;
+    const editTimeKey = `kanade:wpvg-assessor:next-edit:v1:${encodeURIComponent(identity)}`;
     const baselines = new WeakMap<AssessmentSessionData, string>();
 
     function readStored(shared: boolean): AssessmentSessionData {
@@ -77,6 +78,35 @@ export function createAssessmentSessionStore(
                 source,
             );
         else storage.setItem(shared ? queueKey : key, source);
+    }
+
+    function readNextEditAt(): number {
+        let value = MEMORY_QUEUES.get(editTimeKey);
+        try {
+            value = globalThis.localStorage?.getItem(editTimeKey) ?? value;
+        } catch {
+            logger.warn('assessment-session.pacing.read.failed');
+        }
+        const timestamp = Number(value);
+        // Disposable pacing data cannot delay a queue indefinitely after corrupt storage.
+        return Number.isSafeInteger(timestamp) &&
+            timestamp > 0 &&
+            timestamp <= Date.now() + 6000
+            ? timestamp
+            : 0;
+    }
+
+    function writeNextEditAt(timestamp: number): boolean {
+        if (!Number.isSafeInteger(timestamp) || timestamp <= 0)
+            throw new TypeError('Invalid batch edit timestamp.');
+        MEMORY_QUEUES.set(editTimeKey, String(timestamp));
+        try {
+            globalThis.localStorage?.setItem(editTimeKey, String(timestamp));
+            return true;
+        } catch {
+            logger.warn('assessment-session.pacing.write.failed');
+            return false;
+        }
     }
 
     function read(): AssessmentSessionData {
@@ -161,7 +191,14 @@ export function createAssessmentSessionStore(
         }
     }
 
-    return Object.freeze({ read, write, subscribe, runExclusive });
+    return Object.freeze({
+        read,
+        readNextEditAt,
+        writeNextEditAt,
+        write,
+        subscribe,
+        runExclusive,
+    });
 }
 
 function serializeDrafts(drafts: StagedAssessment[]): string {

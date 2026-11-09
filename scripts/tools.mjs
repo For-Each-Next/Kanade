@@ -173,10 +173,20 @@ export const tools = [
         basename: 'wpvg_assessor',
         description:
             'Review and save WikiProject Video games assessments on Chinese Wikipedia.',
-        license: 'CC0-1.0',
-        matches: ['https://zh.wikipedia.org/*'],
-        packages: [],
-        noticeSections: ['Wikimedia data', 'MediaWiki site configuration'],
+        license: 'CC0-1.0 AND MIT AND CC-BY-4.0',
+        matches: [
+            'https://zh.wikipedia.org/*',
+            'https://petscan.toolforge.org/*',
+            'https://petscan.wmcloud.org/*',
+        ],
+        pageBootstrapEntrypoint: 'app/source-links-browser.ts',
+        packages: ['@wikimedia/codex-icons'],
+        noticeSections: [
+            'Codex icons',
+            'Wikimedia data',
+            'MediaWiki site configuration',
+            'MIT: Codex icon software',
+        ],
         compactInlineWhitespace: true,
         assets: {
             __WPVG_ASSESSOR_ARCHIVE_DIALOG_TEMPLATE__:

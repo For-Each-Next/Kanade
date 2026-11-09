@@ -119,8 +119,8 @@ function createDocumentationHeader(tool, version, license) {
 }
 
 /** Wait in the page realm, releasing bounded timers and navigation listeners. */
-function createPageProgram(application, tool) {
-    return tool.resourceLoaderBootstrap
+function createPageProgram(application, tool, pageBootstrap) {
+    const hostProgram = tool.resourceLoaderBootstrap
         ? application
         : `
 let readinessTimer;
@@ -152,10 +152,13 @@ ${application}
 window.addEventListener('pagehide', stopWaiting, { once: true });
 startWhenReady();
 `;
+    return pageBootstrap
+        ? `${pageBootstrap}\nif (!kanadePageBootstrap.startBeforeHost()) return;\n${hostProgram}`
+        : hostProgram;
 }
 
-export function createUserscriptProgram(application, tool) {
-    const program = createPageProgram(application, tool);
+export function createUserscriptProgram(application, tool, pageBootstrap = '') {
+    const program = createPageProgram(application, tool, pageBootstrap);
     // Match Revision Copy's page-global behavior across userscript isolation modes.
     return `
 function kanadeApplication() {
@@ -175,6 +178,7 @@ export async function createArtifacts({
     version,
     license,
     compactLicense = '',
+    pageBootstrap = '',
 }) {
     const header = createDocumentationHeader(tool, version, license);
     const compactHeader = createDocumentationHeader(
@@ -196,16 +200,21 @@ export async function createArtifacts({
         '// ==/UserScript==',
     ].join('\n');
     const sources = await Promise.all([
-        transform(compact, {
-            ...outputOptions,
-            // The final wrapper also contains helpers introduced during lowering.
-            format: undefined,
-            minify: true,
-            // Escape string newlines instead of emitting multiline template literals.
-            supported: { 'template-literal': false },
-            legalComments: 'none',
-        }),
-        transform(createUserscriptProgram(readable, tool), {
+        transform(
+            pageBootstrap
+                ? `(() => { ${pageBootstrap}\nif (!kanadePageBootstrap.startBeforeHost()) return;\n(() => { ${compact}\n})(); })();`
+                : compact,
+            {
+                ...outputOptions,
+                // The final wrapper also contains helpers introduced during lowering.
+                format: undefined,
+                minify: true,
+                // Escape string newlines instead of emitting multiline template literals.
+                supported: { 'template-literal': false },
+                legalComments: 'none',
+            },
+        ),
+        transform(createUserscriptProgram(readable, tool, pageBootstrap), {
             ...outputOptions,
             minify: false,
             legalComments: 'none',

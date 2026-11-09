@@ -17,14 +17,9 @@ import {
     createLoggedApiRequests,
     type LoggedApiRequests,
 } from './api-requests.ts';
-import { formatNamespaceTitle } from '../../../library/wiki-titles/wikipedia.ts';
+import { NEW_PAGE_LIST_TITLE } from '../../domain/new-page-list.ts';
+export { NEW_PAGE_LIST_TITLE } from '../../domain/new-page-list.ts';
 import type { Logger } from '../../../library/logging/logger.ts';
-
-export const NEW_PAGE_LIST_TITLE = formatNamespaceTitle(
-    '电子游戏/新进条目',
-    'zhwiki',
-    102,
-);
 
 export interface NewPageListApi {
     fetchNewPageList(api: mw.Api): Promise<NewPageListSnapshot>;

@@ -229,6 +229,25 @@ async function bundleTool(tool, { root, version, compact }) {
     return code;
 }
 
+/** Bundle a host-independent launcher without evaluating the MediaWiki application. */
+async function bundlePageBootstrap(tool, root) {
+    if (!tool.pageBootstrapEntrypoint) return '';
+    const result = await build({
+        absWorkingDir: root,
+        entryPoints: [`src/${tool.directory}/${tool.pageBootstrapEntrypoint}`],
+        bundle: true,
+        preserveSymlinks: true,
+        write: false,
+        ...outputOptions,
+        globalName: 'kanadePageBootstrap',
+        legalComments: 'none',
+        metafile: true,
+        logLevel: 'silent',
+    });
+    assertRuntimeDependencies(result.metafile.inputs, tool);
+    return result.outputFiles[0].text;
+}
+
 /** Validate all outputs before replacing a previously successful distribution. */
 async function buildProject({
     root = projectRoot,
@@ -239,12 +258,13 @@ async function buildProject({
     );
     const built = await Promise.all(
         tools.map(async (tool) => {
-            const [compact, readable, license, compactLicense] =
+            const [compact, readable, license, compactLicense, pageBootstrap] =
                 await Promise.all([
                     bundleTool(tool, { root, version, compact: true }),
                     bundleTool(tool, { root, version, compact: false }),
                     readToolLicense(tool, root),
                     readToolLicense(tool, root, { compact: true }),
+                    bundlePageBootstrap(tool, root),
                 ]);
             const artifacts = await createArtifacts({
                 tool,
@@ -253,6 +273,7 @@ async function buildProject({
                 version,
                 license,
                 compactLicense,
+                pageBootstrap,
             });
             return artifacts;
         }),

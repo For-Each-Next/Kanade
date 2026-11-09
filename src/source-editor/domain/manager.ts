@@ -71,14 +71,11 @@ import {
 } from './protected-wikitext.ts';
 import {
     buildCompactRTemplateCall,
+    buildReuseTag,
     canCompactRpTemplateCall,
     type NativeRTemplateReference,
 } from './r-template.ts';
 import { applyReplacements } from './wikitext.ts';
-import {
-    decodeReferenceAttribute,
-    escapeReferenceDetails,
-} from './ref-attributes.ts';
 import type { CitationLayout, TextReplacement } from './types.ts';
 
 const HTML_COMMENT = /<!--([\s\S]*?)-->/gu;
@@ -646,12 +643,7 @@ export function expandCompactReferenceCalls(
         const result = {
             end: call.end,
             start: call.start,
-            text: names
-                .map(
-                    (name) =>
-                        `<ref name="${escapeReferenceDetails(decodeReferenceAttribute(name))}" />`,
-                )
-                .join(''),
+            text: names.map((name) => buildReuseTag(name, '')).join(''),
         };
         return result;
     };

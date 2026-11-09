@@ -555,6 +555,42 @@ test('old tab sessions are ignored across reads, locked operations and cache wri
     assert.deepEqual(current.drafts, []);
 });
 
+test('pacing timestamp failures retain a validated memory fallback without changing reviewed queue', (context) => {
+    context.mock.timers.enable({ apis: ['Date'], now: 10000 });
+    const storage = useStorage(context);
+    const store = createAssessmentSessionStore(logger(), 'pacing-fallback');
+    store.write(sessionData());
+    const before = storage.queue.values.get(
+        'wpvg-assessor.assessment-queue.v1:pacing-fallback',
+    );
+    const originalSet = storage.queue.setItem;
+    storage.queue.setItem = (key, value) => {
+        if (key.startsWith('kanade:wpvg-assessor:next-edit:v1:'))
+            throw new Error('Timing cache quota');
+        originalSet(key, value);
+    };
+    assert.equal(store.writeNextEditAt!(16000), false);
+    assert.equal(store.readNextEditAt!(), 16000);
+    assert.equal(
+        storage.queue.values.get(
+            'wpvg-assessor.assessment-queue.v1:pacing-fallback',
+        ),
+        before,
+    );
+    assert.deepEqual(store.read().drafts, sessionData().drafts);
+    storage.queue.values.set(
+        'kanade:wpvg-assessor:next-edit:v1:pacing-fallback',
+        '999999999',
+    );
+    assert.equal(store.readNextEditAt!(), 0);
+    assert.throws(
+        () => store.writeNextEditAt!(NaN),
+        /Invalid batch edit timestamp/u,
+    );
+    const other = createAssessmentSessionStore(logger(), 'another-account');
+    assert.equal(other.readNextEditAt!(), 0);
+});
+
 function useStorage(
     t: TestContext,
     supplied: ReturnType<typeof memoryStorage> | null = memoryStorage(),

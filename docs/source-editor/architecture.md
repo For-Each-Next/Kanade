@@ -1,6 +1,6 @@
 # Source Editor architecture
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-09.
 
 Source Editor is one source-editing tool with highlighting, formatting, citation
 creation, and reference management. One composition root owns startup and the
@@ -112,7 +112,7 @@ skin's markup, layout, and styles. Dialogs load the wiki's Vue and
 development types and browser fixtures; production does not bundle another
 framework runtime.
 
-Source Editor registers its bottom-right Format and Tools actions through
+Source Editor registers its bottom-right Format, References, and Tools actions through
 `src/library/quick-access/registry.ts`, the launcher owner. The other three tools
 use their inline, section, or native page-tool entries. The library owns rendering
 and registration disposal; Source Editor keeps
@@ -131,6 +131,23 @@ input, composition, and navigation invalidate pending work. Its transient listen
 are released on completion. This adds no persistence or wiki-save path.
 AI assistance covered the direct action, shared layout, and regression tests;
 offline tests exercise accepted settings, stale-result rejection, and source undo.
+
+The References shortcut opens the same injected reference-management workflow
+as the panel's References tab, using accepted session settings and the current
+backing editor. It appears between Format and Tools only when that workflow is
+available. Refreshing the host content releases registrations for a replaced or
+removed textarea. It adds no stored state or separate manager owner. AI assistance
+covered the supplied-script comparison, integration, and regression tests;
+offline browser scenarios check keyboard activation, focus restoration,
+duplicate loading, and disposal at the shared mobile and desktop viewports.
+
+Reference-name output is owned by `domain/ref-attributes.ts`. It quotes delimiters
+and protects recognized entity sequences in the decoded logical name while
+retaining literal ampersands and unknown entity text. Article formatting, R-call
+expansion, and source reuse use this same encoding rule; group and details
+attributes retain their distinct escaping contracts. Regression tests check
+literal and nested entities, Unicode names, safe delimiters, reuse identity, and
+repeated formatting. AI assistance covered these changes and offline checks.
 
 ## Editor synchronization and lifecycle
 

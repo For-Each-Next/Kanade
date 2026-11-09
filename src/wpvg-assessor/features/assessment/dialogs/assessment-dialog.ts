@@ -5,6 +5,9 @@
  * Contents: Reactive assessment controls, exact reviews, staging, and dialog lifecycle.
  */
 
+import { NEW_PAGE_LIST_TITLE } from '../../../domain/new-page-list.ts';
+import { hasBatchTalkChange } from '../../../domain/batch-assessment.ts';
+import { cdxIconEdit, cdxIconTrash } from '@wikimedia/codex-icons';
 import projectConfig from '../../../domain/project-config.ts';
 import type {
     DialogSavePhase,
@@ -12,7 +15,11 @@ import type {
     DialogState,
     PageAssessorRuntime,
 } from '../../../app/dialog-contracts.ts';
-import type { PreparedAssessmentBatch } from '../../../app/staging-contracts.ts';
+import type {
+    PreparedAssessmentBatch,
+    StagedAssessment,
+    BatchSaveProgress,
+} from '../../../app/staging-contracts.ts';
 import {
     getExistingOtherProjectOptions,
     getTalkPageTopSection,
@@ -23,7 +30,6 @@ import {
 } from '../../../domain/assessment.ts';
 import {
     NOT_VIDEO_GAME_IMPORTANCE,
-    type Assessment,
     type AssessmentImportance,
     type RegistrationResult,
     type SelectionMap,
@@ -43,7 +49,6 @@ import {
     TASK_FORCE_OPTIONS,
     includeAssessmentValue,
     type LabelledAssessmentOption,
-    type LabelledAssessmentValue,
 } from '../assessment-options.ts';
 import { buildEditSummary } from '../assessment-summary.ts';
 import type { VueModule, VueRef } from '../codex.ts';
@@ -64,16 +69,8 @@ export const ASSESSMENT_DIALOG_STYLES =
 type MessageType = 'error' | 'notice';
 type SelectionGroup = 'maintenance' | 'otherProjects' | 'taskForces';
 
-interface StagedTalkReview {
-    comparison: WikitextComparison;
-    previewText: string;
-    summary: string;
-    talkTitle: string;
-    title: string;
-}
-
 interface DialogAction {
-    id: 'cancel' | 'stage' | 'submit';
+    id: 'collapse' | 'cancel' | 'submit';
     action: 'default' | 'progressive';
     weight: 'quiet' | 'normal' | 'primary';
     label: string;
@@ -85,63 +82,17 @@ export interface AssessmentDialogOptions {
     currentNamespace: number;
     onClose: () => void;
     onSaved?: () => void;
+    registerRestore?: (restore: (() => void) | null) => void;
+    onDraftApply?: (
+        state: DialogState,
+        review: DialogSaveReview,
+    ) => Promise<void>;
+    review?: DialogSaveReview;
     runtime: PageAssessorRuntime;
     state: DialogState;
 }
 
-interface DialogBindings {
-    assessment: Assessment;
-    assessmentHeadingTabIndex: VueRef<0 | -1>;
-    classInput: VueRef<string>;
-    classSelection: VueRef<string>;
-    classOptions: VueRef<Array<LabelledAssessmentValue<string>>>;
-    commitClassName: () => void;
-    currentSource: VueRef<string>;
-    dialogTitle: string;
-    footerActions: VueRef<DialogAction[]>;
-    importanceOptions: VueRef<Array<LabelledAssessmentValue<string>>>;
-    interfaceLocale: string;
-    listComparison: VueRef<WikitextComparison>;
-    listSummary: VueRef<string>;
-    maintenanceOptions: typeof MAINTENANCE_OPTIONS;
-    msg: typeof msg;
-    onAssessmentHeadingFocus: () => void;
-    onCancel: () => void;
-    onOpenChange: (value: boolean) => void;
-    onPreviewInput: (value: string) => void;
-    onSave: () => Promise<void>;
-    onStage: () => Promise<void>;
-    onSummaryInput: (value: string) => void;
-    open: VueRef<boolean>;
-    otherProjectOptions: ReadonlyArray<LabelledAssessmentOption>;
-    previewText: VueRef<string>;
-    preparing: VueRef<boolean>;
-    registrationDisabled: VueRef<boolean>;
-    registrationEligible: VueRef<boolean>;
-    registrationLabel: VueRef<string>;
-    saving: VueRef<boolean>;
-    setClassName: (value: unknown) => void;
-    selectClass: (value: unknown) => void;
-    setImportance: (value: unknown) => void;
-    setListSummary: (value: string) => void;
-    setRegister: (value: boolean) => void;
-    setSelection: (group: SelectionGroup, id: string, value: boolean) => void;
-    shouldRegister: VueRef<boolean>;
-    showRegistrationPreview: VueRef<boolean>;
-    showListReview: VueRef<boolean>;
-    stagedTalkReviews: VueRef<StagedTalkReview[]>;
-    stackedActions: VueRef<boolean>;
-    stagingAvailable: boolean;
-    stageLabel: VueRef<string>;
-    status: VueRef<string>;
-    statusType: VueRef<MessageType>;
-    summary: VueRef<string>;
-    submitLabel: VueRef<string>;
-    displayedListSummary: VueRef<string>;
-    talkComparison: VueRef<WikitextComparison>;
-    taskForceOptions: typeof TASK_FORCE_OPTIONS;
-    videoGamesDisabled: VueRef<boolean>;
-}
+type FocusTarget = HTMLElement | { $el: HTMLElement };
 
 /**
  * Creates the actual MediaWiki Vue component mounted by the UI adapter.
@@ -153,7 +104,7 @@ export function createAssessmentDialogComponent(
     Vue: VueModule,
     options: AssessmentDialogOptions,
 ): unknown {
-    function setup(): DialogBindings {
+    function setup() {
         return createAssessmentDialogBindings(Vue, options);
     }
 
@@ -177,9 +128,11 @@ export function createAssessmentDialogComponent(
 export function createAssessmentDialogBindings(
     Vue: VueModule,
     options: AssessmentDialogOptions,
-): DialogBindings {
+) {
     const { runtime, state } = options;
-    const restoredReview = runtime.staging?.getReview(state.talkTitle);
+    const draftEditor = typeof options.onDraftApply === 'function';
+    const restoredReview =
+        options.review ?? runtime.staging?.getReview(state.talkTitle);
     const assessment = Vue.reactive(state.assessment);
     const videoGamesDisabled = Vue.computed(function isVideoGamesDisabled() {
         return assessment.importance === NOT_VIDEO_GAME_IMPORTANCE;
@@ -201,9 +154,39 @@ export function createAssessmentDialogBindings(
         ...OTHER_PROJECT_OPTIONS,
         ...getExistingOtherProjectOptions(state.page.text, projectConfig),
     ];
+    const miniSelectionGroups: Array<{
+        name: SelectionGroup;
+        label:
+            'dialog.taskForces' | 'dialog.maintenance' | 'dialog.otherProjects';
+        options: ReadonlyArray<LabelledAssessmentOption>;
+        videoGamesOnly: boolean;
+    }> = [
+        {
+            name: 'taskForces',
+            label: 'dialog.taskForces',
+            options: TASK_FORCE_OPTIONS,
+            videoGamesOnly: true,
+        },
+        {
+            name: 'maintenance',
+            label: 'dialog.maintenance',
+            options: MAINTENANCE_OPTIONS,
+            videoGamesOnly: true,
+        },
+        {
+            name: 'otherProjects',
+            label: 'dialog.otherProjects',
+            options: otherProjectOptions,
+            videoGamesOnly: false,
+        },
+    ];
     const open = Vue.ref(true);
-    // Start at the assessment heading, then let Tab enter the selected class.
-    const assessmentHeadingTabIndex = Vue.ref<0 | -1>(0);
+    const minimized = Vue.ref(false);
+    const miniExpandButton = Vue.ref<FocusTarget | null>(null);
+    const assessmentHeading = Vue.ref<FocusTarget | null>(null);
+    const batchContent = Vue.ref<FocusTarget | null>(null);
+    const batchBackButton = Vue.ref<FocusTarget | null>(null);
+    const assessmentHeadingTabIndex = Vue.ref(0);
     function onAssessmentHeadingFocus(): void {
         assessmentHeadingTabIndex.value = -1;
     }
@@ -233,11 +216,33 @@ export function createAssessmentDialogBindings(
     });
     const saving = Vue.ref(false);
     const preparing = Vue.ref(false);
+    const batchConfirmOpen = Vue.ref(false);
+    const batchEditor = Vue.shallowRef<unknown>(null);
+    const batchEntries = Vue.ref<StagedAssessment[]>([]);
+    const batchSelectedTitles = Vue.ref<string[]>([]);
+    const batchRemovingTitle = Vue.ref('');
+    const batchProgress = Vue.ref<BatchSaveProgress>({
+        completed: 0,
+        total: 0,
+        title: '',
+        phase: 'waiting',
+        waitSeconds: 0,
+    });
     let preparedBatch: PreparedAssessmentBatch | null = null;
+    let reviewedBatch: PreparedAssessmentBatch | null = null;
+    let batchEditorToken: object | null = null;
+    let batchSelectionRevision = 0;
     const batchPrepared = Vue.ref(false);
     const preparedListSummary = Vue.ref('');
     const stagedCount = Vue.ref(runtime.staging?.count() ?? 0);
     const currentStaged = Vue.ref(restoredReview != null);
+    let stagedReviewKey =
+        restoredReview == null ? null : getStagedReviewKey(restoredReview);
+    let stagedEditRevision = 0;
+    let stagedSavedRevision = 0;
+    let stagedSyncPromise: Promise<void> | null = null;
+    let stagedSyncTimer: ReturnType<typeof setTimeout> | undefined;
+    let unstagingRequested = false;
     let active = true;
     let reviewRevision = 0;
     let batchPreparationPending = false;
@@ -247,9 +252,9 @@ export function createAssessmentDialogBindings(
     const actionLayout =
         typeof matchMedia === 'function'
             ? matchMedia('(max-width: 40rem)')
-            : undefined;
+            : void 0;
     const stackedActions = Vue.ref(actionLayout?.matches ?? false);
-    const updateActionLayout = (): void => {
+    const updateActionLayout = () => {
         stackedActions.value = actionLayout?.matches ?? false;
     };
     actionLayout?.addEventListener('change', updateActionLayout);
@@ -261,23 +266,32 @@ export function createAssessmentDialogBindings(
         statusType.value = isError ? 'error' : 'notice';
         runtime.logger.debug('status.updated', { isError });
     }
-
     function invalidatePreparedBatch(): void {
         reviewRevision += 1;
+        batchSelectionRevision += 1;
+        batchConfirmOpen.value = false;
         preparedBatch = null;
+        reviewedBatch = null;
+        batchEntries.value = [];
+        batchSelectedTitles.value = [];
         batchPrepared.value = false;
         preparedListSummary.value = '';
+        if (batchPreparationPending) {
+            batchPreparationPending = false;
+            preparing.value = false;
+        }
         if (statusType.value !== 'error') {
             status.value = '';
         }
     }
-
     function refreshStagedCount(): void {
         stagedCount.value = runtime.staging?.count() ?? 0;
-        currentStaged.value =
-            runtime.staging?.getReview(state.talkTitle) != null;
+        const review = runtime.staging?.getReview(state.talkTitle);
+        currentStaged.value = !unstagingRequested && review != null;
+        if (review == null) {
+            stagedReviewKey = null;
+        }
     }
-
     function onStagedQueueChange(): void {
         if (!active) {
             return;
@@ -302,7 +316,6 @@ export function createAssessmentDialogBindings(
             setStatus(getErrorMessage(error), true);
         }
     }
-
     function refreshAssessment(): void {
         invalidatePreparedBatch();
         runtime.logger.debug('assessment.changed', {
@@ -346,8 +359,8 @@ export function createAssessmentDialogBindings(
             shouldRegister,
             showRegistrationPreview.value,
         );
+        scheduleStagedReview();
     }
-
     function setClassName(value: unknown): void {
         if (saving.value || preparing.value || typeof value !== 'string') {
             return;
@@ -367,7 +380,6 @@ export function createAssessmentDialogBindings(
         assessment.className = className;
         refreshAssessment();
     }
-
     function selectClass(value: unknown): void {
         if (saving.value || preparing.value || typeof value !== 'string') {
             return;
@@ -385,13 +397,11 @@ export function createAssessmentDialogBindings(
             refreshAssessment();
         }
     }
-
     function commitClassName(): void {
         if (!saving.value && !preparing.value && classSelection.value === '') {
             classInput.value = getClassLabel(assessment.className);
         }
     }
-
     function setImportance(value: unknown): void {
         if (saving.value || preparing.value || !isAssessmentImportance(value)) {
             return;
@@ -399,7 +409,6 @@ export function createAssessmentDialogBindings(
         assessment.importance = value;
         refreshAssessment();
     }
-
     function setSelection(
         group: SelectionGroup,
         id: string,
@@ -413,11 +422,9 @@ export function createAssessmentDialogBindings(
             return;
         }
         const selections = assessment[group] as SelectionMap;
-
         selections[id] = value;
         refreshAssessment();
     }
-
     function onPreviewInput(value: string): void {
         if (saving.value || preparing.value) {
             return;
@@ -447,8 +454,8 @@ export function createAssessmentDialogBindings(
         runtime.logger.debug('talk-diff.updated', {
             characterCount: currentSource.value.length,
         });
+        scheduleStagedReview();
     }
-
     function onSummaryInput(value: string): void {
         if (saving.value || preparing.value) {
             return;
@@ -457,16 +464,16 @@ export function createAssessmentDialogBindings(
         summary.value = value;
         state.summaryDirty = true;
         runtime.logger.debug('assessment-summary.edited');
+        scheduleStagedReview();
     }
-
     function setListSummary(value: string): void {
         if (saving.value || preparing.value) {
             return;
         }
         invalidatePreparedBatch();
         listSummary.value = value;
+        scheduleStagedReview();
     }
-
     function setRegister(value: boolean): void {
         if (saving.value || preparing.value || registrationDisabled.value) {
             return;
@@ -480,47 +487,109 @@ export function createAssessmentDialogBindings(
             shouldRegister,
             showRegistrationPreview.value,
         );
+        scheduleStagedReview();
     }
-
     function close(): void {
         if (!active) {
             return;
         }
+        minimized.value = false;
+        batchConfirmOpen.value = false;
         open.value = false;
         release();
         queueMicrotask(options.onClose);
     }
-
     function release(): void {
         active = false;
+        batchEditor.value = null;
+        batchEditorToken = null;
+        clearTimeout(stagedSyncTimer);
+        stagedSyncTimer = void 0;
+        options.registerRestore?.(null);
         actionLayout?.removeEventListener('change', updateActionLayout);
         unsubscribeStaging?.();
-        unsubscribeStaging = undefined;
+        unsubscribeStaging = void 0;
         if (closeTimer != null) {
             clearTimeout(closeTimer);
-            closeTimer = undefined;
+            closeTimer = void 0;
         }
     }
-
-    function onCancel(): void {
-        if (saving.value) {
+    async function onCancel(): Promise<void> {
+        if (saving.value || batchEditor.value != null) {
+            return;
+        }
+        try {
+            await flushStagedReview();
+        } catch (error) {
+            reportStagedSyncError(error);
             return;
         }
         runtime.logger.info('dialog.cancelled');
         close();
     }
-
     function onOpenChange(value: boolean): void {
+        if (
+            minimized.value ||
+            batchConfirmOpen.value ||
+            batchEditor.value != null
+        ) {
+            return;
+        }
         if (saving.value && !value) {
             open.value = true;
             return;
         }
-        open.value = value;
         if (!value) {
-            close();
+            void onCancel();
         }
     }
-
+    function focusCurrentView() {
+        void Vue.nextTick(() => {
+            if (!active || !open.value || batchEditor.value != null) {
+                return;
+            }
+            const target = minimized.value
+                ? miniExpandButton.value
+                : batchConfirmOpen.value
+                  ? batchContent.value
+                  : assessmentHeading.value;
+            const element =
+                target != null && '$el' in target ? target.$el : target;
+            if (
+                typeof element?.focus === 'function' &&
+                element.isConnected !== false
+            ) {
+                element.focus({ preventScroll: true });
+            }
+        });
+    }
+    function onCollapse() {
+        if (
+            !active ||
+            !open.value ||
+            minimized.value ||
+            draftEditor ||
+            batchEditor.value != null
+        ) {
+            return;
+        }
+        minimized.value = true;
+        focusCurrentView();
+    }
+    function onExpand() {
+        if (!active || !open.value || batchEditor.value != null) {
+            return;
+        }
+        minimized.value = false;
+        focusCurrentView();
+    }
+    async function onMiniSave() {
+        if (saving.value || preparing.value || !active) {
+            return;
+        }
+        onExpand();
+        await onSave();
+    }
     function captureReview(): DialogSaveReview {
         return createSaveReview({
             listSummary,
@@ -530,20 +599,116 @@ export function createAssessmentDialogBindings(
             summary,
         });
     }
-
-    async function onStage(): Promise<void> {
-        if (saving.value || preparing.value || !active || !runtime.staging) {
+    function getStagedReviewKey(review: DialogSaveReview): string {
+        return JSON.stringify([
+            review.previewText,
+            review.summary,
+            review.shouldRegister,
+            review.listSummary,
+        ]);
+    }
+    function scheduleStagedReview() {
+        clearTimeout(stagedSyncTimer);
+        stagedSyncTimer = void 0;
+        if (!active || saving.value || !currentStaged.value) {
             return;
         }
-        const removing = currentStaged.value;
-        const review = captureReview();
+        stagedEditRevision += 1;
+        stagedSyncTimer = setTimeout(() => {
+            void flushStagedReview().catch(reportStagedSyncError);
+        }, 250);
+    }
+    function flushStagedReview(): Promise<void> {
+        clearTimeout(stagedSyncTimer);
+        stagedSyncTimer = void 0;
+        if (stagedSyncPromise != null) {
+            return stagedSyncPromise.then(() => {
+                if (
+                    active &&
+                    currentStaged.value &&
+                    stagedEditRevision !== stagedSavedRevision
+                )
+                    return flushStagedReview();
+            });
+        }
+        if (
+            !active ||
+            saving.value ||
+            !currentStaged.value ||
+            unstagingRequested ||
+            runtime.staging == null
+        ) {
+            return Promise.resolve();
+        }
+        stagingPending = true;
+        stagedSyncPromise = synchronize().finally(() => {
+            stagedSyncPromise = null;
+            stagingPending = false;
+        });
+        return stagedSyncPromise;
+        async function synchronize() {
+            while (active && currentStaged.value && !saving.value) {
+                const review = captureReview();
+                const key = getStagedReviewKey(review);
+                const editRevision = stagedEditRevision;
+                if (
+                    key === stagedReviewKey &&
+                    editRevision === stagedSavedRevision
+                ) {
+                    return;
+                }
+                await runtime.staging!.stage(state, review);
+                stagedReviewKey = key;
+                stagedSavedRevision = editRevision;
+                if (active) {
+                    refreshStagedCount();
+                    if (unstagingRequested) {
+                        currentStaged.value = false;
+                    }
+                }
+            }
+        }
+    }
+    function reportStagedSyncError(error: unknown): void {
+        if (!active) {
+            return;
+        }
+        try {
+            refreshStagedCount();
+        } catch {
+            currentStaged.value = false;
+        }
+        runtime.logger.error('assessment.stage-sync.failed', { error });
+        setStatus(getErrorMessage(error), true);
+    }
+    async function onStage(
+        nextStaged: boolean = !currentStaged.value,
+    ): Promise<void> {
+        if (
+            saving.value ||
+            preparing.value ||
+            !active ||
+            !runtime.staging ||
+            typeof nextStaged !== 'boolean' ||
+            nextStaged === currentStaged.value
+        ) {
+            return;
+        }
+        const removing = !nextStaged;
+        clearTimeout(stagedSyncTimer);
+        stagedSyncTimer = void 0;
+        unstagingRequested = removing;
+        currentStaged.value = nextStaged;
         stagingPending = true;
         preparing.value = true;
         try {
             if (removing) {
+                await stagedSyncPromise?.catch(() => {});
+                stagingPending = true;
                 await runtime.staging.unstage(state.talkTitle);
+                stagedReviewKey = null;
             } else {
-                await runtime.staging.stage(state, review);
+                await flushStagedReview();
             }
             if (!active) {
                 return;
@@ -559,15 +724,16 @@ export function createAssessmentDialogBindings(
                 return;
             }
             runtime.logger.error('assessment.stage.failed', { error });
-            setStatus(getErrorMessage(error), true);
+            unstagingRequested = false;
+            reportStagedSyncError(error);
         } finally {
+            unstagingRequested = false;
             stagingPending = false;
             if (active) {
                 preparing.value = false;
             }
         }
     }
-
     async function prepareBatch(
         review: DialogSaveReview,
     ): Promise<PreparedAssessmentBatch | null> {
@@ -584,9 +750,12 @@ export function createAssessmentDialogBindings(
             if (!active || !open.value || revision !== reviewRevision) {
                 return null;
             }
-            preparedBatch = batch;
-            batchPrepared.value = true;
-            preparedListSummary.value = batch.registrationSummary;
+            reviewedBatch = batch;
+            batchEntries.value = batch.entries;
+            batchSelectedTitles.value = batch.entries.map(
+                (entry) => entry.state.talkTitle,
+            );
+            installPreparedBatch(batch);
             refreshStagedCount();
             return batch;
         } catch (error) {
@@ -602,34 +771,440 @@ export function createAssessmentDialogBindings(
             }
         }
     }
-
-    async function onSave(): Promise<void> {
-        if (saving.value || preparing.value || !active) {
-            return;
+    function installPreparedBatch(batch: PreparedAssessmentBatch): void {
+        preparedBatch = batch;
+        batchPrepared.value = true;
+        preparedListSummary.value = batch.registrationSummary;
+        batchProgress.value = {
+            completed: 0,
+            total:
+                batch.entries.filter(hasBatchTalkChange).length +
+                (batch.registration == null ? 0 : 1),
+            title: '',
+            phase: 'waiting',
+            waitSeconds: 0,
+        };
+    }
+    async function prepareBatchSelection() {
+        const fullBatch = reviewedBatch;
+        const staging = runtime.staging;
+        if (fullBatch == null || staging == null) {
+            return false;
         }
-        const review = captureReview();
-        let submittedBatch: PreparedAssessmentBatch | null = null;
-        if (runtime.staging != null && runtime.staging.count() > 0) {
-            submittedBatch = await prepareBatch(review);
+        const revision = reviewRevision;
+        const selectionRevision = ++batchSelectionRevision;
+        const selected = new Set(batchSelectedTitles.value);
+        const entries = fullBatch.entries.filter((entry) =>
+            selected.has(entry.state.talkTitle),
+        );
+        preparedBatch = null;
+        batchPrepared.value = false;
+        preparedListSummary.value = '';
+        batchProgress.value = {
+            completed: 0,
+            total: 0,
+            title: '',
+            phase: 'waiting',
+            waitSeconds: 0,
+        };
+        if (entries.length === 0) {
+            batchPreparationPending = false;
+            preparing.value = false;
+            status.value = '';
+            return true;
+        }
+        batchPreparationPending = true;
+        preparing.value = true;
+        setStatus(msg('dialog.preparingBatch'), false);
+        try {
+            const batch = await staging.prepareSelection(
+                state.api,
+                entries,
+                fullBatch.draftSnapshot,
+            );
             if (
                 !active ||
-                !open.value ||
-                submittedBatch == null ||
-                submittedBatch !== preparedBatch
+                !batchConfirmOpen.value ||
+                revision !== reviewRevision ||
+                selectionRevision !== batchSelectionRevision ||
+                reviewedBatch !== fullBatch
+            ) {
+                return false;
+            }
+            installPreparedBatch(batch);
+            status.value = '';
+            return true;
+        } catch (error) {
+            if (
+                active &&
+                revision === reviewRevision &&
+                selectionRevision === batchSelectionRevision
+            ) {
+                runtime.logger.error('batch.selection.failed', { error });
+                setStatus(getErrorMessage(error), true);
+            }
+            return false;
+        } finally {
+            if (
+                active &&
+                revision === reviewRevision &&
+                selectionRevision === batchSelectionRevision
+            ) {
+                batchPreparationPending = false;
+                preparing.value = false;
+            }
+        }
+    }
+    async function onBatchSelect(title: string, selected: boolean) {
+        if (
+            saving.value ||
+            batchRemovingTitle.value !== '' ||
+            batchEditor.value != null ||
+            !active ||
+            !batchConfirmOpen.value ||
+            reviewedBatch == null ||
+            typeof selected !== 'boolean' ||
+            !batchEntries.value.some((entry) => entry.state.talkTitle === title)
+        ) {
+            return;
+        }
+        const titles = new Set(batchSelectedTitles.value);
+        if (selected === titles.has(title)) {
+            return;
+        }
+        if (selected) {
+            titles.add(title);
+        } else {
+            titles.delete(title);
+        }
+        batchSelectedTitles.value = batchEntries.value
+            .map((entry) => entry.state.talkTitle)
+            .filter((talkTitle) => titles.has(talkTitle));
+        await prepareBatchSelection();
+    }
+    async function onBatchSelectAll(selected: boolean) {
+        if (
+            saving.value ||
+            batchRemovingTitle.value !== '' ||
+            batchEditor.value != null ||
+            !active ||
+            !batchConfirmOpen.value ||
+            reviewedBatch == null ||
+            typeof selected !== 'boolean'
+        ) {
+            return;
+        }
+        batchSelectedTitles.value = selected
+            ? batchEntries.value.map((entry) => entry.state.talkTitle)
+            : [];
+        await prepareBatchSelection();
+    }
+    function onBatchEdit(title: string): void {
+        const fullBatch = reviewedBatch;
+        if (
+            saving.value ||
+            preparing.value ||
+            !active ||
+            batchEditor.value != null ||
+            batchRemovingTitle.value !== '' ||
+            !batchConfirmOpen.value ||
+            fullBatch == null
+        ) {
+            return;
+        }
+        const entry = fullBatch.entries.find(
+            (draft) => draft.state.talkTitle === title,
+        );
+        if (entry == null) {
+            return;
+        }
+        const revision = reviewRevision;
+        const token = {};
+        const editState = {
+            ...cloneDraftState(entry.state),
+            api: state.api,
+        };
+        batchEditorToken = token;
+        batchEditor.value = createAssessmentDialogComponent(Vue, {
+            currentNamespace: editState.subjectInfo.namespaceNumber,
+            onClose() {
+                if (!active || batchEditorToken !== token) {
+                    return;
+                }
+                batchEditor.value = null;
+                batchEditorToken = null;
+                focusCurrentView();
+            },
+            onDraftApply(nextState, review) {
+                return applyBatchEdit(
+                    fullBatch,
+                    revision,
+                    token,
+                    title,
+                    nextState,
+                    review,
+                );
+            },
+            review: structuredClone(entry.review),
+            runtime: { ...runtime, staging: undefined },
+            state: editState,
+        });
+    }
+    async function applyBatchEdit(
+        fullBatch: PreparedAssessmentBatch,
+        revision: number,
+        token: object,
+        title: string,
+        nextState: DialogState,
+        review: DialogSaveReview,
+    ) {
+        function assertEditorCurrent() {
+            if (
+                !active ||
+                !batchConfirmOpen.value ||
+                batchEditorToken !== token ||
+                revision !== reviewRevision ||
+                reviewedBatch !== fullBatch
+            ) {
+                throw new Error(msg('dialog.batchChanged'));
+            }
+        }
+        assertEditorCurrent();
+        preparing.value = true;
+        stagingPending = true;
+        try {
+            const nextBatch = await runtime.staging!.updateInBatch(
+                fullBatch,
+                title,
+                nextState,
+                review,
+            );
+            assertEditorCurrent();
+            reviewedBatch = nextBatch;
+            batchEntries.value = nextBatch.entries;
+            refreshStagedCount();
+            if (title === state.talkTitle) {
+                syncCurrentBatchDraft(
+                    nextBatch.entries.find(
+                        (entry) => entry.state.talkTitle === title,
+                    )!,
+                );
+            }
+        } finally {
+            stagingPending = false;
+            if (active) {
+                preparing.value = false;
+            }
+        }
+        if (await prepareBatchSelection()) {
+            setStatus(msg('dialog.batchEdited', { title }), false);
+        }
+    }
+    function syncCurrentBatchDraft(entry: StagedAssessment): void {
+        Object.assign(assessment, structuredClone(entry.state.assessment));
+        state.previewDirty = entry.state.previewDirty;
+        state.summaryDirty = entry.state.summaryDirty;
+        classSelection.value = getPresetClass(assessment.className);
+        classInput.value = classSelection.value
+            ? ''
+            : getClassLabel(assessment.className);
+        previewText.value = entry.review.previewText;
+        summary.value = entry.review.summary;
+        listSummary.value = entry.review.listSummary;
+        shouldRegister.value = entry.review.shouldRegister;
+        stagedReviewKey = currentStaged.value
+            ? getStagedReviewKey(entry.review)
+            : null;
+        stagedSavedRevision = stagedEditRevision;
+    }
+    async function onBatchRemove(title: string) {
+        const fullBatch = reviewedBatch;
+        if (
+            saving.value ||
+            preparing.value ||
+            batchEditor.value != null ||
+            batchRemovingTitle.value !== '' ||
+            !active ||
+            !batchConfirmOpen.value ||
+            fullBatch == null ||
+            !fullBatch.entries.some((entry) => entry.state.talkTitle === title)
+        ) {
+            return;
+        }
+        const revision = reviewRevision;
+        const removedIndex = fullBatch.entries.findIndex(
+            (entry) => entry.state.talkTitle === title,
+        );
+        batchSelectionRevision += 1;
+        batchRemovingTitle.value = title;
+        stagingPending = true;
+        preparing.value = true;
+        preparedBatch = null;
+        batchPrepared.value = false;
+        preparedListSummary.value = '';
+        let removed = false;
+        try {
+            const nextBatch = await runtime.staging!.removeFromBatch(
+                fullBatch,
+                title,
+            );
+            if (
+                !active ||
+                revision !== reviewRevision ||
+                reviewedBatch !== fullBatch
             ) {
                 return;
             }
+            reviewedBatch = nextBatch;
+            batchEntries.value = nextBatch.entries;
+            batchSelectedTitles.value = batchSelectedTitles.value.filter(
+                (talkTitle) => talkTitle !== title,
+            );
+            refreshStagedCount();
+            removed = true;
+        } catch (error) {
+            if (active && revision === reviewRevision) {
+                runtime.logger.error('batch.remove.failed', { error });
+                setStatus(getErrorMessage(error), true);
+            }
+        } finally {
+            stagingPending = false;
+            batchRemovingTitle.value = '';
+            if (active && revision === reviewRevision) {
+                preparing.value = false;
+            }
         }
+        if (removed && (await prepareBatchSelection())) {
+            setStatus(msg('dialog.batchRemoved', { title }), false);
+            void Vue.nextTick(() => {
+                if (!active || !batchConfirmOpen.value) return;
+                const target = batchContent.value;
+                const root =
+                    target != null && '$el' in target ? target.$el : target;
+                const actions = root?.querySelectorAll<HTMLButtonElement>(
+                    '.kanade-wpvg-assessor-edit',
+                );
+                const next =
+                    actions?.[Math.min(removedIndex, actions.length - 1)];
+                const back = batchBackButton.value;
+                const fallback =
+                    back != null && '$el' in back ? back.$el : back;
+                (next ?? fallback)?.focus({ preventScroll: true });
+            });
+        }
+    }
+    async function onSave(): Promise<void> {
+        if (
+            saving.value ||
+            preparing.value ||
+            !active ||
+            batchConfirmOpen.value ||
+            minimized.value ||
+            batchEditor.value != null
+        ) {
+            return;
+        }
+        if (draftEditor) {
+            saving.value = true;
+            setStatus(msg('dialog.batchApplying'), false);
+            try {
+                await options.onDraftApply!(state, captureReview());
+                close();
+            } catch (error) {
+                if (active) {
+                    runtime.logger.error('batch.edit.failed', { error });
+                    setStatus(getErrorMessage(error), true);
+                }
+            } finally {
+                if (active) {
+                    saving.value = false;
+                }
+            }
+            return;
+        }
+        preparing.value = true;
+        try {
+            await flushStagedReview();
+        } catch (error) {
+            reportStagedSyncError(error);
+            return;
+        } finally {
+            if (active) {
+                preparing.value = false;
+            }
+        }
+        if (!active || !open.value) {
+            return;
+        }
+        const review = captureReview();
+        if (runtime.staging != null && runtime.staging.count() > 0) {
+            const batch = await prepareBatch(review);
+            if (
+                !active ||
+                !open.value ||
+                batch == null ||
+                batch !== preparedBatch
+            ) {
+                return;
+            }
+            status.value = '';
+            batchConfirmOpen.value = true;
+            return;
+        }
+        await saveReview(review, null);
+    }
+    function onBatchCancel() {
+        if (
+            saving.value ||
+            batchRemovingTitle.value !== '' ||
+            batchEditor.value != null ||
+            !active
+        ) {
+            return;
+        }
+        invalidatePreparedBatch();
+    }
+    function onBatchOpenChange(value: boolean) {
+        if (!value && !minimized.value && batchEditor.value == null) {
+            onBatchCancel();
+        }
+    }
+    async function onConfirmBatch() {
+        if (
+            saving.value ||
+            preparing.value ||
+            !active ||
+            batchEditor.value != null ||
+            minimized.value ||
+            !batchConfirmOpen.value ||
+            !batchPrepared.value ||
+            preparedBatch == null ||
+            batchSelectedTitles.value.length === 0
+        ) {
+            return;
+        }
+        await saveReview(captureReview(), preparedBatch);
+    }
+    async function saveReview(
+        review: DialogSaveReview,
+        submittedBatch: PreparedAssessmentBatch | null,
+    ) {
         runtime.logger.info('save.activated');
         saving.value = true;
         try {
             const reportPhase = reportSavePhase.bind(null, setStatus);
+            const reportProgress = (progress: BatchSaveProgress) => {
+                if (active) {
+                    batchProgress.value = { ...progress };
+                }
+            };
             const outcome =
-                submittedBatch != null && runtime.staging != null
-                    ? await runtime.staging.save(
+                submittedBatch != null
+                    ? await runtime.staging!.save(
                           state.api,
                           submittedBatch,
                           reportPhase,
+                          reportProgress,
                       )
                     : await runtime.saveReviewedDialog(
                           state,
@@ -647,6 +1222,7 @@ export function createAssessmentDialogBindings(
             setStatus(text, false);
             closeTimer = setTimeout(finishSave, DIALOG_CLOSE_DELAY_MS);
         } catch (error) {
+            batchConfirmOpen.value = false;
             preparedBatch = null;
             batchPrepared.value = false;
             preparedListSummary.value = '';
@@ -671,21 +1247,19 @@ export function createAssessmentDialogBindings(
             saving.value = false;
         }
     }
-
     function finishSave(): void {
         close();
         if (options.onSaved != null) {
             queueMicrotask(options.onSaved);
         }
     }
-
-    const registrationDisabled = Vue.computed(function isDisabled(): boolean {
+    const registrationDisabled = Vue.computed(function isDisabled() {
         return (
             !videoGamesAvailable.value ||
             isRegistrationDisabled(registration.value)
         );
     });
-    const registrationEligible = Vue.computed(function isEligible(): boolean {
+    const registrationEligible = Vue.computed(function isEligible() {
         return videoGamesAvailable.value && registration.value.eligible;
     });
     const showRegistrationPreview = Vue.computed(function canPreview() {
@@ -722,7 +1296,78 @@ export function createAssessmentDialogBindings(
     const talkComparison = Vue.computed(function getTalkComparison() {
         return compareWikitext(currentSource.value, previewText.value);
     });
+    const batchReviewDetails = Vue.computed(() => {
+        return batchEntries.value.map((entry) => ({
+            title: entry.state.talkTitle,
+            summary: entry.review.summary,
+            changed: hasBatchTalkChange(entry),
+            comparison: compareWikitext(
+                getTalkPageTopSection(entry.state.page.text),
+                entry.review.previewText,
+            ),
+        }));
+    });
+    const batchReviewRows = Vue.computed(() => {
+        const selected = new Set(batchSelectedTitles.value);
+        return batchReviewDetails.value.map((row) => ({
+            ...row,
+            selected: selected.has(row.title),
+        }));
+    });
+    const batchSelectedCount = Vue.computed(
+        () => batchSelectedTitles.value.length,
+    );
+    const batchAllSelected = Vue.computed(() => {
+        return (
+            batchEntries.value.length > 0 &&
+            batchSelectedCount.value === batchEntries.value.length
+        );
+    });
+    const batchPartiallySelected = Vue.computed(() => {
+        return (
+            batchSelectedCount.value > 0 &&
+            batchSelectedCount.value < batchEntries.value.length
+        );
+    });
+    const batchRegistrationReview = Vue.computed(() => {
+        const registration2 = batchPrepared.value
+            ? preparedBatch?.registration
+            : null;
+        if (registration2 == null) {
+            return null;
+        }
+        return {
+            title: NEW_PAGE_LIST_TITLE,
+            summary: preparedBatch!.registrationSummary,
+            comparison: compareWikitext(
+                registration2.snapshot.text,
+                registration2.proposedText,
+            ),
+        };
+    });
+    const batchProgressMessage = Vue.computed(() => {
+        const progress = batchProgress.value;
+        if (progress.phase === 'complete') {
+            return msg(
+                progress.total === 0
+                    ? 'dialog.unchanged'
+                    : 'dialog.batchComplete',
+            );
+        }
+        if (progress.phase === 'waiting' && progress.waitSeconds > 0) {
+            return msg('dialog.batchWaiting', {
+                seconds: progress.waitSeconds,
+                title: progress.title,
+            });
+        }
+        return progress.title
+            ? msg('dialog.batchSavingPage', { title: progress.title })
+            : msg('dialog.saving');
+    });
     const submitLabel = Vue.computed(function getSubmitLabel() {
+        if (draftEditor) {
+            return msg('dialog.batchApply');
+        }
         const otherPages = Math.max(
             0,
             stagedCount.value - (currentStaged.value ? 1 : 0),
@@ -731,11 +1376,25 @@ export function createAssessmentDialogBindings(
             ? msg('dialog.submitWithCount', { count: otherPages })
             : msg('dialog.save');
     });
-    const stageLabel = Vue.computed(function getStageLabel() {
-        return msg(currentStaged.value ? 'dialog.unstage' : 'dialog.stage');
+    const miniAssessmentLabel = Vue.computed(() => {
+        const stageMessage = currentStaged.value
+            ? 'dialog.miniStaged'
+            : 'dialog.miniUnstaged';
+        return msg('dialog.miniAssessment', {
+            className: getClassLabel(assessment.className),
+            state: msg(stageMessage),
+        });
     });
-    const footerActions = Vue.computed<DialogAction[]>(() => {
+    const footerActions = Vue.computed(() => {
         const actions: DialogAction[] = [
+            {
+                id: 'collapse',
+                action: 'default',
+                weight: 'quiet',
+                label: msg('dialog.collapse'),
+                disabled: false,
+                activate: onCollapse,
+            },
             {
                 id: 'cancel',
                 action: 'default',
@@ -745,16 +1404,6 @@ export function createAssessmentDialogBindings(
                 activate: onCancel,
             },
         ];
-        if (runtime.staging != null) {
-            actions.push({
-                id: 'stage',
-                action: 'default',
-                weight: 'normal',
-                label: stageLabel.value,
-                disabled: saving.value || preparing.value,
-                activate: onStage,
-            });
-        }
         actions.push({
             id: 'submit',
             action: 'progressive',
@@ -763,8 +1412,10 @@ export function createAssessmentDialogBindings(
             disabled: saving.value || preparing.value,
             activate: onSave,
         });
-        // Change DOM order along with layout so keyboard and visual order agree.
-        return stackedActions.value ? actions.reverse() : actions;
+        const visibleActions = draftEditor
+            ? actions.filter((action) => action.id !== 'collapse')
+            : actions;
+        return stackedActions.value ? visibleActions.reverse() : visibleActions;
     });
     const displayedListSummary = Vue.computed(function getListSummary() {
         return !batchPrepared.value
@@ -776,42 +1427,68 @@ export function createAssessmentDialogBindings(
             ? showRegistrationPreview.value && shouldRegister.value
             : preparedBatch?.registration != null;
     });
-    const stagedTalkReviews = Vue.computed(function getStagedTalkReviews() {
-        return (batchPrepared.value ? (preparedBatch?.entries ?? []) : [])
-            .filter((entry) => entry.state.talkTitle !== state.talkTitle)
-            .map((entry) => ({
-                comparison: compareWikitext(
-                    getTalkPageTopSection(entry.state.page.text),
-                    entry.review.previewText,
-                ),
-                previewText: entry.review.previewText,
-                summary: entry.review.summary,
-                talkTitle: entry.state.talkTitle,
-                title: entry.state.subjectTitle,
-            }));
-    });
-
     unsubscribeStaging = runtime.staging?.subscribe(onStagedQueueChange);
-
+    options.registerRestore?.(onExpand);
     return {
         assessment,
+        assessmentHeading,
         assessmentHeadingTabIndex,
+        batchAllSelected,
+        batchConfirmOpen,
+        batchContent,
+        batchBackButton,
+        batchEditor,
+        batchPartiallySelected,
+        batchPrepared,
+        batchProgress,
+        batchProgressMessage,
+        batchRegistrationReview,
+        batchRemovingTitle,
+        batchReviewRows,
+        batchSelectedCount,
+        cdxIconEdit,
+        cdxIconTrash,
+        miniClassOptions: Vue.computed(() => [
+            ...classOptions.value,
+            { value: '', label: msg('dialog.customClass') },
+        ]),
         classInput,
         classSelection,
         classOptions,
         commitClassName,
         currentSource,
-        dialogTitle: msg('dialog.title', { title: state.subjectTitle }),
+        currentStaged,
+        dialogTitle: msg(
+            draftEditor ? 'dialog.batchEditTitle' : 'dialog.title',
+            { title: state.subjectTitle },
+        ),
         displayedListSummary,
+        flushStagedReview,
         footerActions,
         importanceOptions,
         interfaceLocale,
         listComparison,
         listSummary,
         maintenanceOptions: MAINTENANCE_OPTIONS,
+        miniAssessmentLabel,
+        miniExpandButton,
+        miniSelectionGroups,
+        miniSelectionChecked: (group: SelectionGroup, id: string) =>
+            (assessment[group] as SelectionMap)[id] === true,
+        minimized,
         msg,
         onAssessmentHeadingFocus,
+        onBatchCancel,
+        onBatchEdit,
+        onBatchOpenChange,
+        onBatchRemove,
+        onBatchSelect,
+        onBatchSelectAll,
         onCancel,
+        onCollapse,
+        onConfirmBatch,
+        onExpand,
+        onMiniSave,
         onOpenChange,
         onPreviewInput,
         onSave,
@@ -834,10 +1511,8 @@ export function createAssessmentDialogBindings(
         shouldRegister,
         showRegistrationPreview,
         showListReview,
-        stagedTalkReviews,
         stackedActions,
         stagingAvailable: runtime.staging != null,
-        stageLabel,
         status,
         statusType,
         summary,
@@ -1002,4 +1677,27 @@ function isAssessmentImportance(value: unknown): value is AssessmentImportance {
 
 function getErrorMessage(error: unknown): string {
     return error instanceof Error ? error.message : String(error);
+}
+
+/** Copy plain state from a possibly reactive reviewed row without retaining proxies. */
+function cloneDraftState(
+    snapshot: Omit<DialogState, 'api'>,
+): Omit<DialogState, 'api'> {
+    return structuredClone({
+        ...snapshot,
+        assessment: JSON.parse(
+            JSON.stringify(snapshot.assessment),
+        ) as DialogState['assessment'],
+        creationTimes: new Map(snapshot.creationTimes),
+        newPageList: { ...snapshot.newPageList },
+        page: { ...snapshot.page },
+        registration: {
+            ...snapshot.registration,
+            existing:
+                snapshot.registration.existing == null
+                    ? null
+                    : { ...snapshot.registration.existing },
+        },
+        subjectInfo: { ...snapshot.subjectInfo },
+    });
 }

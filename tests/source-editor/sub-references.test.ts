@@ -715,12 +715,9 @@ test('enwiki R conversion escapes decoded name delimiters once without creating 
 
     assert.equal(
         result,
-        '<ref name="A&quot;B&lt;C&gt;&amp;D">Plain bibliography.</ref>',
+        '<ref name="A&quot;B&lt;C&gt;&D">Plain bibliography.</ref>',
     );
-    assert.equal(
-        findRefTags(result)[0].attributes.name,
-        'A&quot;B&lt;C&gt;&amp;D',
-    );
+    assert.equal(findRefTags(result)[0].attributes.name, 'A&quot;B&lt;C&gt;&D');
     assert.equal(listExistingSources(result)[0].referenceName, 'A"B<C>&D');
 });
 
@@ -748,9 +745,55 @@ test('manager R expansion preserves literal entity and Unicode reference identit
         ],
     );
     assert.ok(result.includes('<ref name="&amp;eacute;" />'));
-    assert.ok(result.includes('<ref name="A&quot;B&lt;C&gt;&amp;D" />'));
+    assert.ok(result.includes('<ref name="A&quot;B&lt;C&gt;&D" />'));
     assert.equal(
         expandCompactReferenceCalls(result, chineseTemplateNames),
         result,
+    );
+});
+
+test('formatting and source reuse retain literal ampersands and unknown entities in names', () => {
+    const context = createTemplateNameContext('enwiki');
+    const source = [
+        'Lead{{r|A & B|&unknown;|&amp;eacute;}}.',
+        '<references>',
+        '<ref name="A & B">Ampersand bibliography.</ref>',
+        '<ref name="&unknown;">Unknown entity bibliography.</ref>',
+        '<ref name="&amp;eacute;">Literal entity bibliography.</ref>',
+        '</references>',
+    ].join('\n');
+    const result = formatCitationWikitext(
+        source,
+        citationTemplateData,
+        'inline',
+        'Lead',
+        context,
+    );
+    const sources = listExistingSources(result.text, context);
+    assert.deepEqual(
+        sources.map((item) => [item.referenceName, item.usageCount]),
+        [
+            ['A & B', 1],
+            ['&unknown;', 1],
+            ['&eacute;', 1],
+        ],
+    );
+    assert.deepEqual(
+        sources.map((item) => buildExistingSourceReference(item)),
+        [
+            '<ref name="A & B" />',
+            '<ref name="&unknown;" />',
+            '<ref name="&amp;eacute;" />',
+        ],
+    );
+    assert.equal(
+        formatCitationWikitext(
+            result.text,
+            citationTemplateData,
+            'inline',
+            'Lead',
+            context,
+        ).text,
+        result.text,
     );
 });

@@ -1,6 +1,6 @@
 # Reference Names
 
-Last reviewed: 2026-10-17.
+Last reviewed: 2026-11-09.
 
 Source Editor generates stable reference names from citation authors,
 dates, source identities, and part locators. Structured HTML comments can
@@ -30,6 +30,11 @@ group.
 Names and groups are compared after one HTML entity decoding pass, so `é` and
 `&eacute;` identify the same value. An escaped literal such as `&amp;eacute;`
 remains distinct through formatting and source reuse.
+Generated names retain literal ampersands such as `A & B` and unknown entity
+text. Recognized entity sequences that are part of the name's literal value
+are escaped, while quotes and angle brackets are always quoted safely. This
+keeps native definitions, `{{r}}` conversion, and reused sources connected to
+the same name without unnecessary ampersand encoding.
 
 Repeated identical full definitions share one source entry. Editing that source
 updates identical copies together. Conflicting full definitions are kept in

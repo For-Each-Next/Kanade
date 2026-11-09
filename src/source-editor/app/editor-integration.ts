@@ -173,6 +173,15 @@ async function initialize(services: EditorServices): Promise<void> {
                 return formatter.format();
             },
         });
+        const openReferences = services.openReferences;
+        const releaseReferences = openReferences
+            ? registerQuickAccessAction({
+                  id: 'source-editor-references',
+                  label: msg('dialog.referencesTab'),
+                  title: msg('dialog.manageReferences'),
+                  activate: () => openReferences(),
+              })
+            : undefined;
         const releaseTools = registerQuickAccessAction({
             id: 'source-editor-tools',
             label: msg('dialog.toolsTab'),
@@ -182,6 +191,7 @@ async function initialize(services: EditorServices): Promise<void> {
             textarea.removeEventListener('compositionstart', beginComposition);
             textarea.removeEventListener('compositionend', endComposition);
             releaseFormat();
+            releaseReferences?.();
             releaseTools();
         };
     }

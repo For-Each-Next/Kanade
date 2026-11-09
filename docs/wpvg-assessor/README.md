@@ -1,6 +1,6 @@
 # Article Assessor
 
-Last reviewed: 2026-10-24.
+Last reviewed: 2026-11-09.
 
 Assess video-game articles on Chinese Wikipedia and maintain the WikiProject's
 new-page records. The tool saves reviewed edits using your logged-in wiki account.
@@ -24,8 +24,18 @@ Japanese, and Russian.
 
 To open the appropriate Assessor interface directly, add `?wpvg-assessor=1` to
 the page URL, or `&wpvg-assessor=1` if it already has a query string. The tool
-must be installed and the page must be supported. Opening the interface does
-not submit an edit.
+must be installed and the page must be supported. The launch marker is removed
+after the supported page loads, so reloading does not reopen the dialog. Opening
+the interface does not submit an edit.
+
+With the userscript installed, article and talk-page links in results on
+[PetScan][petscan] (`petscan.toolforge.org` or `petscan.wmcloud.org`) open
+the assessment interface on Chinese Wikipedia. The same behavior applies to
+article links in the WikiProject's new-page list. Links retain their usual
+navigation behavior, including opening in another tab. Edit, history, revision,
+missing-page, and navigation links retain their usual destinations. A wiki-local
+`common.js` installation supports the new-page list; PetScan requires a userscript
+installation because wiki scripts do not run there.
 
 Page tools show **Batch assess articles** on the unassessed category or
 **Archive tool** on the new-page list.
@@ -42,11 +52,20 @@ Assessment choices, talk-page review, and registration follow one full-width
 reading order on every screen size.
 
 Set the assessment, review proposed talk-page source and summaries, then choose
-**Submit**. Registration appears only for eligible new articles. **Stage** keeps
-a draft across navigation; **Unstage** removes it from the queue while preserving
-current form edits. **Submit (+N)** saves the current page and all staged drafts
-directly, without a second confirmation. Review each page's source and summaries
-before staging or submitting it.
+**Submit**. Registration appears only for eligible new articles. Turn on **Stage**
+to keep the reviewed draft across navigation; later changes synchronize with that
+staged draft. Turn it off to remove the current page from the queue while retaining
+the form. Opening a new assessment leaves Stage off. **Collapse** keeps the current
+draft in a compact panel while you read the article; **Expand** restores its review.
+
+When drafts are queued, **Submit (+N)** opens **Confirm batch save**. Review each
+page's changes and the combined registration, edit queued assessments with the
+pencil action, and check the pages to include. Unchecked staged pages remain queued.
+The remove action takes a page out of the queue. **Back** returns to the current
+form with its source and custom summaries intact. **Confirm and save** submits only
+the selected reviewed pages, with at least six seconds between actual edit requests.
+Progress shows completed edits and the next pending page. A single unqueued page
+still saves through **Submit**.
 
 Generated edit summaries use English in every interface language. Batch
 registration combines page links and UTC creation dates in one summary, such as
@@ -88,3 +107,5 @@ text retain their stated terms.
 - [Architecture](architecture.md) and [interface details](../ui-guidelines.md).
 - [Development](../development.md) and [documentation](../documentation.md).
 - [License](../../LICENSE) and [third-party notices](../../THIRD-PARTY-NOTICES.md).
+
+[petscan]: https://petscan.toolforge.org/

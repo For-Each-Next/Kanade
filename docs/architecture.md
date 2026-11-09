@@ -290,6 +290,13 @@ partial-failure, and recovery protections through refactoring.
 - [Article Assessor](wpvg-assessor/architecture.md): assessment drafts,
   account/wiki queues, locks, protected writes, and archive reviews.
 
+The Assessor build also registers a host-independent page bootstrap. It bundles
+only source-link routing and lifecycle code, installs on supported PetScan and
+project-list documents before MediaWiki readiness, and skips the wiki application
+on PetScan. Both readable and compact forms retain this boundary; other tools
+keep their existing startup contract. Temporary supplied scripts in `.temp/` are
+local comparison inputs and are excluded from authored-code checks and Git.
+
 [Development](development.md) owns coding and verification.
 [UI guidelines](ui-guidelines.md) own interaction and accessibility policy.
 Project-owned material is CC0-1.0; [third-party notices](../THIRD-PARTY-NOTICES.md)

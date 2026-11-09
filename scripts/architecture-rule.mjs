@@ -33,7 +33,15 @@ const compositionModules = new Map([
     ],
     ['rev-copy', new Set(['browser.ts', 'main.ts'])],
     ['vg-stub-creator', new Set(['browser.ts', 'main.ts', 'interface.ts'])],
-    ['wpvg-assessor', new Set(['browser.ts', 'main.ts', 'interface.ts'])],
+    [
+        'wpvg-assessor',
+        new Set([
+            'browser.ts',
+            'main.ts',
+            'interface.ts',
+            'source-links-browser.ts',
+        ]),
+    ],
 ]);
 const libraryDependencies = new Map([
     ['i18n', new Set(['i18n'])],

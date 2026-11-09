@@ -225,6 +225,7 @@ test('ignores dependency and IDE caches while scanning root configuration', asyn
     const root = await project(context, {
         'node_modules/dependency/index.js': retiredBrand,
         '.idea/workspace.xml': retiredBrand,
+        '.temp/reference.js': retiredBrand,
         '.github/workflows/test.yml': retiredBrand,
         'config/runtime.json': retiredBrand,
     });

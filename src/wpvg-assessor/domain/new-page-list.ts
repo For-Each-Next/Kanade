@@ -13,6 +13,8 @@ import {
     insertYearSection,
 } from '../../library/new-page-list/sections.ts';
 
+export const NEW_PAGE_LIST_TITLE = 'WikiProject:电子游戏/新进条目';
+
 const DATE_LINE_PATTERN = /^\* (\d{1,2})月(\d{1,2})日 -\s*(.*)$/u;
 const NO_NEW_ENTRY_PATTERN = /^[无無]新[条條]目$/u;
 const SUBGROUP_PATTERN = /^\*:\s*([^：:]+)[：:]\s*(.*)$/u;

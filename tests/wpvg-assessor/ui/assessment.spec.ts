@@ -258,8 +258,14 @@ test('an out-of-scope choice retains shared class and other projects on a narrow
             exact: true,
         }),
     ).toHaveValue(
-        /Update shared assessment \(B-Class\): ACG, Role-playing games; remove Video games banner/u,
+        /^Update assessment: Start→B; remove Video games banner; add ACG /u,
     );
+    await expect(
+        page.getByRole('textbox', {
+            name: 'Talk-page edit summary',
+            exact: true,
+        }),
+    ).not.toHaveValue(/Role-playing games/u);
     const dimensions = await dialog.evaluate((element) => {
         const body = element.querySelector<HTMLElement>('.cdx-dialog__body')!;
         return {
@@ -818,15 +824,21 @@ for (const width of [360, 1024, 1440]) {
         const stacked = width <= 640;
         await expect(footerButtons).toHaveText(
             stacked
-                ? ['Submit', 'Stage', 'Cancel']
-                : ['Cancel', 'Stage', 'Submit'],
+                ? ['Submit', 'Cancel', 'Collapse']
+                : ['Collapse', 'Cancel', 'Submit'],
         );
+        const stage = footer.getByRole('switch', {
+            name: 'Stage',
+            exact: true,
+        });
+        await expect(stage).toBeEnabled();
+        await expect(stage).not.toBeChecked();
         const cancel = footer.getByRole('button', {
             name: 'Cancel',
             exact: true,
         });
-        const store = footer.getByRole('button', {
-            name: 'Stage',
+        const collapse = footer.getByRole('button', {
+            name: 'Collapse',
             exact: true,
         });
         const submit = footer.getByRole('button', {
@@ -835,7 +847,7 @@ for (const width of [360, 1024, 1440]) {
         });
         for (const [button, action, weight] of [
             [cancel, 'default', 'quiet'],
-            [store, 'default', 'normal'],
+            [collapse, 'default', 'quiet'],
             [submit, 'progressive', 'primary'],
         ] as const) {
             await expect(button).toHaveClass(
@@ -874,18 +886,22 @@ for (const width of [360, 1024, 1440]) {
                 buttonBounds[index - 1].top,
             );
         }
-        const first = stacked ? submit : cancel;
-        const last = stacked ? cancel : submit;
-        await first.focus();
+        const first = stacked ? submit : collapse;
+        const last = stacked ? collapse : submit;
+        await stage.focus();
+        await expect(stage).toBeFocused();
+        await page.keyboard.press('Tab');
         await expect(first).toBeFocused();
         await page.keyboard.press('Tab');
-        await expect(store).toBeFocused();
+        await expect(cancel).toBeFocused();
         await page.keyboard.press('Tab');
         await expect(last).toBeFocused();
         await page.keyboard.press('Shift+Tab');
-        await expect(store).toBeFocused();
+        await expect(cancel).toBeFocused();
         await page.keyboard.press('Shift+Tab');
         await expect(first).toBeFocused();
+        await page.keyboard.press('Shift+Tab');
+        await expect(stage).toBeFocused();
         const screenshotDirectory = process.env.WPVG_SCREENSHOT_DIR;
         if (screenshotDirectory) {
             await mkdir(screenshotDirectory, { recursive: true });
@@ -924,8 +940,8 @@ for (const width of [360, 1024]) {
             .getByRole('button');
         await expect(buttons).toHaveText(
             width <= 640
-                ? ['Submit', 'Stage', 'Cancel']
-                : ['Cancel', 'Stage', 'Submit'],
+                ? ['Submit', 'Cancel', 'Collapse']
+                : ['Collapse', 'Cancel', 'Submit'],
         );
         const bounds = await buttons.evaluateAll((elements) =>
             elements.map((element) => {
@@ -949,7 +965,13 @@ for (const width of [360, 1024]) {
                 ).toBeCloseTo(12, 0);
             }
         }
-        await buttons.nth(0).focus();
+        const stage = dialog.getByRole('switch', {
+            name: 'Stage',
+            exact: true,
+        });
+        await stage.focus();
+        await page.keyboard.press('Tab');
+        await expect(buttons.nth(0)).toBeFocused();
         for (let index = 1; index < (await buttons.count()); index += 1) {
             await page.keyboard.press('Tab');
             await expect(buttons.nth(index)).toBeFocused();

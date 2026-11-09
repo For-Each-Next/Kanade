@@ -6,6 +6,31 @@
 
 import { expect, getFixtureMessages, getPosts, test } from './fixtures.ts';
 
+const WIKI_FIXTURE = 'https://zh.wikipedia.org/tests/ui/index.html';
+
+// Serve the local fixture under the production origin so URL validation stays real.
+test.beforeEach(async ({ page }) => {
+    const paths = new Set([
+        '/tests/ui/index.html',
+        '/tests/ui/mediawiki.js',
+        '/fixtures/vue.js',
+        '/fixtures/codex.js',
+        '/fixtures/codex.css',
+        '/dist/wpvg_assessor.min.js',
+    ]);
+    await page.route('https://zh.wikipedia.org/**', async (route) => {
+        const url = new URL(route.request().url());
+        if (!paths.has(url.pathname)) {
+            await route.fallback();
+            return;
+        }
+        const response = await page.request.get(
+            `http://127.0.0.1:4176${url.pathname}${url.search}`,
+        );
+        await route.fulfill({ response });
+    });
+});
+
 for (const context of [
     {
         pageTitle: 'Example game',
@@ -29,7 +54,7 @@ for (const context of [
         await page.addInitScript((options) => {
             (globalThis as any).__fixtureOptions = options;
         }, context);
-        await page.goto('/tests/ui/index.html');
+        await page.goto(WIKI_FIXTURE);
         const { msg } = getFixtureMessages();
         const launcher = page.locator('#kanade-wpvg-assessor-launcher a');
         await expect(launcher).toHaveText(msg(context.action));
@@ -63,24 +88,35 @@ for (const context of [
         await page.addInitScript((options) => {
             (globalThis as any).__fixtureOptions = options;
         }, context);
-        await page.goto('/tests/ui/index.html?wpvg-assessor=1');
+        await page.goto(`${WIKI_FIXTURE}?host=a%20b&wpvg-assessor=1#review`);
         const dialog = page.getByRole('dialog', {
             name: context.dialog,
             exact: true,
         });
         await expect(dialog).toBeVisible();
+        await expect(page).toHaveURL(`${WIKI_FIXTURE}?host=a%20b#review`);
         expect(await getPosts(page)).toEqual([]);
         await page.keyboard.press('Escape');
         await expect(dialog).toHaveCount(0);
         await expect(
             page.locator('#kanade-wpvg-assessor-launcher a'),
         ).toBeFocused();
+        await page.reload();
+        await expect(
+            page.locator('#kanade-wpvg-assessor-launcher a'),
+        ).toBeVisible();
+        await expect(page.getByRole('dialog')).toHaveCount(0);
     });
 }
 
-for (const query of ['wpvg-assessor=0', 'wpvg-assessor', 'other=1']) {
+for (const query of [
+    'wpvg-assessor=0',
+    'wpvg-assessor',
+    'wpvg-assessor=1&wpvg-assessor=1',
+    'other=1',
+]) {
     test(`query ${query} does not open a dialog`, async ({ page }) => {
-        await page.goto(`/tests/ui/index.html?${query}`);
+        await page.goto(`${WIKI_FIXTURE}?${query}`);
         await expect(
             page.locator('#kanade-wpvg-assessor-launcher a'),
         ).toBeVisible();
@@ -95,8 +131,9 @@ test('query does not start the assessor on an unsupported wiki', async ({
     await page.addInitScript(() => {
         (globalThis as any).__fixtureOptions = { wikiId: 'enwiki' };
     });
-    await page.goto('/tests/ui/index.html?wpvg-assessor=1');
+    await page.goto(`${WIKI_FIXTURE}?wpvg-assessor=1`);
     await expect(page.locator('#kanade-wpvg-assessor-launcher')).toHaveCount(0);
     await expect(page.getByRole('dialog')).toHaveCount(0);
+    await expect(page).toHaveURL(`${WIKI_FIXTURE}?wpvg-assessor=1`);
     expect(await getPosts(page)).toEqual([]);
 });

@@ -917,3 +917,52 @@ test('preserves reviewed top-section whitespace exactly', () => {
         reviewed,
     );
 });
+
+test('project assessment follows leading history and notices while preserving discussions and comments', () => {
+    for (const notice of [
+        'Article history',
+        'Template:Talk_header',
+        '條目歷史',
+        '优良条目',
+    ]) {
+        const discussion =
+            '== Discussion ==\n{{Article history|keep=discussion}}\nKeep text.';
+        const source = `{{WPVG|class=C|importance=Low}}\n<!-- retain -->\n{{${notice}|custom={{Nested|x=y}}}}\n\n${discussion}`;
+        const assessment = createDefaultAssessment(projectConfig, source);
+        const result = updateTalkPageAssessment(
+            source,
+            assessment,
+            projectConfig,
+        );
+        assert.ok(
+            result.indexOf(`{{${notice}|`) <
+                result.indexOf('{{WikiProject banner shell'),
+        );
+        assert.equal(result.split('<!-- retain -->').length, 2);
+        assert.equal(
+            result.slice(result.indexOf('== Discussion ==')),
+            discussion,
+        );
+        assert.equal(
+            updateTalkPageAssessment(result, assessment, projectConfig),
+            result,
+        );
+    }
+});
+
+test('banner relocation preserves CRLF and does not move an already correctly placed shell', () => {
+    const source =
+        '<!-- before -->\r\n{{WPVG|class=C|importance=Low}}\r\n{{Notice|keep=yes}}\r\n\r\n== Discussion ==\r\nKeep.';
+    const assessment = createDefaultAssessment(projectConfig, source);
+    const result = updateTalkPageAssessment(source, assessment, projectConfig);
+    assert.ok(
+        result.startsWith(
+            '<!-- before -->\r\n{{Notice|keep=yes}}\r\n{{WikiProject banner shell',
+        ),
+    );
+    assert.ok(result.endsWith('\r\n\r\n== Discussion ==\r\nKeep.'));
+    assert.equal(
+        updateTalkPageAssessment(result, assessment, projectConfig),
+        result,
+    );
+});

@@ -1,6 +1,6 @@
 # Architecture
 
-Last reviewed: 2026-10-24.
+Last reviewed: 2026-11-09.
 
 <!-- toc:start -->
 
@@ -193,9 +193,33 @@ check covered 88 source variants. AI assistance covered this consolidation.
 Native page tools provide the assessment, category, and archive entrypoints.
 The `wpvg-assessor=1` URL query opens the same page-specific interface after
 host modules load and the normal wiki and namespace checks pass. It does not
-submit an edit, and leaves the URL intact. The existing dialog lifecycle and
+submit an edit. The browser adapter consumes one unambiguous marker per page
+owner and removes it with `history.replaceState`, retaining other query encodings,
+the fragment, and host history state. Restricted history still permits the requested
+launch. Reloading the cleaned URL does not reopen the interface. The existing dialog lifecycle and
 focus fallback apply to this entrypoint. AI assistance covered this entrypoint
 and its regression coverage.
+
+`app/source-links-browser.ts` runs independently before MediaWiki readiness.
+On the two supported PetScan hosts, it installs source-link decoration and ends
+startup without loading MediaWiki, Vue, Codex, assessment workflows, or storage.
+On Chinese Wikipedia it decorates the video-game new-page list and continues
+ordinary host startup. `domain/source-links.ts` recognizes the supported list
+routes and article or article-talk destinations using the shared Chinese Wikipedia
+namespace policy. It excludes revisions, edits, missing pages, unsupported hosts,
+and other namespaces while preserving unrelated query encodings and fragments.
+
+`platform/browser/source-links.ts` owns one decoration lifecycle per document.
+It updates links within result content, skips host navigation and forms on the
+wiki list, and retains native click, target, and modified-click behavior. The
+owner observes dynamic results and root replacement, catches activation before
+an observer callback, suspends for the browser page cache, and releases its
+listeners and observer when the page is discarded or leaves the supported route.
+These launchers add no network requests, persistent storage, or wiki writes.
+AI assistance covered this extraction from the supplied scripts and the offline
+URL, dynamic-DOM, lifecycle, and launch-consumption regressions. Existing dialog
+screenshots remain applicable because this integration changes navigation only.
+
 Removing the duplicate bottom-right actions keeps page navigation in the host's
 tools menu and removes Assessor's quick-access registration from startup.
 Closing restores focus to the invoking portlet anchor. Dialog requests, category
@@ -226,40 +250,66 @@ through the existing assessment rules, while typing keeps the unfinished draft
 until blur. Recognizable manual source edits resynchronize the controls. Unknown
 importance values retain a radio choice while they remain in the source.
 
-**Submit (+N)** prepares and saves the current page and staged drafts in one
-action. Each page is reviewed in its own form before staging or submitting;
-the dialog does not require a second confirmation of the combined batch.
-This removes the repeated submit step and the intervening opportunity to edit
-the combined registration summary. Per-page custom summaries still consolidate
-through the existing summary rules.
+The Stage switch is explicit for newly opened pages and restores enabled for an
+existing staged draft. While enabled, the dialog coalesces edits into exact
+reviewed snapshots and flushes them before close or batch preparation. A failed
+flush preserves the form. Unstaging waits for an active synchronization before
+removing the draft, so a late synchronization cannot recreate it.
 
-The assessment dialog owns this transition. It accepts preparation only while
-the dialog and queue generation are current, then passes the exact plain batch
-to the existing staging workflow. Canceling during preparation or an external
-queue change prevents saving; preparation errors never fall back to submitting
-only the current page. During saving, controls remain frozen and repeated
-activation is ignored. Cross-tab locks, revision checks, and retention of
-unfinished drafts remain with the workflow and storage adapters.
+**Submit (+N)** prepares a separate batch confirmation with page selection,
+change comparisons, exact summaries, and combined selected registration. Queue
+editing reuses the assessment form with a draft-only Apply action. Removing or
+editing a row validates the original queue fingerprint and page identity under
+the same exclusive lock, then invalidates registration for fresh preparation.
+Selection has its own request generation; stale selections and queue responses
+cannot replace newer reviews. Back preserves current form source and summaries.
+Unchecked drafts retain their registration choice and position in the shared queue.
 
-While saving, each other staged page appears as a native disclosure with its
-title and exact edit summary visible before expansion. Expanding exposes the
-captured source and comparison. The combined list source and summary are
-read-only during that submission. These presentation controls add no storage
-or network operations.
+The staging workflow owns exact selected saves and recovery. It preserves other
+queued pages, skips unchanged talk leads, and removes only confirmed selected
+pages. A narrow API proxy paces actual edit requests, including conflict retries,
+without delaying reads. It waits at least six seconds after the preceding request
+finishes and publishes completed/total progress and wait status. The
+progress block stays at the visible start of the native dialog scrollport while
+the review backdrop covers the full content. Offline held-save tests check that
+the bar, completed count, and current page remain visible after scrolling the
+review at all three shared viewport sizes. The existing
+wiki/account Web Lock spans submission; the new disposable
+`kanade:wpvg-assessor:next-edit:v1:<encoded wiki/account identity>` timestamp carries
+pacing between tabs. Invalid or implausibly distant timestamps use zero. Existing
+reviewed queue and per-tab cache schemas remain intact. Timing-cache failures retain an in-memory timestamp and keep the exclusive lock
+through the remaining interval before releasing it. They cannot turn an already
+confirmed edit into a failed or uncertain save. Reviewed-queue storage failures
+still stop before further wiki edits.
 
-Offline unit and browser checks cover custom/preset retention, keyboard radio selection
-and dialog focus restoration, viewport bounds, staged-review expansion, and exact
-reviewed saves. Manual screen-reader and supported-host contrast review remain
-release checks under the shared UI policy.
+Collapse retains the same mounted owner and draft in a compact Codex Message
+panel. Its fields, toggles, icons, select controls, and progress bars use default
+Codex appearance. An owned grid inside the Message's content holds the title,
+scrollable fields, and footer separately, so the focused Expand action and the
+other footer controls stay visible while the form scrolls. The native Message
+icon, padding, and component wrappers keep their default layout. Expand and the page-tool launcher restore the active view and
+focus. The dialog remains mounted while collapsed, preserving draft and pending
+batch progress; disposal releases synchronization timers, queue subscriptions,
+media-query listeners, and the restore handler. Saving prevents dismissal and
+editing. Row removal uses a neutral quiet icon for explicit draft removal. It discards
+that queued source and summary without undo; removing the current page retains
+its open form.
 
-AI assistance covered the compact wrapping option layout, inline custom-class
-row, and updates to the existing browser checks for geometry, disabled state,
-retained values, and exact reviewed saves.
+Generated assessment summaries describe changes in English: class and importance
+use old→new values, and project, task-force, and maintenance selections use add or
+remove wording. Existing unknown labels and the source-attribution marker are
+preserved. New assessments retain the ordinary banner summary. Project banners
+are placed after leading notices and history, while unrelated lead text and
+subsequent discussion remain untouched.
 
-AI assistance also covered direct staged submission and its documentation and
-regression updates. Unit and offline browser checks exercise one-click saves,
-duplicate activation, canceled or stale preparation, cross-tab locking,
-registration conflicts, and partial-save recovery.
+AI assistance covered adaptation of the supplied scripts into typed owners,
+queue confirmation/editing, compact presentation, request pacing, and regression
+updates. Offline checks exercise exact drafts, selected registration, retained
+unchecked work, identity/fingerprint validation, partial failures, cross-tab locks,
+Vue state capture, stale preparation, close flushing, and the six-second request
+interval. Browser checks cover keyboard actions and the three shared viewport
+sizes. Manual screen-reader and supported-host contrast review remain release
+checks under the shared UI policy.
 
 ## Build and verification
 

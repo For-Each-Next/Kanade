@@ -7,7 +7,11 @@
 
 import { english } from '../../i18n/index.ts';
 import { createI18n } from '../../../library/i18n/messages.ts';
-import { parseAssessment } from '../../domain/assessment.ts';
+import {
+    getExistingOtherProjectOptions,
+    parseAssessment,
+    readAssessmentClass,
+} from '../../domain/assessment.ts';
 import projectConfig from '../../domain/project-config.ts';
 import {
     NOT_VIDEO_GAME_IMPORTANCE,
@@ -43,6 +47,26 @@ export function buildEditSummary(
     originalSource?: string,
 ): string {
     const availableProjects = otherProjectOptions ?? OTHER_PROJECT_OPTIONS;
+    const original =
+        originalSource == null
+            ? null
+            : parseAssessment(projectConfig, originalSource);
+    const summary =
+        original == null
+            ? buildNewAssessmentSummary(assessment, availableProjects)
+            : buildChangedAssessmentSummary(
+                  assessment,
+                  original,
+                  availableProjects,
+                  originalSource ?? '',
+              );
+    return appendSummarySourceLink(summary);
+}
+
+function buildNewAssessmentSummary(
+    assessment: Assessment,
+    availableProjects: ReadonlyArray<LabelledAssessmentOption>,
+): string {
     const selectedProjects = getSelectedLabels(
         availableProjects,
         assessment.otherProjects,
@@ -52,37 +76,98 @@ export function buildEditSummary(
         className: getValueLabel(KNOWN_CLASS_OPTIONS, assessment.className),
     });
     if (assessment.importance === NOT_VIDEO_GAME_IMPORTANCE) {
-        let summary = selectedProjects.length
+        return selectedProjects.length > 0
             ? msg('summary.sharedAssessmentWithProjects', {
                   className,
                   projects: selectedProjects.join(', '),
               })
-            : msg('summary.sharedAssessment', { className });
-        const originalAssessment =
-            originalSource == null
-                ? null
-                : parseAssessment(projectConfig, originalSource);
-        if (
-            originalAssessment != null &&
-            originalAssessment.importance !== NOT_VIDEO_GAME_IMPORTANCE
-        ) {
-            summary += `; ${msg('summary.removeVideoGames')}`;
-        }
-        return appendSummarySourceLink(summary);
+            : msg('summary.sharedAssessment', {
+                  className,
+              });
     }
     const banners = [buildVideoGamesSummary(assessment), ...selectedProjects];
-    let summary;
+    return msg('summary.tagProjectsWithClass', {
+        className,
+        projects: banners.join(', '),
+    });
+}
 
-    if (banners.length === 0) {
-        summary = msg('summary.tagProjects');
-    } else {
-        summary = msg('summary.tagProjectsWithClass', {
-            className,
-            projects: banners.join(', '),
-        });
+function buildChangedAssessmentSummary(
+    assessment: Assessment,
+    original: Assessment,
+    availableProjects: ReadonlyArray<LabelledAssessmentOption>,
+    originalSource: string,
+): string {
+    const changes = [];
+    if (assessment.className !== original.className) {
+        const previousClass = readOriginalSummaryClass(originalSource);
+        const className = formatSummaryValueChange(
+            getValueLabel(KNOWN_CLASS_OPTIONS, previousClass),
+            getValueLabel(KNOWN_CLASS_OPTIONS, assessment.className),
+        );
+        changes.push(msg('summary.class', { className }));
     }
+    const hadVideoGames = original.importance !== NOT_VIDEO_GAME_IMPORTANCE;
+    const hasVideoGames = assessment.importance !== NOT_VIDEO_GAME_IMPORTANCE;
+    if (hasVideoGames && !hadVideoGames) {
+        changes.push(
+            msg('summary.add', {
+                value: buildVideoGamesSummary(assessment),
+            }),
+        );
+    } else if (hadVideoGames && !hasVideoGames) {
+        changes.push(msg('summary.removeVideoGames'));
+    } else if (hasVideoGames) {
+        const details = buildChangedVideoGamesSummaryDetails(
+            assessment,
+            original,
+        );
+        if (details.length > 0) {
+            changes.push(
+                msg('summary.videoGamesWithDetails', {
+                    details: details.join('; '),
+                }),
+            );
+        }
+    }
+    const projectOptions = mergeSummaryProjectOptions(
+        availableProjects,
+        originalSource,
+    );
+    changes.push(
+        ...buildSelectionSummaryChanges(
+            projectOptions,
+            assessment.otherProjects,
+            original.otherProjects,
+            OTHER_PROJECT_OPTIONS,
+        ),
+    );
+    const heading = msg('summary.updateAssessment');
+    return changes.length > 0 ? `${heading}: ${changes.join('; ')}` : heading;
+}
 
-    return appendSummarySourceLink(summary);
+function readOriginalSummaryClass(source: string): string {
+    return readAssessmentClass(projectConfig, source) ?? '';
+}
+
+function mergeSummaryProjectOptions(
+    availableProjects: ReadonlyArray<LabelledAssessmentOption>,
+    source: string,
+): Array<LabelledAssessmentOption> {
+    const options = [...availableProjects];
+    const knownIds = new Set(options.map((option) => option.id));
+    const existing = getExistingOtherProjectOptions(source, projectConfig);
+    for (const option of existing) {
+        if (!knownIds.has(option.id)) {
+            options.push(option);
+            knownIds.add(option.id);
+        }
+    }
+    return options;
+}
+
+function formatSummaryValueChange(previous: string, next: string): string {
+    return previous === '' ? next : `${previous}→${next}`;
 }
 
 /**
@@ -138,6 +223,62 @@ function buildVideoGamesSummaryDetails(assessment: Assessment): Array<string> {
     }
 
     return details;
+}
+
+function buildChangedVideoGamesSummaryDetails(
+    assessment: Assessment,
+    original: Assessment,
+): Array<string> {
+    const details = [];
+    if (assessment.importance !== original.importance) {
+        const previous =
+            original.importance === ''
+                ? ''
+                : getValueLabel(IMPORTANCE_OPTIONS, original.importance);
+        const next = getValueLabel(IMPORTANCE_OPTIONS, assessment.importance);
+        details.push(
+            msg('summary.importance', {
+                importance: formatSummaryValueChange(previous, next),
+            }),
+        );
+    }
+    details.push(
+        ...buildSelectionSummaryChanges(
+            TASK_FORCE_OPTIONS,
+            assessment.taskForces,
+            original.taskForces,
+        ),
+    );
+    details.push(
+        ...buildSelectionSummaryChanges(
+            MAINTENANCE_OPTIONS,
+            assessment.maintenance,
+            original.maintenance,
+        ),
+    );
+    return details;
+}
+
+function buildSelectionSummaryChanges(
+    items: ReadonlyArray<LabelledAssessmentOption>,
+    current: SelectionMap | AssessmentMaintenance,
+    original: SelectionMap | AssessmentMaintenance,
+    knownItems: ReadonlyArray<LabelledAssessmentOption> = items,
+): Array<string> {
+    return items.flatMap((item) => {
+        const before = Reflect.get(original, item.id) === true;
+        const after = Reflect.get(current, item.id) === true;
+        if (before === after) {
+            return [];
+        }
+        const known = knownItems.find((option) => option.id === item.id);
+        const value = known?.summaryLabel ?? item.summaryLabel ?? item.label;
+        return [
+            msg(after ? 'summary.add' : 'summary.remove', {
+                value,
+            }),
+        ];
+    });
 }
 
 /**

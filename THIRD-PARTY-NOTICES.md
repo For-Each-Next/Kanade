@@ -11,7 +11,7 @@ fetched-content terms, and development-dependency notices remain in this file.
 
 ## Codex icons
 
-Source Editor and Article Creator include selected icon artwork and vector paths from
+Source Editor, Article Creator, and Article Assessor include selected icon artwork and vector paths from
 `@wikimedia/codex-icons` 2.7.0. The artwork is by the Wikimedia Foundation Design
 System Team and contributors, from the [Codex icon collection](https://doc.wikimedia.org/codex/latest/icons/overview.html),
 under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Selected icon data

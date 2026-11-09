@@ -1073,11 +1073,11 @@ const testExistingSourceListing = () => {
         source.rawReference,
         text.slice(source.referenceStart, source.referenceEnd),
     );
-    assert.equal(source.reuseText, '<ref name="A &amp; B" group="note" />');
+    assert.equal(source.reuseText, '<ref name="A & B" group="note" />');
     assert.equal(buildExistingSourceReference(source), source.reuseText);
     assert.equal(
         buildExistingSourceReference(source, true),
-        '<ref name="A &amp; B" group="note" />',
+        '<ref name="A & B" group="note" />',
     );
     assert.equal(
         buildExistingSourceReference(

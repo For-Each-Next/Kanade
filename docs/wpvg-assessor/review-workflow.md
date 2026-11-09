@@ -1,6 +1,6 @@
 # Review workflow
 
-Last reviewed: 2026-10-24.
+Last reviewed: 2026-11-09.
 
 The gadget opens from the page tools on Chinese Wikipedia. It resolves the
 subject and talk titles, reads the subject's creation information, loads the
@@ -81,31 +81,40 @@ refreshes the current page.
 
 ## Background drafts and batch submission
 
-**Stage (暂存)** immediately adds the current page's draft to the shared queue
-and keeps the dialog open without a wiki write. The same button becomes
-**Unstage (取消暂存)** for a
-queued page. Unstaging removes only that page and keeps the current form edits
-available. Staging again captures those
-edits as a new draft. The draft captures the exact reviewed lead,
-assessment choices, summaries, and registration selection. Drafts use browser
-`localStorage` per wiki and account, surviving navigation, reloads, and closing
-tabs. Clicking Submit is not needed to enqueue a staged draft. Any browser
-tab using that wiki and account can submit the queue. Open dialogs update
-their queue counts and Stage/Unstage button when another tab changes the
-queue, keeping the current form edits. Storage failures keep the dialog open
-with an error.
+The **Stage (暂存)** switch adds the current reviewed draft to the shared queue
+without a wiki write. New pages start with the switch off; a restored staged page
+starts with it on. While on, edits to the assessment, exact source, summaries, and
+registration selection synchronize to that draft after a short delay. Closing
+flushes pending changes; a failed storage operation retains the form and reports
+the error. Turning Stage off removes only that page and keeps its current edits.
 
-The existing submit action shows **Submit (+N)** for the other queued pages;
-the current page is included once even if it has already been staged. With
-pending drafts, one submit action refreshes the list once, prepares one
-registration change for the entire batch, and immediately saves it together
-with the exact staged talk leads and the current form. There is no second
-confirmation. Review each page's source, summaries, and registration choice
-before staging or submitting it. While saving, the dialog displays the combined
-comparison and summary, and each other staged page's source remains available
-under its expandable title and summary.
-Changes to the queue in another tab during preparation stop that submission;
-check the updated queue and choose **Submit** again to prepare a fresh batch.
+Drafts use browser `localStorage` per wiki and account, surviving navigation,
+reloads, and closing tabs. Any tab for that wiki and account can submit the queue.
+Other tabs update their queue counts without replacing the open form's edits.
+**Collapse** retains the same draft and actions in a compact panel; **Expand** or
+the page-tool launcher restores the current view.
+
+With queued drafts, **Submit (+N)** prepares **Confirm batch save**. It shows all
+reviewed talk pages, each exact edit summary and expandable comparison, plus one
+combined registration comparison and summary for selected pages. Check the pages
+to save; unchecked staged pages remain queued. The pencil action opens that page's
+ordinary assessment form as a draft editor. **Apply changes** updates the queued
+review without wiki writes and rebuilds registration. The remove action discards
+that page's queued source and summary without undo. The current page's open form
+retains its edits when its queued copy is removed. **Back** retains the current source, custom summaries,
+and registration selection. A queue change during preparation invalidates the
+review and requires a fresh Submit.
+
+**Confirm and save** submits only the checked pages. It writes registration once,
+then each changed talk lead. Unchanged talk leads require no edit and are removed
+from the completed queue. Actual edit requests, including conflict retries, are
+spaced by at least six seconds after the previous request finishes. The queue's
+exclusive lock and a disposable wiki/account timestamp share that pacing across
+tabs. Progress reports completed edits, the current page, and the wait before the
+next request. Closing is blocked while saving; the compact panel can still show
+progress. Confirmed pages leave the queue; a failure retains unfinished pages.
+Once registration succeeds, retries do not register those pages again. Conflicts
+and uncertain outcomes require explicit resubmission with a fresh review.
 
 Default registration summaries consolidate the pages actually added into one
 English list of links and UTC creation dates, with one **Register** and one

@@ -13,7 +13,7 @@ not a security certification or a record of completed human review.
 
 ## Project and contacts
 
-Kanade is in development at root version 0.1.2. The [project repository][repository]
+Kanade is in development at root version 0.1.3. The [project repository][repository]
 hosts source and tagged release automation. A named maintainer and dedicated
 project contacts are not yet documented.
 The project owner must arrange
@@ -65,6 +65,15 @@ persistent data.
 | Article Creator recovery                           | Session storage: `vg-stub-creator-preview-form`, `vg-stub-creator-move-text`, `vg-stub-creator-pending-save`, `vg-stub-creator-save-progress`, and `vg-stub-creator-review-links-opened`. Includes generated source, reviewed operation targets, statuses, and errors. | Explicit lifecycle cleanup removes consumed preview/move state and completed save checkpoints/progress. Remaining records last for the tab session; browser session restoration can preserve them. Retain the tab while recovering an interrupted save.                                                  |
 | Article Assessor staged reviews                    | Local storage: `wpvg-assessor.assessment-queue.v1:<encoded wiki/account identity>`. Includes proposed talk source, assessment choices, summaries, registration data, titles, and dates.                                                                                | No automatic expiry. **Unstage** removes a draft; confirmed saves remove completed drafts and failures retain unfinished work. Remove the specific queue record only after copying work that should be retained.                                                                                         |
 | Article Assessor read snapshots and creation dates | Session storage: `wpvg-assessor.assessment-cache.v1:<encoded wiki/account identity>`; local storage: `kanade:wpvg-assessor:creation-datetimes:v1`.                                                                                                                     | Read snapshots last for the tab session. The persistent creation-date cache has no automatic expiry; remove its record to reset it. Failed category reviews are held only in tab memory and are lost on reload.                                                                                          |
+
+Article Assessor also keeps the next permitted staged-edit timestamp in
+`kanade:wpvg-assessor:next-edit:v1:<encoded wiki/account identity>` local storage.
+This validated pacing record contains no page source; an expired timestamp has
+no effect and can be removed in browser site storage. Staged reviews retain their
+existing queue identity and explicit review/save contract. PetScan integration
+only adds a launch parameter to supported Chinese Wikipedia links; it makes no
+API request and stores no result data. Native navigation sends the selected
+article URL to Wikipedia, where the marker is consumed once.
 
 Newly named Source Editor preference/metadata stores and the Assessor creation-date
 cache start with validated defaults. Retired records are not imported or deleted

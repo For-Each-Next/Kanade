@@ -624,7 +624,7 @@ const testMultipleWholeReferenceCitations = () => {
 
     assert.match(
         result.text,
-        /name="J\. M\. Taylor &amp; Neimeyer, 2015; T\. Taylor, 2014, p\. 4"/u,
+        /name="J\. M\. Taylor & Neimeyer, 2015; T\. Taylor, 2014, p\. 4"/u,
     );
     assert.match(
         result.text,
@@ -784,7 +784,7 @@ test('keeps unsupported enwiki R anchor parameters intact', () => {
     );
 
     assert.ok(result.text.includes('{{r|name=A&B|ref=CITEREFSmith|p=5}}'));
-    assert.match(result.text, /<ref name="A&amp;B">\{\{Cite web /u);
+    assert.match(result.text, /<ref name="A&B">\{\{Cite web /u);
     assert.equal(result.rTemplatesFound, 0);
 });
 
@@ -933,10 +933,7 @@ const testIncompleteAuthorAliases = () => {
 
     assert.match(result.text, /\| author1 = Horii &amp; Hayasaka/u);
     assert.match(result.text, /\| author2 = Editor/u);
-    assert.match(
-        result.text,
-        /<ref name="Horii &amp; Hayasaka &amp; Editor, 2025"/u,
-    );
+    assert.match(result.text, /<ref name="Horii & Hayasaka & Editor, 2025"/u);
     assert.doesNotMatch(result.text, /name="[^"]*&amp;amp;/u);
 };
 test(
@@ -971,7 +968,7 @@ const testInterviewSubjectOrdering = () => {
     const authorMatches = result.text.match(/\| author\d =/gu);
     const firstAuthors = authorMatches?.slice(0, 2);
     assert.deepEqual(firstAuthors, ['| author1 =', '| author2 =']);
-    assert.match(result.text, /<ref name="Horii &amp; Hayasaka, 2025"/u);
+    assert.match(result.text, /<ref name="Horii & Hayasaka, 2025"/u);
 };
 test(
     'keeps Cite interview subjects together before its other fields',
@@ -1085,8 +1082,8 @@ const testManualSourceIdentity = () => {
     const result = formatCitationWikitext(source, generatedTemplateData);
     const rerun = formatCitationWikitext(result.text, generatedTemplateData);
 
-    assert.match(result.text, /name="Shinji &amp; Hiroya, 2006, p\. 1"/u);
-    assert.match(result.text, /name="Shinji &amp; Hiroya, 2006, p\. 2"/u);
+    assert.match(result.text, /name="Shinji & Hiroya, 2006, p\. 1"/u);
+    assert.match(result.text, /name="Shinji & Hiroya, 2006, p\. 2"/u);
     assert.doesNotMatch(result.text, /Shinji & Hiroya, 2006[ab]/u);
     assert.match(result.text, /751888p1\.html/u);
     assert.match(result.text, /751888p2\.html/u);
@@ -1452,12 +1449,9 @@ test('matches equivalent escaped footnote names and emits safe quoted uses', () 
 
     assert.equal(result.individualReferencesFound, 1);
     assert.equal(result.referenceTagsRenamed, 0);
-    assert.equal(
-        result.text.match(/<ref name="A&amp;B&quot;C" \/>/gu)?.length,
-        2,
-    );
+    assert.equal(result.text.match(/<ref name="A&B&quot;C" \/>/gu)?.length, 2);
     assert.ok(
-        result.text.includes('<ref name="A&amp;B&quot;C">Plain source.</ref>'),
+        result.text.includes('<ref name="A&B&quot;C">Plain source.</ref>'),
     );
     assert.equal(
         formatCitationWikitext(result.text, templateData, 'inline').text,
@@ -1872,9 +1866,9 @@ function buildDragonQuestSource(): string {
 }
 
 function assertDragonQuestResult(text: string): void {
-    assert.match(text, /<ref name="Horii &amp; Hayasaka, 2025a" \/>/u);
-    assert.match(text, /<ref name="Horii &amp; Hayasaka, 2025b" \/>/u);
-    assert.match(text, /<ref name="Horii &amp; Hayasaka, 2025c" \/>/u);
+    assert.match(text, /<ref name="Horii & Hayasaka, 2025a" \/>/u);
+    assert.match(text, /<ref name="Horii & Hayasaka, 2025b" \/>/u);
+    assert.match(text, /<ref name="Horii & Hayasaka, 2025c" \/>/u);
     assert.match(text, /\| url-status = live/u);
     assert.doesNotMatch(text, /\| dead-url =/u);
     assert.match(text, /<\/ref>\n\n<\/references>/u);

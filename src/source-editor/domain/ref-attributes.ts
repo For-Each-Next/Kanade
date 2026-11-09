@@ -2,7 +2,7 @@
  * @file src/source-editor/domain/ref-attributes.ts
  * Purpose: Encoding helpers for citation reference attributes.
  *
- * Contents: Reference identity decoding and quoted group/detail attributes.
+ * Contents: Reference identity decoding and quoted name/group/detail attributes.
  */
 
 import { decodeHTMLStrict } from 'entities';
@@ -48,6 +48,21 @@ export function decodeReferenceDetailsAttribute(value: string): string {
 /** Escapes new details text for storage in a native reference attribute. */
 export function escapeReferenceDetails(value: string): string {
     return escapeQuotedAttribute(value)
+        .replace(/</gu, '&lt;')
+        .replace(/>/gu, '&gt;');
+}
+
+/** Quotes a decoded reference name without rewriting literal ampersands. */
+export function escapeReferenceName(value: string): string {
+    const escapedEntities = value.replace(
+        /&(?:[a-z][\da-z]*|#\d+|#x[\da-f]+);/giu,
+        (entity) =>
+            decodeReferenceAttribute(entity) === entity
+                ? entity
+                : `&amp;${entity.slice(1)}`,
+    );
+    return escapedEntities
+        .replace(/"/gu, '&quot;')
         .replace(/</gu, '&lt;')
         .replace(/>/gu, '&gt;');
 }

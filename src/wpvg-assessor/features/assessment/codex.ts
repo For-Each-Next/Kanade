@@ -16,6 +16,8 @@ export type {
 } from '../../../library/mediawiki-runtime/contracts.ts';
 
 export interface VueModule extends VueCore {
+    shallowRef<T>(value: T): VueRef<T>;
+    nextTick(callback: () => void): Promise<void>;
     computed<T>(getter: () => T): VueRef<T>;
     onMounted(callback: () => void): void;
     onUnmounted(callback: () => void): void;
@@ -23,6 +25,7 @@ export interface VueModule extends VueCore {
 }
 
 export interface CodexComponents {
+    CdxIcon: unknown;
     CdxButton: unknown;
     CdxButtonGroup: unknown;
     CdxCheckbox: unknown;
@@ -35,6 +38,7 @@ export interface CodexComponents {
     CdxSelect: unknown;
     CdxTextArea: unknown;
     CdxTextInput: unknown;
+    CdxToggleSwitch: unknown;
 }
 
 export interface ResourceLoaderRequire {
@@ -51,6 +55,7 @@ export function registerPageAssessorComponents(
     app: VueApp,
     Codex: CodexComponents,
 ): void {
+    app.component('CdxIcon', Codex.CdxIcon);
     app.component('CdxButton', Codex.CdxButton);
     app.component('CdxButtonGroup', Codex.CdxButtonGroup);
     app.component('CdxCheckbox', Codex.CdxCheckbox);
@@ -63,4 +68,5 @@ export function registerPageAssessorComponents(
     app.component('CdxSelect', Codex.CdxSelect);
     app.component('CdxTextArea', Codex.CdxTextArea);
     app.component('CdxTextInput', Codex.CdxTextInput);
+    app.component('CdxToggleSwitch', Codex.CdxToggleSwitch);
 }

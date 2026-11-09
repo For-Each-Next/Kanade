@@ -51,7 +51,7 @@ import {
 
 import {
     decodeReferenceAttribute,
-    escapeReferenceDetails,
+    escapeReferenceName,
     formatReferenceGroupAttribute,
     stripOptionalReferenceNameQuotes,
 } from './ref-attributes.ts';
@@ -657,9 +657,10 @@ function buildReferenceTag(
     return buildDefinitionTag(name, group, content);
 }
 
-function buildReuseTag(name: string, group: string): string {
+/** Builds a native reuse from an entered, possibly entity-encoded R name. */
+export function buildReuseTag(name: string, group: string): string {
     const groupAttribute = formatReferenceGroupAttribute(group);
-    const escapedName = escapeReferenceDetails(decodeReferenceAttribute(name));
+    const escapedName = escapeReferenceName(decodeReferenceAttribute(name));
     return `<ref name="${escapedName}"${groupAttribute} />`;
 }
 
@@ -669,7 +670,7 @@ function buildDefinitionTag(
     content: string,
 ): string {
     const groupAttribute = formatReferenceGroupAttribute(group);
-    const escapedName = escapeReferenceDetails(decodeReferenceAttribute(name));
+    const escapedName = escapeReferenceName(decodeReferenceAttribute(name));
     const opening = `<ref name="${escapedName}"${groupAttribute}>`;
     return `${opening}${content}</ref>`;
 }

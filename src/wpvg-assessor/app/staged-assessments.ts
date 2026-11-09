@@ -17,9 +17,12 @@ import type {
     AssessmentStagingWorkflow,
     PreparedAssessmentBatch,
     StagedAssessment,
+    ReportBatchSaveProgress,
+    BatchSaveProgress,
 } from './staging-contracts.ts';
 import {
     getTitlesForDate,
+    NEW_PAGE_LIST_TITLE,
     prepareNewPageListRegistration,
 } from '../domain/new-page-list.ts';
 import {
@@ -32,6 +35,7 @@ import {
     type NewPageListSnapshot,
 } from '../domain/types.ts';
 import type { ProjectConfig } from '../domain/project-types.ts';
+import { hasBatchTalkChange } from '../domain/batch-assessment.ts';
 import type { Logger } from '../../library/logging/logger.ts';
 import {
     buildNewPageListBatchSummary,
@@ -55,13 +59,55 @@ interface StagingOperations {
     logger: Logger;
 }
 
+const BATCH_SAVE_INTERVAL_MS = 6000;
+
+/** Pace actual edit requests, including conflict retries; read requests remain immediate. */
+function createBatchEditApi(
+    api: mw.Api,
+    beforeEdit: (title: string) => Promise<void>,
+    afterEdit: () => void = () => {},
+): mw.Api {
+    return new Proxy(api, {
+        get(target, property) {
+            if (property !== 'postWithToken') {
+                const value: unknown = Reflect.get(target, property);
+                return typeof value === 'function' ? value.bind(target) : value;
+            }
+            return async (
+                token: string,
+                params: Parameters<mw.Api['postWithToken']>[1],
+            ) => {
+                if (params.action !== 'edit')
+                    return target.postWithToken(token, params);
+                await beforeEdit(
+                    typeof params.title === 'string' ? params.title : '',
+                );
+                let response;
+                try {
+                    response = await target.postWithToken(token, params);
+                } catch (error) {
+                    try {
+                        afterEdit();
+                    } catch {
+                        /* Preserve the original write failure. */
+                    }
+                    throw error;
+                }
+                afterEdit();
+                return response;
+            };
+        },
+    });
+}
+
 export function createAssessmentStagingWorkflow(
     operations: StagingOperations,
     config: ProjectConfig,
 ): AssessmentStagingWorkflow {
     const { session, logger } = operations;
     let submitting = false;
-
+    let nextEditAt = 0;
+    let pacingShared = true;
     async function stage(
         state: DialogState,
         review: DialogSaveReview,
@@ -69,7 +115,6 @@ export function createAssessmentStagingWorkflow(
         if (submitting) {
             throw new Error('A staged submission is already running.');
         }
-        // Capture the reviewed values before waiting for another tab's save.
         const draft = captureDraft(state, review);
         await session.runExclusive(async () => {
             const data = session.read();
@@ -79,7 +124,6 @@ export function createAssessmentStagingWorkflow(
             logger.info('draft.staged', { itemCount: data.drafts.length });
         });
     }
-
     async function unstage(talkTitle: string): Promise<void> {
         if (submitting) {
             throw new Error('A staged submission is already running.');
@@ -88,7 +132,6 @@ export function createAssessmentStagingWorkflow(
             removeDraft(talkTitle);
         });
     }
-
     function removeDraft(talkTitle: string): void {
         const data = session.read();
         const draft = data.drafts.find(
@@ -97,7 +140,6 @@ export function createAssessmentStagingWorkflow(
         if (draft == null) {
             return;
         }
-        // Reuse reads only if a save has not invalidated the session's snapshots.
         if (data.newPageList != null) {
             data.pages[talkTitle] = {
                 ...cloneSessionSnapshot(draft.state),
@@ -117,25 +159,75 @@ export function createAssessmentStagingWorkflow(
         session.write(data);
         logger.info('draft.unstaged', { itemCount: data.drafts.length });
     }
-
+    function assertBatchCurrent(draftSnapshot: string): void {
+        if (
+            typeof draftSnapshot !== 'string' ||
+            fingerprint(session.read().drafts) !== draftSnapshot
+        ) {
+            throw new Error(
+                operations.changedBatchMessage?.() ??
+                    'The staged pages changed. Review the batch before saving.',
+            );
+        }
+    }
+    function cloneBatchEntries(
+        entries: StagedAssessment[],
+    ): StagedAssessment[] {
+        const titles = new Set();
+        return entries.map((entry) => {
+            const title = entry.state.talkTitle;
+            if (titles.has(title)) {
+                throw new Error('The reviewed batch contains duplicate pages.');
+            }
+            titles.add(title);
+            return {
+                state: cloneSessionSnapshot(entry.state),
+                review: { ...entry.review },
+            };
+        });
+    }
+    function mergeBatchEntries(
+        drafts: StagedAssessment[],
+        entries: StagedAssessment[],
+    ): StagedAssessment[] {
+        const remaining = new Map(
+            entries.map((entry) => [entry.state.talkTitle, entry]),
+        );
+        const merged = drafts.map((draft) => {
+            const title = draft.state.talkTitle;
+            const replacement = remaining.get(title);
+            remaining.delete(title);
+            return replacement ?? draft;
+        });
+        return [...merged, ...remaining.values()];
+    }
     async function prepare(
         state: DialogState,
         review: DialogSaveReview,
     ): Promise<PreparedAssessmentBatch> {
         const drafts = session.read().drafts;
         const entries = mergeCurrentDraft(drafts, captureDraft(state, review));
+        return prepareSelection(state.api, entries, fingerprint(drafts));
+    }
+    async function prepareSelection(
+        api: mw.Api,
+        selected: StagedAssessment[],
+        draftSnapshot: string,
+    ): Promise<PreparedAssessmentBatch> {
+        assertBatchCurrent(draftSnapshot);
+        const entries = cloneBatchEntries(selected);
         const candidates = entries.filter((entry) =>
             canRegister(entry, config),
         );
         let registration: RegistrationSave | null = null;
         let registrationSummary = '';
         if (candidates.length > 0) {
-            const snapshot = await operations.fetchNewPageList(state.api);
-            const creationTimes = new Map<string, Date>();
+            const snapshot = await operations.fetchNewPageList(api);
+            const creationTimes = new Map();
             const neededTitles = new Set<string>();
             for (const entry of candidates) {
-                for (const [title, date] of entry.state.creationTimes) {
-                    creationTimes.set(title, date);
+                for (const [title, date2] of entry.state.creationTimes) {
+                    creationTimes.set(title, date2);
                 }
                 const { subjectInfo, subjectTitle } = entry.state;
                 creationTimes.set(
@@ -154,11 +246,11 @@ export function createAssessmentStagingWorkflow(
             );
             if (missingTitles.length > 0) {
                 const fetched = await operations.fetchPageCreationTimes(
-                    state.api,
+                    api,
                     missingTitles,
                 );
-                for (const [title, date] of fetched) {
-                    creationTimes.set(title, date);
+                for (const [title, date2] of fetched) {
+                    creationTimes.set(title, date2);
                 }
             }
             let proposedText = snapshot.text;
@@ -187,88 +279,248 @@ export function createAssessmentStagingWorkflow(
                 registrationSummary = buildNewPageListBatchSummary(summaries);
             }
         }
-        return {
-            entries,
-            registration,
-            registrationSummary,
-            draftSnapshot: fingerprint(drafts),
-        };
+        assertBatchCurrent(draftSnapshot);
+        return { entries, registration, registrationSummary, draftSnapshot };
     }
-
+    async function removeFromBatch(
+        batch: PreparedAssessmentBatch,
+        talkTitle: string,
+    ): Promise<PreparedAssessmentBatch> {
+        if (submitting) {
+            throw new Error('A staged submission is already running.');
+        }
+        return session.runExclusive(async () => {
+            assertBatchCurrent(batch.draftSnapshot);
+            if (
+                !batch.entries.some(
+                    (entry) => entry.state.talkTitle === talkTitle,
+                )
+            ) {
+                throw new Error('The page is not in the reviewed batch.');
+            }
+            const entries = cloneBatchEntries(
+                batch.entries.filter(
+                    (entry) => entry.state.talkTitle !== talkTitle,
+                ),
+            );
+            removeDraft(talkTitle);
+            return {
+                entries,
+                registration: null,
+                registrationSummary: '',
+                draftSnapshot: fingerprint(session.read().drafts),
+            };
+        });
+    }
+    async function updateInBatch(
+        batch: PreparedAssessmentBatch,
+        talkTitle: string,
+        state: DialogState,
+        review: DialogSaveReview,
+    ): Promise<PreparedAssessmentBatch> {
+        if (submitting) {
+            throw new Error('A staged submission is already running.');
+        }
+        const draft = captureDraft(state, review);
+        return session.runExclusive(async () => {
+            assertBatchCurrent(batch.draftSnapshot);
+            const previous = batch.entries.find(
+                (entry) => entry.state.talkTitle === talkTitle,
+            );
+            if (previous == null) {
+                throw new Error('The page is not in the reviewed batch.');
+            }
+            if (
+                draft.state.talkTitle !== talkTitle ||
+                draft.state.subjectTitle !== previous.state.subjectTitle
+            ) {
+                throw new Error('The edited draft belongs to another page.');
+            }
+            const entries = cloneBatchEntries(
+                batch.entries.map((entry) =>
+                    entry === previous ? draft : entry,
+                ),
+            );
+            const data = session.read();
+            const staged = data.drafts.some(
+                (entry) => entry.state.talkTitle === talkTitle,
+            );
+            if (staged) {
+                data.drafts = data.drafts.map((entry) =>
+                    entry.state.talkTitle === talkTitle ? draft : entry,
+                );
+                delete data.pages[talkTitle];
+                session.write(data);
+                logger.info('draft.updated', { title: talkTitle });
+            }
+            return {
+                entries,
+                registration: null,
+                registrationSummary: '',
+                draftSnapshot: fingerprint(session.read().drafts),
+            };
+        });
+    }
     async function save(
         api: mw.Api,
         batch: PreparedAssessmentBatch,
         reportPhase: ReportDialogSavePhase,
+        reportProgress: ReportBatchSaveProgress = () => {},
     ) {
         if (submitting) {
             throw new Error('A staged submission is already running.');
         }
         submitting = true;
         try {
-            return await session.runExclusive(async () =>
-                saveBatch(api, batch, reportPhase),
-            );
+            return await session.runExclusive(async () => {
+                try {
+                    return await saveBatch(
+                        api,
+                        batch,
+                        reportPhase,
+                        reportProgress,
+                    );
+                } finally {
+                    // A failed disposable timestamp must never reclassify a confirmed edit.
+                    // Keep the lock until its interval expires when it cannot be shared.
+                    if (!pacingShared) {
+                        const remaining = nextEditAt - Date.now();
+                        if (remaining > 0)
+                            await new Promise((resolve) =>
+                                setTimeout(resolve, remaining),
+                            );
+                    }
+                }
+            });
         } finally {
             submitting = false;
         }
     }
-
     async function saveBatch(
         api: mw.Api,
         batch: PreparedAssessmentBatch,
         reportPhase: ReportDialogSavePhase,
+        reportProgress: ReportBatchSaveProgress,
     ) {
-        // Recheck only after acquiring the shared lock: another tab may have
-        // completed this batch while this submission was waiting.
-        if (fingerprint(session.read().drafts) !== batch.draftSnapshot) {
-            throw new Error(
-                operations.changedBatchMessage?.() ??
-                    'The staged pages changed. Review the batch again before saving.',
-            );
-        }
+        assertBatchCurrent(batch.draftSnapshot);
         let saved = false;
-        const entries = batch.entries.map((entry) => ({
-            state: cloneSessionSnapshot(entry.state),
-            review: { ...entry.review },
-        }));
-        // Retain the current page too if any write fails or has an uncertain outcome.
+        const entries = cloneBatchEntries(batch.entries);
+        if (entries.length === 0) {
+            reportProgress({
+                completed: 0,
+                total: 0,
+                title: '',
+                phase: 'complete',
+                waitSeconds: 0,
+            });
+            return 'unchanged';
+        }
+        const total =
+            entries.filter(hasBatchTalkChange).length +
+            (batch.registration == null ? 0 : 1);
+        let completed = 0;
+        let currentTitle = '';
+        function reportProgressState(
+            phase: BatchSaveProgress['phase'],
+            waitSeconds = 0,
+        ) {
+            reportProgress({
+                completed,
+                total,
+                title: currentTitle,
+                phase,
+                waitSeconds,
+            });
+        }
+        function postponeNextEdit() {
+            nextEditAt = Date.now() + BATCH_SAVE_INTERVAL_MS;
+            try {
+                pacingShared = session.writeNextEditAt?.(nextEditAt) !== false;
+            } catch {
+                pacingShared = false;
+                logger.warn('batch.pacing.write.failed');
+            }
+        }
+        async function waitForNextEdit(title: string) {
+            currentTitle = title;
+            try {
+                nextEditAt = Math.max(
+                    nextEditAt,
+                    session.readNextEditAt?.() ?? 0,
+                );
+            } catch {
+                logger.warn('batch.pacing.read.failed');
+            }
+            let remaining = nextEditAt - Date.now();
+            while (remaining > 0) {
+                reportProgressState('waiting', Math.ceil(remaining / 1e3));
+                await new Promise((resolve) => {
+                    setTimeout(resolve, Math.min(remaining, 1e3));
+                });
+                remaining = nextEditAt - Date.now();
+            }
+            postponeNextEdit();
+            reportProgressState('saving');
+        }
+        const batchApi = createBatchEditApi(
+            api,
+            waitForNextEdit,
+            postponeNextEdit,
+        );
+        reportProgressState('saving');
         const data = session.read();
-        data.drafts = structuredClone(entries);
+        data.drafts = mergeBatchEntries(data.drafts, structuredClone(entries));
         session.write(data);
         if (batch.registration != null) {
+            currentTitle = NEW_PAGE_LIST_TITLE;
             reportPhase('registration');
+            reportProgressState('saving');
             await operations.saveRegistration(
-                api,
+                batchApi,
                 batch.registration,
                 batch.registrationSummary,
             );
             saved = true;
+            completed += 1;
+            reportProgressState('saving');
         }
-        // Registration is now confirmed (or unnecessary). Never repeat it after a talk failure.
         for (const entry of entries) {
             entry.review.shouldRegister = false;
         }
         const registeredData = session.read();
-        registeredData.drafts = structuredClone(entries);
+        registeredData.drafts = mergeBatchEntries(
+            registeredData.drafts,
+            structuredClone(entries),
+        );
         registeredData.newPageList = null;
         registeredData.pages = {};
         session.write(registeredData);
         for (const entry of entries) {
-            const outcome = await operations.saveReviewedDialog(
-                { ...structuredClone(entry.state), api },
-                { ...entry.review, shouldRegister: false },
-                reportPhase,
-            );
+            const changed = hasBatchTalkChange(entry);
+            let outcome: 'saved' | 'unchanged' = 'unchanged';
+            if (changed) {
+                currentTitle = entry.state.talkTitle;
+                reportProgressState('saving');
+                outcome = await operations.saveReviewedDialog(
+                    { ...structuredClone(entry.state), api: batchApi },
+                    { ...entry.review, shouldRegister: false },
+                    reportPhase,
+                );
+            }
             saved ||= outcome === 'saved';
             const completedData = session.read();
             completedData.drafts = completedData.drafts.filter(
                 (draft) => draft.state.talkTitle !== entry.state.talkTitle,
             );
             session.write(completedData);
+            if (changed) {
+                completed += 1;
+                reportProgressState('saving');
+            }
         }
-        return saved ? ('saved' as const) : ('unchanged' as const);
+        reportProgressState('complete');
+        return saved ? 'saved' : 'unchanged';
     }
-
     return {
         count: () => session.read().drafts.length,
         getReview: (talkTitle) => {
@@ -281,6 +533,9 @@ export function createAssessmentStagingWorkflow(
         unstage,
         subscribe: (listener) => session.subscribe(listener),
         prepare,
+        prepareSelection,
+        removeFromBatch,
+        updateInBatch,
         save,
     };
 }

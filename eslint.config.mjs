@@ -38,6 +38,7 @@ export default defineConfig(
         'test-results/**',
         'playwright-report/**',
         '.idea/**',
+        '.temp/**',
     ]),
     {
         files: ['**/*.{ts,js,mjs}'],

@@ -15,7 +15,6 @@
 
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { computed, isProxy, reactive, ref } from 'vue';
 
 import type {
     DialogSaveReview,
@@ -40,6 +39,10 @@ const originalSource = [
     '}}',
 ].join('\n');
 const vue: VueModule = {
+    shallowRef: (value) => ({ value }),
+    nextTick: async (callback) => {
+        callback();
+    },
     computed(getter) {
         return {
             get value() {
@@ -204,635 +207,309 @@ test('non-video-game summaries describe shared class and only actual banner remo
     assessment.maintenance.reassess = true;
 
     const removal = buildEditSummary(assessment, undefined, originalSource);
-    assert.match(removal, /Update shared assessment \(B-Class\): ACG/u);
+    assert.match(
+        removal,
+        /Update assessment: Start→B; remove Video games banner; add ACG/u,
+    );
     assert.match(removal, /remove Video games banner/u);
     assert.doesNotMatch(removal, /importance|NotVG|Pokemon|Reassess|Sega/u);
 
     const omission = buildEditSummary(assessment, undefined, '');
-    assert.match(omission, /Update shared assessment \(B-Class\): ACG/u);
+    assert.match(omission, /Update shared assessment \(B\): ACG/u);
     assert.doesNotMatch(omission, /Video games/u);
     assessment.otherProjects.acg = false;
     const sharedOnly = buildEditSummary(assessment);
-    assert.match(sharedOnly, /^Update shared assessment \(B-Class\) /u);
+    assert.match(sharedOnly, /^Update shared assessment \(B\) /u);
     assert.doesNotMatch(sharedOnly, /Video games/u);
 });
 
-test('Stage retains the reviewed form without saving', async () => {
-    const state = createDialogState();
-    let captured: DialogSaveReview | undefined;
-    let closed = 0;
-    const staging = createStaging({
-        count: () => (captured == null ? 1 : 2),
-        getReview: () => captured ?? null,
-        async stage(stagedState, review) {
-            assert.equal(stagedState, state);
-            captured = review;
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {
-            closed += 1;
-        },
-        runtime: { ...createRuntime(), staging },
-        state,
-    });
-    const manual = `${originalSource}\n<!-- Reviewed exact source -->`;
-    assert.equal(bindings.stageLabel.value, 'Stage');
-    bindings.onPreviewInput(manual);
-    bindings.onSummaryInput('Reviewed talk summary');
-    bindings.setListSummary('Reviewed list summary');
-    bindings.setRegister(false);
-    await bindings.onStage();
-
-    assert.deepEqual(captured, {
-        listSummary: 'Reviewed list summary',
-        previewText: manual,
-        shouldRegister: false,
-        summary: 'Reviewed talk summary',
-    });
-    assert.equal(bindings.open.value, true);
-    assert.equal(closed, 0);
-    assert.equal(bindings.saving.value, false);
-    assert.equal(bindings.stageLabel.value, 'Unstage');
-    assert.equal(bindings.submitLabel.value, 'Submit (+1)');
-    assert.equal(bindings.previewText.value, manual);
-    assert.equal(bindings.summary.value, 'Reviewed talk summary');
-    assert.equal(bindings.listSummary.value, 'Reviewed list summary');
-    assert.equal(bindings.displayedListSummary.value, 'Reviewed list summary');
-    assert.equal(bindings.shouldRegister.value, false);
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.equal(
-        bindings.status.value,
-        'Added to queue. You can submit it from any browser tab.',
-    );
-});
-
-test('reopening a staged page restores review and excludes it from Submit count', () => {
-    const savedReview: DialogSaveReview = {
-        listSummary: 'Exact restored list summary',
-        previewText: `${originalSource}\n<!-- Restored manual source -->`,
-        shouldRegister: false,
-        summary: 'Exact restored talk summary',
-    };
-    const staging = createStaging({
-        count: () => 4,
-        getReview: () => savedReview,
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {},
-        runtime: { ...createRuntime(), staging },
-        state: createDialogState(),
-    });
-
-    assert.equal(bindings.previewText.value, savedReview.previewText);
-    assert.equal(bindings.summary.value, savedReview.summary);
-    assert.equal(bindings.listSummary.value, savedReview.listSummary);
-    assert.equal(bindings.shouldRegister.value, false);
-    assert.equal(bindings.submitLabel.value, 'Submit (+3)');
-    assert.equal(bindings.stageLabel.value, 'Unstage');
-});
-
-test('a pending Stage captures one reviewed draft and ignores a late result after Cancel', async () => {
-    const state = createDialogState();
-    const delayed = Promise.withResolvers<void>();
-    let captured: DialogSaveReview | undefined;
-    let calls = 0;
-    let closed = 0;
-    const observable = createObservableStaging({
-        async stage(_state, review) {
-            calls += 1;
-            captured = review;
-            await delayed.promise;
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {
-            closed += 1;
-        },
-        runtime: { ...createRuntime(), staging: observable.staging },
-        state,
-    });
-    const manual = `${originalSource}\n<!-- Exact pending draft -->`;
-    bindings.onPreviewInput(manual);
-    bindings.onSummaryInput('Exact pending summary');
-    const staging = bindings.onStage();
-    assert.equal(bindings.preparing.value, true);
-    await bindings.onStage();
-    assert.equal(calls, 1);
-    assert.equal(captured?.previewText, manual);
-    assert.equal(captured?.summary, 'Exact pending summary');
-    bindings.onCancel();
-    assert.equal(bindings.open.value, false);
-    assert.equal(observable.subscriberCount(), 0);
-    delayed.resolve();
-    await staging;
-    assert.equal(closed, 1);
-    assert.doesNotMatch(bindings.status.value, /Added to queue/u);
-});
-
-test('Unstage removes only the current draft while retaining its editable review', async () => {
-    const state = createDialogState();
-    const stagedReview: DialogSaveReview = {
-        listSummary: 'Staged list summary',
-        previewText: `${originalSource}\n<!-- Staged source -->`,
-        shouldRegister: true,
-        summary: 'Staged talk summary',
-    };
-    const drafts = new Map([
-        [state.talkTitle, stagedReview],
-        ['Talk:Other game', stagedReview],
-        ['Talk:Third game', stagedReview],
-    ]);
-    const removedTitles: string[] = [];
-    let closed = 0;
-    const staging = createStaging({
-        count: () => drafts.size,
-        getReview: (talkTitle) => drafts.get(talkTitle) ?? null,
-        async unstage(talkTitle) {
-            removedTitles.push(talkTitle);
-            drafts.delete(talkTitle);
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {
-            closed += 1;
-        },
-        runtime: { ...createRuntime(), staging },
-        state,
-    });
-    const editedSource = `${originalSource}\n<!-- Edited current review -->`;
-    bindings.onPreviewInput(editedSource);
-    bindings.onSummaryInput('Edited current talk summary');
-    bindings.setListSummary('Edited current list summary');
-    bindings.setRegister(false);
-    assert.equal(bindings.submitLabel.value, 'Submit (+2)');
-
-    await bindings.onStage();
-    assert.deepEqual(removedTitles, [state.talkTitle]);
-    assert.deepEqual(
-        [...drafts.keys()],
-        ['Talk:Other game', 'Talk:Third game'],
-    );
-    assert.equal(bindings.stageLabel.value, 'Stage');
-    assert.equal(bindings.submitLabel.value, 'Submit (+2)');
-    assert.equal(bindings.open.value, true);
-    assert.equal(closed, 0);
-    assert.equal(bindings.previewText.value, editedSource);
-    assert.equal(bindings.summary.value, 'Edited current talk summary');
-    assert.equal(bindings.listSummary.value, 'Edited current list summary');
-    assert.equal(
-        bindings.displayedListSummary.value,
-        'Edited current list summary',
-    );
-    assert.equal(bindings.shouldRegister.value, false);
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.equal(bindings.status.value, '');
-});
-
-test('an Unstage storage failure keeps the draft and editable dialog available', async () => {
-    const state = createDialogState();
-    const stagedReview: DialogSaveReview = {
-        listSummary: 'Staged list summary',
-        previewText: `${originalSource}\n<!-- Staged source -->`,
-        shouldRegister: false,
-        summary: 'Staged talk summary',
-    };
-    let attempts = 0;
-    let closed = 0;
-    const staging = createStaging({
-        count: () => 1,
-        getReview: () => stagedReview,
-        async unstage(talkTitle) {
-            assert.equal(talkTitle, state.talkTitle);
-            attempts += 1;
-            throw new Error('Browser storage is unavailable.');
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {
-            closed += 1;
-        },
-        runtime: { ...createRuntime(), staging },
-        state,
-    });
-    const editedSource = `${stagedReview.previewText}\n<!-- Unsaved edit -->`;
-    bindings.onPreviewInput(editedSource);
-    bindings.onSummaryInput('Edited current talk summary');
-    bindings.setListSummary('Edited current list summary');
-    await bindings.onStage();
-
-    assert.equal(attempts, 1);
-    assert.equal(staging.getReview(state.talkTitle), stagedReview);
-    assert.equal(bindings.stageLabel.value, 'Unstage');
-    assert.equal(bindings.submitLabel.value, 'Submit');
-    assert.equal(bindings.open.value, true);
-    assert.equal(closed, 0);
-    assert.equal(bindings.previewText.value, editedSource);
-    assert.equal(bindings.summary.value, 'Edited current talk summary');
-    assert.equal(bindings.listSummary.value, 'Edited current list summary');
-    assert.equal(bindings.shouldRegister.value, false);
-    assert.equal(bindings.statusType.value, 'error');
-    assert.equal(bindings.status.value, 'Browser storage is unavailable.');
-});
-
-test('one Submit prepares and saves the exact plain batch while blocking duplicate actions', async () => {
-    const state = createDialogState();
-    const batch = createPreparedBatch(state);
-    const delayed = Promise.withResolvers<void>();
-    const started = Promise.withResolvers<void>();
-    let prepares = 0;
-    let saves = 0;
-    const staging = createStaging({
-        count: () => 1,
-        async prepare(preparedState, review) {
-            prepares += 1;
-            assert.equal(preparedState, state);
-            assert.equal(review.previewText, bindings.previewText.value);
-            return batch;
-        },
-        async save(api, savedBatch) {
-            saves += 1;
-            assert.equal(api, state.api);
-            assert.equal(savedBatch, batch);
-            assert.equal(isProxy(savedBatch), false);
-            assert.equal(isProxy(savedBatch.entries), false);
-            assert.equal(
-                savedBatch.registrationSummary,
-                'Combined list summary',
-            );
-            started.resolve();
-            await delayed.promise;
-            throw new Error('Stop after batch capture.');
-        },
-    });
-    const bindings = createAssessmentDialogBindings(
-        {
-            ...vue,
-            computed,
-            reactive: <T extends object>(value: T): T => reactive(value) as T,
-            ref,
-        },
-        {
-            currentNamespace: 0,
-            onClose() {},
-            runtime: { ...createRuntime(), staging },
-            state,
-        },
-    );
-
-    assert.equal(bindings.submitLabel.value, 'Submit (+1)');
-    const submitting = bindings.onSave();
-    assert.equal(bindings.preparing.value, true);
-    await bindings.onSave();
-    await started.promise;
-    assert.equal(prepares, 1);
-    assert.equal(saves, 1);
-    assert.equal(bindings.saving.value, true);
-    assert.equal(bindings.preparing.value, false);
-    assert.equal(bindings.stagedTalkReviews.value.length, 1);
-    assert.equal(bindings.stagedTalkReviews.value[0]?.title, 'Other game');
-    assert.equal(
-        bindings.stagedTalkReviews.value[0]?.previewText,
-        'Other reviewed lead',
-    );
-    assert.equal(bindings.showListReview.value, true);
-    assert.equal(bindings.listComparison.value.changed, true);
-    assert.equal(bindings.displayedListSummary.value, 'Combined list summary');
-
-    bindings.setListSummary('Too late to edit the batch');
-    bindings.onCancel();
-    bindings.onOpenChange(false);
-    await bindings.onStage();
-    await bindings.onSave();
-    assert.equal(bindings.open.value, true);
-    assert.equal(bindings.displayedListSummary.value, 'Combined list summary');
-    assert.equal(prepares, 1);
-    assert.equal(saves, 1);
-    delayed.resolve();
-    await submitting;
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.equal(bindings.saving.value, false);
-    assert.match(bindings.status.value, /Stop after batch capture\./u);
-});
-
-test('retrying a stopped submission prepares a fresh batch from the latest form edits', async () => {
-    const state = createDialogState();
-    let prepares = 0;
-    let saves = 0;
-    const staging = createStaging({
-        count: () => 1,
-        async prepare(_state, review) {
-            prepares += 1;
-            assert.equal(review.previewText, bindings.previewText.value);
-            assert.equal(review.summary, bindings.summary.value);
-            assert.equal(review.listSummary, bindings.listSummary.value);
-            assert.equal(review.shouldRegister, bindings.shouldRegister.value);
-            return createPreparedBatch(state);
-        },
-        async save() {
-            saves += 1;
-            throw new Error('Save stopped.');
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {},
-        runtime: { ...createRuntime(), staging },
-        state,
-    });
-    const edits = [
-        () => bindings.onSummaryInput('Changed talk summary'),
-        () => bindings.setListSummary('Changed list summary'),
-        () => bindings.onPreviewInput(`${originalSource}\n<!-- Changed -->`),
-        () => bindings.setRegister(false),
-        () => bindings.setClassName('B'),
-    ];
-    await bindings.onSave();
-    for (const edit of edits) {
-        assert.equal(bindings.saving.value, false);
-        edit();
-        assert.equal(bindings.stagedTalkReviews.value.length, 0);
-        await bindings.onSave();
-    }
-    assert.equal(prepares, 6);
-    assert.equal(saves, 6);
-});
-
-test('an external queue change refreshes actions while preserving the form', () => {
-    const state = createDialogState();
-    let count = 1;
-    let currentReview: DialogSaveReview | null = null;
-    const observable = createObservableStaging({
-        count: () => count,
-        getReview: () => currentReview,
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {},
-        runtime: { ...createRuntime(), staging: observable.staging },
-        state,
-    });
-    const manual = `${originalSource}\n<!-- Current editable review -->`;
-    bindings.onPreviewInput(manual);
-    bindings.onSummaryInput('Current talk summary');
-    bindings.setListSummary('Current list summary');
-    bindings.setRegister(false);
-
-    count = 3;
-    currentReview = {
-        listSummary: 'Other tab list summary',
-        previewText: 'Other tab reviewed source',
-        shouldRegister: true,
-        summary: 'Other tab talk summary',
-    };
-    observable.notify();
-
-    assert.equal(bindings.stageLabel.value, 'Unstage');
-    assert.equal(bindings.submitLabel.value, 'Submit (+2)');
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.equal(bindings.previewText.value, manual);
-    assert.equal(bindings.summary.value, 'Current talk summary');
-    assert.equal(bindings.listSummary.value, 'Current list summary');
-    assert.equal(bindings.displayedListSummary.value, 'Current list summary');
-    assert.equal(bindings.shouldRegister.value, false);
-    assert.equal(bindings.status.value, '');
-});
-
-test('an external queue change stops an in-flight submission until another Submit', async () => {
-    const state = createDialogState();
-    const delayed = Promise.withResolvers<PreparedAssessmentBatch>();
-    let count = 1;
-    let prepares = 0;
-    let saves = 0;
-    const observable = createObservableStaging({
-        count: () => count,
-        async prepare() {
-            prepares += 1;
-            return prepares === 1
-                ? delayed.promise
-                : createPreparedBatch(state);
-        },
-        async save() {
-            saves += 1;
-            throw new Error('Stop after retry capture.');
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {},
-        runtime: { ...createRuntime(), staging: observable.staging },
-        state,
-    });
-    const manual = `${originalSource}\n<!-- Editable while preparing -->`;
-    bindings.onPreviewInput(manual);
-    const preparing = bindings.onSave();
-    assert.equal(bindings.preparing.value, true);
-    count = 2;
-    observable.notify();
-    delayed.resolve(createPreparedBatch(state));
-    await preparing;
-
-    assert.equal(bindings.preparing.value, false);
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.equal(bindings.submitLabel.value, 'Submit (+2)');
-    assert.equal(bindings.previewText.value, manual);
-    assert.match(bindings.status.value, /changed/u);
-    assert.equal(saves, 0);
-    await bindings.onSave();
-    assert.equal(prepares, 2);
-    assert.equal(saves, 1);
-});
-
-test('queue notifications during submission do not discard the reviewed batch', async () => {
-    const state = createDialogState();
-    const delayed = Promise.withResolvers<void>();
-    const started = Promise.withResolvers<void>();
-    let count = 1;
-    const observable = createObservableStaging({
-        count: () => count,
-        async prepare() {
-            return createPreparedBatch(state);
-        },
-        async save() {
-            count = 0;
-            observable.notify();
-            started.resolve();
-            await delayed.promise;
-            throw new Error('Stop after confirmed notification handling.');
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {},
-        runtime: { ...createRuntime(), staging: observable.staging },
-        state,
-    });
-    const saving = bindings.onSave();
-    await started.promise;
-    assert.equal(bindings.saving.value, true);
-    assert.equal(bindings.stagedTalkReviews.value.length, 1);
-    assert.equal(bindings.displayedListSummary.value, 'Combined list summary');
-    delayed.resolve();
-    await saving;
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.equal(bindings.saving.value, false);
-});
-
-test('Cancel and unmount release the queue subscription', () => {
-    for (const dispose of ['cancel', 'unmount']) {
-        let count = 1;
-        let unmount: () => void = () => {
-            throw new Error('Unmount cleanup has not been registered.');
-        };
-        const observable = createObservableStaging({ count: () => count });
-        const bindings = createAssessmentDialogBindings(
-            {
-                ...vue,
-                onUnmounted(callback) {
-                    unmount = callback;
-                },
-            },
-            {
-                currentNamespace: 0,
-                onClose() {},
-                runtime: { ...createRuntime(), staging: observable.staging },
-                state: createDialogState(),
-            },
-        );
-        assert.equal(observable.subscriberCount(), 1);
-        if (dispose === 'cancel') {
-            bindings.onCancel();
-        } else {
-            unmount();
-        }
-        assert.equal(observable.subscriberCount(), 0);
-        count = 2;
-        observable.notify();
-        assert.equal(bindings.submitLabel.value, 'Submit (+1)');
-    }
-});
-
-test('a partial batch failure restores pending registration choice and remaining count', async () => {
-    const state = createDialogState();
-    let remainingReview: DialogSaveReview | null = null;
-    const capturedReviews: DialogSaveReview[] = [];
-    const staging = createStaging({
-        count: () => 1,
-        getReview: () => remainingReview,
-        async prepare(_state, review) {
-            capturedReviews.push(review);
-            return createPreparedBatch(state);
-        },
-        async save() {
-            remainingReview = {
-                ...capturedReviews[0]!,
-                shouldRegister: false,
-            };
-            throw new Error('Talk-page save failed.');
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {},
-        runtime: { ...createRuntime(), staging },
-        state,
-    });
-
-    await bindings.onSave();
-    assert.equal(bindings.shouldRegister.value, false);
-    assert.equal(bindings.submitLabel.value, 'Submit');
-    assert.equal(bindings.showListReview.value, false);
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-    assert.match(bindings.status.value, /Remaining staged pages: 1/u);
-    assert.match(bindings.status.value, /Talk-page save failed\./u);
-
-    await bindings.onSave();
-    assert.equal(capturedReviews.length, 2);
-    assert.equal(capturedReviews[1]?.shouldRegister, false);
-});
-
-test('Cancel discards a delayed preparation result', async () => {
-    const state = createDialogState();
-    let resolvePreparation: (batch: PreparedAssessmentBatch) => void = () => {
-        throw new Error('Preparation has not started.');
-    };
-    let closed = 0;
-    let saves = 0;
-    const staging = createStaging({
-        count: () => 1,
-        prepare() {
-            return new Promise((resolve) => {
-                resolvePreparation = resolve;
-            });
-        },
-        async save() {
-            saves += 1;
-            return 'saved';
-        },
-    });
-    const bindings = createAssessmentDialogBindings(vue, {
-        currentNamespace: 0,
-        onClose() {
-            closed += 1;
-        },
-        runtime: { ...createRuntime(), staging },
-        state,
-    });
-
-    const preparing = bindings.onSave();
-    bindings.onCancel();
-    resolvePreparation(createPreparedBatch(state));
-    await preparing;
-    assert.equal(closed, 1);
-    assert.equal(bindings.open.value, false);
-    assert.equal(saves, 0);
-    assert.equal(bindings.stagedTalkReviews.value.length, 0);
-});
-
-test('failed preparation preserves the form and does not fall back to saving only the current page', async () => {
-    const state = createDialogState();
-    let saves = 0;
-    const staging = createStaging({
-        count: () => 1,
-        async prepare() {
-            throw new Error('Could not refresh the registration list.');
-        },
-        async save() {
-            saves += 1;
-            return 'saved';
-        },
-    });
+test('Stage keeps exact reviewed drafts synchronized and Unstage preserves the form', async (context) => {
+    context.mock.timers.enable({ apis: ['setTimeout'] });
+    const drafts = new Map<string, DialogSaveReview>();
     const bindings = createAssessmentDialogBindings(vue, {
         currentNamespace: 0,
         onClose() {},
         runtime: {
-            ...createRuntime(async () => {
-                saves += 1;
-                return 'saved';
+            ...createRuntime(),
+            staging: createStaging({
+                count: () => drafts.size,
+                getReview: (title) => drafts.get(title) ?? null,
+                async stage(state, review) {
+                    drafts.set(state.talkTitle, structuredClone(review));
+                },
+                async unstage(title) {
+                    drafts.delete(title);
+                },
             }),
-            staging,
         },
-        state,
+        state: createDialogState(),
     });
-    const reviewed = `${originalSource}\n<!-- Retain this review -->`;
-    bindings.onPreviewInput(reviewed);
-    await bindings.onSave();
-
-    assert.equal(saves, 0);
-    assert.equal(bindings.open.value, true);
-    assert.equal(bindings.saving.value, false);
-    assert.equal(bindings.preparing.value, false);
-    assert.equal(bindings.previewText.value, reviewed);
-    assert.equal(bindings.statusType.value, 'error');
+    assert.equal(bindings.currentStaged.value, false);
+    await bindings.onStage(true);
+    bindings.onPreviewInput(`${originalSource}\n<!-- Exact review -->`);
+    bindings.onSummaryInput('Exact summary');
+    bindings.setListSummary('Exact list summary');
+    bindings.setRegister(false);
+    context.mock.timers.tick(251);
+    for (let index = 0; index < 10; index += 1) await Promise.resolve();
+    assert.equal(drafts.get('Talk:Example game')?.summary, 'Exact summary');
     assert.equal(
-        bindings.status.value,
-        'Could not refresh the registration list.',
+        drafts.get('Talk:Example game')?.previewText,
+        bindings.previewText.value,
     );
+    assert.equal(drafts.get('Talk:Example game')?.shouldRegister, false);
+    await bindings.onStage(false);
+    assert.equal(drafts.size, 0);
+    assert.equal(bindings.summary.value, 'Exact summary');
+    assert.equal(bindings.open.value, true);
+});
+
+test('a staged synchronization failure retains the open reviewed form', async () => {
+    const review = {
+        previewText: originalSource,
+        summary: 'Old',
+        listSummary: 'List',
+        shouldRegister: false,
+    };
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {
+            assert.fail('Failed draft flush must keep the dialog open.');
+        },
+        runtime: {
+            ...createRuntime(),
+            staging: createStaging({
+                getReview: () => review,
+                async stage() {
+                    throw new Error('Storage unavailable');
+                },
+            }),
+        },
+        state: createDialogState(),
+    });
+    bindings.onSummaryInput('Retained summary');
+    await bindings.onCancel();
+    assert.equal(bindings.open.value, true);
+    assert.equal(bindings.summary.value, 'Retained summary');
+    assert.match(bindings.status.value, /Storage unavailable/u);
+});
+
+test('Submit prepares a selected-page review before any batch write', async () => {
+    const state = createDialogState();
+    const batch = createPreparedBatch(state);
+    let saves = 0;
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {},
+        state,
+        runtime: {
+            ...createRuntime(),
+            staging: createStaging({
+                count: () => 1,
+                async prepare() {
+                    return batch;
+                },
+                async save(_api, saved) {
+                    saves += 1;
+                    assert.equal(saved, batch);
+                    throw new Error('Stopped save');
+                },
+            }),
+        },
+    });
+    await bindings.onSave();
+    assert.equal(saves, 0);
+    assert.equal(bindings.batchConfirmOpen.value, true);
+    assert.equal(bindings.batchReviewRows.value.length, 2);
+    assert.equal(bindings.batchSelectedCount.value, 2);
+    assert.equal(
+        bindings.batchRegistrationReview.value?.summary,
+        'Combined list summary',
+    );
+    await bindings.onConfirmBatch();
+    assert.equal(saves, 1);
+    assert.match(bindings.status.value, /Stopped save/u);
+    assert.equal(bindings.saving.value, false);
+});
+
+test('selection prepares exactly checked entries and an empty selection blocks saving', async () => {
+    const state = createDialogState();
+    const batch = createPreparedBatch(state);
+    let selected: string[] = [];
+    let saves = 0;
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {},
+        state,
+        runtime: {
+            ...createRuntime(),
+            staging: createStaging({
+                count: () => 1,
+                async prepare() {
+                    return batch;
+                },
+                async prepareSelection(_api, entries, draftSnapshot) {
+                    selected = entries.map((entry) => entry.state.talkTitle);
+                    return {
+                        ...batch,
+                        entries,
+                        draftSnapshot,
+                        registration: null,
+                    };
+                },
+                async save() {
+                    saves += 1;
+                    return 'unchanged';
+                },
+            }),
+        },
+    });
+    await bindings.onSave();
+    await bindings.onBatchSelect(state.talkTitle, false);
+    assert.deepEqual(selected, ['Talk:Other game']);
+    assert.equal(bindings.batchPartiallySelected.value, true);
+    await bindings.onBatchSelectAll(false);
+    assert.equal(bindings.batchSelectedCount.value, 0);
+    await bindings.onConfirmBatch();
+    assert.equal(saves, 0);
+});
+
+test('removing a reviewed row rebuilds the selected registration preview', async () => {
+    const state = createDialogState();
+    const batch = createPreparedBatch(state);
+    let removed = '';
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {},
+        state,
+        runtime: {
+            ...createRuntime(),
+            staging: createStaging({
+                count: () => 1,
+                async prepare() {
+                    return batch;
+                },
+                async removeFromBatch(previous, title) {
+                    removed = title;
+                    return {
+                        ...previous,
+                        entries: previous.entries.filter(
+                            (entry) => entry.state.talkTitle !== title,
+                        ),
+                    };
+                },
+                async prepareSelection(_api, entries, draftSnapshot) {
+                    return {
+                        ...batch,
+                        entries,
+                        draftSnapshot,
+                        registration: null,
+                    };
+                },
+            }),
+        },
+    });
+    await bindings.onSave();
+    await bindings.onBatchRemove('Talk:Other game');
+    assert.equal(removed, 'Talk:Other game');
+    assert.equal(bindings.batchReviewRows.value.length, 1);
+    assert.equal(bindings.batchRegistrationReview.value, null);
+    assert.equal(bindings.batchSelectedCount.value, 1);
+});
+
+test('an external queue change invalidates the pending review while retaining form edits', async () => {
+    const state = createDialogState();
+    const delayed = Promise.withResolvers<PreparedAssessmentBatch>();
+    let saves = 0;
+    const observable = createObservableStaging({
+        count: () => 1,
+        prepare: () => delayed.promise,
+        async save() {
+            saves += 1;
+            return 'saved';
+        },
+    });
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {},
+        state,
+        runtime: { ...createRuntime(), staging: observable.staging },
+    });
+    bindings.onSummaryInput('Keep editable summary');
+    const preparing = bindings.onSave();
+    await Promise.resolve();
+    observable.notify();
+    delayed.resolve(createPreparedBatch(state));
+    await preparing;
+    assert.equal(bindings.batchConfirmOpen.value, false);
+    assert.equal(bindings.summary.value, 'Keep editable summary');
+    assert.equal(saves, 0);
+    assert.match(bindings.status.value, /changed/u);
+    await bindings.onCancel();
+    assert.equal(observable.subscriberCount(), 0);
+});
+
+test('compact mode retains the draft and an existing launcher restores its current view', async () => {
+    let restore: (() => void) | null = null;
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {},
+        state: createDialogState(),
+        runtime: createRuntime(),
+        registerRestore(handler) {
+            restore = handler;
+        },
+    });
+    bindings.onSummaryInput('Keep draft');
+    bindings.onCollapse();
+    assert.equal(bindings.minimized.value, true);
+    assert.equal(bindings.open.value, true);
+    assert.equal(typeof restore, 'function');
+    (restore as unknown as () => void)();
+    assert.equal(bindings.minimized.value, false);
+    assert.equal(bindings.summary.value, 'Keep draft');
+    await bindings.onCancel();
+    assert.equal(restore, null);
+});
+
+test('pending batch writes reject duplicate confirmation, edits, and close attempts', async () => {
+    const state = createDialogState();
+    const delayed = Promise.withResolvers<void>();
+    let saves = 0;
+    const bindings = createAssessmentDialogBindings(vue, {
+        currentNamespace: 0,
+        onClose() {},
+        state,
+        runtime: {
+            ...createRuntime(),
+            staging: createStaging({
+                count: () => 1,
+                async prepare() {
+                    return createPreparedBatch(state);
+                },
+                async save() {
+                    saves += 1;
+                    await delayed.promise;
+                    throw new Error('Stop after capture');
+                },
+            }),
+        },
+    });
+    await bindings.onSave();
+    const saving = bindings.onConfirmBatch();
+    assert.equal(bindings.saving.value, true);
+    await bindings.onConfirmBatch();
+    await bindings.onCancel();
+    bindings.onBatchCancel();
+    bindings.onBatchOpenChange(false);
+    const source = bindings.previewText.value;
+    bindings.onPreviewInput('Unreviewed late edit');
+    assert.equal(bindings.previewText.value, source);
+    assert.equal(bindings.batchConfirmOpen.value, true);
+    assert.equal(bindings.open.value, true);
+    assert.equal(saves, 1);
+    delayed.resolve();
+    await saving;
 });
 
 function createObservableStaging(
@@ -874,6 +551,15 @@ function createStaging(
         },
         async save() {
             throw new Error('Unexpected batch save.');
+        },
+        async prepareSelection() {
+            throw new Error('Unexpected batch selection.');
+        },
+        async removeFromBatch() {
+            throw new Error('Unexpected batch removal.');
+        },
+        async updateInBatch() {
+            throw new Error('Unexpected batch update.');
         },
         ...overrides,
     };

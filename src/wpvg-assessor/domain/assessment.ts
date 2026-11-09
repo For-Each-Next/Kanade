@@ -45,6 +45,54 @@ const BANNER_SHELL_ALIASES = [
     '[維维]基[專专][題题][橫横]幅',
 ];
 const EXISTING_PROJECT_ID_PREFIX = 'existing:';
+const PRE_PROJECT_BANNER_NAMES = new Set(
+    [
+        'Afd-merged-from',
+        'American English',
+        'Article history',
+        'Article milestones',
+        'Australian English',
+        'BLP',
+        'BLP others',
+        'BLPCRIME talk notice',
+        'British English',
+        'COI editnotice',
+        'Canadian English',
+        'Censor',
+        'Contentious topics/talk notice',
+        'Controversial',
+        'DYK talk',
+        'DYKEntry',
+        'DelistedGA',
+        'FA',
+        'FAQ',
+        'FL',
+        'FailedGA',
+        'Featured article candidates',
+        'Featured article review',
+        'GA',
+        'GA nominee',
+        'Gs/talk notice',
+        'ITN talk',
+        'New Zealand English',
+        'Notice',
+        'Old AfD',
+        'Old CfD',
+        'Old RfD',
+        'Old VfD',
+        'Old XfD multi',
+        'Old moves',
+        'Old peer review',
+        'Old prod',
+        'On this day',
+        'Peer review',
+        'Skip to bottom',
+        'Skip to talk',
+        'Talk header',
+        'Talk page of redirect',
+        'Warning',
+    ].map(normalizeTalkBannerName),
+);
 const BANNER_SCAN_OPTIONS = {
     includeUnclosedLinks: true,
     literalTags: ['nowiki', 'pre', 'source', 'syntaxhighlight', 'math'],
@@ -132,6 +180,31 @@ export function parseAssessment(
         return null;
     }
     return createDefaultAssessment(projectConfig, text);
+}
+
+/** Reads the explicit shared or project class without inventing an old value. */
+export function readAssessmentClass(
+    projectConfig: ProjectConfig,
+    source: string,
+): AssessmentClass | null {
+    const templates = readLeadingTemplates(String(source || ''));
+    const shell = templates.find((template) =>
+        isBannerShellName(template.name),
+    );
+    const banners = collectExistingProjectBanners(templates);
+    const videoGames = findProjectBanner(banners, projectConfig.videoGames);
+    const banner =
+        videoGames ??
+        banners.find((item) => {
+            const name = readLeadingTemplates(item)[0]?.name;
+            return name != null && isOtherProjectName(name, projectConfig);
+        });
+    const parameter =
+        videoGames == null ? 'class' : projectConfig.videoGames.classParameter;
+    const value =
+        readTemplateParameter(shell?.source, 'class') ??
+        readTemplateParameter(banner, parameter);
+    return normalizeAssessmentClass(value);
 }
 
 /**
@@ -479,7 +552,7 @@ export function updateTalkPageAssessment(
 ): string {
     const banners = buildAssessmentBanners(assessment, projectConfig, text);
     const result = replaceManagedTopTemplates(text, banners, projectConfig);
-    return result;
+    return placeProjectBannersAfterHistory(result);
 }
 
 /**
@@ -807,6 +880,45 @@ function replaceLeadingManagedTemplates(
     }
 
     return result + source.slice(last.end);
+}
+
+function normalizeTalkBannerName(name: string): string {
+    return normalizeTemplateName(name).replace(/\s+/gu, '');
+}
+
+function isPreProjectBanner(name: string): boolean {
+    const normalized = normalizeTalkBannerName(name);
+    return (
+        PRE_PROJECT_BANNER_NAMES.has(normalized) ||
+        /^(?:[條条]目[歷历]史|[優优]良[條条]目|特色[條条]目)$/u.test(normalized)
+    );
+}
+
+function placeProjectBannersAfterHistory(source: string): string {
+    const templates = readLeadingTemplates(source);
+    const shell = templates.find((template) =>
+        isBannerShellName(template.name),
+    );
+    const anchor = templates
+        .filter((template) => isPreProjectBanner(template.name))
+        .at(-1);
+    if (shell == null || anchor == null || shell.start >= anchor.end) {
+        return source;
+    }
+    const newline = source.includes('\r\n') ? '\r\n' : '\n';
+    const before = source.slice(0, shell.start);
+    let between = source.slice(shell.end, anchor.end);
+    // Remove only empty spacing left at the old shell position.
+    if (before === '') {
+        between = between.replace(/^\s+/u, '');
+    } else if (before.endsWith('\n')) {
+        between = between.replace(/^[ \t]*\r?\n/u, '');
+    }
+    let after = source.slice(anchor.end);
+    if (!/^[ \t]*\r?\n/u.test(after)) {
+        after = newline + after.replace(/^[ \t]+/u, '');
+    }
+    return before + between + newline + shell.source + after;
 }
 
 /**

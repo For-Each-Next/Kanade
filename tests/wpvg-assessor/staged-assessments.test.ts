@@ -648,6 +648,217 @@ test('concurrent opens reuse an in-flight load and invalidation discards its sta
     assert.equal(Object.keys(session.read().pages).length, 1);
 });
 
+test('selected batch saves preserve unchecked staged drafts and their registration choices', async () => {
+    const fixture = createFixture();
+    const first = createState('First game');
+    const second = createState('Second game');
+    await fixture.workflow.stage(first, createReview('First game'));
+    await fixture.workflow.stage(second, createReview('Second game'));
+    const full = await fixture.workflow.prepare(
+        first,
+        createReview('First game'),
+    );
+    const selected = await fixture.workflow.prepareSelection(
+        api,
+        full.entries.filter(
+            (entry) => entry.state.talkTitle === first.talkTitle,
+        ),
+        full.draftSnapshot,
+    );
+    await fixture.workflow.save(api, selected, () => {});
+    assert.deepEqual(fixture.writes, ['registration', first.talkTitle]);
+    assert.equal(fixture.workflow.count(), 1);
+    assert.equal(
+        fixture.workflow.getReview(second.talkTitle)?.shouldRegister,
+        true,
+    );
+    assert.doesNotMatch(
+        fixture.registrations[0]!.registration.proposedText,
+        /Second game/u,
+    );
+});
+
+test('batch editing and removal validate page identity and refresh registration reviews', async () => {
+    const fixture = createFixture();
+    const first = createState('First game');
+    const second = createState('Second game');
+    await fixture.workflow.stage(first, createReview('First game'));
+    await fixture.workflow.stage(second, createReview('Second game'));
+    const batch = await fixture.workflow.prepare(
+        first,
+        createReview('First game'),
+    );
+    await assert.rejects(
+        fixture.workflow.updateInBatch(
+            batch,
+            first.talkTitle,
+            second,
+            createReview('Second game'),
+        ),
+        /another page/u,
+    );
+    const edited = createReview('First game', false);
+    edited.summary = 'Custom reviewed summary';
+    edited.previewText += '\n<!-- Exact edited lead -->';
+    const updated = await fixture.workflow.updateInBatch(
+        batch,
+        first.talkTitle,
+        first,
+        edited,
+    );
+    assert.equal(updated.registration, null);
+    assert.equal(
+        fixture.workflow.getReview(first.talkTitle)?.summary,
+        edited.summary,
+    );
+    const removed = await fixture.workflow.removeFromBatch(
+        updated,
+        second.talkTitle,
+    );
+    assert.equal(removed.entries.length, 1);
+    assert.equal(fixture.workflow.count(), 1);
+    const selected = await fixture.workflow.prepareSelection(
+        api,
+        removed.entries,
+        removed.draftSnapshot,
+    );
+    assert.equal(selected.registration, null);
+    await fixture.workflow.save(api, selected, () => {});
+    assert.equal(
+        fixture.talkReviews[0]?.review.previewText,
+        edited.previewText,
+    );
+});
+
+test('actual edit attempts are separated by six seconds, with progress and shared next-edit state', async (context) => {
+    context.mock.timers.enable({ apis: ['Date', 'setTimeout'], now: 10000 });
+    const session = createSession();
+    let nextEditAt = 0;
+    session.readNextEditAt = () => nextEditAt;
+    session.writeNextEditAt = (timestamp) => {
+        nextEditAt = timestamp;
+    };
+    const attempts: number[] = [];
+    const editStarted = Promise.withResolvers<void>();
+    const editApi = {
+        async postWithToken() {
+            attempts.push(Date.now());
+            if (attempts.length === 1) editStarted.resolve();
+            return { edit: { result: 'Success' } };
+        },
+    } as unknown as mw.Api;
+    const workflow = createAssessmentStagingWorkflow(
+        {
+            session,
+            logger,
+            async fetchNewPageList() {
+                return createListSnapshot();
+            },
+            async fetchPageCreationTimes() {
+                return new Map();
+            },
+            async saveRegistration() {
+                assert.fail('Registration is disabled.');
+            },
+            async saveReviewedDialog(state) {
+                await state.api.postWithToken('csrf', {
+                    action: 'edit',
+                    title: state.talkTitle,
+                });
+                return 'saved';
+            },
+        },
+        projectConfig,
+    );
+    const first = createState('First game');
+    await workflow.stage(first, createReview('First game', false));
+    await workflow.stage(
+        createState('Second game'),
+        createReview('Second game', false),
+    );
+    const batch = await workflow.prepare(
+        first,
+        createReview('First game', false),
+    );
+    const progress: Array<{ phase: string; waitSeconds: number }> = [];
+    const saving = workflow.save(
+        editApi,
+        batch,
+        () => {},
+        (value) => progress.push(value),
+    );
+    await editStarted.promise;
+    // Drain the completed first request before advancing the next paced request.
+    for (let index = 0; index < 30; index += 1) await Promise.resolve();
+    assert.deepEqual(attempts, [10000]);
+    assert.equal(nextEditAt, 16000);
+    context.mock.timers.tick(6000);
+    await saving;
+    assert.deepEqual(attempts, [10000, 16000]);
+    assert.ok(
+        progress.some(
+            (value) => value.phase === 'waiting' && value.waitSeconds === 6,
+        ),
+    );
+    assert.equal(progress.at(-1)?.phase, 'complete');
+});
+
+test('timing-store failure preserves a confirmed save and holds its lock until the interval ends', async (context) => {
+    context.mock.timers.enable({ apis: ['Date', 'setTimeout'], now: 10000 });
+    const session = createSession();
+    session.writeNextEditAt = () => {
+        throw new Error('Timing cache unavailable');
+    };
+    const wrote = Promise.withResolvers<void>();
+    const editApi = {
+        async postWithToken() {
+            wrote.resolve();
+            return { edit: { result: 'Success' } };
+        },
+    } as unknown as mw.Api;
+    const workflow = createAssessmentStagingWorkflow(
+        {
+            session,
+            logger,
+            async fetchNewPageList() {
+                return createListSnapshot();
+            },
+            async fetchPageCreationTimes() {
+                return new Map();
+            },
+            async saveRegistration() {
+                assert.fail('Registration is disabled.');
+            },
+            async saveReviewedDialog(state) {
+                await state.api.postWithToken('csrf', {
+                    action: 'edit',
+                    title: state.talkTitle,
+                });
+                return 'saved';
+            },
+        },
+        projectConfig,
+    );
+    const state = createState('First game');
+    const review = createReview('First game', false);
+    await workflow.stage(state, review);
+    const batch = await workflow.prepare(state, review);
+    const saving = workflow.save(editApi, batch, () => {});
+    await wrote.promise;
+    for (let index = 0; index < 30; index += 1) await Promise.resolve();
+    let lockReleased = false;
+    const following = session.runExclusive(async () => {
+        lockReleased = true;
+    });
+    await Promise.resolve();
+    assert.equal(workflow.count(), 0);
+    assert.equal(lockReleased, false);
+    context.mock.timers.tick(6000);
+    assert.equal(await saving, 'saved');
+    await following;
+    assert.equal(lockReleased, true);
+});
+
 function createFixture(session = createSession()) {
     const writes: string[] = [];
     const registrations: Array<{

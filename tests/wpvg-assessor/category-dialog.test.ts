@@ -70,6 +70,10 @@ function createFixture(
 ) {
     let mount: () => void = () => assert.fail('Missing mount callback');
     const Vue: VueModule = {
+        shallowRef: (value) => ({ value }),
+        nextTick: async (callback) => {
+            callback();
+        },
         computed: (getter) => ({
             get value() {
                 return getter();

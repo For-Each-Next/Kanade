@@ -11,6 +11,7 @@ import policy from './identity-policy.json' with { type: 'json' };
 const ignoredDirectories = new Set([
     '.git',
     '.idea',
+    '.temp',
     'node_modules',
     '.cache',
     'coverage',

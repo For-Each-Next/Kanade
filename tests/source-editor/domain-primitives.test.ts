@@ -27,6 +27,7 @@ import {
     decodeReferenceDetailsAttribute,
     escapeQuotedAttribute,
     escapeReferenceDetails,
+    escapeReferenceName,
     formatReferenceGroupAttribute,
     formatReferenceDetailsAttribute,
     stripOptionalReferenceNameQuotes,
@@ -113,6 +114,29 @@ test('decodes HTML5 named entities once while preserving literal or unknown enti
     assert.equal(
         decodeReferenceAttribute('&Quot;&notanentity;'),
         '&Quot;&notanentity;',
+    );
+});
+
+test('quotes reference names while preserving bare ampersands and literal entity identities', () => {
+    for (const name of [
+        'A & B',
+        'A&B',
+        'é',
+        '&eacute;',
+        '&amp;eacute;',
+        '&NotEqualTilde;',
+        '&#34;',
+        '&#x1f600;',
+        '&notanentity;',
+        '&#0; &#xD800; &#x110000;',
+        'A"B<C>D',
+    ]) {
+        assert.equal(decodeReferenceAttribute(escapeReferenceName(name)), name);
+    }
+    assert.equal(escapeReferenceName('A & B &unknown;'), 'A & B &unknown;');
+    assert.equal(
+        escapeReferenceName('&eacute; &#34; "<>'),
+        '&amp;eacute; &amp;#34; &quot;&lt;&gt;',
     );
 });
 

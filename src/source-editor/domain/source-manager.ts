@@ -37,6 +37,7 @@ import {
     decodeReferenceAttribute,
     decodeReferenceDetailsAttribute,
     escapeReferenceDetails,
+    escapeReferenceName,
     stripOptionalReferenceNameQuotes,
 } from './ref-attributes.ts';
 import { normalizeSourceUrl, parseSourceUrl } from './source-url.ts';
@@ -3011,7 +3012,7 @@ function setsIntersect(left: Set<string>, right: Set<string>): boolean {
  * @returns Escaped decoded name without reinterpreting literal entity text.
  */
 function escapeSourceReferenceName(value: string): string {
-    return escapeReferenceDetails(value);
+    return escapeReferenceName(value);
 }
 
 function formatSourceReferenceGroup(value: string): string {

@@ -27,6 +27,8 @@ export interface AssessmentSessionData {
 
 export interface AssessmentSessionStore {
     read(): AssessmentSessionData;
+    readNextEditAt?(): number;
+    writeNextEditAt?(timestamp: number): boolean | void;
     write(data: AssessmentSessionData): void;
     subscribe(listener: () => void): () => void;
     runExclusive<T>(operation: () => Promise<T>): Promise<T>;
@@ -39,6 +41,16 @@ export interface PreparedAssessmentBatch {
     draftSnapshot: string;
 }
 
+export interface BatchSaveProgress {
+    completed: number;
+    total: number;
+    title: string;
+    phase: 'waiting' | 'saving' | 'complete';
+    waitSeconds: number;
+}
+
+export type ReportBatchSaveProgress = (progress: BatchSaveProgress) => void;
+
 export interface AssessmentStagingWorkflow {
     count(): number;
     getReview(talkTitle: string): DialogSaveReview | null;
@@ -49,9 +61,25 @@ export interface AssessmentStagingWorkflow {
         state: DialogState,
         review: DialogSaveReview,
     ): Promise<PreparedAssessmentBatch>;
+    prepareSelection(
+        api: mw.Api,
+        selected: StagedAssessment[],
+        draftSnapshot: string,
+    ): Promise<PreparedAssessmentBatch>;
+    removeFromBatch(
+        batch: PreparedAssessmentBatch,
+        talkTitle: string,
+    ): Promise<PreparedAssessmentBatch>;
+    updateInBatch(
+        batch: PreparedAssessmentBatch,
+        talkTitle: string,
+        state: DialogState,
+        review: DialogSaveReview,
+    ): Promise<PreparedAssessmentBatch>;
     save(
         api: mw.Api,
         batch: PreparedAssessmentBatch,
         reportPhase: ReportDialogSavePhase,
+        reportProgress?: ReportBatchSaveProgress,
     ): Promise<DialogSaveOutcome>;
 }

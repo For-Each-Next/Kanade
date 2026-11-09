@@ -1,6 +1,6 @@
 # Source Editor
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-09.
 
 Source Editor combines source editing, reference management, and wikitext formatting
 in one tool. Accepted changes return to the same editor for review and publication.
@@ -25,7 +25,8 @@ Install [source_editor.user.js](../../dist/source_editor.user.js) in a userscrip
 Open **Source Editor** in page tools. Its **References** tab provides **Manage references**.
 The bottom-right **Format** button formats the selected text immediately,
 or the whole section/page when no text is selected, using current settings.
-The adjacent **Tools** button opens regex tools. These buttons run horizontally
+The adjacent **References** button opens **Manage references** directly, and
+**Tools** opens regex tools. These buttons run horizontally
 and wrap when the viewport is narrow.
 See the [project installation guide](../../README.md#install-and-use) for the
 shared build and installation methods.

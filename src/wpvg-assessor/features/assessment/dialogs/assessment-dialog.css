@@ -11,6 +11,7 @@
 }
 
 .kanade-wpvg-assessor-dialog__actions {
+    align-items: center;
     display: flex;
     flex-wrap: nowrap;
     gap: var(--spacing-75, 0.75rem);
@@ -19,7 +20,117 @@
 }
 
 .kanade-wpvg-assessor-dialog__actions--stacked {
+    align-items: stretch;
     flex-direction: column;
+}
+
+.kanade-wpvg-assessor-stage-toggle {
+    margin-inline-end: auto;
+}
+
+.kanade-wpvg-assessor-dialog__actions--stacked
+    .kanade-wpvg-assessor-stage-toggle {
+    margin-inline-end: 0;
+}
+
+.kanade-wpvg-assessor-batch-content {
+    min-block-size: 12rem;
+    position: relative;
+}
+
+.kanade-wpvg-assessor-batch-table-scroll {
+    max-block-size: 52vh;
+    overflow: auto;
+}
+
+.kanade-wpvg-assessor-batch-table {
+    border-collapse: collapse;
+    inline-size: 100%;
+    text-align: start;
+}
+
+.kanade-wpvg-assessor-batch-table caption,
+.kanade-wpvg-assessor-sr {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+.kanade-wpvg-assessor-batch-table th,
+.kanade-wpvg-assessor-batch-table td {
+    border: 1px solid var(--border-color-muted, #dadde3);
+    min-inline-size: 7rem;
+    overflow-wrap: anywhere;
+    padding: var(--spacing-75, 0.75rem);
+    vertical-align: top;
+}
+
+.kanade-wpvg-assessor-batch-table thead th {
+    background: var(--background-color-neutral-subtle, #f8f9fa);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.kanade-wpvg-assessor-batch-table .kanade-wpvg-assessor-batch-select,
+.kanade-wpvg-assessor-batch-table .kanade-wpvg-assessor-batch-actions {
+    inline-size: 1%;
+    min-inline-size: 2.5rem;
+    white-space: nowrap;
+}
+
+.kanade-wpvg-assessor-edit {
+    margin-inline-end: 0.25rem;
+}
+
+.kanade-wpvg-assessor-edit svg,
+.kanade-wpvg-assessor-trash svg {
+    display: block;
+}
+
+.kanade-wpvg-assessor-batch-registration {
+    display: grid;
+    gap: var(--spacing-75, 0.75rem);
+    margin-block-start: var(--spacing-150, 1.5rem);
+}
+
+.kanade-wpvg-assessor-batch-registration p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.kanade-wpvg-assessor-batch-table summary {
+    cursor: pointer;
+}
+
+.kanade-wpvg-assessor-batch-table details[open] summary {
+    margin-block-end: var(--spacing-50, 0.5rem);
+}
+
+.kanade-wpvg-assessor-batch-overlay {
+    align-items: flex-start;
+    background: var(--background-color-backdrop-light, #ffffffcc);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: var(--spacing-150, 1.5rem);
+    position: absolute;
+    z-index: 2;
+}
+
+.kanade-wpvg-assessor-batch-progress {
+    inline-size: 28rem;
+    inset-block-start: 0;
+    max-inline-size: 100%;
+    overflow-wrap: anywhere;
+    position: sticky;
+}
+
+.kanade-wpvg-assessor-batch-progress p {
+    margin-block: var(--spacing-50, 0.5rem) 0;
 }
 
 .kanade-wpvg-assessor-dialog__body {
@@ -132,4 +243,79 @@
 
 .kanade-wpvg-assessor-list-review {
     margin-block-start: var(--spacing-100, 1rem);
+}
+
+.kanade-wpvg-assessor-mini {
+    box-sizing: border-box;
+    inline-size: 22rem;
+    inset-block-end: max(1rem, env(safe-area-inset-bottom));
+    inset-inline-end: max(1rem, env(safe-area-inset-right));
+    max-block-size: 75vh;
+    max-inline-size: calc(100vw - 2rem);
+    overflow-wrap: anywhere;
+    position: fixed;
+    z-index: 500;
+}
+
+.kanade-wpvg-assessor-mini__layout {
+    display: grid;
+    gap: var(--spacing-75, 0.75rem);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    /* Leave room for the native Message padding and border. */
+    max-block-size: calc(75vh - 2rem);
+    min-block-size: 0;
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-mini__title {
+    margin: 0;
+}
+
+.kanade-wpvg-assessor-mini__body {
+    display: grid;
+    gap: var(--spacing-75, 0.75rem);
+    min-block-size: 0;
+    min-inline-size: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding-inline-end: var(--spacing-25, 0.25rem);
+}
+
+.kanade-wpvg-assessor-mini__state {
+    display: grid;
+    gap: var(--spacing-50, 0.5rem);
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-mini__state p {
+    margin: 0;
+}
+
+.kanade-wpvg-assessor-mini__actions {
+    display: grid;
+    gap: var(--spacing-50, 0.5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kanade-wpvg-assessor-mini__stage-toggle,
+.kanade-wpvg-assessor-mini__submit {
+    grid-column: 1 / -1;
+}
+
+.kanade-wpvg-assessor-mini__form {
+    display: grid;
+    gap: var(--spacing-100, 1rem);
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-mini__field {
+    display: grid;
+    gap: var(--spacing-50, 0.5rem);
+    min-inline-size: 0;
+}
+
+.kanade-wpvg-assessor-mini__choices {
+    display: grid;
+    gap: var(--spacing-50, 0.5rem);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }

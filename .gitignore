@@ -17,6 +17,7 @@ npm-debug.log*
 # Local editor, assistant, and operating-system files.
 /.idea/
 /.ai/
+/.temp/
 .DS_Store
 ._*
 *.swp
