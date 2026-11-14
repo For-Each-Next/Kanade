@@ -475,6 +475,88 @@ test('creation-time diagnostics do not include page titles', async () => {
     assert.match(JSON.stringify(output), /itemCount/u);
 });
 
+test('assesses the redirect page itself without reading its encoded destination', async () => {
+    const title = '智代After Original SoundTrack';
+    const destination = "智代After ～It's a Wonderful Life～";
+    const requests: Array<Record<string, unknown>> = [];
+    let savedCache: Record<string, string> = {};
+    const redirectPages = pageApi.createPageApi(logger, {
+        read: () => ({ [destination]: '2006-12-22T11:25:21.000Z' }),
+        write(cache) {
+            savedCache = cache;
+        },
+    });
+    const api = createCreationLookupApi(
+        {
+            [title]: {
+                ns: 0,
+                title,
+                redirect: true,
+                revisions: [
+                    {
+                        slots: {
+                            main: {
+                                content:
+                                    '#REDIRECT [[智代After_～It%27s_a_Wonderful_Life～#音樂]]',
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+        requests,
+        { [title]: '2013-10-22T07:12:45Z' },
+    );
+
+    const subject = await redirectPages.fetchSubjectPageInfo(api, title);
+
+    assert.deepEqual(subject, {
+        creationDate: new Date('2013-10-22T07:12:45Z'),
+        isRedirect: true,
+        listedTitle: title,
+        namespaceNumber: 0,
+        targetTitle: title,
+    });
+    assert.equal(requests.length, 2);
+    assert.equal(requests[0]?.prop, 'info|revisions');
+    assert.equal(requests[1]?.rvdir, 'newer');
+    assert.equal(requests[1]?.rvlimit, 1);
+    assert.ok(requests.every((request) => request.titles === title));
+    assert.ok(requests.every((request) => request.redirects == null));
+    assert.equal(savedCache[title], '2013-10-22T07:12:45.000Z');
+    assert.equal(savedCache[destination], '2006-12-22T11:25:21.000Z');
+});
+
+test('uses the API canonical title for the current subject without following redirects', async () => {
+    const title = '樣板:Example_page';
+    const canonicalTitle = 'Template:Example page';
+    const requests: Array<Record<string, unknown>> = [];
+    const api = createCreationLookupApi(
+        {
+            [title]: {
+                ns: 10,
+                title: canonicalTitle,
+                revisions: [
+                    { slots: { main: { content: 'Template source' } } },
+                ],
+            },
+        },
+        requests,
+    );
+
+    const subject = await pages.fetchSubjectPageInfo(api, title);
+
+    assert.equal(subject.listedTitle, title);
+    assert.equal(subject.targetTitle, canonicalTitle);
+    assert.equal(subject.namespaceNumber, 10);
+    assert.equal(subject.isRedirect, false);
+    assert.equal(
+        subject.creationDate.toISOString(),
+        '2026-08-29T00:00:00.000Z',
+    );
+    assert.equal(requests[1]?.titles, canonicalTitle);
+});
+
 test('omits explicitly missing list peers from optional creation-time reads', async () => {
     const requests: Array<Record<string, unknown>> = [];
     const missingTitle = 'File:阴阳师 (游戏).JPG';
@@ -482,6 +564,7 @@ test('omits explicitly missing list peers from optional creation-time reads', as
         {
             'COCORO (遊戲)': {
                 title: 'COCORO (遊戲)',
+                redirect: true,
                 revisions: [
                     { slots: { main: { content: '#REDIRECT [[COCORO]]' } } },
                 ],
@@ -493,6 +576,7 @@ test('omits explicitly missing list peers from optional creation-time reads', as
             [missingTitle]: { ns: 6, title: missingTitle, missing: true },
         },
         requests,
+        { 'COCORO (遊戲)': '2026-08-30T01:00:00Z' },
     );
 
     const dates = await pages.fetchPageCreationTimes(api, [
@@ -506,13 +590,17 @@ test('omits explicitly missing list peers from optional creation-time reads', as
         dates.get('COCORO')?.toISOString(),
         '2026-08-29T00:00:00.000Z',
     );
-    assert.equal(dates.get('COCORO (遊戲)'), dates.get('COCORO'));
+    assert.equal(
+        dates.get('COCORO (遊戲)')?.toISOString(),
+        '2026-08-30T01:00:00.000Z',
+    );
     assert.deepEqual(
         requests
             .filter((request) => request.rvdir === 'newer')
             .map((request) => request.titles),
-        ['COCORO'],
+        ['COCORO (遊戲)|COCORO'],
     );
+    assert.ok(requests.every((request) => request.redirects == null));
 });
 
 test('an optional lookup containing only a missing page needs no revision-date query', async () => {
@@ -545,6 +633,10 @@ test('optional creation-time reads still reject unreadable existing or omitted p
             pages.fetchPageCreationTimes(api, ['Unreadable']),
             /omitted readable revision content/u,
         );
+        await assert.rejects(
+            pages.fetchSubjectPageInfo(api, 'Unreadable'),
+            /omitted readable revision content/u,
+        );
     }
 });
 
@@ -559,7 +651,7 @@ test('an explicitly missing current subject still stops dialog metadata loading'
         pages.fetchSubjectPageInfo(api, 'COCORO'),
         /Unable to read the current subject page: COCORO/u,
     );
-    assert.equal(requests.length, 2);
+    assert.equal(requests.length, 1);
     assert.equal(
         requests.some((request) => request.rvdir === 'newer'),
         false,
@@ -569,6 +661,7 @@ test('an explicitly missing current subject still stops dialog metadata loading'
 function createCreationLookupApi(
     sourcePages: Record<string, Record<string, unknown> | null>,
     requests: Array<Record<string, unknown>> = [],
+    creationDates: Record<string, string> = {},
 ): mw.Api {
     return {
         async get(params: Record<string, unknown>): Promise<unknown> {
@@ -581,7 +674,11 @@ function createCreationLookupApi(
                             .map((title) => ({
                                 title,
                                 revisions: [
-                                    { timestamp: '2026-08-29T00:00:00Z' },
+                                    {
+                                        timestamp:
+                                            creationDates[title] ??
+                                            '2026-08-29T00:00:00Z',
+                                    },
                                 ],
                             })),
                     },

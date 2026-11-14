@@ -347,10 +347,8 @@ test('Skip advances without writing or queueing the selected assessment', async 
     ).toBeVisible();
     await batchButton(page, 'Cancel').click();
     await navigateAssessor(page, 'First game');
-    await expect(
-        page.getByRole('switch', { name: 'Stage', exact: true }),
-    ).toBeEnabled();
-    await expect(batchButton(page, 'Submit')).toBeEnabled();
+    await expect(page.getByRole('switch')).toHaveCount(0);
+    await expect(batchButton(page, 'Next')).toBeEnabled();
     expect(await getPosts(page)).toEqual([]);
 });
 

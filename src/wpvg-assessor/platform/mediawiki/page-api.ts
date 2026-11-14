@@ -2,7 +2,7 @@
  * @file src/wpvg-assessor/platform/mediawiki/page-api.ts
  * Purpose: Read page source, subject metadata, and cached creation timestamps.
  *
- * Contents: Page reads, redirect resolution, creation-time caching, and namespace batching.
+ * Contents: Page reads, current-page metadata, creation-time caching, and namespace batching.
  */
 
 import type { PageSnapshot, SubjectPageInfo } from '../../domain/types.ts';
@@ -130,7 +130,7 @@ export function decodePageTextResponse(response: unknown): PageSnapshot {
 }
 
 /**
- * Fetches page creation metadata and redirect target details.
+ * Fetches the assessed page's own creation metadata without following redirects.
  *
  * @param api - MediaWiki API client.
  * @param title - Subject-page title.
@@ -142,13 +142,11 @@ async function fetchSubjectPageInfo(
     title: string,
 ): Promise<SubjectPageInfo> {
     context.logger.debug('subject-page.fetch.started', { title });
-    const page = await fetchPageInfo(context, api, title);
-    const currentText = await fetchCurrentPageText(context, api, title);
-    if (currentText == null) {
+    const page = await fetchCurrentPage(context, api, title);
+    if (page == null) {
         throw new Error(`Unable to read the current subject page: ${title}.`);
     }
-    const redirectTarget = parseRedirectTarget(currentText);
-    const targetTitle = redirectTarget || title;
+    const targetTitle = getRequiredString(page, 'title', 'the subject title');
     const creationTimes = await fetchRevisionCreationTimes(context, api, [
         targetTitle,
     ]);
@@ -160,7 +158,7 @@ async function fetchSubjectPageInfo(
 
     const result = {
         creationDate,
-        isRedirect: redirectTarget != null,
+        isRedirect: page.redirect === true,
         listedTitle: title,
         namespaceNumber: readPageNamespace(page, title),
         targetTitle,
@@ -175,36 +173,6 @@ async function fetchSubjectPageInfo(
     return result;
 }
 
-/**
- * Fetches basic page info without redirect resolution.
- *
- * @param api - MediaWiki API client.
- * @param title - Page title.
- * @returns Page info.
- */
-async function fetchPageInfo(
-    context: PageApiContext,
-    api: mw.Api,
-    title: string,
-): Promise<Record<string, unknown> | null> {
-    context.logger.debug('page-info.fetch.started', { title });
-    const response = await context.requests.get(api, 'page-info.fetch', {
-        action: 'query',
-        formatversion: '2',
-        prop: 'info',
-        titles: title,
-    });
-    const page = getFirstQueryPage(response);
-
-    context.logger.debug('page-info.fetch.completed', {
-        missing: page?.missing != null,
-        ns: page?.ns,
-        title: page?.title,
-    });
-
-    return page;
-}
-
 function readPageNamespace(
     page: Record<string, unknown> | null,
     title: string,
@@ -217,7 +185,7 @@ function readPageNamespace(
 }
 
 /**
- * Fetches creation times for a set of titles, following redirects.
+ * Fetches each listed page's own creation time, including redirect pages.
  *
  * @param api - MediaWiki API client.
  * @param titles - Page titles.
@@ -237,21 +205,21 @@ async function fetchPageCreationTimes(
         return creationTimes;
     }
 
-    const resolvedTitles = await resolveRedirectTitles(
+    const canonicalTitles = await readCanonicalTitles(
         context,
         api,
         uniqueTitles,
     );
-    const targets = [...new Set(resolvedTitles.values())];
+    const targets = [...new Set(canonicalTitles.values())];
     const targetCreationTimes = await fetchRevisionCreationTimes(
         context,
         api,
         targets,
     );
 
-    mergeResolvedCreationTimes(
+    mergeCanonicalCreationTimes(
         creationTimes,
-        resolvedTitles,
+        canonicalTitles,
         targetCreationTimes,
     );
 
@@ -263,68 +231,64 @@ async function fetchPageCreationTimes(
 }
 
 /**
- * Resolves redirect targets for requested page titles.
+ * Reads canonical titles without following redirects.
  *
  * @param api - MediaWiki API client.
  * @param titles - Page titles.
- * @returns Redirect targets for requested page titles.
+ * @returns Canonical titles for readable requested pages.
  */
-async function resolveRedirectTitles(
+async function readCanonicalTitles(
     context: PageApiContext,
     api: mw.Api,
     titles: Array<string>,
 ): Promise<Map<string, string>> {
-    const resolvedTitles = new Map<string, string>();
-    const resolveTitle = resolveRedirectTitle.bind(
+    const canonicalTitles = new Map<string, string>();
+    const readTitle = readCanonicalTitle.bind(
         null,
         context,
         api,
-        resolvedTitles,
+        canonicalTitles,
     );
-    const requests = titles.map(resolveTitle);
+    const requests = titles.map(readTitle);
 
     await Promise.all(requests);
 
-    return resolvedTitles;
+    return canonicalTitles;
 }
 
 /**
- * Resolves and stores one redirect target.
+ * Reads and stores one canonical title without following redirects.
  *
  * @param api - MediaWiki API client.
- * @param resolvedTitles - Mutable resolved-title map.
+ * @param canonicalTitles - Mutable canonical-title map.
  * @param title - Source title.
  */
-async function resolveRedirectTitle(
+async function readCanonicalTitle(
     context: PageApiContext,
     api: mw.Api,
-    resolvedTitles: Map<string, string>,
+    canonicalTitles: Map<string, string>,
     title: string,
 ): Promise<void> {
-    const text = await fetchCurrentPageText(context, api, title);
-    if (text == null) {
+    const page = await fetchCurrentPage(context, api, title);
+    if (page == null) {
         context.logger.debug('creation-times.title.missing');
         return;
     }
-    const target = parseRedirectTarget(text) || title;
-
-    resolvedTitles.set(title, target);
-    context.logger.debug('creation-times.title.resolved', {
-        redirected: target !== title,
-    });
+    const canonicalTitle = getRequiredString(page, 'title', 'the page title');
+    canonicalTitles.set(title, canonicalTitle);
 }
 
 /**
- * Maps target creation times back to requested redirect titles.
+ * Maps canonical creation times back to requested titles.
  *
- * @param resolvedTitles - Resolved titles value.
+ * @param canonicalTitles - Canonical titles value.
  */
-function mergeResolvedCreationTimes(
+function mergeCanonicalCreationTimes(
     output: Map<string, Date>,
-    resolvedTitles: Map<string, string>,
+    canonicalTitles: Map<string, string>,
     targetTimes: Map<string, Date>,
 ): void {
-    for (const [title, target] of resolvedTitles) {
+    for (const [title, target] of canonicalTitles) {
         const date = targetTimes.get(target);
 
         if (date != null) {
@@ -335,17 +299,17 @@ function mergeResolvedCreationTimes(
 }
 
 /**
- * Fetches the current page source for redirect detection.
+ * Reads the current page's own metadata and validates readable source.
  *
  * @param api - MediaWiki API client.
  * @param title - Page title.
- * @returns Current page source, or null for an explicitly missing page.
+ * @returns Current page metadata, or null for an explicitly missing page.
  */
-async function fetchCurrentPageText(
+async function fetchCurrentPage(
     context: PageApiContext,
     api: mw.Api,
     title: string,
-): Promise<string | null> {
+): Promise<Record<string, unknown> | null> {
     context.logger.debug('current-page-text.fetch.started', { title });
     const response = await context.requests.get(
         api,
@@ -353,7 +317,7 @@ async function fetchCurrentPageText(
         {
             action: 'query',
             formatversion: '2',
-            prop: 'revisions',
+            prop: 'info|revisions',
             rvprop: 'content',
             rvslots: 'main',
             titles: title,
@@ -375,25 +339,11 @@ async function fetchCurrentPageText(
         title,
     });
 
-    return text;
+    return page;
 }
 
 /**
- * Parses a redirect target from page source.
- *
- * @param text - Page source.
- * @returns Redirect target title.
- */
-function parseRedirectTarget(text: string): string | null {
-    const match =
-        /^\s*#(?:REDIRECT|重定向|重新導向|重新导向)\s*:?\s*\[\[([^#|\]]+)/iu.exec(
-            String(text || ''),
-        );
-    return match?.[1]?.trim() || null;
-}
-
-/**
- * Fetches first-revision timestamps for resolved, non-redirect titles.
+ * Fetches each canonical page's own first-revision timestamp.
  *
  * @param api - MediaWiki API client.
  * @param titles - Page titles.

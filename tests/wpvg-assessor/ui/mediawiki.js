@@ -240,6 +240,9 @@
                                 missingPage(title) ?? {
                                     title,
                                     ns: namespaceForTitle(title),
+                                    ...(options.sourcePages?.[title]?.redirect
+                                        ? { redirect: true }
+                                        : {}),
                                 },
                         ),
                     },
@@ -267,7 +270,7 @@
                     },
                 };
             }
-            if (params.prop === 'revisions') {
+            if (String(params.prop).split('|').includes('revisions')) {
                 return {
                     curtimestamp: timestamp,
                     query: {
@@ -298,7 +301,17 @@
                                       )
                                     : { title, ns: 102, missing: true };
                             }
-                            return revisionPage(title, 'Article source');
+                            const sourcePage = options.sourcePages?.[title];
+                            return {
+                                ...revisionPage(
+                                    title,
+                                    sourcePage?.content ?? 'Article source',
+                                    namespaceForTitle(title),
+                                ),
+                                ...(sourcePage?.redirect
+                                    ? { redirect: true }
+                                    : {}),
+                            };
                         }),
                     },
                 };

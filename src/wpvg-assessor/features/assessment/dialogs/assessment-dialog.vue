@@ -5,7 +5,7 @@
         class="kanade-wpvg-assessor-dialog"
         :title="dialogTitle"
         :lang="interfaceLocale"
-        :close-button-label="msg('dialog.cancel')"
+        :close-button-label="msg('dialog.close')"
         @update:open="onOpenChange"
     >
         <template #footer>
@@ -16,15 +16,6 @@
                         stackedActions,
                 }"
             >
-                <cdx-toggle-switch
-                    v-if="stagingAvailable"
-                    class="kanade-wpvg-assessor-stage-toggle"
-                    :model-value="currentStaged"
-                    :disabled="saving || preparing"
-                    @update:model-value="onStage"
-                >
-                    {{ msg('dialog.stage') }}
-                </cdx-toggle-switch>
                 <cdx-button
                     v-for="action in footerActions"
                     :key="action.id"
@@ -61,23 +52,21 @@
                 class="kanade-wpvg-assessor-assessment-grid"
                 :aria-busy="saving || preparing"
             >
-                <section
-                    class="kanade-wpvg-assessor-controls"
-                    aria-labelledby="kanade-wpvg-assessor-assessment-title"
-                >
-                    <h2
-                        id="kanade-wpvg-assessor-assessment-title"
-                        ref="assessmentHeading"
-                        class="kanade-wpvg-assessor-section-title"
-                        :tabindex="assessmentHeadingTabIndex"
-                        @focus="onAssessmentHeadingFocus"
-                    >
-                        {{ msg('dialog.assessment') }}
-                    </h2>
-                    <div class="kanade-wpvg-assessor-rating-grid">
+                <div class="kanade-wpvg-assessor-controls">
+                    <section aria-labelledby="kanade-wpvg-assessor-class-title">
+                        <h2
+                            id="kanade-wpvg-assessor-class-title"
+                            class="kanade-wpvg-assessor-section-title"
+                            ref="assessmentHeading"
+                            :tabindex="assessmentHeadingTabIndex"
+                            @focus="onAssessmentHeadingFocus"
+                        >
+                            {{ msg('dialog.class') }}
+                        </h2>
                         <cdx-field
                             class="kanade-wpvg-assessor-section"
                             :is-fieldset="true"
+                            :hide-label="true"
                             :disabled="saving || preparing"
                         >
                             <template #label>{{
@@ -93,9 +82,8 @@
                                     :inline="true"
                                     name="className"
                                     @update:model-value="selectClass"
+                                    >{{ option.label }}</cdx-radio
                                 >
-                                    {{ option.label }}
-                                </cdx-radio>
                                 <div
                                     class="kanade-wpvg-assessor-custom-class-row"
                                 >
@@ -106,9 +94,10 @@
                                         :inline="true"
                                         name="className"
                                         @update:model-value="selectClass"
+                                        >{{
+                                            msg('dialog.customClass')
+                                        }}</cdx-radio
                                     >
-                                        {{ msg('dialog.customClass') }}
-                                    </cdx-radio>
                                     <cdx-text-input
                                         class="kanade-wpvg-assessor-custom-class-input"
                                         :model-value="classInput"
@@ -126,6 +115,68 @@
                                 </div>
                             </div>
                         </cdx-field>
+                    </section>
+                    <section
+                        aria-labelledby="kanade-wpvg-assessor-projects-title"
+                    >
+                        <h2
+                            id="kanade-wpvg-assessor-projects-title"
+                            class="kanade-wpvg-assessor-section-title"
+                        >
+                            {{ msg('dialog.otherProjects') }}
+                        </h2>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :hide-label="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.otherProjects')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-check-list">
+                                <cdx-checkbox
+                                    :model-value="videoGamesSelected"
+                                    :inline="true"
+                                    :disabled="saving || preparing"
+                                    name="videoGamesProject"
+                                    @update:model-value="setVideoGamesSelected"
+                                    >{{
+                                        msg('summary.videoGames')
+                                    }}</cdx-checkbox
+                                >
+                                <cdx-checkbox
+                                    v-for="option in otherProjectOptions"
+                                    :key="option.id"
+                                    :model-value="
+                                        assessment.otherProjects[option.id]
+                                    "
+                                    :disabled="saving || preparing"
+                                    :inline="true"
+                                    :name="'otherProject-' + option.id"
+                                    @update:model-value="
+                                        setSelection(
+                                            'otherProjects',
+                                            option.id,
+                                            $event,
+                                        )
+                                    "
+                                    >{{ option.label }}</cdx-checkbox
+                                >
+                            </div>
+                        </cdx-field>
+                    </section>
+                    <section
+                        v-if="videoGamesSelected"
+                        class="kanade-wpvg-assessor-video-games"
+                        aria-labelledby="kanade-wpvg-assessor-video-games-title"
+                    >
+                        <h2
+                            id="kanade-wpvg-assessor-video-games-title"
+                            class="kanade-wpvg-assessor-section-title"
+                        >
+                            {{ msg('summary.videoGames') }}
+                        </h2>
                         <cdx-field
                             class="kanade-wpvg-assessor-section"
                             :is-fieldset="true"
@@ -144,107 +195,93 @@
                                     :inline="true"
                                     name="importance"
                                     @update:model-value="setImportance"
+                                    >{{ option.label }}</cdx-radio
                                 >
-                                    {{ option.label }}
-                                </cdx-radio>
                             </div>
                         </cdx-field>
-                    </div>
-
-                    <cdx-field
-                        class="kanade-wpvg-assessor-section"
-                        :is-fieldset="true"
-                        :disabled="saving || preparing || videoGamesDisabled"
-                    >
-                        <template #label>{{
-                            msg('dialog.taskForces')
-                        }}</template>
-                        <div class="kanade-wpvg-assessor-check-list">
-                            <cdx-checkbox
-                                v-for="option in taskForceOptions"
-                                :key="option.id"
-                                :model-value="assessment.taskForces[option.id]"
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.taskForces')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-check-list">
+                                <cdx-checkbox
+                                    v-for="option in taskForceOptions"
+                                    :key="option.id"
+                                    :model-value="
+                                        assessment.taskForces[option.id]
+                                    "
+                                    :inline="true"
+                                    :disabled="saving || preparing"
+                                    :name="'taskForces-' + option.id"
+                                    @update:model-value="
+                                        setSelection(
+                                            'taskForces',
+                                            option.id,
+                                            $event,
+                                        )
+                                    "
+                                    >{{ option.label }}</cdx-checkbox
+                                >
+                            </div>
+                        </cdx-field>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.maintenance')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-check-list">
+                                <cdx-checkbox
+                                    v-for="option in maintenanceOptions"
+                                    :key="option.id"
+                                    :model-value="
+                                        assessment.maintenance[option.id]
+                                    "
+                                    :inline="true"
+                                    :disabled="saving || preparing"
+                                    :name="'maintenance-' + option.id"
+                                    @update:model-value="
+                                        setSelection(
+                                            'maintenance',
+                                            option.id,
+                                            $event,
+                                        )
+                                    "
+                                    >{{ option.label }}</cdx-checkbox
+                                >
+                            </div>
+                        </cdx-field>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-registration"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.newPageList')
+                            }}</template>
+                            <cdx-message
+                                v-if="registrationDisabled"
+                                type="notice"
                                 :inline="true"
-                                :disabled="
-                                    saving || preparing || videoGamesDisabled
-                                "
-                                :name="'taskForce-' + option.id"
-                                @update:model-value="
-                                    setSelection(
-                                        'taskForces',
-                                        option.id,
-                                        $event,
-                                    )
-                                "
+                                >{{ registrationLabel }}</cdx-message
                             >
-                                {{ option.label }}
-                            </cdx-checkbox>
-                        </div>
-                    </cdx-field>
-
-                    <cdx-field
-                        class="kanade-wpvg-assessor-section"
-                        :is-fieldset="true"
-                        :disabled="saving || preparing || videoGamesDisabled"
-                    >
-                        <template #label>{{
-                            msg('dialog.maintenance')
-                        }}</template>
-                        <div class="kanade-wpvg-assessor-check-list">
                             <cdx-checkbox
-                                v-for="option in maintenanceOptions"
-                                :key="option.id"
-                                :model-value="assessment.maintenance[option.id]"
-                                :inline="true"
-                                :disabled="
-                                    saving || preparing || videoGamesDisabled
-                                "
-                                :name="'maintenance-' + option.id"
-                                @update:model-value="
-                                    setSelection(
-                                        'maintenance',
-                                        option.id,
-                                        $event,
-                                    )
-                                "
-                            >
-                                {{ option.label }}
-                            </cdx-checkbox>
-                        </div>
-                    </cdx-field>
-
-                    <cdx-field
-                        class="kanade-wpvg-assessor-section"
-                        :is-fieldset="true"
-                        :disabled="saving || preparing"
-                    >
-                        <template #label>{{
-                            msg('dialog.otherProjects')
-                        }}</template>
-                        <div class="kanade-wpvg-assessor-check-list">
-                            <cdx-checkbox
-                                v-for="option in otherProjectOptions"
-                                :key="option.id"
-                                :model-value="
-                                    assessment.otherProjects[option.id]
-                                "
+                                v-else
+                                :model-value="shouldRegister"
                                 :disabled="saving || preparing"
-                                :inline="true"
-                                :name="'otherProject-' + option.id"
-                                @update:model-value="
-                                    setSelection(
-                                        'otherProjects',
-                                        option.id,
-                                        $event,
-                                    )
-                                "
+                                name="registerNewPage"
+                                @update:model-value="setRegister"
+                                >{{ registrationLabel }}</cdx-checkbox
                             >
-                                {{ option.label }}
-                            </cdx-checkbox>
-                        </div>
-                    </cdx-field>
-                </section>
-
+                        </cdx-field>
+                    </section>
+                </div>
                 <section
                     class="kanade-wpvg-assessor-source"
                     aria-labelledby="kanade-wpvg-assessor-review-title"
@@ -304,69 +341,6 @@
                     </cdx-field>
                 </section>
             </div>
-
-            <section
-                class="kanade-wpvg-assessor-registration"
-                :aria-busy="saving || preparing"
-                aria-labelledby="kanade-wpvg-assessor-registration-title"
-            >
-                <h2
-                    id="kanade-wpvg-assessor-registration-title"
-                    class="kanade-wpvg-assessor-section-title"
-                >
-                    {{ msg('dialog.newPageList') }}
-                </h2>
-                <cdx-message
-                    v-if="registrationDisabled"
-                    class="kanade-wpvg-assessor-registration-message"
-                    type="notice"
-                    :inline="true"
-                >
-                    {{ registrationLabel }}
-                </cdx-message>
-                <cdx-checkbox
-                    v-else
-                    class="kanade-wpvg-assessor-registration-choice"
-                    :model-value="shouldRegister"
-                    :disabled="saving || preparing"
-                    name="registerNewPage"
-                    @update:model-value="setRegister"
-                >
-                    {{ registrationLabel }}
-                </cdx-checkbox>
-
-                <div
-                    v-if="showListReview"
-                    class="kanade-wpvg-assessor-list-review"
-                >
-                    <div
-                        class="kanade-wpvg-assessor-section kanade-wpvg-assessor-list-preview"
-                    >
-                        <h3 class="kanade-wpvg-assessor-field-title">
-                            {{ msg('dialog.listChanges') }}
-                        </h3>
-                        <wikitext-comparison
-                            :after-label="msg('dialog.afterSave')"
-                            :before-label="msg('dialog.before')"
-                            :comparison="listComparison"
-                            :label="msg('dialog.listChanges')"
-                            :no-changes-label="msg('registration.noChanges')"
-                        />
-                    </div>
-                    <cdx-field
-                        class="kanade-wpvg-assessor-section kanade-wpvg-assessor-list-summary"
-                    >
-                        <template #label>{{
-                            msg('dialog.listSummary')
-                        }}</template>
-                        <cdx-text-input
-                            :model-value="displayedListSummary"
-                            :readonly="saving || preparing"
-                            @update:model-value="setListSummary"
-                        />
-                    </cdx-field>
-                </div>
-            </section>
         </div>
     </cdx-dialog>
     <cdx-dialog
@@ -591,25 +565,6 @@
                         </tbody>
                     </table>
                 </div>
-                <section
-                    v-if="batchRegistrationReview"
-                    class="kanade-wpvg-assessor-batch-registration"
-                >
-                    <h3 class="kanade-wpvg-assessor-field-title">
-                        {{ msg('dialog.batchRegistration') }}
-                    </h3>
-                    <wikitext-comparison
-                        :after-label="msg('dialog.after')"
-                        :before-label="msg('dialog.before')"
-                        :comparison="batchRegistrationReview.comparison"
-                        :label="batchRegistrationReview.title"
-                        :no-changes-label="msg('registration.noChanges')"
-                    />
-                    <h4 class="kanade-wpvg-assessor-field-title">
-                        {{ msg('dialog.listSummary') }}
-                    </h4>
-                    <p>{{ batchRegistrationReview.summary }}</p>
-                </section>
             </div>
             <div
                 v-if="saving"
@@ -643,9 +598,7 @@
             </div>
         </div>
     </cdx-dialog>
-    <cdx-message
-        type="notice"
-        :inline="false"
+    <section
         v-if="open && minimized && !batchEditor"
         class="kanade-wpvg-assessor-mini"
         role="region"
@@ -653,9 +606,13 @@
         :lang="interfaceLocale"
     >
         <div class="kanade-wpvg-assessor-mini__layout">
-            <h2 class="kanade-wpvg-assessor-mini__title">
+            <h1
+                class="kanade-wpvg-assessor-mini__title"
+                ref="miniHeading"
+                tabindex="-1"
+            >
                 {{ dialogTitle }}
-            </h2>
+            </h1>
             <div class="kanade-wpvg-assessor-mini__body">
                 <div
                     class="kanade-wpvg-assessor-mini__state"
@@ -706,77 +663,233 @@
                     class="kanade-wpvg-assessor-mini__form"
                     :aria-busy="preparing"
                 >
-                    <cdx-field>
-                        <template #label>{{ msg('dialog.class') }}</template>
-                        <cdx-select
-                            :selected="classSelection"
-                            :menu-items="miniClassOptions"
-                            :disabled="preparing"
-                            @update:selected="selectClass"
-                        />
-                        <cdx-text-input
-                            v-if="classSelection === ''"
-                            :model-value="classInput"
-                            :aria-label="msg('dialog.customClassValue')"
-                            :disabled="preparing"
-                            @update:model-value="setClassName"
-                            @blur="commitClassName"
-                        />
-                    </cdx-field>
-                    <cdx-field>
-                        <template #label>{{
-                            msg('dialog.importance')
-                        }}</template>
-                        <cdx-select
-                            :selected="assessment.importance"
-                            :menu-items="importanceOptions"
-                            :disabled="preparing"
-                            @update:selected="setImportance"
-                        />
-                    </cdx-field>
-                    <cdx-field
-                        v-for="group in miniSelectionGroups"
-                        :key="group.name"
-                        :is-fieldset="true"
-                        :disabled="
-                            preparing ||
-                            (videoGamesDisabled && group.videoGamesOnly)
-                        "
+                    <section
+                        aria-labelledby="kanade-wpvg-assessor-mini-class-title"
                     >
-                        <template #label>{{ msg(group.label) }}</template>
-                        <div class="kanade-wpvg-assessor-mini__choices">
-                            <cdx-checkbox
-                                v-for="option in group.options"
-                                :key="option.id"
-                                :model-value="
-                                    miniSelectionChecked(group.name, option.id)
-                                "
-                                :disabled="
-                                    preparing ||
-                                    (videoGamesDisabled && group.videoGamesOnly)
-                                "
-                                :name="'mini-' + group.name + '-' + option.id"
-                                @update:model-value="
-                                    setSelection(group.name, option.id, $event)
-                                "
-                            >
-                                {{ option.label }}
-                            </cdx-checkbox>
-                        </div>
-                    </cdx-field>
-                    <cdx-field v-if="registrationEligible">
-                        <template #label>{{
-                            msg('dialog.newPageList')
-                        }}</template>
-                        <cdx-checkbox
-                            :model-value="shouldRegister"
-                            :disabled="preparing || registrationDisabled"
-                            name="mini-register"
-                            @update:model-value="setRegister"
+                        <h2
+                            id="kanade-wpvg-assessor-mini-class-title"
+                            class="kanade-wpvg-assessor-section-title"
                         >
-                            {{ registrationLabel }}
-                        </cdx-checkbox>
-                    </cdx-field>
+                            {{ msg('dialog.class') }}
+                        </h2>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :hide-label="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.class')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-choice-list">
+                                <cdx-radio
+                                    v-for="option in classOptions"
+                                    :key="option.value"
+                                    :model-value="classSelection"
+                                    :input-value="option.value"
+                                    :disabled="saving || preparing"
+                                    :inline="true"
+                                    name="mini-className"
+                                    @update:model-value="selectClass"
+                                    >{{ option.label }}</cdx-radio
+                                >
+                                <div
+                                    class="kanade-wpvg-assessor-custom-class-row"
+                                >
+                                    <cdx-radio
+                                        :model-value="classSelection"
+                                        input-value=""
+                                        :disabled="saving || preparing"
+                                        :inline="true"
+                                        name="mini-className"
+                                        @update:model-value="selectClass"
+                                        >{{
+                                            msg('dialog.customClass')
+                                        }}</cdx-radio
+                                    >
+                                    <cdx-text-input
+                                        class="kanade-wpvg-assessor-custom-class-input"
+                                        :model-value="classInput"
+                                        :aria-label="
+                                            msg('dialog.customClassValue')
+                                        "
+                                        :disabled="
+                                            saving ||
+                                            preparing ||
+                                            classSelection !== ''
+                                        "
+                                        @update:model-value="setClassName"
+                                        @blur="commitClassName"
+                                    />
+                                </div>
+                            </div>
+                        </cdx-field>
+                    </section>
+                    <section
+                        aria-labelledby="kanade-wpvg-assessor-mini-projects-title"
+                    >
+                        <h2
+                            id="kanade-wpvg-assessor-mini-projects-title"
+                            class="kanade-wpvg-assessor-section-title"
+                        >
+                            {{ msg('dialog.otherProjects') }}
+                        </h2>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :hide-label="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.otherProjects')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-check-list">
+                                <cdx-checkbox
+                                    :model-value="videoGamesSelected"
+                                    :inline="true"
+                                    :disabled="saving || preparing"
+                                    name="mini-videoGamesProject"
+                                    @update:model-value="setVideoGamesSelected"
+                                    >{{
+                                        msg('summary.videoGames')
+                                    }}</cdx-checkbox
+                                >
+                                <cdx-checkbox
+                                    v-for="option in otherProjectOptions"
+                                    :key="option.id"
+                                    :model-value="
+                                        assessment.otherProjects[option.id]
+                                    "
+                                    :disabled="saving || preparing"
+                                    :inline="true"
+                                    :name="'mini-otherProject-' + option.id"
+                                    @update:model-value="
+                                        setSelection(
+                                            'otherProjects',
+                                            option.id,
+                                            $event,
+                                        )
+                                    "
+                                    >{{ option.label }}</cdx-checkbox
+                                >
+                            </div>
+                        </cdx-field>
+                    </section>
+                    <section
+                        v-if="videoGamesSelected"
+                        class="kanade-wpvg-assessor-video-games"
+                        aria-labelledby="kanade-wpvg-assessor-mini-video-games-title"
+                    >
+                        <h2
+                            id="kanade-wpvg-assessor-mini-video-games-title"
+                            class="kanade-wpvg-assessor-section-title"
+                        >
+                            {{ msg('summary.videoGames') }}
+                        </h2>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.importance')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-choice-list">
+                                <cdx-radio
+                                    v-for="option in importanceOptions"
+                                    :key="option.value"
+                                    :model-value="assessment.importance"
+                                    :input-value="option.value"
+                                    :disabled="saving || preparing"
+                                    :inline="true"
+                                    name="mini-importance"
+                                    @update:model-value="setImportance"
+                                    >{{ option.label }}</cdx-radio
+                                >
+                            </div>
+                        </cdx-field>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.taskForces')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-mini__choices">
+                                <cdx-checkbox
+                                    v-for="option in taskForceOptions"
+                                    :key="option.id"
+                                    :model-value="
+                                        assessment.taskForces[option.id]
+                                    "
+                                    :inline="false"
+                                    :disabled="saving || preparing"
+                                    :name="'mini-taskForces-' + option.id"
+                                    @update:model-value="
+                                        setSelection(
+                                            'taskForces',
+                                            option.id,
+                                            $event,
+                                        )
+                                    "
+                                    >{{ option.label }}</cdx-checkbox
+                                >
+                            </div>
+                        </cdx-field>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-section"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.maintenance')
+                            }}</template>
+                            <div class="kanade-wpvg-assessor-mini__choices">
+                                <cdx-checkbox
+                                    v-for="option in maintenanceOptions"
+                                    :key="option.id"
+                                    :model-value="
+                                        assessment.maintenance[option.id]
+                                    "
+                                    :inline="false"
+                                    :disabled="saving || preparing"
+                                    :name="'mini-maintenance-' + option.id"
+                                    @update:model-value="
+                                        setSelection(
+                                            'maintenance',
+                                            option.id,
+                                            $event,
+                                        )
+                                    "
+                                    >{{ option.label }}</cdx-checkbox
+                                >
+                            </div>
+                        </cdx-field>
+                        <cdx-field
+                            class="kanade-wpvg-assessor-registration"
+                            :is-fieldset="true"
+                            :disabled="saving || preparing"
+                        >
+                            <template #label>{{
+                                msg('dialog.newPageList')
+                            }}</template>
+                            <cdx-message
+                                v-if="registrationDisabled"
+                                type="notice"
+                                :inline="true"
+                                >{{ registrationLabel }}</cdx-message
+                            >
+                            <cdx-checkbox
+                                v-else
+                                :model-value="shouldRegister"
+                                :disabled="saving || preparing"
+                                name="mini-registerNewPage"
+                                @update:model-value="setRegister"
+                                >{{ registrationLabel }}</cdx-checkbox
+                            >
+                        </cdx-field>
+                    </section>
                 </div>
             </div>
             <div class="kanade-wpvg-assessor-mini__actions">
@@ -790,23 +903,14 @@
                 >
                     {{ submitLabel }}
                 </cdx-button>
-                <cdx-toggle-switch
-                    v-if="stagingAvailable"
-                    class="kanade-wpvg-assessor-mini__stage-toggle"
-                    :model-value="currentStaged"
-                    :disabled="saving || preparing"
-                    @update:model-value="onStage"
-                >
-                    {{ msg('dialog.stage') }}
-                </cdx-toggle-switch>
-                <cdx-button :disabled="saving" @click="onCancel">
-                    {{ msg('dialog.cancel') }}
+                <cdx-button :disabled="saving || preparing" @click="onCancel">
+                    {{ cancelLabel }}
                 </cdx-button>
                 <cdx-button ref="miniExpandButton" @click="onExpand">
                     {{ msg('dialog.expand') }}
                 </cdx-button>
             </div>
         </div>
-    </cdx-message>
+    </section>
     <component v-if="batchEditor" :is="batchEditor" />
 </template>

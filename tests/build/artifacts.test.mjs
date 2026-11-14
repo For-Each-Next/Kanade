@@ -554,7 +554,13 @@ test('the shared build blocks host runtimes, including transitive copies inside 
     }
 });
 
-function pageFixture(tool = tools[0]) {
+function pageFixture(
+    tool = tools[0],
+    program = createUserscriptProgram(
+        'window.starts = (window.starts ?? 0) + 1;',
+        tool,
+    ),
+) {
     const timers = new Map();
     const listeners = new Map();
     let nextTimer = 0;
@@ -592,24 +598,22 @@ function pageFixture(tool = tools[0]) {
         },
     };
     // The userscript sandbox intentionally has no window or MediaWiki runtime.
-    runInNewContext(
-        createUserscriptProgram(
-            'window.starts = (window.starts ?? 0) + 1;',
-            tool,
-        ),
-        { document },
-    );
+    runInNewContext(program, { document });
     return {
         window,
         timers,
         listeners,
         removed: () => removed,
+        install: () => runInNewContext(program, { document }),
         ready() {
             window.mw = {
                 config: { get() {} },
                 loader: { using() {} },
                 hook() {},
             };
+            const queued = window.RLQ ?? [];
+            window.RLQ = { push: (callback) => callback() };
+            for (const callback of queued) callback();
         },
         tick() {
             const [id, callback] = timers.entries().next().value;
@@ -646,8 +650,72 @@ test('userscript waiting stops on page navigation or after the bounded readiness
 
 test('Revision Copy preserves its own ResourceLoader queue startup', () => {
     const fixture = pageFixture(tools.find(({ id }) => id === 'rev-copy'));
+    assert.equal(fixture.window.starts, undefined);
+    assert.equal(fixture.window.RLQ.length, 1);
+    assert.equal(fixture.timers.size, 0);
+    fixture.ready();
     assert.equal(fixture.window.starts, 1);
     assert.equal(fixture.timers.size, 0);
+});
+
+test('ResourceLoader userscripts preserve the application strict-mode directive', async () => {
+    const tool = tools.find(({ id }) => id === 'rev-copy');
+    const artifacts = await createArtifacts({
+        tool,
+        compact: `
+            'use strict';
+            window.strictInside = (function () { return this; })() === undefined;
+        `,
+        version,
+        license,
+        compactLicense,
+    });
+    const fixture = pageFixture(
+        tool,
+        artifacts.get(`${tool.basename}.user.js`),
+    );
+    fixture.ready();
+    assert.equal(fixture.window.strictInside, true);
+});
+
+test('every generated userscript binds MediaWiki from the page window after readiness', async () => {
+    for (const tool of tools) {
+        const artifacts = await createArtifacts({
+            tool,
+            compact: `
+                window.starts = (window.starts ?? 0) + 1;
+                window.hostRuntime = mw;
+                window.readRuntimeLater = () => mw.config;
+            `,
+            version,
+            license,
+            compactLicense,
+        });
+        const source = artifacts.get(`${tool.basename}.user.js`);
+        const fixture = pageFixture(tool, source);
+        assert.equal(fixture.window.starts, undefined, tool.id);
+        fixture.ready();
+        if (fixture.timers.size) fixture.tick();
+        assert.equal(fixture.window.starts, 1, tool.id);
+        assert.equal(fixture.window.hostRuntime, fixture.window.mw, tool.id);
+        assert.equal(
+            fixture.window.readRuntimeLater(),
+            fixture.window.mw.config,
+            tool.id,
+        );
+        assert.equal(fixture.timers.size, 0, tool.id);
+        assert.equal(fixture.listeners.size, 0, tool.id);
+
+        // A second installation uses the host's already-ready queue immediately.
+        fixture.install();
+        assert.equal(fixture.window.starts, 2, tool.id);
+        assert.equal(fixture.window.hostRuntime, fixture.window.mw, tool.id);
+        assert.equal(
+            fixture.window.readRuntimeLater(),
+            fixture.window.mw.config,
+            tool.id,
+        );
+    }
 });
 
 test('host-independent launchers run before readiness and can stop host startup', async () => {

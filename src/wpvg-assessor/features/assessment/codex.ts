@@ -35,10 +35,8 @@ export interface CodexComponents {
     CdxMessage: unknown;
     CdxProgressBar: unknown;
     CdxRadio: unknown;
-    CdxSelect: unknown;
     CdxTextArea: unknown;
     CdxTextInput: unknown;
-    CdxToggleSwitch: unknown;
 }
 
 export interface ResourceLoaderRequire {
@@ -65,8 +63,6 @@ export function registerPageAssessorComponents(
     app.component('CdxMessage', Codex.CdxMessage);
     app.component('CdxProgressBar', Codex.CdxProgressBar);
     app.component('CdxRadio', Codex.CdxRadio);
-    app.component('CdxSelect', Codex.CdxSelect);
     app.component('CdxTextArea', Codex.CdxTextArea);
     app.component('CdxTextInput', Codex.CdxTextInput);
-    app.component('CdxToggleSwitch', Codex.CdxToggleSwitch);
 }

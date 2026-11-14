@@ -235,7 +235,7 @@ does not publish files or edit live wiki pages.
 
 ## Version control and releases
 
-Use `trunk` as the default branch. The current root version is 0.1.3; local
+Use `trunk` as the default branch. The current root version is 0.1.4; local
 cleanup does not publish a release. Preserve a recoverable source checkpoint
 before broad changes. Once a remote and baseline are established, start each
 task from current `trunk` on a branch such as
@@ -257,8 +257,16 @@ Create the final release commit using the requested version, for example
 `chore(release): 0.2.0`, and add an annotated `v0.2.0` tag to that exact
 commit. The tag is the release checkpoint, not a tag on an earlier task commit.
 Push a release tag only when publication is requested: pushing the matching tag
-starts automatic verification and GitHub release publication. A local release
-commit and tag do not publish anything. Carry out already-authorized release
+starts automatic verification and GitHub release publication.
+
+Post amendments use a numbered suffix such as `0.1.3-post.1`, then
+`0.1.3-post.2`. Keep the base release tag on its original release commit and give
+each amendment its own version, changelog section, release commit, and annotated
+tag. These suffixes are semantic-version prereleases: they sort before the plain
+base version, and the existing release workflow publishes them as GitHub
+prereleases rather than the latest stable release.
+
+A local release commit and tag do not publish anything. Carry out already-authorized release
 steps without adding another approval round.
 
 ## Adding a tool

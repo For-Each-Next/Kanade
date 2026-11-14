@@ -13,6 +13,7 @@ import test from 'node:test';
 
 import projectConfig from '../../src/wpvg-assessor/domain/project-config.ts';
 import {
+    buildAssessmentBanners,
     createDefaultAssessment,
     getExistingOtherProjectOptions,
     getTalkPageTopSection,
@@ -255,7 +256,7 @@ test('preserves unmanaged banners and talk-page discussion content', () => {
     );
 });
 
-test('adds assessment banners before an indented existing lead template', () => {
+test('adds assessment banners after an indented deletion-history template', () => {
     const existing = '{{Old vfd multi|2026/10/03|sk}}';
     const source = ` ${existing}`;
     const assessment = createDefaultAssessment(projectConfig, source);
@@ -266,12 +267,11 @@ test('adds assessment banners before an indented existing lead template', () => 
     assert.equal(
         updateTalkPageAssessment(source, assessment, projectConfig),
         [
+            existing,
             '{{WikiProject banner shell|class=Unassessed|1=',
             '{{WikiProject Video games|importance=|Minecraft=yes}}',
             '{{WikiProject Biography}}',
             '}}',
-            '',
-            existing,
         ].join('\n'),
     );
 });
@@ -284,7 +284,7 @@ test('removes indentation at the updated assessment shell boundary only', () => 
         '}}',
     ].join('\n');
     const remainder = [
-        '{{Old vfd multi|2026/10/03|sk}}',
+        '{{Unmanaged lead|keep=yes}}',
         '  <!-- Preserve this note and the following template spacing. -->',
         '  {{Unmanaged banner|custom=yes}}',
         '',
@@ -950,6 +950,98 @@ test('project assessment follows leading history and notices while preserving di
     }
 });
 
+test('Chinese deletion history and its verified aliases stay above new and existing assessment shells', () => {
+    for (const name of [
+        'vfd-kept',
+        'Template:Vfd-kept',
+        '模板:Vfd-kept',
+        'Old vfd multi',
+        'Template:Old_vfd_multi',
+        'Oldafdfull',
+        'Oldmfd',
+        '存廢討論被保留',
+        '存废讨论被保留',
+        '頁面存廢討論被保留',
+        '页面存废讨论被保留',
+        'Multidel',
+        'Drv-kept',
+    ]) {
+        const history = `{{${name}|2014/04/05|保留}}`;
+        const comment = '<!-- Keep the deletion discussion history. -->';
+        const discussion =
+            '== Discussion ==\nKeep {{vfd-kept|2020/01/01|保留}} here.';
+        const existing = '{{WPBS|class=C|1={{WPVG|importance=Low}}}}';
+        for (const lead of [
+            [history, comment],
+            [existing, history, comment],
+            [history, existing, comment],
+        ]) {
+            const source = [...lead, '{{Archives}}', '', discussion].join('\n');
+            const assessment = createDefaultAssessment(projectConfig, source);
+            const result = updateTalkPageAssessment(
+                source,
+                assessment,
+                projectConfig,
+            );
+            const shellStart = result.indexOf('{{WikiProject banner shell');
+
+            assert.ok(result.indexOf(history) < shellStart, name);
+            assert.ok(shellStart < result.indexOf('{{Archives}}'), name);
+            assert.equal(result.split(history).length, 2);
+            assert.equal(result.split(comment).length, 2);
+            assert.equal(
+                result.slice(result.indexOf('== Discussion ==')),
+                discussion,
+            );
+            assert.equal(
+                updateTalkPageAssessment(result, assessment, projectConfig),
+                result,
+            );
+        }
+    }
+});
+
+test('moving a leading shell after deletion history removes orphaned blank lines only at its old position', () => {
+    for (const newline of ['\n', '\r\n']) {
+        const shell = [
+            '{{WikiProject banner shell|class=Unassessed|1=',
+            '{{WikiProject Video games|importance=}}',
+            '}}',
+        ].join(newline);
+        const history = '{{vfd-kept|2014/04/05|保留}}';
+        for (const leadingWhitespace of ['', `${newline}\t${newline}`]) {
+            for (const remainder of [
+                '',
+                `${newline}${newline}<!-- Keep this note. -->${newline}${newline}== Discussion ==${newline}  Keep this source exactly.`,
+            ]) {
+                const source = `${leadingWhitespace}${shell}${newline}${newline}${history}${remainder}`;
+                const assessment = createDefaultAssessment(
+                    projectConfig,
+                    source,
+                );
+                const result = updateTalkPageAssessment(
+                    source,
+                    assessment,
+                    projectConfig,
+                );
+                const updatedShell = buildAssessmentBanners(
+                    assessment,
+                    projectConfig,
+                    source,
+                );
+                assert.equal(
+                    result,
+                    `${history}${newline}${updatedShell}${remainder}`,
+                );
+                assert.equal(
+                    updateTalkPageAssessment(result, assessment, projectConfig),
+                    result,
+                );
+            }
+        }
+    }
+});
+
 test('banner relocation preserves CRLF and does not move an already correctly placed shell', () => {
     const source =
         '<!-- before -->\r\n{{WPVG|class=C|importance=Low}}\r\n{{Notice|keep=yes}}\r\n\r\n== Discussion ==\r\nKeep.';
@@ -961,6 +1053,173 @@ test('banner relocation preserves CRLF and does not move an already correctly pl
         ),
     );
     assert.ok(result.endsWith('\r\n\r\n== Discussion ==\r\nKeep.'));
+    assert.equal(
+        updateTalkPageAssessment(result, assessment, projectConfig),
+        result,
+    );
+});
+
+test('moves the shell above requests and later banners even without a notice or history anchor', () => {
+    for (const banner of [
+        'Image requested',
+        'Photo requested',
+        'Map requested',
+        'Infobox requested',
+        'Connected contributor',
+        'Press',
+        'High traffic',
+        'Refideas',
+        'Todo',
+        'Consensus',
+        'Reliable sources for medical articles',
+        'Copied',
+        'Ticket confirmation',
+        'Split article',
+        'Merged-from',
+        'Merged to',
+        'Template:Translated_page',
+        'Section sizes',
+        'Archives',
+    ]) {
+        const retained = `{{${banner}|keep={{Nested|x=y}}}}`;
+        const source = `${retained}\n{{WPBS|class=C|1={{WPVG|importance=Low}}}}`;
+        const assessment = createDefaultAssessment(projectConfig, source);
+        const shell = buildAssessmentBanners(assessment, projectConfig, source);
+        const result = updateTalkPageAssessment(
+            source,
+            assessment,
+            projectConfig,
+        );
+        assert.equal(result, `${shell}\n${retained}`, banner);
+        assert.equal(
+            updateTalkPageAssessment(result, assessment, projectConfig),
+            result,
+        );
+    }
+});
+
+test('places the shell between the documented lead notices and later banners without resorting them', () => {
+    const before = [
+        '{{GA nominee|keep=yes}}',
+        '{{Skip to talk}}',
+        '{{Talk page of redirect}}',
+        '{{Talk header}}',
+        '{{Notice|custom=yes}}',
+        '{{COI editnotice}}',
+        '{{FAQ}}',
+        '{{British English}}',
+        '{{Article history|dykdate=2026-01-01}}',
+        '{{Unmanaged banner|keep={{Nested|x=y}}}}',
+    ];
+    const after = [
+        '{{Photo requested|keep=yes}}',
+        '{{Connected contributor|user=Example}}',
+        '{{Todo|keep=yes}}',
+        '{{Copied|from=Example}}',
+        '{{Section sizes}}',
+        '{{Archives|auto=yes}}',
+    ];
+    const discussion = '== Discussion ==\nKeep {{Notice}} and {{Copied}} here.';
+    const existing = '{{WPBS|class=C|1={{WPVG|importance=Low}}}}';
+    const source = [...before, ...after, existing, '', discussion].join('\n');
+    const assessment = createDefaultAssessment(projectConfig, source);
+    const shell = buildAssessmentBanners(assessment, projectConfig, source);
+    const expected = [...before, shell, ...after, '', discussion].join('\n');
+    const result = updateTalkPageAssessment(source, assessment, projectConfig);
+    assert.equal(result, expected);
+    assert.equal(
+        updateTalkPageAssessment(result, assessment, projectConfig),
+        result,
+    );
+});
+
+test('moving a shell up retains CRLF, comments, unknown banners, and the discussion exactly', () => {
+    const prefix = '<!-- lead note -->';
+    const translation =
+        '{{Translated page|from=Example|keep=<nowiki>{{Notice}}</nowiki>}}';
+    const firstComment = '<!-- before old shell -->';
+    const secondComment = '<!-- after old shell -->';
+    const unknown = '{{Unknown banner|keep={{Nested|x=y}}}}';
+    const discussion =
+        '== Discussion ==\r\n<nowiki>{{Article history}}</nowiki>\r\nKeep text.';
+    const source = [
+        prefix,
+        translation,
+        firstComment,
+        '{{WPBS|class=C|1={{WPVG|importance=Low}}}}',
+        secondComment,
+        unknown,
+        '{{Archives}}',
+        '',
+        discussion,
+    ].join('\r\n');
+    const assessment = createDefaultAssessment(projectConfig, source);
+    const shell = buildAssessmentBanners(assessment, projectConfig, source);
+    const result = updateTalkPageAssessment(source, assessment, projectConfig);
+    assert.equal(
+        result,
+        [
+            prefix,
+            shell,
+            translation,
+            firstComment,
+            secondComment,
+            unknown,
+            '{{Archives}}',
+            '',
+            discussion,
+        ].join('\r\n'),
+    );
+    assert.equal(
+        updateTalkPageAssessment(result, assessment, projectConfig),
+        result,
+    );
+});
+
+test('nested and opaque later-banner names do not create shell placement anchors', () => {
+    const notice =
+        '{{Notice|keep=<nowiki>{{Archives}}</nowiki>|nested={{Copied}}}}';
+    const source = `{{WPBS|class=C|1={{WPVG|importance=Low}}}}\n${notice}\n{{Archives}}\n\n== Discussion ==\nKeep.`;
+    const assessment = createDefaultAssessment(projectConfig, source);
+    const shell = buildAssessmentBanners(assessment, projectConfig, source);
+    const result = updateTalkPageAssessment(source, assessment, projectConfig);
+    assert.equal(
+        result,
+        `${notice}\n${shell}\n{{Archives}}\n\n== Discussion ==\nKeep.`,
+    );
+    assert.equal(
+        updateTalkPageAssessment(result, assessment, projectConfig),
+        result,
+    );
+});
+
+test('contradictory surrounding banners retain their source order and require manual review', () => {
+    const source =
+        '{{Copied|keep=yes}}\n{{Article history|keep=yes}}\n{{WPBS|class=C|1={{WPVG|importance=Low}}}}\n{{Archives}}';
+    const assessment = createDefaultAssessment(projectConfig, source);
+    const shell = buildAssessmentBanners(assessment, projectConfig, source);
+    const result = updateTalkPageAssessment(source, assessment, projectConfig);
+    assert.equal(
+        result,
+        `{{Copied|keep=yes}}\n{{Article history|keep=yes}}\n${shell}\n{{Archives}}`,
+    );
+    assert.equal(
+        updateTalkPageAssessment(result, assessment, projectConfig),
+        result,
+    );
+});
+
+test('shell placement leaves existing nested project order unchanged', () => {
+    const japan = '{{WikiProject Japan|keep=yes}}';
+    const biography = '{{WikiProject Biography|living=yes}}';
+    const source = `{{Photo requested}}\n{{WPBS|class=C|1=${japan}${biography}{{WPVG|importance=Low}}}}`;
+    const assessment = createDefaultAssessment(projectConfig, source);
+    const result = updateTalkPageAssessment(source, assessment, projectConfig);
+    assert.ok(
+        result.indexOf('{{WikiProject banner shell') <
+            result.indexOf('{{Photo requested}}'),
+    );
+    assert.ok(result.indexOf(japan) < result.indexOf(biography));
     assert.equal(
         updateTalkPageAssessment(result, assessment, projectConfig),
         result,

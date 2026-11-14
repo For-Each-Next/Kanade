@@ -10,10 +10,12 @@
 
 import {
     chooseOption,
+    confirmAssessment,
     expect,
     getPosts,
     getFixtureMessages,
     openAssessor,
+    prepareAssessmentView,
     test,
 } from './fixtures.ts';
 import { mkdir } from 'node:fs/promises';
@@ -25,9 +27,11 @@ const readySource = (page: Page) =>
         exact: true,
     });
 const registration = (page: Page) =>
-    page.getByRole('checkbox', { name: /^Register the page/ });
+    page.getByRole('checkbox', {
+        name: /^Register in the Video games new-page list/,
+    });
 const save = (page: Page) =>
-    page.getByRole('button', { name: 'Submit', exact: true });
+    page.getByRole('button', { name: 'Next', exact: true });
 
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'ja', 'ru']) {
     for (const viewport of [
@@ -42,6 +46,58 @@ for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'ja', 'ru']) {
             const { msg } = getFixtureMessages(locale);
             await openAssessor(page, { locale });
             const dialog = page.getByRole('dialog');
+            const headings = await dialog
+                .locator('.cdx-dialog__body h2')
+                .allTextContents();
+            expect(headings.map((text) => text.trim())).toEqual([
+                msg('dialog.class'),
+                msg('dialog.otherProjects'),
+                msg('summary.videoGames'),
+                msg('dialog.reviewTalkPage'),
+            ]);
+            for (const name of [
+                msg('dialog.class'),
+                msg('dialog.otherProjects'),
+                msg('summary.videoGames'),
+                msg('dialog.reviewTalkPage'),
+            ]) {
+                await expect(
+                    dialog.getByRole('heading', {
+                        name,
+                        level: 2,
+                        exact: true,
+                    }),
+                ).toBeVisible();
+            }
+            const fields = await dialog
+                .getByRole('group')
+                .evaluateAll((groups) =>
+                    groups.map((group) =>
+                        group
+                            .querySelector('legend')
+                            ?.textContent?.replace(/\s+/gu, ' ')
+                            .trim(),
+                    ),
+                );
+            expect(fields).toEqual([
+                msg('dialog.class'),
+                msg('dialog.otherProjects'),
+                msg('dialog.importance'),
+                msg('dialog.taskForces'),
+                msg('dialog.maintenance'),
+                msg('dialog.newPageList'),
+            ]);
+            await expect(dialog.locator('legend h2, legend h3')).toHaveCount(0);
+            await expect(
+                dialog.locator('input[name="registerNewPage"]'),
+            ).toBeChecked();
+            await expect(
+                dialog.locator('input[name="registerNewPage"]'),
+            ).toHaveAccessibleName(/.+/u);
+            await expect(
+                dialog.locator('.kanade-wpvg-assessor-list-review'),
+            ).toHaveCount(0);
+            await expect(dialog.getByRole('textbox')).toHaveCount(3);
             const classes = dialog.getByRole('group', {
                 name: msg('dialog.class'),
                 exact: true,
@@ -126,14 +182,22 @@ for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'ja', 'ru']) {
             await custom.press('Tab');
             await expect(custom).toHaveValue('Future class');
             await dialog
-                .getByRole('button', { name: msg('dialog.save'), exact: true })
+                .getByRole('button', { name: msg('dialog.next'), exact: true })
                 .scrollIntoViewIfNeeded();
             await expect(
                 dialog.getByRole('button', {
-                    name: msg('dialog.save'),
+                    name: msg('dialog.next'),
                     exact: true,
                 }),
             ).toBeInViewport({ ratio: 1 });
+            const screenshotDirectory = process.env.WPVG_SCREENSHOT_DIR;
+            if (screenshotDirectory) {
+                await mkdir(screenshotDirectory, { recursive: true });
+                await page.screenshot({
+                    path: `${screenshotDirectory}/assessment-${locale}-${viewport.width}.png`,
+                    animations: 'disabled',
+                });
+            }
             expect(await getPosts(page)).toEqual([]);
         });
     }
@@ -198,19 +262,19 @@ test('the Pokemon-series assessment preserves shell metadata and merged project 
         /^\{\{WikiProject banner shell\|[\s\S]*\|1=[\s\S]*\{\{WikiProject Biography\|[\s\S]*\n\}\}\s*$/u,
     );
     expect(reviewed).toContain('living=yes|custom={{Nested|x=y}}');
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0].title).toBe('Talk:宝可梦系列');
     expect((await getPosts(page))[0].text).toBe(
         `${reviewed}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
     );
 });
 
-test('an out-of-scope choice retains shared class and other projects on a narrow screen', async ({
+test('deselecting Video games hides its branch and retains shared class and other projects on a narrow screen', async ({
     page,
 }) => {
     await page.setViewportSize({ width: 360, height: 900 });
-    const dialog = await openAssessor(page);
+    const dialog = await openAssessor(page, {});
     await expect(dialog).toHaveAccessibleName(
         'Article Assessor (Example game)',
     );
@@ -219,24 +283,21 @@ test('an out-of-scope choice retains shared class and other projects on a narrow
     ).toHaveCount(0);
     await expect(dialog.locator('.cdx-label__optional-flag')).toHaveCount(0);
     await expect(registration(page)).toBeChecked();
-    await chooseOption(page, 'Importance', 'Out of scope');
+    await page
+        .getByRole('checkbox', { name: 'Video games', exact: true })
+        .uncheck();
     await expect(
-        page
-            .getByRole('group', { name: 'Importance', exact: true })
-            .getByRole('radio', { name: 'Out of scope', exact: true }),
-    ).toBeChecked();
+        page.getByRole('checkbox', { name: 'Video games', exact: true }),
+    ).not.toBeChecked();
+    await expect(
+        page.getByRole('group', { name: 'Importance', exact: true }),
+    ).toHaveCount(0);
     for (const name of ['Sega', 'Pokemon', 'Reassess', 'Needs infobox']) {
         await expect(
             page.getByRole('checkbox', { name, exact: true }),
-        ).toBeDisabled();
+        ).toHaveCount(0);
     }
     await expect(registration(page)).toHaveCount(0);
-    await expect(
-        page.getByText(
-            'No Video games banner; new-page registration is unavailable.',
-            { exact: true },
-        ),
-    ).toBeVisible();
     await expect(
         page.getByRole('textbox', {
             name: 'New-page list edit summary',
@@ -274,7 +335,7 @@ test('an out-of-scope choice retains shared class and other projects on a narrow
         };
     });
     const controlBounds = await page
-        .getByRole('group', { name: 'Importance', exact: true })
+        .getByRole('group', { name: 'Supported WikiProjects', exact: true })
         .evaluate((element) => {
             const control = element.getBoundingClientRect();
             return {
@@ -295,7 +356,7 @@ test('an out-of-scope choice retains shared class and other projects on a narrow
     if (process.env.WPVG_SCREENSHOT_DIR) {
         await mkdir(process.env.WPVG_SCREENSHOT_DIR, { recursive: true });
         await page
-            .getByRole('group', { name: 'Importance', exact: true })
+            .getByRole('group', { name: 'Supported WikiProjects', exact: true })
             .scrollIntoViewIfNeeded();
         await page.screenshot({
             path: `${process.env.WPVG_SCREENSHOT_DIR}/assessment-non-video-game-360.png`,
@@ -303,8 +364,8 @@ test('an out-of-scope choice retains shared class and other projects on a narrow
         });
     }
     const reviewed = await readySource(page).inputValue();
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0].title).toBe('Talk:Example game');
     expect((await getPosts(page))[0].text).toBe(
         `${reviewed}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
@@ -318,14 +379,15 @@ test('a shell without Video games starts outside the project and keeps other-pro
         lead: '{{WPBS|class=C|1={{ACG專題|custom=keep}}}}',
     });
     await expect(
-        page
-            .getByRole('group', { name: 'Importance', exact: true })
-            .getByRole('radio', { name: 'Out of scope', exact: true }),
-    ).toBeChecked();
+        page.getByRole('checkbox', { name: 'Video games', exact: true }),
+    ).not.toBeChecked();
+    await expect(
+        page.getByRole('group', { name: 'Importance', exact: true }),
+    ).toHaveCount(0);
     await expect(registration(page)).toHaveCount(0);
     await expect(
         page.getByRole('checkbox', { name: 'Pokemon', exact: true }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
     await expect(
         page.getByRole('checkbox', { name: 'ACG', exact: true }),
     ).toBeChecked();
@@ -335,23 +397,24 @@ test('a shell without Video games starts outside the project and keeps other-pro
     await expect(readySource(page)).toHaveValue(/custom=keep/u);
     await expect(readySource(page)).toHaveValue(/WikiProject Film/u);
     await expect(readySource(page)).not.toHaveValue(/WikiProject Video games/u);
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0].title).toBe('Talk:Example game');
 });
 
 test('manual removal of Video games synchronizes scope and re-enabling it keeps registration unselected', async ({
     page,
 }) => {
-    await openAssessor(page);
+    await openAssessor(page, {});
     const manual = '{{WPBS|class=C|1={{ACG專題}}}}\n<!-- Manual assessment -->';
     await readySource(page).fill(manual);
     await expect(readySource(page)).toHaveValue(manual);
     await expect(
-        page
-            .getByRole('group', { name: 'Importance', exact: true })
-            .getByRole('radio', { name: 'Out of scope', exact: true }),
-    ).toBeChecked();
+        page.getByRole('checkbox', { name: 'Video games', exact: true }),
+    ).not.toBeChecked();
+    await expect(
+        page.getByRole('group', { name: 'Importance', exact: true }),
+    ).toHaveCount(0);
     await expect(
         page
             .getByRole('group', { name: 'Shared class', exact: true })
@@ -360,7 +423,10 @@ test('manual removal of Video games synchronizes scope and re-enabling it keeps 
     await expect(registration(page)).toHaveCount(0);
     await expect(
         page.getByRole('checkbox', { name: 'Needs screenshot', exact: true }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
+    await page
+        .getByRole('checkbox', { name: 'Video games', exact: true })
+        .check();
     await chooseOption(page, 'Importance', 'High');
     await expect(registration(page)).not.toBeChecked();
     await expect(
@@ -368,8 +434,8 @@ test('manual removal of Video games synchronizes scope and re-enabling it keeps 
     ).toBeEnabled();
     await expect(readySource(page)).toHaveValue(/importance=High/u);
     await expect(readySource(page)).toHaveValue(/Manual assessment/u);
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0].title).toBe('Talk:Example game');
 });
 
@@ -383,7 +449,8 @@ for (const width of [1440, 360]) {
             .getByRole('group', { name: 'Shared class', exact: true })
             .getByRole('radio', { name: 'Start', exact: true });
         const heading = dialog.getByRole('heading', {
-            name: 'Assessment',
+            name: 'Shared class',
+            level: 2,
             exact: true,
         });
         await expect(heading).toBeFocused();
@@ -408,6 +475,7 @@ for (const width of [1440, 360]) {
         });
         await expect(link).toBeFocused();
         await page.keyboard.press('Enter');
+        await prepareAssessmentView(page);
         await expect(heading).toBeFocused();
         expect(await getPosts(page)).toEqual([]);
     });
@@ -416,7 +484,7 @@ for (const width of [1440, 360]) {
 test('visible class presets retain editable custom classes and the exact reviewed source', async ({
     page,
 }) => {
-    await openAssessor(page);
+    await openAssessor(page, {});
     await registration(page).uncheck();
     const sharedClass = page.getByRole('textbox', {
         name: 'Custom class',
@@ -457,8 +525,8 @@ test('visible class presets retain editable custom classes and the exact reviewe
     await expect(sharedClass).toHaveValue('Bplus');
     await expect(readySource(page)).toHaveValue(/class=B\+/u);
     const reviewed = await readySource(page).inputValue();
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0].text).toBe(
         `${reviewed}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
     );
@@ -472,6 +540,7 @@ test('Chinese shared class displays typed Bplus and b+ as 乙上 and accepts loc
     });
     await page.goto('/tests/ui/index.html');
     await page.locator('#kanade-wpvg-assessor-launcher').click();
+    await prepareAssessmentView(page, { locale: 'zh-CN' });
     const sharedClass = page.getByRole('textbox', {
         name: '自定义评级',
         exact: true,
@@ -533,8 +602,8 @@ test('Chinese shared class displays typed Bplus and b+ as 乙上 and accepts loc
     await sharedClass.focus();
     await source.click();
     await expect(source).toHaveValue(manual);
-    await page.getByRole('button', { name: '提交', exact: true }).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(2);
+    await confirmAssessment(page, 'zh-CN');
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(2);
     expect((await getPosts(page))[1].text).toBe(
         `${manual}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
     );
@@ -546,7 +615,7 @@ test('assesses through Codex controls and saves the exact reviewed source after 
     await page.setViewportSize({ width: 1440, height: 900 });
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
-    const dialog = await openAssessor(page);
+    const dialog = await openAssessor(page, {});
     await expect(dialog).toHaveAttribute('lang', 'en');
     await expect(
         page
@@ -582,38 +651,29 @@ test('assesses through Codex controls and saves the exact reviewed source after 
             exact: true,
         })
         .fill('Reviewed talk edit');
-    await page
-        .getByRole('textbox', {
-            name: 'New-page list edit summary',
-            exact: true,
-        })
-        .fill('Reviewed registration');
     await expect(
         page.getByRole('region', { name: 'Lead-section changes', exact: true }),
     ).toContainText('Reviewed manually');
     if (process.env.WPVG_SCREENSHOT_DIR) {
         await mkdir(process.env.WPVG_SCREENSHOT_DIR, { recursive: true });
-        for (const [name, filename] of [
-            ['Lead-section changes', 'assessment-changes-1440'],
-            ['New-page list changes', 'registration-1440'],
-        ]) {
-            await page
-                .getByRole('region', { name, exact: true })
-                .scrollIntoViewIfNeeded();
-            await page.screenshot({
-                path: `${process.env.WPVG_SCREENSHOT_DIR}/${filename}.png`,
-                animations: 'disabled',
-            });
-        }
+        await page
+            .getByRole('region', { name: 'Lead-section changes', exact: true })
+            .scrollIntoViewIfNeeded();
+        await page.screenshot({
+            path: `${process.env.WPVG_SCREENSHOT_DIR}/assessment-changes-1440.png`,
+            animations: 'disabled',
+        });
     }
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(2);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(2);
     const posts = await getPosts(page);
     expect(posts[0]).toMatchObject({
         token: 'csrf',
-        summary: 'Reviewed registration',
         nocreate: true,
     });
+    expect(posts[0].summary).toMatch(
+        /^Register \[\[Example game\]\] \(Sept 30\)/u,
+    );
     expect(posts[0].title).toContain('电子游戏/新进条目');
     expect(posts[0].text).toContain(
         '{{vgc|Earlier game}}、{{vgc|Example game}}',
@@ -634,7 +694,7 @@ test('assesses through Codex controls and saves the exact reviewed source after 
 test('manual edits survive a later control change and preserve the custom summary', async ({
     page,
 }) => {
-    await openAssessor(page);
+    await openAssessor(page, {});
     await registration(page).uncheck();
     const manual =
         (await readySource(page).inputValue()) +
@@ -659,8 +719,8 @@ test('manual edits survive a later control change and preserve the custom summar
         }),
     ).toHaveValue('My summary');
     const reviewed = await readySource(page).inputValue();
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0]).toMatchObject({
         title: 'Talk:Example game',
         summary: 'My summary',
@@ -670,22 +730,63 @@ test('manual edits survive a later control change and preserve the custom summar
     );
 });
 
-test('the registration checkbox controls its review and can save registration without a talk change', async ({
+test('eligible registration defaults checked without a preview or summary editor and can save an unchanged assessment', async ({
+    page,
+}) => {
+    await openAssessor(page, {});
+    await expect(registration(page)).toBeChecked();
+    await expect(
+        page.getByRole('region', {
+            name: 'New-page list changes',
+            exact: true,
+        }),
+    ).toHaveCount(0);
+    await expect(
+        page.getByRole('textbox', {
+            name: 'New-page list edit summary',
+            exact: true,
+        }),
+    ).toHaveCount(0);
+    await registration(page).uncheck();
+    await expect(registration(page)).not.toBeChecked();
+    await registration(page).check();
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
+    expect((await getPosts(page))[0].title).toContain('电子游戏/新进条目');
+});
+
+test('an explicit registration opt-out survives staged edits, reopening, and batch submission', async ({
     page,
 }) => {
     await openAssessor(page);
-    const listSummary = page.getByRole('textbox', {
-        name: 'New-page list edit summary',
+    await expect(registration(page)).toBeChecked();
+    await registration(page).uncheck();
+    await chooseOption(page, 'Shared class', 'B');
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    await page.reload();
+    await page
+        .getByRole('link', { name: 'Article Assessor', exact: true })
+        .click();
+    await prepareAssessmentView(page);
+    await expect(registration(page)).not.toBeChecked();
+    await expect(
+        page.getByRole('radio', { name: 'B', exact: true }),
+    ).toBeChecked();
+    await save(page).click();
+    const confirm = page.getByRole('dialog', {
+        name: 'Confirm batch save',
         exact: true,
     });
-    await expect(listSummary).toBeVisible();
-    await registration(page).uncheck();
-    await expect(listSummary).toBeHidden();
-    await registration(page).check();
-    await expect(listSummary).toBeVisible();
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
-    expect((await getPosts(page))[0].title).toContain('电子游戏/新进条目');
+    await expect(confirm).toBeVisible();
+    await expect(
+        confirm.locator('.kanade-wpvg-assessor-batch-registration'),
+    ).toHaveCount(0);
+    await confirm
+        .getByRole('button', { name: 'Confirm and save', exact: true })
+        .click();
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
+    expect((await getPosts(page))[0].title).toBe('Talk:Example game');
 });
 
 test('a registration error retains the reviewed edit and prevents the talk-page write', async ({
@@ -694,9 +795,9 @@ test('a registration error retains the reviewed edit and prevents the talk-page 
     await openAssessor(page, { failList: true });
     await chooseOption(page, 'Shared class', 'B');
     const reviewed = await readySource(page).inputValue();
-    await save(page).click();
+    await confirmAssessment(page);
     await expect(
-        page.getByText('Registration temporarily unavailable', { exact: true }),
+        page.getByText(/Registration temporarily unavailable/u),
     ).toBeVisible();
     await expect(save(page)).toBeEnabled();
     await expect(readySource(page)).toHaveValue(reviewed);
@@ -706,8 +807,8 @@ test('a registration error retains the reviewed edit and prevents the talk-page 
     await page.evaluate(() => {
         (globalThis as any).__fixture.failList = false;
     });
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(3);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(3);
     expect((await getPosts(page)).at(-1)?.text).toBe(
         `${reviewed}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
     );
@@ -721,8 +822,8 @@ test('an edit conflict retries the same reviewed lead against the latest discuss
     const reviewed =
         '  {{WikiProject banner shell|class=C|1=\n{{WikiProject Video games|importance=High}}\n}}\n<!-- exact source -->\n\n';
     await readySource(page).fill(reviewed);
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(2);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(2);
     const posts = await getPosts(page);
     expect(posts[0].text).toBe(
         `${reviewed}== Discussion ==\nKeep this discussion exactly.\n`,
@@ -824,17 +925,12 @@ for (const width of [360, 1024, 1440]) {
         const stacked = width <= 640;
         await expect(footerButtons).toHaveText(
             stacked
-                ? ['Submit', 'Cancel', 'Collapse']
-                : ['Collapse', 'Cancel', 'Submit'],
+                ? ['Next', "Don't stage", 'Collapse']
+                : ['Collapse', "Don't stage", 'Next'],
         );
-        const stage = footer.getByRole('switch', {
-            name: 'Stage',
-            exact: true,
-        });
-        await expect(stage).toBeEnabled();
-        await expect(stage).not.toBeChecked();
+        await expect(footer.getByRole('switch')).toHaveCount(0);
         const cancel = footer.getByRole('button', {
-            name: 'Cancel',
+            name: "Don't stage",
             exact: true,
         });
         const collapse = footer.getByRole('button', {
@@ -842,7 +938,7 @@ for (const width of [360, 1024, 1440]) {
             exact: true,
         });
         const submit = footer.getByRole('button', {
-            name: 'Submit',
+            name: 'Next',
             exact: true,
         });
         for (const [button, action, weight] of [
@@ -888,9 +984,7 @@ for (const width of [360, 1024, 1440]) {
         }
         const first = stacked ? submit : collapse;
         const last = stacked ? collapse : submit;
-        await stage.focus();
-        await expect(stage).toBeFocused();
-        await page.keyboard.press('Tab');
+        await first.focus();
         await expect(first).toBeFocused();
         await page.keyboard.press('Tab');
         await expect(cancel).toBeFocused();
@@ -900,8 +994,7 @@ for (const width of [360, 1024, 1440]) {
         await expect(cancel).toBeFocused();
         await page.keyboard.press('Shift+Tab');
         await expect(first).toBeFocused();
-        await page.keyboard.press('Shift+Tab');
-        await expect(stage).toBeFocused();
+
         const screenshotDirectory = process.env.WPVG_SCREENSHOT_DIR;
         if (screenshotDirectory) {
             await mkdir(screenshotDirectory, { recursive: true });
@@ -918,7 +1011,7 @@ for (const width of [360, 1024, 1440]) {
             }
         }
         await page
-            .getByRole('button', { name: 'Cancel', exact: true })
+            .getByRole('button', { name: "Don't stage", exact: true })
             .last()
             .click();
         await expect(dialog).toHaveCount(0);
@@ -940,8 +1033,8 @@ for (const width of [360, 1024]) {
             .getByRole('button');
         await expect(buttons).toHaveText(
             width <= 640
-                ? ['Submit', 'Cancel', 'Collapse']
-                : ['Collapse', 'Cancel', 'Submit'],
+                ? ['Next', "Don't stage", 'Collapse']
+                : ['Collapse', "Don't stage", 'Next'],
         );
         const bounds = await buttons.evaluateAll((elements) =>
             elements.map((element) => {
@@ -965,12 +1058,8 @@ for (const width of [360, 1024]) {
                 ).toBeCloseTo(12, 0);
             }
         }
-        const stage = dialog.getByRole('switch', {
-            name: 'Stage',
-            exact: true,
-        });
-        await stage.focus();
-        await page.keyboard.press('Tab');
+        await expect(dialog.getByRole('switch')).toHaveCount(0);
+        await buttons.nth(0).focus();
         await expect(buttons.nth(0)).toBeFocused();
         for (let index = 1; index < (await buttons.count()); index += 1) {
             await page.keyboard.press('Tab');
@@ -1006,33 +1095,29 @@ test('an expired creation date offers no registration write', async ({
         page.getByText(/registration period has expired/u),
     ).toBeVisible();
     await chooseOption(page, 'Shared class', 'B');
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     expect((await getPosts(page))[0].title).toBe('Talk:Example game');
 });
 
 test('saving holds the reviewed source stable and ignores dismissal until completion', async ({
     page,
 }) => {
-    const dialog = await openAssessor(page, { holdTalk: true });
+    await openAssessor(page, { holdTalk: true });
     await registration(page).uncheck();
     await chooseOption(page, 'Shared class', 'B');
     const reviewed = await readySource(page).inputValue();
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(1);
-    await expect(readySource(page)).toHaveAttribute('readonly', '');
+    const batch = await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(1);
     await expect(
-        page
-            .getByRole('group', { name: 'Shared class', exact: true })
-            .getByRole('radio', { name: 'B', exact: true }),
+        batch.getByRole('button', { name: 'Confirm and save', exact: true }),
     ).toBeDisabled();
-    await expect(registration(page)).toBeDisabled();
     await expect(
-        page.getByRole('button', { name: 'Cancel', exact: true }).last(),
+        batch.getByRole('button', { name: 'Back', exact: true }).last(),
     ).toBeDisabled();
+    await expect(batch.getByRole('textbox')).toHaveCount(0);
     await page.keyboard.press('Escape');
-    await expect(dialog).toBeVisible();
-    await expect(readySource(page)).toHaveValue(reviewed);
+    await expect(batch).toBeVisible();
     expect((await getPosts(page))[0].text).toBe(
         `${reviewed}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
     );
@@ -1049,17 +1134,17 @@ test('a talk-page error allows a retry with the exact reviewed source', async ({
     await registration(page).uncheck();
     await chooseOption(page, 'Shared class', 'B');
     const reviewed = await readySource(page).inputValue();
-    await save(page).click();
+    await confirmAssessment(page);
     await expect(
-        page.getByText('Talk page temporarily unavailable', { exact: true }),
+        page.getByText(/Talk page temporarily unavailable/u),
     ).toBeVisible();
     await expect(save(page)).toBeEnabled();
     await expect(readySource(page)).toHaveValue(reviewed);
     await page.evaluate(() => {
         (globalThis as any).__fixture.failTalk = false;
     });
-    await save(page).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(2);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(2);
     const posts = await getPosts(page);
     expect(posts[1].text).toBe(posts[0].text);
 });
@@ -1097,11 +1182,18 @@ test('cancelled loading cannot mount a stale dialog and the tool can reopen', as
     });
     await expect
         .poll(() =>
-            page.evaluate(() => (globalThis as any).__fixture.calls.length),
+            page.evaluate(() =>
+                (globalThis as any).__fixture.calls.some(
+                    (call: any) =>
+                        call.rvdir === 'newer' &&
+                        String(call.titles).split('|').includes('Earlier game'),
+                ),
+            ),
         )
-        .toBeGreaterThanOrEqual(7);
+        .toBe(true);
     await expect(page.getByRole('dialog')).toHaveCount(0);
     await link.click();
+    await prepareAssessmentView(page);
     await expect(readySource(page)).toBeVisible();
     expect(await getPosts(page)).toEqual([]);
 });
@@ -1114,8 +1206,8 @@ for (const [
     sourceLabel,
     saveLabel,
 ] of [
-    ['zh-CN', 'zh-Hans', '通用评级', '乙', '待保存的导言源码', '提交'],
-    ['zh-TW', 'zh-Hant', '通用評級', '乙', '待儲存的導言原始碼', '提交'],
+    ['zh-CN', 'zh-Hans', '通用评级', '乙', '待保存的导言源码', '下一步'],
+    ['zh-TW', 'zh-Hant', '通用評級', '乙', '待儲存的導言原始碼', '下一步'],
 ]) {
     test(`${locale} localizes controls while saving the original assessment codes`, async ({
         page,
@@ -1125,6 +1217,7 @@ for (const [
         }, locale);
         await page.goto('/tests/ui/index.html');
         await page.locator('#kanade-wpvg-assessor-launcher').click();
+        await prepareAssessmentView(page, { locale });
         const dialog = page.getByRole('dialog');
         await expect(dialog).toHaveAttribute('lang', expectedLocale);
         await expect(dialog).toHaveAccessibleName(
@@ -1139,10 +1232,13 @@ for (const [
         });
         await expect(source).toHaveValue(/class=B/u);
         const reviewed = await source.inputValue();
-        await page
-            .getByRole('button', { name: saveLabel, exact: true })
-            .click();
-        await expect.poll(() => getPosts(page)).toHaveLength(2);
+        await expect(
+            page.getByRole('button', { name: saveLabel, exact: true }),
+        ).toBeEnabled();
+        await confirmAssessment(page, locale);
+        await expect
+            .poll(() => getPosts(page), { timeout: 15000 })
+            .toHaveLength(2);
         expect((await getPosts(page))[1].text).toBe(
             `${reviewed}\n\n== Discussion ==\nKeep this discussion exactly.\n`,
         );
