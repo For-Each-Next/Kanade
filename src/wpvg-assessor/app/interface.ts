@@ -340,7 +340,6 @@ function mountAssessmentDialog(
 ): void {
     mountDialog(require, (Vue, onClose) =>
         createAssessmentDialogComponent(Vue, {
-            currentNamespace: mw.config.get('wgNamespaceNumber'),
             onClose,
             onSaved: refreshPage,
             registerRestore(handler) {

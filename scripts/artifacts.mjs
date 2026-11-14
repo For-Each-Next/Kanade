@@ -121,7 +121,16 @@ function createDocumentationHeader(tool, version, license) {
 /** Wait in the page realm, releasing bounded timers and navigation listeners. */
 function createPageProgram(application, tool, pageBootstrap) {
     const hostProgram = tool.resourceLoaderBootstrap
-        ? application
+        ? `
+const queue = window.RLQ ?? [];
+window.RLQ = queue;
+queue.push(() => {
+    const mw = window.mw;
+    (() => {
+${application}
+    })();
+});
+`
         : `
 let readinessTimer;
 let attempts = 0;

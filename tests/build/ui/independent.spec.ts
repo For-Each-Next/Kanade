@@ -127,6 +127,24 @@ test('independent compact scripts open Chinese Wikipedia tools and format the ba
     await creator.getByRole('button', { name: 'Close', exact: true }).click();
 
     await page.locator('#kanade-wpvg-assessor-launcher a').click();
+    const compactAssessor = page.getByRole('region', {
+        name: 'Article Assessor compact mode',
+        exact: true,
+    });
+    await expect(compactAssessor).toBeVisible();
+    await expect(compactAssessor.getByRole('switch')).toHaveCount(0);
+    await expect(
+        compactAssessor.getByRole('button', { name: 'Next', exact: true }),
+    ).toBeEnabled();
+    await expect(
+        compactAssessor.getByRole('button', {
+            name: "Don't stage",
+            exact: true,
+        }),
+    ).toBeEnabled();
+    await compactAssessor
+        .getByRole('button', { name: 'Expand', exact: true })
+        .click();
     const assessor = page.getByRole('dialog', {
         name: 'Article Assessor (Example game)',
         exact: true,
@@ -273,8 +291,8 @@ for (const compactFirst of [false, true]) {
         expect(after.portletMounts).toEqual(before.portletMounts);
         await page.locator('#kanade-wpvg-assessor-launcher a').click();
         await expect(
-            page.getByRole('dialog', {
-                name: 'Article Assessor (Example game)',
+            page.getByRole('region', {
+                name: 'Article Assessor compact mode',
                 exact: true,
             }),
         ).toHaveCount(1);

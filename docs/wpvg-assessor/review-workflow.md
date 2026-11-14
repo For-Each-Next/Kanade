@@ -1,6 +1,6 @@
 # Review workflow
 
-Last reviewed: 2026-11-09.
+Last reviewed: 2026-11-10.
 
 The gadget opens from the page tools on Chinese Wikipedia. It resolves the
 subject and talk titles, reads the subject's creation information, loads the
@@ -16,6 +16,11 @@ entry remains in the proposed source. Missing peer metadata does not prevent
 the assessment form from opening. Unreadable revisions on existing pages
 still stop loading, and the current subject must have readable source and a
 creation date.
+
+Assessing a redirect reads that page's own source and creation date and saves
+only its own talk-page assessment. It does not follow the redirect destination,
+including destinations with encoded characters or section fragments. Registration
+eligibility and ordering likewise use each listed page's own creation date.
 
 <!-- toc:start -->
 
@@ -36,22 +41,34 @@ in the editable input, and uncommon importance values remain selectable when
 they are already in the source. Task forces, maintenance flags, and related
 projects are optional.
 
-Class and importance use native [Codex Radio][codex-radio] choices inside labeled
-fieldsets. The full-width sections stay in the same reading order on desktop
-and mobile. Common classes are visible without opening a menu; **Custom** opens
-a labeled input for other known grades and custom codes. A custom value remains
+The expanded form has four peer sections with second-level headings: **Shared
+class**, **Supported WikiProjects**, **Video games**, and **Preview**. Their
+Simplified Chinese labels are **通用评级**, **支援专题**, **电子游戏**, and
+**预览**. The compact panel retains the first three sections beneath its task
+title; **Expand** opens Preview. Importance, task forces, maintenance, and
+registration are fields within the Video games section, using native Codex
+labels. Class and importance use native [Codex Radio][codex-radio] choices
+inside labeled fieldsets. The full-width
+sections stay in that reading order on desktop and mobile. Common classes are
+visible without opening a menu; **Custom** opens a labeled input for other known grades and custom codes. A custom value remains
 available after switching to a preset and back to **Custom**.
 `Bplus` and `b+` normalize to `B+`, displayed as 乙上 in Chinese. Less common
 grades such as D, B+, A, and FL use the custom input even when they are the
 current class; their localized labels remain visible there.
 
-The **Out of scope** importance choice removes existing Video
-games banner aliases and omits that banner from the proposed shell. Video
-games task forces, maintenance flags, and new-page registration become
-unavailable. The shared `{{WPBS}}` class and other project selections remain
-editable; a class-only shell is also supported. Existing shells and recognizable
-secondary project banners without a Video games banner initialize this
-choice, so changing their class does not add a Video games banner.
+The Supported WikiProjects group includes **Video games**, **ACG**, and other configured or
+existing projects. Video games starts selected for a new assessment; existing
+source restores its current selection. When selected, its details branch contains
+importance, task forces, maintenance, and eligible new-page registration.
+
+Clearing **Video games** removes its existing banner aliases and hides the entire
+details branch, including registration. The shared `{{WPBS}}` class and other
+project selections remain editable and can be saved without a Video games
+banner. The previous importance choice remains in the current form and returns
+when Video games is checked again. Recognizable manual source edits update the
+project selection and its remembered importance. Existing shells and secondary
+project banners without a Video games banner restore the checkbox cleared, so a
+class change does not add a Video games banner.
 
 Changing a control updates the proposed talk-page lead. You can also edit
 that source directly. Recognizable source changes update the controls, and
@@ -65,45 +82,62 @@ supported and custom parameters on project banners remain in the reviewed
 source. The supplied 宝可梦系列 example exercises this cleanup with existing
 Pokémon, Nintendo, ACG, and Japan assessments.
 
-The edit-summary field controls the talk-page summary. If the article is
-eligible for registration, select the registration checkbox to review its
-separate list comparison and summary. Already registered and older articles
-show their eligibility explanation.
+The **Preview** section contains the proposed talk-page source, comparison,
+and talk edit summary. The **New-page registration** field contains only the
+checkbox labeled **Register in the Video games new-page list**, followed by the
+creation date (**登记至电子游戏专题新进条目（{created}）** in Simplified Chinese).
+It starts selected for eligible new pages, including subpages; clear it to skip
+registration. Restored drafts retain their selection, including an explicitly
+cleared checkbox.
+Already registered and older articles show their eligibility explanation.
+The assessment form and batch confirmation show no registration source preview
+or summary editor. The tool prepares the list source and summary from the
+selected pages.
 
 Manually removing the Video games banner also clears the registration
 selection. Registration requires the exact reviewed lead to contain a
 recognizable Video games assessment, and the save workflow ignores stale
 registration selections when the assessment is outside that project.
 
-Choosing **Submit** freezes the controls while the requested saves run. Closing
-or canceling before saving leaves the wiki unchanged. Successful completion
-refreshes the current page.
+Choosing **Next** prepares a separate save confirmation without a wiki write.
+**Confirm and save** freezes the controls while the requested saves run. Closing
+or choosing **Don't stage** before confirmation leaves the wiki unchanged.
+Successful completion refreshes the current page.
 
 ## Background drafts and batch submission
 
-The **Stage (暂存)** switch adds the current reviewed draft to the shared queue
-without a wiki write. New pages start with the switch off; a restored staged page
-starts with it on. While on, edits to the assessment, exact source, summaries, and
-registration selection synchronize to that draft after a short delay. Closing
-flushes pending changes; a failed storage operation retains the form and reports
-the error. Turning Stage off removes only that page and keeps its current edits.
+The assessment opens in compact mode and always stages the initial draft in the
+shared queue without a wiki write. Edits to the assessment, exact source,
+summaries, and registration selection synchronize to that draft after a short
+delay. There is no staging switch. Closing the expanded window or pressing Escape
+flushes pending changes and retains the draft. **Don't stage** (**不暂存** in
+Simplified Chinese) instead removes only the current page from the queue and
+closes its form. It waits for any active draft synchronization before removal,
+so a late synchronization cannot recreate the discarded draft. A failed storage
+operation retains the form and reports the error.
 
 Drafts use browser `localStorage` per wiki and account, surviving navigation,
 reloads, and closing tabs. Any tab for that wiki and account can submit the queue.
 Other tabs update their queue counts without replacing the open form's edits.
-**Collapse** retains the same draft and actions in a compact panel; **Expand** or
-the page-tool launcher restores the current view.
+The compact panel uses native class and importance radios and Codex’s normal
+surface background. **Expand** opens the full source and summary review.
+**Collapse** returns to the compact panel with the same draft and actions, and the
+page-tool launcher restores the current view. Queued-draft editing opens its full
+review with an explicit **Apply changes** action. Its **Cancel** action closes
+that editor without applying its changes to the queued review.
 
-With queued drafts, **Submit (+N)** prepares **Confirm batch save**. It shows all
-reviewed talk pages, each exact edit summary and expandable comparison, plus one
-combined registration comparison and summary for selected pages. Check the pages
+**Next** prepares **Confirm batch save**, including when only the current page is
+queued. It synchronizes the current form first; if that page was removed from the
+queue, it stages the latest form again before preparing the review. Its **(+N)**
+count identifies other queued pages. The review shows all reviewed talk pages, each
+exact talk edit summary, and an expandable talk comparison. Check the pages
 to save; unchecked staged pages remain queued. The pencil action opens that page's
 ordinary assessment form as a draft editor. **Apply changes** updates the queued
 review without wiki writes and rebuilds registration. The remove action discards
 that page's queued source and summary without undo. The current page's open form
 retains its edits when its queued copy is removed. **Back** retains the current source, custom summaries,
 and registration selection. A queue change during preparation invalidates the
-review and requires a fresh Submit.
+review and requires choosing **Next** again.
 
 **Confirm and save** submits only the checked pages. It writes registration once,
 then each changed talk lead. Unchanged talk leads require no edit and are removed
@@ -124,10 +158,10 @@ module, draft, and other-page links with counts. If necessary, remaining article
 are counted after the first links that fit. Already registered pages contribute
 no summary entry. Defaults stored in English or Chinese by earlier versions
 consolidate the same way.
-Manually entered per-page registration summaries are retained in the combined
-summary, with their space reserved before selecting article links. Custom text
-can exceed the automatic byte budget. Edit it on the individual pages before
-staging or submitting.
+Custom per-page registration summaries already saved in drafts are retained in
+the combined summary, with their space reserved before selecting article links.
+Custom text can exceed the automatic byte budget. Registration summaries cannot
+be edited in the interface; stored custom summaries remain intact.
 
 Canceling batch preparation ignores its late results and leaves the queued
 drafts intact. Submission checks that the queued drafts still match the

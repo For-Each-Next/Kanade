@@ -156,10 +156,13 @@ function shell(cwd, script, env) {
     );
 }
 
-test('publication requires an annotated tag pointing to the triggering commit', async (t) => {
+test('publication restores the remote annotated tag after checkout and requires its triggering commit', async (t) => {
     const directory = await fixtureDirectory(t);
+    const origin = join(directory, 'origin.git');
     for (const args of [
         ['init', '--quiet'],
+        ['init', '--bare', '--quiet', origin],
+        ['remote', 'add', 'origin', origin],
         [
             '-c',
             'user.name=Release fixture',
@@ -183,17 +186,45 @@ test('publication requires an annotated tag pointing to the triggering commit', 
             'fixture',
         ],
         ['tag', 'v0.2.0'],
+        ['push', '--quiet', 'origin', 'refs/tags/v0.1.0', 'refs/tags/v0.2.0'],
     ]) {
         const result = command(directory, 'git', args);
         assert.equal(result.status, 0, result.stderr);
     }
     const sha = command(directory, 'git', ['rev-parse', 'HEAD']).stdout.trim();
+    const annotatedTag = command(directory, 'git', [
+        'rev-parse',
+        'refs/tags/v0.1.0',
+    ]).stdout.trim();
+    // Checkout can fetch the event commit into the tag ref, losing its annotation.
+    const flattened = command(directory, 'git', [
+        'fetch',
+        '--force',
+        'origin',
+        `+${sha}:refs/tags/v0.1.0`,
+    ]);
+    assert.equal(flattened.status, 0, flattened.stderr);
+    assert.equal(
+        command(directory, 'git', [
+            'cat-file',
+            '-t',
+            'refs/tags/v0.1.0',
+        ]).stdout.trim(),
+        'commit',
+    );
     const script = workflowCommand('Validate the annotated release checkpoint');
     const matching = shell(directory, script, {
         RELEASE_TAG: 'v0.1.0',
         GITHUB_SHA: sha,
     });
     assert.equal(matching.status, 0, matching.stderr);
+    assert.equal(
+        command(directory, 'git', [
+            'rev-parse',
+            'refs/tags/v0.1.0',
+        ]).stdout.trim(),
+        annotatedTag,
+    );
     assert.notEqual(
         shell(directory, script, { RELEASE_TAG: 'v0.2.0', GITHUB_SHA: sha })
             .status,
@@ -205,6 +236,44 @@ test('publication requires an annotated tag pointing to the triggering commit', 
             GITHUB_SHA: '0'.repeat(40),
         }).status,
         0,
+    );
+    for (const args of [
+        [
+            '-c',
+            'user.name=Release fixture',
+            '-c',
+            'user.email=release@example.test',
+            'commit',
+            '--quiet',
+            '--allow-empty',
+            '-m',
+            'moved checkpoint',
+        ],
+        [
+            '-c',
+            'user.name=Release fixture',
+            '-c',
+            'user.email=release@example.test',
+            'tag',
+            '--force',
+            '-a',
+            'v0.1.0',
+            '-m',
+            'moved checkpoint',
+        ],
+        ['push', '--quiet', '--force', 'origin', 'refs/tags/v0.1.0'],
+        ['update-ref', 'refs/tags/v0.1.0', sha],
+    ]) {
+        const result = command(directory, 'git', args);
+        assert.equal(result.status, 0, result.stderr);
+    }
+    assert.notEqual(
+        shell(directory, script, {
+            RELEASE_TAG: 'v0.1.0',
+            GITHUB_SHA: sha,
+        }).status,
+        0,
+        'A remote tag moved after the triggering push must not publish.',
     );
 });
 

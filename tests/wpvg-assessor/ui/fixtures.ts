@@ -29,6 +29,7 @@ import {
 import { createI18n } from '../../../src/library/i18n/messages.ts';
 
 interface FixtureOptions {
+    compact?: boolean;
     archivePages?: Record<string, string>;
     alreadyRegistered?: boolean;
     articleCss?: string;
@@ -54,6 +55,7 @@ interface FixtureOptions {
     listText?: string;
     missingTitles?: string[];
     pageTitle?: string;
+    sourcePages?: Record<string, { content: string; redirect?: boolean }>;
     wikiId?: string;
     userName?: string;
     unavailableRegistrationList?: boolean;
@@ -157,6 +159,25 @@ export async function openAssessor(page: Page, options: FixtureOptions = {}) {
     await page
         .getByRole('link', { name: msg('tool.name'), exact: true })
         .click();
+    return prepareAssessmentView(page, options);
+}
+
+/** Existing review scenarios explicitly expand the default compact surface. */
+export async function prepareAssessmentView(
+    page: Page,
+    options: Pick<FixtureOptions, 'compact' | 'locale' | 'pageTitle'> = {},
+) {
+    const { msg } = getFixtureMessages(options.locale);
+    const compact = page.getByRole('region', {
+        name: msg('dialog.miniMode'),
+        exact: true,
+    });
+    await expect(compact).toBeVisible();
+    await expect(compact.getByRole('switch')).toHaveCount(0);
+    if (options.compact) return compact;
+    await compact
+        .getByRole('button', { name: msg('dialog.expand'), exact: true })
+        .click();
     await expect(
         page.getByRole('textbox', {
             name: msg('dialog.readySource'),
@@ -173,25 +194,39 @@ export async function openAssessor(page: Page, options: FixtureOptions = {}) {
     });
 }
 
+/** Advance the staged draft to review, then explicitly confirm the wiki save. */
+export async function confirmAssessment(page: Page, locale = 'en') {
+    const { msg } = getFixtureMessages(locale);
+    const postsBeforeReview = await getPosts(page);
+    await page
+        .getByRole('button', { name: msg('dialog.next'), exact: true })
+        .click();
+    const review = page.getByRole('dialog', {
+        name: msg('dialog.batchConfirmTitle'),
+        exact: true,
+    });
+    await expect(review).toBeVisible();
+    expect(await getPosts(page)).toEqual(postsBeforeReview);
+    await review
+        .getByRole('button', { name: msg('dialog.batchConfirm'), exact: true })
+        .click();
+    return review;
+}
+
 export async function getPosts(page: Page): Promise<PostedEdit[]> {
     return page.evaluate(() => (globalThis as any).__fixture.posts);
 }
 
-export async function navigateAssessor(page: Page, title: string) {
+export async function navigateAssessor(
+    page: Page,
+    title: string,
+    options: Pick<FixtureOptions, 'compact'> = {},
+) {
     await page.goto(`/tests/ui/index.html?page=${encodeURIComponent(title)}`);
     await page
         .getByRole('link', { name: 'Article Assessor', exact: true })
         .click();
-    await expect(
-        page.getByRole('textbox', {
-            name: 'Ready-to-save lead-section source',
-            exact: true,
-        }),
-    ).toBeVisible();
-    return page.getByRole('dialog', {
-        name: `Article Assessor (${title.replace(/^Talk:/u, '')})`,
-        exact: true,
-    });
+    return prepareAssessmentView(page, { ...options, pageTitle: title });
 }
 
 export async function chooseOption(page: Page, label: string, value: string) {

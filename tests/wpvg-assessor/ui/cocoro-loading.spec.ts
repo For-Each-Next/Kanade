@@ -10,6 +10,7 @@
 
 import {
     chooseOption,
+    confirmAssessment,
     expect,
     getPosts,
     openAssessor,
@@ -57,7 +58,9 @@ test('Talk:COCORO loads its Unassessed/Low banner despite a missing registered l
         }),
     ).toHaveValue(/\{\{DYKtalk\|date=2026-09-27\}\}/u);
     await expect(
-        page.getByRole('checkbox', { name: /^Register the page/u }),
+        page.getByRole('checkbox', {
+            name: /^Register in the Video games new-page list/u,
+        }),
     ).toHaveCount(0);
     const titles = await page.evaluate(() =>
         (globalThis as any).__fixture.calls.flatMap((call: any) =>
@@ -70,7 +73,7 @@ test('Talk:COCORO loads its Unassessed/Low banner despite a missing registered l
     expect(await getPosts(page)).toEqual([]);
     await dialog
         .locator('.cdx-dialog__footer')
-        .getByRole('button', { name: 'Cancel', exact: true })
+        .getByRole('button', { name: "Don't stage", exact: true })
         .click();
     await expect(dialog).toHaveCount(0);
     expect(await getPosts(page)).toEqual([]);
@@ -94,14 +97,16 @@ test('an unregistered COCORO review retains a missing peer entry and saves only 
         pageTitle: 'Talk:COCORO',
     });
     await expect(
-        page.getByRole('checkbox', { name: /^Register the page/u }),
+        page.getByRole('checkbox', {
+            name: /^Register in the Video games new-page list/u,
+        }),
     ).toBeChecked();
-    const listReview = page.getByRole('region', {
-        name: 'New-page list changes',
-        exact: true,
-    });
-    await expect(listReview).toContainText(`{{vgc|${missingFile}}}`);
-    await expect(listReview).toContainText('{{vgc|COCORO}}');
+    await expect(
+        page.getByRole('region', {
+            name: 'New-page list changes',
+            exact: true,
+        }),
+    ).toHaveCount(0);
     expect(await getPosts(page)).toEqual([]);
     await chooseOption(page, 'Shared class', 'Start');
     const reviewed = await page
@@ -111,8 +116,8 @@ test('an unregistered COCORO review retains a missing peer entry and saves only 
         })
         .inputValue();
     expect(reviewed).toContain('{{DYKtalk|date=2026-09-27}}');
-    await page.getByRole('button', { name: 'Submit', exact: true }).click();
-    await expect.poll(() => getPosts(page)).toHaveLength(2);
+    await confirmAssessment(page);
+    await expect.poll(() => getPosts(page), { timeout: 15000 }).toHaveLength(2);
     const posts = await getPosts(page);
     expect(posts.map((post) => post.title)).toEqual([
         'WikiProject:电子游戏/新进条目',

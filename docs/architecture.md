@@ -137,6 +137,20 @@ types, development fixtures, and selected licensed build assets. Production
 scripts do not bundle another framework runtime. Native controls serve Revision
 Copy's inline row; larger dialogs use host Codex with its default appearance.
 
+Readable userscripts enter the page context and bind `mw` from `window.mw` around
+the whole bundled application after host readiness. Revision Copy uses the
+ResourceLoader queue for this boundary, so an early installation cannot capture
+an unavailable runtime. Its existing module wait and duplicate-startup guard
+remain in the browser entrypoint. AI assistance covered this startup correction
+and generated-artifact regressions for delayed and already-ready hosts, including
+deferred runtime access without a bare page-global `mw` binding. The full
+verification pipeline checks the build and offline browser behavior.
+
+Release checkpoint validation refetches the exact remote tag before checking
+its annotation and target commit. This preserves validation when checkout has
+replaced its local tag with a commit reference. AI-assisted offline regressions
+exercise that replacement and retain rejection of unannotated or mismatched tags.
+
 | Shared capability                    | Reason and limits                                                                                                                                                                                                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/library/i18n/`                  | All four tools share locale resolution; Source Editor, Creator, and Assessor also share typed text and rich-part interpolation. Catalogs and Revision Copy's broader Chinese-variant acceptance remain with their tools.                                                                            |

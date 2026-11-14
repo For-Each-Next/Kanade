@@ -1,6 +1,6 @@
 # Architecture
 
-Last reviewed: 2026-11-09.
+Last reviewed: 2026-11-10.
 
 <!-- toc:start -->
 
@@ -105,6 +105,13 @@ Assessor modules.
   language, and performs explicit revision- and timestamp-protected writes.
   Requests and decoders use formatversion 2 page arrays and main-slot content;
   obsolete keyed pages and star-key content are rejected before preparing edits.
+  Subject metadata combines `info` and readable current revisions without
+  following redirects. Its canonical title, original namespace, redirect flag,
+  and own first-revision timestamp describe the assessed page itself. Registration
+  peer reads use the same own-page date rule, retaining requested title aliases
+  without substituting redirect destinations. Encoded redirect targets and section
+  fragments are never parsed or queried. Existing creation-date caches and reviewed
+  drafts keep their storage contracts.
   Category reads follow API continuation and resolve subject and talk titles
   for article and talk-page members. Article preview reads supply parsed HTML
   to a sandboxed frame in the batch interface.
@@ -234,12 +241,23 @@ and comparison operations without triggering browser startup.
 
 ## Assessment form presentation
 
-The assessment form uses full-width sections so a long talk-page comparison does not squeeze class and project choices
-into a narrow sidebar. Native [Codex Radio][codex-radio] controls make common
-class and importance values visible without opening menus. Each group has its
-own Field legend. Native inline radios and checkboxes sit in owned wrapping flex
-containers, keeping neighboring options close without stretching them into
-equal-width columns or changing component appearance.
+The expanded assessment form has four sibling `h2` sections: Shared class,
+Supported WikiProjects, Video games, and Preview. Shared class and project
+selection retain native [Codex Field][codex-field] fieldsets with plain legends
+and the documented `hide-label` option; the visible section headings provide the
+peer hierarchy while the fieldsets retain accessible names. The Video games
+section contains native Fields for importance, task forces, maintenance, and
+registration, following Codex's [form construction guidance][codex-forms]. Their
+labels and controls keep component defaults. There is no enclosing Assessment
+stage heading. The compact panel uses an `h1` task title and the same first three
+`h2` sections; Preview is available through Expand.
+
+Full-width sections keep a long talk-page comparison from squeezing class and
+project choices into a narrow sidebar. Native [Codex Radio][codex-radio] controls
+make common class and importance values visible without opening menus. Native
+inline radios and checkboxes sit in owned wrapping flex containers, keeping
+neighboring options close without stretching them into equal-width columns or
+changing component appearance.
 
 The assessment dialog owns the selected preset and the retained custom-class
 input separately. The final class row places the **Custom** radio and an always
@@ -250,14 +268,50 @@ through the existing assessment rules, while typing keeps the unfinished draft
 until blur. Recognizable manual source edits resynchronize the controls. Unknown
 importance values retain a radio choice while they remain in the source.
 
-The Stage switch is explicit for newly opened pages and restores enabled for an
-existing staged draft. While enabled, the dialog coalesces edits into exact
-reviewed snapshots and flushes them before close or batch preparation. A failed
-flush preserves the form. Unstaging waits for an active synchronization before
-removing the draft, so a late synchronization cannot recreate it.
+Both presentations order controls as shared class, WikiProject selection, and
+conditional Video games details. Video games is one checkbox alongside ACG and
+the other projects. Its selection maps to the existing `NotVG` importance
+sentinel, preserving the domain and storage contracts. Clearing it hides
+importance, task forces, maintenance, and registration together, while shared
+class and other-project edits remain valid. The form remembers the last
+in-scope importance for rechecking; recognized manual source changes refresh that
+value. New assessments select Video games, and existing out-of-scope source
+restores it cleared. Visibility never bypasses the exact-lead registration check.
 
-**Submit (+N)** prepares a separate batch confirmation with page selection,
-change comparisons, exact summaries, and combined selected registration. Queue
+Registration in the ordinary form is one checkbox within the
+New-page registration Field in the Video games section. Its label names the Video games new-page list and
+includes the creation date. Eligible new pages, including subpages, start
+selected; restored drafts retain their selection and ineligible pages retain
+their explanation. Assessment and batch confirmation have no registration
+comparison or summary editor. Preview owns only the proposed talk-page lead,
+talk comparison, and talk summary. Registration source,
+generated summaries, stored custom summaries, and reviewed save preconditions
+remain owned by the existing application and staging workflows. Removing the
+unused presentation bindings does not change the reviewed draft schema or
+silently discard stored registration summaries.
+
+Ordinary assessments open compact and always stage their drafts. Removing the
+Stage switch gives every ordinary assessment the same review path. The feature
+owner queues the initial review after mounting without a wiki save, and later
+changes coalesce into exact reviewed snapshots before dismissal or batch
+preparation. **Next**, or **Next (+N)** when other pages are queued, synchronizes
+the latest form and opens a separate confirmation even for one page. If the
+current page was removed from the queue, Next stages the form again before
+preparing that review. A storage failure preserves the form instead of bypassing
+confirmation with a direct wiki save.
+
+**Don't stage** removes only the current page from the queue and closes the form.
+It cancels pending synchronization and waits for an active synchronization before
+removal, so a late synchronization cannot recreate the discarded draft. The
+header close control and Escape instead flush pending changes and retain the
+draft. Removal or flush failure keeps the form open with an error. The reviewed
+queue schema, account/wiki scope, and cross-tab lock remain unchanged.
+Queued-draft editing starts expanded, applies only through **Apply changes**, and
+retains its **Cancel** action for closing without applying the editor's changes.
+
+The separate batch confirmation contains page selection,
+talk comparisons, and exact talk summaries. Registration choices from the
+selected drafts still feed one combined registration operation. Queue
 editing reuses the assessment form with a draft-only Apply action. Removing or
 editing a row validates the original queue fingerprint and page identity under
 the same exclusive lock, then invalidates registration for fresh preparation.
@@ -282,12 +336,14 @@ through the remaining interval before releasing it. They cannot turn an already
 confirmed edit into a failed or uncertain save. Reviewed-queue storage failures
 still stop before further wiki edits.
 
-Collapse retains the same mounted owner and draft in a compact Codex Message
-panel. Its fields, toggles, icons, select controls, and progress bars use default
-Codex appearance. An owned grid inside the Message's content holds the title,
+Ordinary startup and Collapse retain the same mounted owner and draft in a
+compact panel using Codex’s normal surface background. Class and importance use
+the same native radio fieldsets as the expanded form; fields, icons, and
+progress bars keep default Codex appearance. An owned grid holds the title,
 scrollable fields, and footer separately, so the focused Expand action and the
-other footer controls stay visible while the form scrolls. The native Message
-icon, padding, and component wrappers keep their default layout. Expand and the page-tool launcher restore the active view and
+other footer controls stay visible while the form scrolls. The compact container
+does not use a notice Message as its form background or override component
+internals. Expand and the page-tool launcher restore the active view and
 focus. The dialog remains mounted while collapsed, preserving draft and pending
 batch progress; disposal releases synchronization timers, queue subscriptions,
 media-query listeners, and the restore handler. Saving prevents dismissal and
@@ -298,9 +354,30 @@ its open form.
 Generated assessment summaries describe changes in English: class and importance
 use old→new values, and project, task-force, and maintenance selections use add or
 remove wording. Existing unknown labels and the source-attribution marker are
-preserved. New assessments retain the ordinary banner summary. Project banners
-are placed after leading notices and history, while unrelated lead text and
-subsequent discussion remain untouched.
+preserved. New assessments retain the ordinary banner summary.
+
+The managed shell follows the position described in Wikipedia’s
+[talk-page layout guide][talk-page-layout]: after recognizable nominations,
+notices, language guidance, and history, and before requests, attribution,
+metadata, and archive banners. Only the shell moves. Other banner calls keep
+their source and relative order, existing project order inside the shell remains
+unchanged, and unknown banners are not assigned a speculative rank. Lead-only
+scanning protects opaque source and discussion text. Relocation retains comments
+and newline style and is idempotent. Moving a shell removes empty separator lines
+left at the start of the lead while preserving surrounding source and discussion
+text. If known earlier and later banner groups
+already contradict each other, relocation leaves the shell in place for manual
+review instead of sorting unrelated banners. Unit regressions cover movement in
+both directions, missing notice anchors, all documented later-banner groups,
+unknown and opaque source, comments, CRLF, and repeated application.
+
+Chinese deletion history includes [`Old vfd multi`][old-vfd-history] and its
+verified redirects `Vfd-kept`, `Oldafdfull`, `Oldmfd`, `存廢討論被保留`, and
+`頁面存廢討論被保留`, with Simplified Chinese spellings recognized too. The
+related historical [`Multidel`][multidel-history] and [`Drv-kept`][drv-history]
+templates also precede the assessment, following Wikipedia's
+[talk-page layout guide][talk-page-layout]. These names are maintained in the
+local banner policy rather than resolved through runtime template requests.
 
 AI assistance covered adaptation of the supplied scripts into typed owners,
 queue confirmation/editing, compact presentation, request pacing, and regression
@@ -312,6 +389,75 @@ sizes. Manual screen-reader and supported-host contrast review remain release
 checks under the shared UI policy.
 
 ## Build and verification
+
+For `0.1.3-post.6`, AI assistance covered the always-staged ordinary assessment flow, removal of
+its staging switch, Next and Don't stage labels, and regression updates. The
+regressions cover explicit current-page discard, synchronization races and
+storage failures, retained drafts on dismissal, and confirmation before wiki
+writes. The complete `npm run verify` pipeline passed 1,856 unit/service tests,
+315 Playwright scenarios, all artifact checks, and Revision Copy's seven-skin
+offline checks; the same 13 opt-in capture cases remain skipped. Offline visual
+inspection checked compact and expanded views at 375, 683, and 1366 CSS pixels,
+including Chinese labels and longer translations. The maintained category
+screenshots are unaffected because category assessment retains its existing
+save behavior. Manual screen-reader and supported-host contrast acceptance
+remain release checks under the shared UI policy.
+
+The `0.1.3-post.5` verification passed the complete `npm run verify` pipeline:
+1,850 unit/service tests, 314 Playwright scenarios, all artifact checks, and the
+separate Revision Copy skin runner, with the same 13 opt-in capture skips. Browser
+regressions assert the four peer `h2` sections in all five locales at the three
+shared viewport sizes. Offline visual inspection also checked the Chinese
+headings and compact layout at those sizes, without wiki writes.
+
+AI assistance covered the four peer assessment sections and compact heading
+hierarchy. Regression coverage checks the sibling section levels, retained
+fieldset names, and unchanged registration and staging behavior. Manual
+screen-reader and supported-host contrast acceptance remain release checks.
+The maintained category screenshots are unaffected by this assessment-form
+change.
+
+For `0.1.3-post.4`, AI assistance covered the native Codex field hierarchy and
+registration-field simplification in ordinary and batch review. Regression coverage checks native
+fieldset nesting and labels,
+accessible radio groups, default registration selection, removal of the
+registration previews and summary editors, and preservation of stored
+registration summaries through staging and saves. Manual screen-reader and
+supported-host contrast acceptance remain release checks. The maintained
+category screenshots are unaffected by these ordinary assessment-form changes.
+The `0.1.3-post.4` verification passed the complete `npm run verify` pipeline:
+1,850 unit/service tests, 314 Playwright scenarios, all artifact checks, and the
+separate Revision Copy skin runner. The same 13 opt-in capture cases remain
+skipped. Offline visual inspection checked native compact and expanded forms
+and registration at the three shared viewport sizes, without wiki writes.
+
+The latest release baseline had reverted the compact startup, default staging,
+project hierarchy, and native radio presentation introduced in `e9ea6c4`.
+The restoration includes the managed shell placement and retains the newer
+redirect-page and deletion-history fixes. The existing queue
+schema, exact reviewed source, and explicit wiki-save actions remain unchanged.
+AI assistance covered the history comparison, restoration, and regression
+updates. Unit and offline browser regressions cover default staging without a
+wiki write, project-branch visibility, retained importance, compact radios,
+keyboard focus, and protected redirects. Applying a queued edit also refreshes
+the importance remembered by the Video games checkbox, so toggling the project
+off and on retains the edited value. Manual screen-reader and supported-host
+contrast acceptance remain release checks. The maintained category screenshots
+are unaffected by this assessment-form restoration. For `0.1.3-post.3`, the
+complete `npm run verify` pipeline passed 1,847 unit/service tests, 313 Playwright
+scenarios, and the separate Revision Copy skin runner; the same 13 opt-in capture cases remain skipped.
+Offline visual inspection covered compact, scrolled Video games, cleared-project,
+and expanded views at all three shared viewport sizes, without wiki writes.
+
+AI assistance covered the redirect-page creation-date repair, deletion-history
+template classification, and their regressions. History names were checked against
+Chinese Wikipedia template source, documentation, and redirect lists. Unit checks
+cover new and existing shells, verified aliases, preserved history parameters,
+comments, discussions, and repeated application. Creation-date checks cover the
+supplied encoded-apostrophe redirect, independent source and destination dates,
+canonical title aliases, cache ownership, missing peers, and unreadable source.
+Offline browser checks open and cancel that redirect assessment without writes
+and save an explicit review only to its own talk page.
 
 AI assistance covered the registration-summary byte limit, article priority,
 namespace counts, and documentation. Focused regressions cover the 254/255/256
@@ -344,4 +490,10 @@ ledger. Offline browser fixtures remain separate automated tests. See the shared
 [UI guidelines](../ui-guidelines.md) and [documentation guide](../documentation.md)
 for interface and screenshot review requirements.
 
+[codex-field]: https://doc.wikimedia.org/codex/latest/components/demos/field.html
+[codex-forms]: https://doc.wikimedia.org/codex/latest/style-guide/constructing-forms.html
 [codex-radio]: https://doc.wikimedia.org/codex/latest/components/demos/radio.html
+[talk-page-layout]: https://en.wikipedia.org/wiki/Wikipedia:Talk_page_layout#Lead_(bannerspace)
+[old-vfd-history]: https://zh.wikipedia.org/wiki/Template:Old_vfd_multi/doc
+[multidel-history]: https://zh.wikipedia.org/wiki/Template:Multidel/doc
+[drv-history]: https://zh.wikipedia.org/wiki/Template:Drv-kept/doc

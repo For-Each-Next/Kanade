@@ -64,6 +64,7 @@ const PRE_PROJECT_BANNER_NAMES = new Set(
         'DYK talk',
         'DYKEntry',
         'DelistedGA',
+        'Drv-kept',
         'FA',
         'FAQ',
         'FL',
@@ -74,23 +75,53 @@ const PRE_PROJECT_BANNER_NAMES = new Set(
         'GA nominee',
         'Gs/talk notice',
         'ITN talk',
+        'Multidel',
         'New Zealand English',
         'Notice',
         'Old AfD',
         'Old CfD',
         'Old RfD',
         'Old VfD',
+        'Old vfd multi',
         'Old XfD multi',
         'Old moves',
         'Old peer review',
         'Old prod',
+        'Oldafdfull',
+        'Oldmfd',
         'On this day',
         'Peer review',
         'Skip to bottom',
         'Skip to talk',
         'Talk header',
         'Talk page of redirect',
+        'Vfd-kept',
         'Warning',
+    ].map(normalizeTalkBannerName),
+);
+const POST_PROJECT_BANNER_NAMES = new Set(
+    [
+        'Image requested',
+        'Photo requested',
+        'Map requested',
+        'Infobox requested',
+        'Connected contributor',
+        'Press',
+        'High traffic',
+        'Refideas',
+        'To do',
+        'Consensus',
+        'Reliable sources for medical articles',
+        'Copied',
+        'Ticket confirmation',
+        'Split article',
+        'Merged-from',
+        'Merged from',
+        'Merged-to',
+        'Merged to',
+        'Translated page',
+        'Section sizes',
+        'Archives',
     ].map(normalizeTalkBannerName),
 );
 const BANNER_SCAN_OPTIONS = {
@@ -552,7 +583,7 @@ export function updateTalkPageAssessment(
 ): string {
     const banners = buildAssessmentBanners(assessment, projectConfig, text);
     const result = replaceManagedTopTemplates(text, banners, projectConfig);
-    return placeProjectBannersAfterHistory(result);
+    return placeProjectBannerShell(result);
 }
 
 /**
@@ -816,20 +847,6 @@ export function isEmptyImportanceOnlyChange(
 }
 
 /**
- * Gets whether new-page-list registration should be checked by default.
- *
- * @param namespaceNumber - Current page namespace number.
- * @param title - Current normalized page title.
- * @returns Whether registration should default to checked.
- */
-export function shouldRegisterByDefault(
-    namespaceNumber: number,
-    title: string,
-): boolean {
-    return namespaceNumber === 0 || !String(title || '').includes('/');
-}
-
-/**
  * Replaces managed templates within the leading template sequence.
  *
  * @param source - Existing page source.
@@ -890,35 +907,64 @@ function isPreProjectBanner(name: string): boolean {
     const normalized = normalizeTalkBannerName(name);
     return (
         PRE_PROJECT_BANNER_NAMES.has(normalized) ||
-        /^(?:[條条]目[歷历]史|[優优]良[條条]目|特色[條条]目)$/u.test(normalized)
+        /^(?:[條条]目[歷历]史|[優优]良[條条]目|特色[條条]目|(?:[頁页]面)?存[廢废][討讨][論论]被保留)$/u.test(
+            normalized,
+        )
     );
 }
 
-function placeProjectBannersAfterHistory(source: string): string {
+/** Place only the managed shell between recognized lead notices and later banners. */
+function placeProjectBannerShell(source: string): string {
     const templates = readLeadingTemplates(source);
     const shell = templates.find((template) =>
         isBannerShellName(template.name),
     );
-    const anchor = templates
+    if (shell == null) return source;
+    const preceding = templates
         .filter((template) => isPreProjectBanner(template.name))
         .at(-1);
-    if (shell == null || anchor == null || shell.start >= anchor.end) {
+    const following = templates.find((template) =>
+        POST_PROJECT_BANNER_NAMES.has(normalizeTalkBannerName(template.name)),
+    );
+    // Moving the shell cannot repair contradictory non-project banner order.
+    if (preceding && following && preceding.end > following.start)
         return source;
-    }
+    const insertion =
+        preceding && shell.start < preceding.end
+            ? preceding.end
+            : following && shell.end > following.start
+              ? following.start
+              : null;
+    if (insertion == null) return source;
+
     const newline = source.includes('\r\n') ? '\r\n' : '\n';
-    const before = source.slice(0, shell.start);
-    let between = source.slice(shell.end, anchor.end);
-    // Remove only empty spacing left at the old shell position.
-    if (before === '') {
-        between = between.replace(/^\s+/u, '');
-    } else if (before.endsWith('\n')) {
-        between = between.replace(/^[ \t]*\r?\n/u, '');
+    let removalStart = shell.start;
+    let removalEnd = shell.end;
+    const followingBreak = /^[ \t]*\r?\n/u.exec(source.slice(shell.end));
+    if (source.slice(0, shell.start).trim() === '') {
+        // The first shell leaves no content needing its surrounding blank lines.
+        removalStart = 0;
+        removalEnd += /^[ \t]*(?:\r?\n[ \t]*)*/u.exec(
+            source.slice(shell.end),
+        )![0].length;
+    } else if (followingBreak) {
+        removalEnd += followingBreak[0].length;
+    } else if (shell.end === source.length) {
+        const precedingBreak = /\r?\n[ \t]*$/u.exec(
+            source.slice(0, shell.start),
+        );
+        removalStart -= precedingBreak?.[0].length ?? 0;
     }
-    let after = source.slice(anchor.end);
-    if (!/^[ \t]*\r?\n/u.test(after)) {
-        after = newline + after.replace(/^[ \t]+/u, '');
-    }
-    return before + between + newline + shell.source + after;
+    const remaining = source.slice(0, removalStart) + source.slice(removalEnd);
+    const offset =
+        insertion >= removalEnd
+            ? insertion - (removalEnd - removalStart)
+            : insertion;
+    const before = remaining.slice(0, offset);
+    const after = remaining.slice(offset);
+    const beforeBreak = before === '' || before.endsWith('\n') ? '' : newline;
+    const afterBreak = after === '' || /^\r?\n/u.test(after) ? '' : newline;
+    return before + beforeBreak + shell.source + afterBreak + after;
 }
 
 /**

@@ -1,6 +1,6 @@
 /**
  * @file src/wpvg-assessor/features/assessment/dialogs/assessment-dialog.css
- * Purpose: src / features / assessment / dialogs / assessment dialog module.
+ * Purpose: Structural layouts for assessment forms, batch reviews, and compact mode.
  *
  * Table of contents:
  * 1. Styles and responsive rules
@@ -22,15 +22,6 @@
 .kanade-wpvg-assessor-dialog__actions--stacked {
     align-items: stretch;
     flex-direction: column;
-}
-
-.kanade-wpvg-assessor-stage-toggle {
-    margin-inline-end: auto;
-}
-
-.kanade-wpvg-assessor-dialog__actions--stacked
-    .kanade-wpvg-assessor-stage-toggle {
-    margin-inline-end: 0;
 }
 
 .kanade-wpvg-assessor-batch-content {
@@ -91,17 +82,6 @@
     display: block;
 }
 
-.kanade-wpvg-assessor-batch-registration {
-    display: grid;
-    gap: var(--spacing-75, 0.75rem);
-    margin-block-start: var(--spacing-150, 1.5rem);
-}
-
-.kanade-wpvg-assessor-batch-registration p {
-    margin: 0;
-    overflow-wrap: anywhere;
-}
-
 .kanade-wpvg-assessor-batch-table summary {
     cursor: pointer;
 }
@@ -157,41 +137,15 @@
     grid-template-columns: minmax(0, 1fr);
 }
 
+.kanade-wpvg-assessor-controls {
+    display: grid;
+    gap: var(--spacing-150, 1.5rem);
+}
+
 .kanade-wpvg-assessor-controls,
 .kanade-wpvg-assessor-source,
 .kanade-wpvg-assessor-registration {
     min-inline-size: 0;
-}
-
-.kanade-wpvg-assessor-staged-reviews {
-    min-inline-size: 0;
-}
-
-.kanade-wpvg-assessor-staged-review + .kanade-wpvg-assessor-staged-review {
-    margin-block-start: var(--spacing-150, 1.5rem);
-}
-
-.kanade-wpvg-assessor-staged-review summary {
-    overflow-wrap: anywhere;
-}
-
-.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-staged-source {
-    background-color: var(--background-color-neutral-subtle, #f8f9fa);
-    border: var(--border-width-base, 1px) solid
-        var(--border-color-muted, #dadde3);
-    direction: ltr;
-    font-family: var(--font-family-monospace, monospace);
-    font-size: var(--font-size-small, 0.875rem);
-    line-height: var(--line-height-medium, 1.6);
-    margin: 0;
-    overflow-wrap: anywhere;
-    padding: var(--spacing-75, 0.75rem);
-    white-space: pre-wrap;
-}
-
-.kanade-wpvg-assessor-staged-summary {
-    margin: 0;
-    overflow-wrap: anywhere;
 }
 
 .kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-section-title {
@@ -202,14 +156,11 @@
     margin: 0 0 var(--spacing-25, 0.25rem);
 }
 
-.kanade-wpvg-assessor-rating-grid {
-    display: grid;
-    gap: var(--spacing-100, 1rem);
-    grid-template-columns: minmax(0, 1fr);
-    margin-block-start: var(--spacing-100, 1rem);
+.kanade-wpvg-assessor-section {
+    min-inline-size: 0;
 }
 
-.kanade-wpvg-assessor-section {
+.kanade-wpvg-assessor-video-games {
     min-inline-size: 0;
 }
 
@@ -236,16 +187,8 @@
     margin-block-end: var(--spacing-50, 0.5rem);
 }
 
-.kanade-wpvg-assessor-registration-choice,
-.kanade-wpvg-assessor-dialog .kanade-wpvg-assessor-registration-message {
-    margin-block: var(--spacing-100, 1rem) 0;
-}
-
-.kanade-wpvg-assessor-list-review {
-    margin-block-start: var(--spacing-100, 1rem);
-}
-
 .kanade-wpvg-assessor-mini {
+    background-color: var(--background-color-base, #fff);
     box-sizing: border-box;
     inline-size: 22rem;
     inset-block-end: max(1rem, env(safe-area-inset-bottom));
@@ -253,6 +196,7 @@
     max-block-size: 75vh;
     max-inline-size: calc(100vw - 2rem);
     overflow-wrap: anywhere;
+    padding: var(--spacing-75, 0.75rem);
     position: fixed;
     z-index: 500;
 }
@@ -261,7 +205,7 @@
     display: grid;
     gap: var(--spacing-75, 0.75rem);
     grid-template-rows: auto minmax(0, 1fr) auto;
-    /* Leave room for the native Message padding and border. */
+    /* Keep the owned surface padding inside the viewport bound. */
     max-block-size: calc(75vh - 2rem);
     min-block-size: 0;
     min-inline-size: 0;
@@ -297,7 +241,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.kanade-wpvg-assessor-mini__stage-toggle,
 .kanade-wpvg-assessor-mini__submit {
     grid-column: 1 / -1;
 }
@@ -305,12 +248,6 @@
 .kanade-wpvg-assessor-mini__form {
     display: grid;
     gap: var(--spacing-100, 1rem);
-    min-inline-size: 0;
-}
-
-.kanade-wpvg-assessor-mini__field {
-    display: grid;
-    gap: var(--spacing-50, 0.5rem);
     min-inline-size: 0;
 }
 

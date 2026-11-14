@@ -3,6 +3,43 @@
 Notable changes to Kanade are recorded here. All four tools share one project
 version and are built as independently installable scripts.
 
+## 0.1.4 - 2026-11-14
+
+### Changed
+
+- **Article Assessor:** open in compact mode with native class and importance
+  radios and Codex’s normal surface background. Shared class, Supported
+  WikiProjects, Video games, and Preview have peer section headings in the
+  expanded form; **Expand** opens Preview.
+- **Article Assessor:** stage ordinary assessments automatically. **Next** opens
+  confirmation for one or several pages, and wiki edits require **Confirm and save**.
+  **Don't stage** removes only the current page's draft; closing the window or
+  pressing Escape retains pending changes. Storage failures retain the open form.
+- **Article Assessor:** keep shared class and other project choices editable
+  when Video games is cleared. Hide its importance, task forces, maintenance,
+  and registration controls, restoring the previous importance when rechecked.
+- **Article Assessor:** show new-page registration as one checkbox selected by
+  default for eligible pages, including subpages. Retain generated summaries and
+  custom summaries already stored in reviewed drafts.
+
+### Fixed
+
+- **Revision Copy:** bind MediaWiki from `window.mw` after ResourceLoader readiness
+  throughout the readable userscript bundle, preserving deferred callbacks,
+  strict mode, and duplicate-startup protection.
+- **Release automation:** restore the exact remote tag before checking its
+  annotation and commit, including when checkout replaces the local tag with
+  a plain commit reference.
+- **Article Assessor:** assess redirect pages themselves using their own creation
+  dates and talk pages, including encoded targets and section fragments.
+- **Article Assessor:** place assessment shells after recognized notices and
+  history, including verified deletion-history aliases, and before later
+  requests, attribution, metadata, and archives. Preserve unrelated source,
+  comments, newline style, banner order, and discussions; leave conflicting
+  surrounding order for manual review.
+- **Article Assessor:** retain compact keyboard launches, restore focus after
+  expanding, and keep controls and save progress usable in narrow viewports.
+
 ## 0.1.3 - 2026-11-09
 
 ### Added

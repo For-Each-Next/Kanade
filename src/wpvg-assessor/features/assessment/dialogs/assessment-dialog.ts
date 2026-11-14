@@ -5,7 +5,6 @@
  * Contents: Reactive assessment controls, exact reviews, staging, and dialog lifecycle.
  */
 
-import { NEW_PAGE_LIST_TITLE } from '../../../domain/new-page-list.ts';
 import { hasBatchTalkChange } from '../../../domain/batch-assessment.ts';
 import { cdxIconEdit, cdxIconTrash } from '@wikimedia/codex-icons';
 import projectConfig from '../../../domain/project-config.ts';
@@ -26,7 +25,6 @@ import {
     normalizeAssessmentClass,
     parseAssessment,
     previewTalkPageTopSection,
-    shouldRegisterByDefault,
 } from '../../../domain/assessment.ts';
 import {
     NOT_VIDEO_GAME_IMPORTANCE,
@@ -34,10 +32,7 @@ import {
     type RegistrationResult,
     type SelectionMap,
 } from '../../../domain/types.ts';
-import {
-    compareWikitext,
-    type WikitextComparison,
-} from '../../../domain/wikitext-comparison.ts';
+import { compareWikitext } from '../../../domain/wikitext-comparison.ts';
 import { buildNewPageListSummary } from '../../../domain/new-page-summary.ts';
 import { interfaceLocale, msg } from '../../../i18n/index.ts';
 import {
@@ -48,7 +43,6 @@ import {
     OTHER_PROJECT_OPTIONS,
     TASK_FORCE_OPTIONS,
     includeAssessmentValue,
-    type LabelledAssessmentOption,
 } from '../assessment-options.ts';
 import { buildEditSummary } from '../assessment-summary.ts';
 import type { VueModule, VueRef } from '../codex.ts';
@@ -79,7 +73,6 @@ interface DialogAction {
 }
 
 export interface AssessmentDialogOptions {
-    currentNamespace: number;
     onClose: () => void;
     onSaved?: () => void;
     registerRestore?: (restore: (() => void) | null) => void;
@@ -131,12 +124,17 @@ export function createAssessmentDialogBindings(
 ) {
     const { runtime, state } = options;
     const draftEditor = typeof options.onDraftApply === 'function';
+    const autoStage = !draftEditor && runtime.staging != null;
     const restoredReview =
         options.review ?? runtime.staging?.getReview(state.talkTitle);
     const assessment = Vue.reactive(state.assessment);
     const videoGamesDisabled = Vue.computed(function isVideoGamesDisabled() {
         return assessment.importance === NOT_VIDEO_GAME_IMPORTANCE;
     });
+    const videoGamesSelected = Vue.computed(() => !videoGamesDisabled.value);
+    let retainedVideoGamesImportance = videoGamesSelected.value
+        ? assessment.importance
+        : '';
     const classSelection = Vue.ref(getPresetClass(assessment.className));
     const classInput = Vue.ref(
         classSelection.value ? '' : getClassLabel(assessment.className),
@@ -146,43 +144,21 @@ export function createAssessmentDialogBindings(
     });
     const importanceOptions = Vue.computed(function getImportanceOptions() {
         return includeAssessmentValue(
-            IMPORTANCE_OPTIONS,
-            assessment.importance,
+            IMPORTANCE_OPTIONS.filter(
+                (option) => option.value !== NOT_VIDEO_GAME_IMPORTANCE,
+            ),
+            videoGamesSelected.value ? assessment.importance : '',
         );
     });
     const otherProjectOptions = [
-        ...OTHER_PROJECT_OPTIONS,
+        ...OTHER_PROJECT_OPTIONS.filter((option) => option.id === 'acg'),
+        ...OTHER_PROJECT_OPTIONS.filter((option) => option.id !== 'acg'),
         ...getExistingOtherProjectOptions(state.page.text, projectConfig),
     ];
-    const miniSelectionGroups: Array<{
-        name: SelectionGroup;
-        label:
-            'dialog.taskForces' | 'dialog.maintenance' | 'dialog.otherProjects';
-        options: ReadonlyArray<LabelledAssessmentOption>;
-        videoGamesOnly: boolean;
-    }> = [
-        {
-            name: 'taskForces',
-            label: 'dialog.taskForces',
-            options: TASK_FORCE_OPTIONS,
-            videoGamesOnly: true,
-        },
-        {
-            name: 'maintenance',
-            label: 'dialog.maintenance',
-            options: MAINTENANCE_OPTIONS,
-            videoGamesOnly: true,
-        },
-        {
-            name: 'otherProjects',
-            label: 'dialog.otherProjects',
-            options: otherProjectOptions,
-            videoGamesOnly: false,
-        },
-    ];
     const open = Vue.ref(true);
-    const minimized = Vue.ref(false);
+    const minimized = Vue.ref(!draftEditor);
     const miniExpandButton = Vue.ref<FocusTarget | null>(null);
+    const miniHeading = Vue.ref<FocusTarget | null>(null);
     const assessmentHeading = Vue.ref<FocusTarget | null>(null);
     const batchContent = Vue.ref<FocusTarget | null>(null);
     const batchBackButton = Vue.ref<FocusTarget | null>(null);
@@ -202,8 +178,7 @@ export function createAssessmentDialogBindings(
         restoredReview?.listSummary ?? buildRegistrationSummary(state),
     );
     const shouldRegister = Vue.ref(
-        restoredReview?.shouldRegister ??
-            getDefaultRegistration(state, options.currentNamespace),
+        restoredReview?.shouldRegister ?? getDefaultRegistration(state),
     );
     const registration = Vue.ref(state.registration);
     const videoGamesAvailable = Vue.computed(function isVideoGamesAvailable() {
@@ -233,9 +208,9 @@ export function createAssessmentDialogBindings(
     let batchEditorToken: object | null = null;
     let batchSelectionRevision = 0;
     const batchPrepared = Vue.ref(false);
-    const preparedListSummary = Vue.ref('');
     const stagedCount = Vue.ref(runtime.staging?.count() ?? 0);
-    const currentStaged = Vue.ref(restoredReview != null);
+    const currentStaged = Vue.ref(autoStage);
+    let defaultStagePending = currentStaged.value && restoredReview == null;
     let stagedReviewKey =
         restoredReview == null ? null : getStagedReviewKey(restoredReview);
     let stagedEditRevision = 0;
@@ -275,7 +250,6 @@ export function createAssessmentDialogBindings(
         batchEntries.value = [];
         batchSelectedTitles.value = [];
         batchPrepared.value = false;
-        preparedListSummary.value = '';
         if (batchPreparationPending) {
             batchPreparationPending = false;
             preparing.value = false;
@@ -287,7 +261,8 @@ export function createAssessmentDialogBindings(
     function refreshStagedCount(): void {
         stagedCount.value = runtime.staging?.count() ?? 0;
         const review = runtime.staging?.getReview(state.talkTitle);
-        currentStaged.value = !unstagingRequested && review != null;
+        currentStaged.value =
+            !unstagingRequested && (defaultStagePending || review != null);
         if (review == null) {
             stagedReviewKey = null;
         }
@@ -353,12 +328,6 @@ export function createAssessmentDialogBindings(
         if (registrationDisabled.value) {
             shouldRegister.value = false;
         }
-        logRegistrationPreview(
-            runtime,
-            registration.value,
-            shouldRegister,
-            showRegistrationPreview.value,
-        );
         scheduleStagedReview();
     }
     function setClassName(value: unknown): void {
@@ -407,7 +376,23 @@ export function createAssessmentDialogBindings(
             return;
         }
         assessment.importance = value;
+        if (value !== NOT_VIDEO_GAME_IMPORTANCE) {
+            retainedVideoGamesImportance = value;
+        }
         refreshAssessment();
+    }
+    function setVideoGamesSelected(value: boolean): void {
+        if (
+            typeof value !== 'boolean' ||
+            saving.value ||
+            preparing.value ||
+            value === videoGamesSelected.value
+        ) {
+            return;
+        }
+        setImportance(
+            value ? retainedVideoGamesImportance : NOT_VIDEO_GAME_IMPORTANCE,
+        );
     }
     function setSelection(
         group: SelectionGroup,
@@ -435,6 +420,9 @@ export function createAssessmentDialogBindings(
         const parsed = parseAssessment(projectConfig, value);
         if (parsed != null) {
             Object.assign(assessment, parsed);
+            if (parsed.importance !== NOT_VIDEO_GAME_IMPORTANCE) {
+                retainedVideoGamesImportance = parsed.importance;
+            }
             classSelection.value = getPresetClass(assessment.className);
             if (classSelection.value === '') {
                 classInput.value = getClassLabel(assessment.className);
@@ -466,14 +454,6 @@ export function createAssessmentDialogBindings(
         runtime.logger.debug('assessment-summary.edited');
         scheduleStagedReview();
     }
-    function setListSummary(value: string): void {
-        if (saving.value || preparing.value) {
-            return;
-        }
-        invalidatePreparedBatch();
-        listSummary.value = value;
-        scheduleStagedReview();
-    }
     function setRegister(value: boolean): void {
         if (saving.value || preparing.value || registrationDisabled.value) {
             return;
@@ -481,12 +461,6 @@ export function createAssessmentDialogBindings(
         invalidatePreparedBatch();
         shouldRegister.value = value;
         runtime.logger.debug('registration-selection.changed', { value });
-        logRegistrationPreview(
-            runtime,
-            registration.value,
-            shouldRegister,
-            showRegistrationPreview.value,
-        );
         scheduleStagedReview();
     }
     function close(): void {
@@ -515,7 +489,53 @@ export function createAssessmentDialogBindings(
         }
     }
     async function onCancel(): Promise<void> {
-        if (saving.value || batchEditor.value != null) {
+        if (
+            !active ||
+            saving.value ||
+            unstagingRequested ||
+            batchEditor.value != null
+        ) {
+            return;
+        }
+        if (!autoStage) {
+            close();
+            return;
+        }
+        invalidatePreparedBatch();
+        clearTimeout(stagedSyncTimer);
+        stagedSyncTimer = void 0;
+        defaultStagePending = false;
+        unstagingRequested = true;
+        currentStaged.value = false;
+        preparing.value = true;
+        stagingPending = true;
+        try {
+            // A pending storage write must settle before removing its draft.
+            await stagedSyncPromise?.catch(() => {});
+            stagingPending = true;
+            await runtime.staging!.unstage(state.talkTitle);
+            stagedReviewKey = null;
+            runtime.logger.info('assessment.discarded');
+            close();
+        } catch (error) {
+            runtime.logger.error('assessment.discard.failed', { error });
+            unstagingRequested = false;
+            reportStagedSyncError(error);
+        } finally {
+            unstagingRequested = false;
+            stagingPending = false;
+            if (active) {
+                preparing.value = false;
+            }
+        }
+    }
+    async function onDismiss(): Promise<void> {
+        if (
+            !active ||
+            saving.value ||
+            unstagingRequested ||
+            batchEditor.value != null
+        ) {
             return;
         }
         try {
@@ -524,7 +544,10 @@ export function createAssessmentDialogBindings(
             reportStagedSyncError(error);
             return;
         }
-        runtime.logger.info('dialog.cancelled');
+        if (unstagingRequested) {
+            return;
+        }
+        runtime.logger.info('dialog.closed');
         close();
     }
     function onOpenChange(value: boolean): void {
@@ -540,16 +563,18 @@ export function createAssessmentDialogBindings(
             return;
         }
         if (!value) {
-            void onCancel();
+            void onDismiss();
         }
     }
-    function focusCurrentView() {
-        void Vue.nextTick(() => {
+    function focusCurrentView(initialCompact = false) {
+        const focus = () => {
             if (!active || !open.value || batchEditor.value != null) {
                 return;
             }
             const target = minimized.value
-                ? miniExpandButton.value
+                ? initialCompact
+                    ? miniHeading.value
+                    : miniExpandButton.value
                 : batchConfirmOpen.value
                   ? batchContent.value
                   : assessmentHeading.value;
@@ -561,6 +586,17 @@ export function createAssessmentDialogBindings(
             ) {
                 element.focus({ preventScroll: true });
             }
+        };
+        void Vue.nextTick(() => {
+            if (minimized.value) {
+                focus();
+                return;
+            }
+            // Codex opens its focus trap through two awaited render ticks.
+            // Restore the owned heading after that native focus settles.
+            void Vue.nextTick(() => {
+                void Vue.nextTick(focus);
+            });
         });
     }
     function onCollapse() {
@@ -610,7 +646,7 @@ export function createAssessmentDialogBindings(
     function scheduleStagedReview() {
         clearTimeout(stagedSyncTimer);
         stagedSyncTimer = void 0;
-        if (!active || saving.value || !currentStaged.value) {
+        if (!active || saving.value || !autoStage || unstagingRequested) {
             return;
         }
         stagedEditRevision += 1;
@@ -625,7 +661,7 @@ export function createAssessmentDialogBindings(
             return stagedSyncPromise.then(() => {
                 if (
                     active &&
-                    currentStaged.value &&
+                    !unstagingRequested &&
                     stagedEditRevision !== stagedSavedRevision
                 )
                     return flushStagedReview();
@@ -634,7 +670,7 @@ export function createAssessmentDialogBindings(
         if (
             !active ||
             saving.value ||
-            !currentStaged.value ||
+            !autoStage ||
             unstagingRequested ||
             runtime.staging == null
         ) {
@@ -647,7 +683,7 @@ export function createAssessmentDialogBindings(
         });
         return stagedSyncPromise;
         async function synchronize() {
-            while (active && currentStaged.value && !saving.value) {
+            while (active && !unstagingRequested && !saving.value) {
                 const review = captureReview();
                 const key = getStagedReviewKey(review);
                 const editRevision = stagedEditRevision;
@@ -658,6 +694,7 @@ export function createAssessmentDialogBindings(
                     return;
                 }
                 await runtime.staging!.stage(state, review);
+                defaultStagePending = false;
                 stagedReviewKey = key;
                 stagedSavedRevision = editRevision;
                 if (active) {
@@ -670,9 +707,10 @@ export function createAssessmentDialogBindings(
         }
     }
     function reportStagedSyncError(error: unknown): void {
-        if (!active) {
+        if (!active || unstagingRequested) {
             return;
         }
+        defaultStagePending = false;
         try {
             refreshStagedCount();
         } catch {
@@ -680,59 +718,6 @@ export function createAssessmentDialogBindings(
         }
         runtime.logger.error('assessment.stage-sync.failed', { error });
         setStatus(getErrorMessage(error), true);
-    }
-    async function onStage(
-        nextStaged: boolean = !currentStaged.value,
-    ): Promise<void> {
-        if (
-            saving.value ||
-            preparing.value ||
-            !active ||
-            !runtime.staging ||
-            typeof nextStaged !== 'boolean' ||
-            nextStaged === currentStaged.value
-        ) {
-            return;
-        }
-        const removing = !nextStaged;
-        clearTimeout(stagedSyncTimer);
-        stagedSyncTimer = void 0;
-        unstagingRequested = removing;
-        currentStaged.value = nextStaged;
-        stagingPending = true;
-        preparing.value = true;
-        try {
-            if (removing) {
-                await stagedSyncPromise?.catch(() => {});
-                stagingPending = true;
-                await runtime.staging.unstage(state.talkTitle);
-                stagedReviewKey = null;
-            } else {
-                await flushStagedReview();
-            }
-            if (!active) {
-                return;
-            }
-            invalidatePreparedBatch();
-            refreshStagedCount();
-            if (!removing) {
-                runtime.logger.info('assessment.staged');
-            }
-            setStatus(removing ? '' : msg('dialog.staged'), false);
-        } catch (error) {
-            if (!active) {
-                return;
-            }
-            runtime.logger.error('assessment.stage.failed', { error });
-            unstagingRequested = false;
-            reportStagedSyncError(error);
-        } finally {
-            unstagingRequested = false;
-            stagingPending = false;
-            if (active) {
-                preparing.value = false;
-            }
-        }
     }
     async function prepareBatch(
         review: DialogSaveReview,
@@ -774,7 +759,6 @@ export function createAssessmentDialogBindings(
     function installPreparedBatch(batch: PreparedAssessmentBatch): void {
         preparedBatch = batch;
         batchPrepared.value = true;
-        preparedListSummary.value = batch.registrationSummary;
         batchProgress.value = {
             completed: 0,
             total:
@@ -799,7 +783,6 @@ export function createAssessmentDialogBindings(
         );
         preparedBatch = null;
         batchPrepared.value = false;
-        preparedListSummary.value = '';
         batchProgress.value = {
             completed: 0,
             total: 0,
@@ -926,7 +909,6 @@ export function createAssessmentDialogBindings(
         };
         batchEditorToken = token;
         batchEditor.value = createAssessmentDialogComponent(Vue, {
-            currentNamespace: editState.subjectInfo.namespaceNumber,
             onClose() {
                 if (!active || batchEditorToken !== token) {
                     return;
@@ -1002,6 +984,9 @@ export function createAssessmentDialogBindings(
     }
     function syncCurrentBatchDraft(entry: StagedAssessment): void {
         Object.assign(assessment, structuredClone(entry.state.assessment));
+        if (assessment.importance !== NOT_VIDEO_GAME_IMPORTANCE) {
+            retainedVideoGamesImportance = assessment.importance;
+        }
         state.previewDirty = entry.state.previewDirty;
         state.summaryDirty = entry.state.summaryDirty;
         classSelection.value = getPresetClass(assessment.className);
@@ -1041,7 +1026,6 @@ export function createAssessmentDialogBindings(
         preparing.value = true;
         preparedBatch = null;
         batchPrepared.value = false;
-        preparedListSummary.value = '';
         let removed = false;
         try {
             const nextBatch = await runtime.staging!.removeFromBatch(
@@ -1097,6 +1081,7 @@ export function createAssessmentDialogBindings(
         if (
             saving.value ||
             preparing.value ||
+            unstagingRequested ||
             !active ||
             batchConfirmOpen.value ||
             minimized.value ||
@@ -1133,11 +1118,11 @@ export function createAssessmentDialogBindings(
                 preparing.value = false;
             }
         }
-        if (!active || !open.value) {
+        if (!active || !open.value || unstagingRequested) {
             return;
         }
         const review = captureReview();
-        if (runtime.staging != null && runtime.staging.count() > 0) {
+        if (runtime.staging != null) {
             const batch = await prepareBatch(review);
             if (
                 !active ||
@@ -1225,7 +1210,6 @@ export function createAssessmentDialogBindings(
             batchConfirmOpen.value = false;
             preparedBatch = null;
             batchPrepared.value = false;
-            preparedListSummary.value = '';
             if (!active) {
                 return;
             }
@@ -1259,15 +1243,6 @@ export function createAssessmentDialogBindings(
             isRegistrationDisabled(registration.value)
         );
     });
-    const registrationEligible = Vue.computed(function isEligible() {
-        return videoGamesAvailable.value && registration.value.eligible;
-    });
-    const showRegistrationPreview = Vue.computed(function canPreview() {
-        return (
-            videoGamesAvailable.value &&
-            canShowRegistrationPreview(registration.value)
-        );
-    });
     const registrationLabel = Vue.computed(function getLabel() {
         if (!videoGamesAvailable.value) {
             return msg('registration.noVideoGamesBanner');
@@ -1275,22 +1250,6 @@ export function createAssessmentDialogBindings(
         return getRegistrationLabel(
             registration.value,
             state.subjectInfo.creationDate,
-        );
-    });
-    const listComparison = Vue.computed(function getComparison() {
-        if (batchPrepared.value && preparedBatch != null) {
-            const batchRegistration = preparedBatch.registration;
-            return batchRegistration == null
-                ? { changed: false, rows: [] }
-                : compareWikitext(
-                      batchRegistration.snapshot.text,
-                      batchRegistration.proposedText,
-                  );
-        }
-        return buildRegistrationComparison(
-            state,
-            registration.value,
-            shouldRegister.value && !registrationDisabled.value,
         );
     });
     const talkComparison = Vue.computed(function getTalkComparison() {
@@ -1329,22 +1288,6 @@ export function createAssessmentDialogBindings(
             batchSelectedCount.value < batchEntries.value.length
         );
     });
-    const batchRegistrationReview = Vue.computed(() => {
-        const registration2 = batchPrepared.value
-            ? preparedBatch?.registration
-            : null;
-        if (registration2 == null) {
-            return null;
-        }
-        return {
-            title: NEW_PAGE_LIST_TITLE,
-            summary: preparedBatch!.registrationSummary,
-            comparison: compareWikitext(
-                registration2.snapshot.text,
-                registration2.proposedText,
-            ),
-        };
-    });
     const batchProgressMessage = Vue.computed(() => {
         const progress = batchProgress.value;
         if (progress.phase === 'complete') {
@@ -1373,9 +1316,12 @@ export function createAssessmentDialogBindings(
             stagedCount.value - (currentStaged.value ? 1 : 0),
         );
         return otherPages > 0
-            ? msg('dialog.submitWithCount', { count: otherPages })
-            : msg('dialog.save');
+            ? msg('dialog.nextWithCount', { count: otherPages })
+            : msg('dialog.next');
     });
+    const cancelLabel = msg(
+        autoStage ? 'dialog.discardDraft' : 'dialog.cancel',
+    );
     const miniAssessmentLabel = Vue.computed(() => {
         const stageMessage = currentStaged.value
             ? 'dialog.miniStaged'
@@ -1399,8 +1345,8 @@ export function createAssessmentDialogBindings(
                 id: 'cancel',
                 action: 'default',
                 weight: 'quiet',
-                label: msg('dialog.cancel'),
-                disabled: saving.value,
+                label: cancelLabel,
+                disabled: saving.value || unstagingRequested,
                 activate: onCancel,
             },
         ];
@@ -1417,18 +1363,14 @@ export function createAssessmentDialogBindings(
             : actions;
         return stackedActions.value ? visibleActions.reverse() : visibleActions;
     });
-    const displayedListSummary = Vue.computed(function getListSummary() {
-        return !batchPrepared.value
-            ? listSummary.value
-            : preparedListSummary.value;
-    });
-    const showListReview = Vue.computed(function canReviewList() {
-        return !batchPrepared.value
-            ? showRegistrationPreview.value && shouldRegister.value
-            : preparedBatch?.registration != null;
-    });
     unsubscribeStaging = runtime.staging?.subscribe(onStagedQueueChange);
     options.registerRestore?.(onExpand);
+    Vue.onMounted(() => {
+        focusCurrentView(true);
+        if (currentStaged.value) {
+            void flushStagedReview().catch(reportStagedSyncError);
+        }
+    });
     return {
         assessment,
         assessmentHeading,
@@ -1442,16 +1384,12 @@ export function createAssessmentDialogBindings(
         batchPrepared,
         batchProgress,
         batchProgressMessage,
-        batchRegistrationReview,
         batchRemovingTitle,
         batchReviewRows,
         batchSelectedCount,
+        cancelLabel,
         cdxIconEdit,
         cdxIconTrash,
-        miniClassOptions: Vue.computed(() => [
-            ...classOptions.value,
-            { value: '', label: msg('dialog.customClass') },
-        ]),
         classInput,
         classSelection,
         classOptions,
@@ -1462,19 +1400,15 @@ export function createAssessmentDialogBindings(
             draftEditor ? 'dialog.batchEditTitle' : 'dialog.title',
             { title: state.subjectTitle },
         ),
-        displayedListSummary,
         flushStagedReview,
         footerActions,
         importanceOptions,
         interfaceLocale,
-        listComparison,
         listSummary,
         maintenanceOptions: MAINTENANCE_OPTIONS,
         miniAssessmentLabel,
         miniExpandButton,
-        miniSelectionGroups,
-        miniSelectionChecked: (group: SelectionGroup, id: string) =>
-            (assessment[group] as SelectionMap)[id] === true,
+        miniHeading,
         minimized,
         msg,
         onAssessmentHeadingFocus,
@@ -1485,6 +1419,7 @@ export function createAssessmentDialogBindings(
         onBatchSelect,
         onBatchSelectAll,
         onCancel,
+        onDismiss,
         onCollapse,
         onConfirmBatch,
         onExpand,
@@ -1492,27 +1427,22 @@ export function createAssessmentDialogBindings(
         onOpenChange,
         onPreviewInput,
         onSave,
-        onStage,
         onSummaryInput,
         open,
         otherProjectOptions,
         previewText,
         preparing,
         registrationDisabled,
-        registrationEligible,
         registrationLabel,
         saving,
         setClassName,
         selectClass,
         setImportance,
-        setListSummary,
+        setVideoGamesSelected,
         setRegister,
         setSelection,
         shouldRegister,
-        showRegistrationPreview,
-        showListReview,
         stackedActions,
-        stagingAvailable: runtime.staging != null,
         status,
         statusType,
         summary,
@@ -1520,6 +1450,7 @@ export function createAssessmentDialogBindings(
         talkComparison,
         taskForceOptions: TASK_FORCE_OPTIONS,
         videoGamesDisabled,
+        videoGamesSelected,
     };
 }
 
@@ -1552,21 +1483,6 @@ function createAssessmentPreview(state: DialogState): string {
 function buildRegistrationSummary(state: DialogState): string {
     const title = state.subjectInfo.listedTitle || state.subjectTitle;
     return buildNewPageListSummary(title, state.subjectInfo.creationDate);
-}
-
-function buildRegistrationComparison(
-    state: DialogState,
-    registration: RegistrationResult,
-    shouldRegister: boolean,
-): WikitextComparison {
-    if (!shouldRegister || !registration.changed) {
-        return { changed: false, rows: [] };
-    }
-    return compareWikitext(state.newPageList.text, registration.proposedText);
-}
-
-function canShowRegistrationPreview(registration: RegistrationResult): boolean {
-    return registration.eligible && !registration.alreadyRegistered;
 }
 
 function isRegistrationDisabled(registration: RegistrationResult): boolean {
@@ -1609,13 +1525,9 @@ function formatInterfaceDate(date: Date, includeYear = false): string {
     }).format(date);
 }
 
-function getDefaultRegistration(
-    state: DialogState,
-    currentNamespace: number,
-): boolean {
+function getDefaultRegistration(state: DialogState): boolean {
     const registration = state.registration;
     return (
-        shouldRegisterByDefault(currentNamespace, state.subjectTitle) &&
         state.assessment.importance !== NOT_VIDEO_GAME_IMPORTANCE &&
         registration.eligible &&
         !registration.alreadyRegistered
@@ -1631,33 +1543,6 @@ function reportSavePhase(
             ? msg('dialog.updatingNewPageList')
             : msg('dialog.savingTalkPage');
     setStatus(text, false);
-}
-
-function logRegistrationPreview(
-    runtime: PageAssessorRuntime,
-    registration: RegistrationResult,
-    shouldRegister: VueRef<boolean>,
-    showPreview: boolean,
-): void {
-    const visibility = showPreview ? 'visible' : 'hidden';
-    runtime.logger.debug('registration-preview.updated', {
-        registration: summarizeRegistration(registration),
-        shouldRegister: shouldRegister.value,
-        visibility,
-    });
-}
-
-function summarizeRegistration(
-    registration: RegistrationResult,
-): Record<string, unknown> {
-    return {
-        alreadyRegistered: registration?.alreadyRegistered,
-        changed: registration?.changed,
-        earliestDate: registration?.earliestDate?.toISOString(),
-        eligible: registration?.eligible,
-        existing: registration?.existing,
-        proposedCharacterCount: registration?.proposedText?.length,
-    };
 }
 
 function getClassLabel(value: string): string {
