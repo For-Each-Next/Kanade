@@ -1,6 +1,6 @@
 # Architecture
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-14.
 
 <!-- toc:start -->
 
@@ -123,9 +123,12 @@ current tab. Its memory-only cache retains up to 200 entries, keyed by wiki host
 API script path, and exact revision ID. Repeated content mounts and comparisons
 against the same newer revision reuse that date; different revision IDs or wikis
 stay separate. Invalid responses and failures are removed so a later lookup can
-retry. This avoids repeated requests without changing the first lookup's network
-latency. No localized date text is parsed and no timestamp is inferred from page
-rendering or cache times.
+retry. Each timestamp request has a five-second AJAX timeout; a timeout uses
+the existing page-only fallback and is not retained in the cache. This bounds
+the toolbar's wait for revision metadata without inventing a date or changing
+successful results. Identical requests still share the same deadline. No
+localized date text is parsed and no timestamp is inferred from page rendering
+or cache times.
 
 Diff views use the older and newer revision IDs from MediaWiki's comparison context.
 Their revision target is `Special:Diff/old/new`, and its label is the newer revision's
@@ -149,7 +152,9 @@ interface.
 
 ## DOM and lifecycle
 
-Wait for MediaWiki and required ResourceLoader modules before reading host globals.
+Wait for MediaWiki, `mediawiki.util`, `mediawiki.api`, and DOM readiness before
+reading page context. Notifications load on demand through `mw.notify`; an
+unavailable notification module cannot block the native row.
 Keep the startup owner at `Symbol.for('kanade.rev-copy.startup')` so repeated
 console, wiki, and userscript loading cannot create duplicate rows. Remount through the content hook when needed and
 discard outdated revision requests.
@@ -163,6 +168,20 @@ Before mounting, recheck the page identity, content container, and request
 generation; a replaced page cannot receive an obsolete row, even before its content
 hook runs. Offline browser tests cover deferred insertion, fallback, duplicate
 hooks, content replacement, and clipboard completion.
+
+AI assistance covered the bounded revision request, removal of the notification
+startup dependency, and offline regressions for a stalled request, page-only
+copying, timeout-cache eviction, and startup without notifications. Successful
+rows keep the same appearance and deferred insertion. The shorter deadline
+trades revision-link availability on slow connections for access to page copying;
+reload or a new content mount can retry an expired lookup. Automated checks do
+not establish independent human review.
+
+Verification on 2026-11-14 passed all dependency, source, documentation, build,
+identity, and distribution checks; 1,860 offline unit/service tests; 315
+Playwright scenarios; and Revision Copy's seven-skin production-bundle checks.
+The 13 opt-in capture scenarios remained skipped. Browser checks ran outside
+the sandbox after its local fixture server was blocked inside it.
 
 The preferred insertion target is `.vector-body-before-content`. Other skins use
 their equivalent boundary immediately above parsed page content. Mount a distinct

@@ -31,16 +31,18 @@ function createRevisionHost(
 ) {
     const values = { wgServerName: 'zh.wikipedia.org', wgScriptPath: '/w' };
     const requests = [];
+    const ajaxOptions = [];
     const host = {
         config: { get: (name) => values[name] },
         Api: class {
-            async get(parameters) {
+            async get(parameters, options) {
                 requests.push(parameters);
-                return response(parameters, requests.length);
+                ajaxOptions.push(options);
+                return response(parameters, requests.length, options);
             }
         },
     };
-    return { host, values, requests };
+    return { host, values, requests, ajaxOptions };
 }
 
 function useHost(host) {
@@ -151,6 +153,49 @@ test('failed pending requests are shared and discarded so the revision can retry
         assert.equal(await getRevisionTimestamp(123), timestamp);
         assert.equal(await getRevisionTimestamp(123), timestamp);
         assert.equal(requests.length, 2);
+    } finally {
+        restore();
+    }
+});
+
+test('revision requests time out after five seconds and can retry without caching the failure', async (context) => {
+    context.mock.timers.enable({ apis: ['setTimeout'] });
+    const { host, requests, ajaxOptions } = createRevisionHost(
+        ({ revids }, count, options) =>
+            count === 1
+                ? new Promise((_resolve, reject) => {
+                      setTimeout(
+                          () =>
+                              reject(new Error('Revision request timed out.')),
+                          options?.timeout ?? 30_000,
+                      );
+                  })
+                : revisionResponse(revids),
+    );
+    const restore = useHost(host);
+    try {
+        const first = getRevisionTimestamp(123);
+        const second = getRevisionTimestamp(123);
+        const rejected = Promise.allSettled([first, second]);
+        assert.equal(requests.length, 1);
+        assert.deepEqual(ajaxOptions, [{ timeout: 5000 }]);
+        let settled = false;
+        void rejected.then(() => {
+            settled = true;
+        });
+        context.mock.timers.tick(4999);
+        await Promise.resolve();
+        assert.equal(settled, false);
+        context.mock.timers.tick(1);
+        const results = await rejected;
+        assert.ok(results.every(({ status }) => status === 'rejected'));
+        assert.ok(
+            results.every(({ reason }) => /timed out/u.test(reason.message)),
+        );
+        assert.equal(await getRevisionTimestamp(123), timestamp);
+        assert.equal(await getRevisionTimestamp(123), timestamp);
+        assert.equal(requests.length, 2);
+        assert.deepEqual(ajaxOptions, [{ timeout: 5000 }, { timeout: 5000 }]);
     } finally {
         restore();
     }

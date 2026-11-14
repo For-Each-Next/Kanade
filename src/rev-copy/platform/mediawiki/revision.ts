@@ -9,16 +9,20 @@ import { isObject as isRecord } from '../../../library/data-validation/records';
 import { isRevisionTimestamp } from './response';
 
 const maxCachedTimestamps = 200;
+const revisionLookupTimeout = 5000;
 const tabCaches = new WeakMap<object, Map<string, Promise<string>>>();
 
 async function fetchRevisionTimestamp(revisionId: number): Promise<string> {
-    const response: unknown = await new mw.Api().get({
-        action: 'query',
-        prop: 'revisions',
-        revids: revisionId,
-        rvprop: 'ids|timestamp',
-        formatversion: 2,
-    });
+    const response: unknown = await new mw.Api().get(
+        {
+            action: 'query',
+            prop: 'revisions',
+            revids: revisionId,
+            rvprop: 'ids|timestamp',
+            formatversion: 2,
+        },
+        { timeout: revisionLookupTimeout },
+    );
     if (
         isRecord(response) &&
         isRecord(response.query) &&

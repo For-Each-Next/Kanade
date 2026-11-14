@@ -405,6 +405,26 @@ test('bootstrapping can precede ResourceLoader readiness', async () => {
     }
 });
 
+test('the native row starts when the optional notification module is unavailable', async () => {
+    const host = createHost();
+    const moduleRequests = [];
+    host.window.mw.loader.using = async (modules) => {
+        moduleRequests.push(Array.from(modules));
+        if (modules.includes('mediawiki.notification'))
+            throw new Error('The notification module is unavailable.');
+    };
+    try {
+        host.start();
+        await settle();
+        assert.ok(host.document.getElementById('kanade-rev-copy-row'));
+        assert.equal(host.requests.length, 1);
+        assert.deepEqual(moduleRequests, [['mediawiki.util', 'mediawiki.api']]);
+        assert.deepEqual(host.errors, []);
+    } finally {
+        host.dom.window.close();
+    }
+});
+
 for (const [label, config, url] of [
     ['edit', { wgAction: 'edit' }],
     ['history', { wgAction: 'history' }],

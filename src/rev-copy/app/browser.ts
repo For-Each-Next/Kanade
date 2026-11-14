@@ -15,11 +15,7 @@ function waitForMediaWiki(): Promise<void> {
 
 async function startRevCopy(): Promise<void> {
     await waitForMediaWiki();
-    await mw.loader.using([
-        'mediawiki.util',
-        'mediawiki.api',
-        'mediawiki.notification',
-    ]);
+    await mw.loader.using(['mediawiki.util', 'mediawiki.api']);
     if (document.readyState === 'loading') {
         await new Promise<void>((resolve) => {
             document.addEventListener('DOMContentLoaded', () => resolve(), {

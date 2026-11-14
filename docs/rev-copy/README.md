@@ -1,6 +1,6 @@
 # Revision Copy
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-14.
 
 Revision Copy adds a small copy toolbar above Wikimedia pages. It prepares wikitext for
 page links, exact revisions, sections, and translation or copy attribution. It
@@ -36,8 +36,9 @@ attribution text to review and copy. Click an individual wikitext link, or focus
 it and press Enter/Space, to select its text for native copying.
 
 The toolbar appears with its complete text once the revision date is available.
-Pages without a revision show the page link immediately; a failed date lookup
-also leaves a page-only toolbar.
+Pages without a revision show the page link immediately. A failed date lookup,
+including a request that exceeds five seconds, leaves a page-only toolbar.
+Reload to retry the revision lookup.
 
 The `#` control beside a page or section heading copies its section link. Hover,
 focus, or press ArrowDown to open the section menu. **Advanced copy** opens the

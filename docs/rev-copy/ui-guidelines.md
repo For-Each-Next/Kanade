@@ -1,6 +1,6 @@
 # Revision Copy interface behavior
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-14.
 
 Follow the shared [UI guidelines](../ui-guidelines.md) for all Codex controls.
 Use their default appearance; additional dialog CSS only arranges columns and
@@ -27,8 +27,8 @@ Set the row margin to zero, including its bottom margin. Preserve native heading
 article markup.
 
 Wait for the revision date before inserting the complete row and heading controls.
-If its lookup fails, insert the page-only row. Pages without an available revision
-show that row immediately.
+If its lookup fails or exceeds its five-second request timeout, insert the
+page-only row. Pages without an available revision show that row immediately.
 
 Display the page link and, when available, the revision link in parentheses, followed
 by **Copy** and **Tools** in that order. If no permanent or comparison link is
