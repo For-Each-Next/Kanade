@@ -1,5 +1,5 @@
 /**
- * @file src/library/wikitext-highlighting/conversion-rules.ts
+ * @file src/library/wikitext/conversion-rules.ts
  * Purpose: Recognizes and safely formats Chinese language-conversion rules.
  *
  * Contents: Rule recognition, protected values, and conservative syntax normalization.
@@ -16,7 +16,7 @@ import {
     type TopLevelRange,
     trimSourceRange,
     wikitext,
-} from '../wikitext/index.ts';
+} from './index.ts';
 
 const NOTE_TA_NAMES = new Set([
     'noteta',
@@ -40,7 +40,7 @@ interface ConversionRuleList {
     ruleCount: number;
 }
 
-export interface LanguageConversionRange extends SourceRange {
+interface LanguageConversionRange extends SourceRange {
     bodyEnd: number;
     bodyStart: number;
 }
@@ -48,7 +48,7 @@ export interface LanguageConversionRange extends SourceRange {
 type RuleListContainer = 'language-conversion' | 'noteta';
 
 /** Returns whether a normalized template name is a NoteTA alias. */
-export function isNoteTAName(name: string): boolean {
+function isNoteTAName(name: string): boolean {
     const normalized = wikitext.template.normalizeName(name);
     return (
         NOTE_TA_NAMES.has(normalized) ||
@@ -57,38 +57,11 @@ export function isNoteTAName(name: string): boolean {
 }
 
 /** Checks whether a NoteTA parameter can hold conversion rules. */
-export function isNoteTAConversionParameter(
+function isNoteTAConversionParameter(
     parameter: ParsedTemplateParameter,
 ): boolean {
     const name = parameter.name.toLocaleLowerCase();
     return name === 't' || /^(?:[1-9]|[12]\d|30)$/u.test(name);
-}
-
-/**
- * Finds language-variant keys within one absolute source range.
- *
- * @param source - Complete source text.
- * @param start - Rule-list start.
- * @param end - Rule-list end.
- * @returns Absolute source ranges for recognized destination keys.
- */
-export function findConversionKeyRanges(
-    source: string,
-    start: number,
-    end: number,
-): SourceRange[] {
-    const body = source.slice(start, end);
-    return splitConversionRanges(body, ';').flatMap(function findKey(part) {
-        const declaration = findConversionDeclaration(part.value);
-        return declaration == null
-            ? []
-            : [
-                  {
-                      end: start + part.start + declaration.key.end,
-                      start: start + part.start + declaration.key.start,
-                  },
-              ];
-    });
 }
 
 /**
@@ -129,7 +102,7 @@ export function findChineseConversionValueRanges(
 }
 
 /** Finds balanced top-level language-conversion constructs. */
-export function findLanguageConversionRanges(
+function findLanguageConversionRanges(
     source: string,
 ): LanguageConversionRange[] {
     const protectedRanges = mergeSourceRanges([

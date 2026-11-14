@@ -2,29 +2,7 @@
  * @file src/source-editor/platform/mediawiki/namespaces.ts
  * Purpose: Current-wiki namespace and magic-word discovery through siteinfo.
  *
- * Table of contents:
- * 1. Imports
- * 2. WikiNamespaceApi
- * 3. WikiNamespaceResolver
- * 4. Constants and state
- * 5. LoadedSiteinfo
- * 6. MagicWordRecord
- * 7. createWikiNamespaceResolver
- * 8. readCachedState
- * 9. loadSiteinfo
- * 10. decodeSiteinfo
- * 11. decodeTemplateMagicWords
- * 12. decodeImageOptions
- * 13. decodeMagicWordRecords
- * 14. decodeModifierAliases
- * 15. createAliasCatalog
- * 16. emptyAliasSets
- * 17. emptyAliases
- * 18. freezeAliases
- * 19. readStringList
- * 20. readNonemptyString
- * 21. readRecord
- * 22. createState
+ * Contents: Cached namespace catalogs, validated template magic words, and safe rewrite state.
  */
 
 import { readRecord } from '../../../library/data-validation/records.ts';
@@ -36,13 +14,12 @@ import {
     type NamespaceCatalog,
     type NamespaceSource,
 } from '../../../library/wiki-titles/canonical.ts';
-import { type ImageOptionCatalog } from '../../../library/wikitext-highlighting/highlighter.ts';
 import type { WikiNamespaceState } from '../../domain/wiki-site.ts';
 
 import type {
     MagicWordAliases,
     TemplateMagicWordCatalog,
-} from '../../../library/wikitext-highlighting/magic-words.ts';
+} from '../../../library/wikitext/magic-words.ts';
 import { createSiteinfoCache, type SiteinfoCache } from './siteinfo-cache.ts';
 
 interface WikiNamespaceApi {
@@ -66,17 +43,11 @@ const CANONICAL_FALLBACK_SOURCE = decodeNamespaceCatalog('unknownwiki', {
         },
     },
 });
-const FALLBACK_STATE = createState(
-    CANONICAL_FALLBACK_SOURCE,
-    false,
-    null,
-    null,
-);
+const FALLBACK_STATE = createState(CANONICAL_FALLBACK_SOURCE, false, null);
 
 interface LoadedSiteinfo {
     source: NamespaceCatalog;
     templateMagicWords: TemplateMagicWordCatalog | null;
-    imageOptions: ImageOptionCatalog | null;
 }
 
 interface MagicWordRecord {
@@ -124,7 +95,6 @@ export function createWikiNamespaceResolver(
                         siteinfo.source,
                         true,
                         siteinfo.templateMagicWords,
-                        siteinfo.imageOptions,
                     );
                     if (siteinfo.templateMagicWords != null) {
                         cache.write(databaseName, siteinfo.response);
@@ -157,12 +127,7 @@ function readCachedState(
             cache.clear(databaseName);
             return null;
         }
-        return createState(
-            siteinfo.source,
-            true,
-            siteinfo.templateMagicWords,
-            siteinfo.imageOptions,
-        );
+        return createState(siteinfo.source, true, siteinfo.templateMagicWords);
     } catch {
         cache.clear(databaseName);
         return null;
@@ -201,7 +166,6 @@ function decodeSiteinfo(
     return {
         source,
         templateMagicWords: decodeTemplateMagicWords(query, records),
-        imageOptions: decodeImageOptions(records),
     };
 }
 
@@ -230,51 +194,6 @@ function decodeTemplateMagicWords(
         return null;
     }
     return Object.freeze({ functions, invoke, modifiers, variables });
-}
-
-function decodeImageOptions(
-    records: ReadonlyMap<string, MagicWordRecord> | null,
-): ImageOptionCatalog | null {
-    if (records == null) {
-        return null;
-    }
-    const literals = emptyAliasSets();
-    const named = emptyAliasSets();
-    const spaced = emptyAliasSets();
-    const underscored = emptyAliasSets();
-    for (const [id, record] of records) {
-        if (!id.startsWith('img_')) {
-            continue;
-        }
-        for (const alias of record.aliases) {
-            let target = literals;
-            let key = alias;
-            if (alias.endsWith('=$1')) {
-                target = named;
-                key = alias.slice(0, -3);
-            } else if (alias.endsWith(' $1')) {
-                target = spaced;
-                key = alias.slice(0, -3);
-            } else if (alias.endsWith('_$1')) {
-                target = underscored;
-                key = alias.slice(0, -3);
-            } else if (alias.includes('$1')) {
-                continue;
-            }
-            if (key !== '') {
-                const aliases = record.caseSensitive
-                    ? target.caseSensitive
-                    : target.caseInsensitive;
-                aliases.add(record.caseSensitive ? key : key.toLowerCase());
-            }
-        }
-    }
-    return Object.freeze({
-        literals: freezeAliases(literals),
-        named: freezeAliases(named),
-        spaced: freezeAliases(spaced),
-        underscored: freezeAliases(underscored),
-    });
 }
 
 function decodeMagicWordRecords(
@@ -373,13 +292,11 @@ function createState(
     source: NamespaceSource,
     redirectsSafe: boolean,
     templateMagicWords: TemplateMagicWordCatalog | null,
-    imageOptions: ImageOptionCatalog | null,
 ): WikiNamespaceState {
     return Object.freeze({
         redirectsSafe,
         source,
         templateMagicWords,
-        imageOptions,
         templateRedirectsSafe: templateMagicWords != null,
     });
 }

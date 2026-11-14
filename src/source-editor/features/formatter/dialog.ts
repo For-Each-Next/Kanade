@@ -36,37 +36,24 @@ import {
     type ScriptTitleMode,
 } from '../../domain/script-title-policy.ts';
 import type { VueModule, VueRef } from './codex.ts';
-import {
-    createRegexToolsBindings,
-    type RegexToolsBindings,
-    type RegexToolsSession,
-} from './regex-tools.ts';
 
 export interface FormatterDialogSelection extends FormatterSettings {
     references?: { layout: 'inline' | 'block' };
 }
 
 type FirstParameterMode = FirstParameterLayout | 'preserve';
-type FormatterDialogOperation =
-    'format' | 'save-settings' | 'reset-settings' | 'clear-cache';
+type FormatterDialogOperation = 'format' | 'save-settings' | 'reset-settings';
 type SubsequentParameterMode = SubsequentParameterLayout | 'preserve';
-export type FormatterDialogTab =
-    'formatting' | 'references' | 'editor' | 'tools';
+export type FormatterDialogTab = 'formatting' | 'references';
 type FormattingScope = 'selection' | 'section' | 'page';
 
 export interface FormatterDialogOptions {
     initialTab?: FormatterDialogTab;
-    regexTools?: RegexToolsSession;
     canNormalizeConversion: boolean;
     initialSelection: FormatterDialogSelection;
-    linkHelperDocumentationUrl: string;
-    linkModifierKey: 'Ctrl' | 'Command';
     redirectPolicyUrl: string;
     scope: FormattingScope;
-    supportsLinkHelpers: boolean;
     contentLanguage?: string;
-
-    onClearCache(): void;
 
     onClose(selection?: FormatterDialogSelection): void;
 
@@ -89,11 +76,11 @@ type PreferenceBindings = {
     [Key in keyof PreferenceSettings]: VueRef<PreferenceSettings[Key]>;
 };
 
-interface DialogBindings extends PreferenceBindings, RegexToolsBindings {
-    regexScope: string;
+interface DialogBindings extends PreferenceBindings {
     formatReferences: VueRef<boolean>;
     referenceLayout: VueRef<'inline' | 'block'>;
     compactReferences: VueRef<boolean>;
+    convertAuthorNames: VueRef<boolean>;
     separateReferenceDefinitions: VueRef<boolean>;
     formatScriptTitles: VueRef<boolean>;
     scriptTitleMode: VueRef<ScriptTitleMode>;
@@ -112,8 +99,6 @@ interface DialogBindings extends PreferenceBindings, RegexToolsBindings {
     indentBlockTemplates: VueRef<boolean>;
     indentSpaces: VueRef<string | number>;
     interfaceLocale: string;
-    linkHelperDocumentationUrl: string;
-    linkModifierKey: 'Ctrl' | 'Command';
     msg: typeof msg;
     menuItems: Array<{
         label: string;
@@ -127,13 +112,10 @@ interface DialogBindings extends PreferenceBindings, RegexToolsBindings {
     stackedActions: VueRef<boolean>;
     skipFirstLevelIndentation: VueRef<boolean>;
     subsequentParameterMode: VueRef<SubsequentParameterMode>;
-    supportsLinkHelpers: boolean;
 
     apply(): Promise<void>;
 
     actionOrder(): Array<'cancel' | 'save' | 'primary' | 'more'>;
-
-    clearCache(): void;
 
     onMenuAction(value: string | number | null): void;
 
@@ -245,7 +227,6 @@ export function createFormatterDialogBindings(
         if (initialFocusFrame !== undefined)
             cancelAnimationFrame(initialFocusFrame);
     });
-    const regexTools = createRegexToolsBindings(Vue, options.regexTools);
     const announcement = Vue.ref<{ id: number; message: string } | null>(null);
     let announcementId = 0;
     const applying = Vue.ref(false);
@@ -258,6 +239,9 @@ export function createFormatterDialogBindings(
     );
     const referenceLayout = Vue.ref<'inline' | 'block'>(
         initial.references?.layout ?? initial.citationFormatting.layout,
+    );
+    const convertAuthorNames = Vue.ref(
+        initial.citationFormatting.convertAuthorNames,
     );
     const compactReferences = Vue.ref(
         initial.citationFormatting.compactReferences,
@@ -302,24 +286,8 @@ export function createFormatterDialogBindings(
     );
     const formatHtmlTags = Vue.ref(initial.formatter.formatHtmlTags);
     const preferences: PreferenceBindings = {
-        alternateReferenceColors: Vue.ref(initial.alternateReferenceColors),
-        ctrlClickLinks: Vue.ref(initial.ctrlClickLinks),
-        fullPageReferencePreviews: Vue.ref(initial.fullPageReferencePreviews),
-        highlightMissing: Vue.ref(initial.highlightMissing),
-        largeFont: Vue.ref(initial.largeFont),
-        linkPreviews: Vue.ref(initial.linkPreviews),
-        referenceEditing: Vue.ref(initial.referenceEditing),
-        referenceLightweightEditing: Vue.ref(
-            initial.referenceLightweightEditing,
-        ),
-        referencePreviews: Vue.ref(initial.referencePreviews),
         resolveRedirects: Vue.ref(initial.resolveRedirects),
         resolveTemplateRedirects: Vue.ref(initial.resolveTemplateRedirects),
-        smallReferenceText: Vue.ref(initial.smallReferenceText),
-        syntaxHighlighting: Vue.ref(initial.syntaxHighlighting),
-        useCodeMirrorForOtherModels: Vue.ref(
-            initial.useCodeMirrorForOtherModels,
-        ),
     };
     let closed = false;
 
@@ -331,6 +299,7 @@ export function createFormatterDialogBindings(
                 enabled: formatReferences.value,
                 layout: referenceLayout.value,
                 compactReferences: compactReferences.value,
+                convertAuthorNames: convertAuthorNames.value,
                 separateReferenceDefinitions:
                     separateReferenceDefinitions.value,
                 formatScriptTitles: formatScriptTitles.value,
@@ -373,7 +342,6 @@ export function createFormatterDialogBindings(
             return;
         }
         closed = true;
-        regexTools.disposeRegex();
         releaseActionLayout();
         open.value = false;
         options.onClose(selection);
@@ -390,20 +358,13 @@ export function createFormatterDialogBindings(
         if (applying.value || savingSettings.value || closed) {
             return;
         }
-        if (activeTab.value === 'tools') {
-            regexTools.regexApply();
-            return;
-        }
         applying.value = true;
         error.value = '';
         announcement.value = null;
         // Snapshot the entire draft before any asynchronous operation.
         const selection = createSelection();
-        const shouldFormat = activeTab.value !== 'editor';
         try {
-            if (shouldFormat) {
-                await options.onSubmit(selection);
-            }
+            await options.onSubmit(selection);
         } catch (caught) {
             options.onError(caught, 'format');
             error.value = msg('feedback.failed');
@@ -457,24 +418,6 @@ export function createFormatterDialogBindings(
         }
     }
 
-    function clearCache(): void {
-        if (applying.value || savingSettings.value || closed) {
-            return;
-        }
-        error.value = '';
-        announcement.value = null;
-        try {
-            options.onClearCache();
-            announcement.value = {
-                id: ++announcementId,
-                message: msg('feedback.cacheCleared'),
-            };
-        } catch (caught) {
-            options.onError(caught, 'clear-cache');
-            error.value = msg('feedback.cacheClearFailed');
-        }
-    }
-
     function resetSettings(): void {
         if (applying.value || savingSettings.value || closed) {
             return;
@@ -488,6 +431,8 @@ export function createFormatterDialogBindings(
             referenceLayout.value = defaults.citationFormatting.layout;
             compactReferences.value =
                 defaults.citationFormatting.compactReferences;
+            convertAuthorNames.value =
+                defaults.citationFormatting.convertAuthorNames;
             separateReferenceDefinitions.value =
                 defaults.citationFormatting.separateReferenceDefinitions;
             formatScriptTitles.value =
@@ -527,17 +472,10 @@ export function createFormatterDialogBindings(
     }
 
     return {
-        ...regexTools,
-        regexScope: msg(
-            options.scope === 'selection'
-                ? 'regex.selectionScope'
-                : options.scope === 'section'
-                  ? 'regex.sectionScope'
-                  : 'regex.pageScope',
-        ),
         formatReferences,
         referenceLayout,
         compactReferences,
+        convertAuthorNames,
         separateReferenceDefinitions,
         formatScriptTitles,
         scriptTitleMode,
@@ -561,7 +499,6 @@ export function createFormatterDialogBindings(
         },
         canNormalizeConversion: options.canNormalizeConversion,
         controls,
-        clearCache,
         characterWidthRatio,
         error,
         firstParameterMode,
@@ -576,11 +513,8 @@ export function createFormatterDialogBindings(
         indentBlockTemplates,
         indentSpaces,
         interfaceLocale,
-        linkHelperDocumentationUrl: options.linkHelperDocumentationUrl,
-        linkModifierKey: options.linkModifierKey,
         msg,
         menuItems: [
-            { label: msg('dialog.clearCache'), value: 'clear-cache' },
             {
                 label: msg('dialog.resetSettings'),
                 value: 'reset-settings',
@@ -589,9 +523,7 @@ export function createFormatterDialogBindings(
         menuSelection,
         onMenuAction(value) {
             menuSelection.value = null;
-            if (value === 'clear-cache') {
-                clearCache();
-            } else if (value === 'reset-settings') {
+            if (value === 'reset-settings') {
                 resetSettings();
             }
         },
@@ -618,9 +550,6 @@ export function createFormatterDialogBindings(
             if (applying.value) {
                 return msg('dialog.working');
             }
-            if (activeTab.value === 'editor') {
-                return msg('dialog.applySettings');
-            }
             return msg(
                 options.scope === 'selection'
                     ? 'dialog.formatSelection'
@@ -636,7 +565,6 @@ export function createFormatterDialogBindings(
         saveSettings,
         skipFirstLevelIndentation,
         subsequentParameterMode,
-        supportsLinkHelpers: options.supportsLinkHelpers,
         templatePreview() {
             try {
                 return formatWikitext(

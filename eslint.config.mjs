@@ -91,7 +91,6 @@ export default defineConfig(
             'src/library/data-validation/**/*.ts',
             'src/library/new-page-list/**/*.ts',
             'src/library/citation-metadata/**/*.ts',
-            'src/library/wikitext-highlighting/**/*.ts',
         ],
         rules: {
             'no-restricted-globals': [

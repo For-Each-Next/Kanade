@@ -2,18 +2,16 @@
 
 Last reviewed: 2026-11-14.
 
-Source Editor combines source editing, reference management, and wikitext formatting
-in one tool. Accepted changes return to the same editor for review and publication.
+Source Editor combines reference management and wikitext formatting with the
+active MediaWiki source editor. Accepted changes return to that editor for review
+and publication.
 
 ## Features
 
-- Live source highlighting with link and reference previews.
-- Reference inspection and editing from the editor, with access to the full manager.
+- Native source editing with your MediaWiki CodeMirror preferences.
 - Citation creation from a URL, identifier, pasted text, or manual details.
 - Browsing, reusing, reviewing, and organizing article references.
 - Shared formatting for editor text and citation workflows.
-- A Tools tab with regular-expression replacement previews, explicit acceptance,
-  and guarded undo for the current source or selection.
 - English, Japanese, Russian, Simplified Chinese, and Traditional Chinese
   interface labels.
 
@@ -25,8 +23,8 @@ Install [source_editor.user.js][latest-userscript] in a userscript manager, or p
 Open **Source Editor** in page tools. Its **References** tab provides **Manage references**.
 The bottom-right **Format** button formats the selected text immediately,
 or the whole section/page when no text is selected, using current settings.
-The adjacent **References** button opens **Manage references** directly, and
-**Tools** opens regex tools. These buttons run horizontally
+The adjacent **References** button opens **Manage references** directly.
+These buttons run horizontally
 and wrap when the viewport is narrow.
 See the [project installation guide](../../README.md#install-and-use) for the
 shared build and installation methods.
@@ -65,40 +63,29 @@ script's `@match` entries and check its host-module compatibility. See
 
 ## Use
 
-The panel has **Formatting**, **References**, **Highlighting settings**, and
-**Tools** tabs. Open **Highlighting settings**
-to adjust highlighting or **Formatting** to transform source. **References**
-opens reference management. **Formatting** includes **Format citations with the
-article**, with inline/block layout, reference organization, and automatic
-script-title choices alongside article cleanup.
-The Traditional Chinese highlighting tab is **語法凸顯設定**.
-**Save settings**
-stores preferences for this browser and wiki. Applying formatting changes the
-editor source; publishing remains MediaWiki's own action.
+The panel has **Formatting** and **References** tabs. **Formatting** includes
+**Format citations with the article**, with inline/block layout, reference
+organization, and automatic script-title choices alongside article cleanup.
+**Save settings** stores formatting preferences for this browser and wiki.
+Applying formatting changes the editor source; publishing remains MediaWiki's
+own action.
 
-**Tools** presents numbered **Find 1 / Replace 1**, **Find 2 / Replace 2** pairs
-for regular-expression replacements in the current source or captured selection.
-Add pairs as needed; they run in order. **Options** contains the shared flags.
-Review the combined result, choose **Apply replacements**, and use
-**Undo replacement** only while that result still matches the current source.
-Changing source invalidates a prepared result; closing the dialog ends the draft.
+Enable or disable CodeMirror through MediaWiki's editing preferences or its
+native **Syntax** toolbar control. Use CodeMirror's preferences for highlighting,
+line numbers, folding, completion, reference highlighting, and editor appearance.
+Use its search panel for find and replace. Available features depend on the wiki's
+CodeMirror version and editor. Source Editor respects that native choice and
+works with an active CodeMirror editor or the ordinary textarea.
 
 Use **References → Manage references** to open the integrated reference manager.
-Reference popup previews provide inline inspection and editing without a separate
-manager button. In **Sources**, filter existing entries with **Source content**, or
+In **Sources**, filter existing entries with **Source content**, or
 choose **Generate source** to prepare a new citation. Leave the generation input
 empty to enter source details manually. Accepted changes return to the same
 backing editor and remain part of its source and undo history.
 
 Review generated wikitext and warnings before publishing. Optional lookups need a
 network connection; unavailable metadata does not replace your source with an
-invented result. Long source remains editable as plain text when the configured
-highlighting limit is reached.
-
-With article-link previews enabled, hover over a wiki link to read the linked
-article's description and introductory text. Source Editor fetches that content from
-the target wiki; article text follows its source language independently of the
-interface language. Preview results are cached for the editing session.
+invented result.
 
 ## Reference
 
@@ -125,7 +112,7 @@ Source Editor builds on [Cacycle's wikEd](https://en.wikipedia.org/wiki/User:Cac
 [userscript-metadata]: https://www.tampermonkey.net/documentation.php
 [vue]: https://vuejs.org/guide/introduction.html
 [codex]: https://doc.wikimedia.org/codex/latest/
-[codemirror]: https://www.mediawiki.org/wiki/Extension:CodeMirror
+[codemirror]: https://www.mediawiki.org/wiki/Help:Extension:CodeMirror
 [visualeditor-source]: https://www.mediawiki.org/wiki/Help:VisualEditor/User_guide#Switching_between_the_visual_and_wikitext_editors
 [latest-userscript]: https://github.com/For-Each-Next/Kanade/releases/latest/download/source_editor.user.js
 [latest-compact]: https://github.com/For-Each-Next/Kanade/releases/latest/download/source_editor.min.js

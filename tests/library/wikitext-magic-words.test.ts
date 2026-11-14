@@ -12,7 +12,7 @@ import {
     matchesMagicWordAlias,
     type MagicWordAliases,
     type TemplateMagicWordCatalog,
-} from '../../src/library/wikitext-highlighting/magic-words.ts';
+} from '../../src/library/wikitext/magic-words.ts';
 
 function aliases(
     insensitive: string[] = [],
@@ -41,7 +41,7 @@ function classify(name: string, catalog = SITE_MAGIC_WORDS) {
     return classifyTemplateHead(name, false, catalog);
 }
 
-test('magic-word and image-option aliases preserve declared case rules', () => {
+test('magic-word aliases preserve declared case rules', () => {
     const values = aliases(['thumb', '调用'], ['CURRENTYEAR']);
     assert.equal(matchesMagicWordAlias('THUMB', values), true);
     assert.equal(matchesMagicWordAlias('调用', values), true);

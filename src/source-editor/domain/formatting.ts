@@ -6,6 +6,7 @@
  */
 
 import { formatWikitext, type FormatterOptions } from './formatter.ts';
+import { convertCitationAuthorNames } from './citation-authors.ts';
 import {
     formatCitations,
     manageCitationsWithResult,
@@ -16,6 +17,8 @@ import {
 
 export interface ReferenceFormattingOptions extends CitationManagementContext {
     layout: CitationLayout;
+    /** Split only explicit family, given author names; never infer natural-order names. */
+    convertAuthorNames?: boolean;
     /** Omission preserves existing reference-call syntax. */
     compactReferences?: boolean;
 }
@@ -39,7 +42,11 @@ export function formatArticleSource(
         ? formatWikitext(source, options.wikitext).text
         : source;
     if (options.references == null) return { text };
-    const { layout, compactReferences, ...context } = options.references;
+    const { layout, compactReferences, convertAuthorNames, ...context } =
+        options.references;
+    if (convertAuthorNames) {
+        text = convertCitationAuthorNames(text, context.templateNameContext);
+    }
     const references =
         compactReferences === undefined
             ? formatCitations(

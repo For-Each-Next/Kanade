@@ -42,11 +42,7 @@ interface QuickAccessRegistry {
 }
 
 const REGISTRY_KEY = Symbol.for('kanade.quick-access.v1');
-const ACTION_ORDER = [
-    'source-editor',
-    'source-editor-references',
-    'source-editor-tools',
-];
+const ACTION_ORDER = ['source-editor', 'source-editor-references'];
 /** Registers one current owner's action; an older disposer cannot remove its replacement. */
 export function registerQuickAccessAction(
     action: QuickAccessAction,

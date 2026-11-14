@@ -1,7 +1,7 @@
 /**
  * @file scripts/source-editor/capture-live.mjs
  * Purpose: Capture Source Editor on actual Wikimedia source views without simulated host data or wiki saves.
- * Contents: Browser setup, verified article source, editor and reference views, and provenance.
+ * Contents: Browser setup, verified article source, formatting preferences, and provenance.
  */
 
 import assert from 'node:assert/strict';
@@ -23,22 +23,10 @@ assert.ok(
             argument.startsWith('--locales=') ||
             argument.startsWith('--views='),
     ),
-    'Supported options: --locales=en,zh-Hans,zh-Hant and --views=01,02,03,04,05,06,07,08,09,10,11',
+    'Supported options: --locales=en,zh-Hans,zh-Hant and --views=03',
 );
 const supportedLocales = ['en', 'zh-Hans', 'zh-Hant'];
-const supportedViews = [
-    '03',
-    '01',
-    '02',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-];
+const supportedViews = ['03'];
 const locales =
     args
         .find((argument) => argument.startsWith('--locales='))
@@ -74,37 +62,14 @@ const ledger = {
 };
 const chineseWiki = {
     language: 'zh',
-    editor: {
-        title: '任天堂',
-        revisionId: 94167581,
-        citationText: 'トヨタの5倍超',
-        previewTitle: '任天堂Switch',
-    },
-    manager: {
-        title: '信賴鈴音 ～蕭邦之夢～',
-        revisionId: 94743103,
-        citationText: 'Noguchi & Hatsushiba, 2007',
-    },
-    highlighting: { title: '任天堂Switch', revisionId: 94119527 },
+    editor: { title: '任天堂', revisionId: 94167581 },
 };
 const captureWikis = {
     'zh-Hans': chineseWiki,
     'zh-Hant': chineseWiki,
     en: {
         language: 'en',
-        editor: {
-            title: 'Nintendo',
-            revisionId: 1379167316,
-            citationText:
-                'President Tatsumi Kimishima on the Future of Nintendo',
-            previewTitle: 'Nintendo Switch',
-        },
-        manager: {
-            title: 'Eternal Sonata',
-            revisionId: 1376010866,
-            citationText: 'Trusty Bell Launch Party',
-        },
-        highlighting: { title: 'Nintendo Switch', revisionId: 1378957550 },
+        editor: { title: 'Nintendo', revisionId: 1379167316 },
     },
 };
 
@@ -239,37 +204,11 @@ async function openSource(browser, article, locale) {
         const originalReadOnly = await page
             .locator('#wpTextbox1')
             .evaluate((element) => element.readOnly);
-        if (wiki.language === 'en') {
-            await expect(page.locator('.cm-editor')).toBeVisible({
-                timeout: 45000,
-            });
-            const toggle = page.getByTitle('Syntax highlighting', {
-                exact: true,
-            });
-            nativeEditorActions.push({
-                control: 'Syntax highlighting',
-                label: await toggle.innerText(),
-                action: 'Disable native CodeMirror through its toolbar toggle',
-            });
-            await toggle.click();
-            await expect(page.locator('#wpTextbox1')).toBeVisible();
-            await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-            await expect(page.locator('#wpTextbox1')).toHaveJSProperty(
-                'readOnly',
-                originalReadOnly,
-            );
-        }
         await page.addScriptTag({ content: bundle });
-        await expect(
-            page.locator(
-                '.kanade-source-editor-frame[data-kanade-source-editor-ready="true"]',
-            ),
-        ).toBeVisible({ timeout: 45000 });
-        await expect(page.locator('#wpTextbox1')).toBeHidden();
+        await expect(page.locator('#kanade-source-editor-panel')).toBeAttached({
+            timeout: 45000,
+        });
         await page.emulateMedia({ reducedMotion: 'reduce' });
-        await page
-            .locator('.kanade-source-editor-frame')
-            .evaluate((element) => element.scrollIntoView({ block: 'start' }));
         return {
             context,
             page,
@@ -327,26 +266,20 @@ async function capture(session, index, details = {}) {
     } = session;
     assert.deepEqual(writes, [], 'Captures must never submit wiki writes.');
     await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-    await expect(page.locator('#wpTextbox1')).toBeHidden();
     await expect(page.locator('#wpTextbox1')).toHaveJSProperty(
         'readOnly',
         info.originalReadOnly,
     );
     await Promise.all(pendingResponses);
     await page.evaluate(() => document.fonts.ready);
-    if (!details.keepHover) await page.mouse.move(0, 0);
+    await page.mouse.move(0, 0);
     const image = documentationScreenshotFilename(
         info.locale,
         supportedViews.indexOf(index),
     );
-    const captureRegion = details.editorSurface
-        ? await page.locator('.kanade-source-editor-frame').boundingBox()
-        : null;
-    if (details.editorSurface) assert.ok(captureRegion);
     await page.screenshot({
         path: join(imageDirectory, image),
         animations: 'disabled',
-        ...(captureRegion ? { clip: captureRegion } : {}),
     });
     const imageBytes = await readFile(join(imageDirectory, image));
     const imageSha256 = createHash('sha256').update(imageBytes).digest('hex');
@@ -355,16 +288,6 @@ async function capture(session, index, details = {}) {
         ...details,
         image,
         imageSha256,
-        ...(captureRegion
-            ? {
-                  requestedCaptureRegion: captureRegion,
-                  captureRegion: {
-                      ...captureRegion,
-                      width: imageBytes.readUInt32BE(16),
-                      height: imageBytes.readUInt32BE(20),
-                  },
-              }
-            : {}),
         viewport: page.viewportSize(),
         deviceScaleFactor: 1,
         capturedAt: new Date().toISOString(),
@@ -392,258 +315,6 @@ async function capture(session, index, details = {}) {
 }
 
 async function captureEditor(browser, locale, messages) {
-    const article = captureWikis[locale].editor;
-    const session = await openSource(browser, article, locale);
-    const { page } = session;
-    try {
-        // Apply the supported preview preference through its real control, without formatting article source.
-        let panel = await openPanel(page, messages);
-        await panel
-            .getByRole('tab', {
-                name: messages['dialog.editorTab'],
-                exact: true,
-            })
-            .click();
-        await panel
-            .getByRole('checkbox', {
-                name: messages['dialog.linkPreviews'],
-                exact: true,
-            })
-            .check();
-        await panel
-            .getByRole('button', {
-                name: messages['dialog.applySettings'],
-                exact: true,
-            })
-            .click();
-        await expect(panel).toBeHidden();
-        const frame = page.frameLocator('.kanade-source-editor-frame');
-        await page
-            .locator('.kanade-source-editor-frame')
-            .evaluate((element) => element.scrollIntoView({ block: 'start' }));
-        if (views.has('01')) {
-            const reference = frame
-                .locator('[data-kanade-source-editor-reference]')
-                .filter({ hasText: article.citationText })
-                .first();
-            const tooltip = frame.locator('.kanade-source-editor-tooltip');
-            await expect(async () => {
-                await reference.hover();
-                await expect(tooltip).toBeVisible({ timeout: 2000 });
-            }).toPass({ timeout: 45000 });
-            await expect(tooltip).toContainText(article.citationText);
-            await expect(
-                tooltip.locator(
-                    '.kanade-source-editor-tooltip__surface > button.cdx-button',
-                ),
-            ).toHaveCount(0);
-            await expect(
-                tooltip.locator('.kanade-source-editor-tooltip__edit').first(),
-            ).toBeVisible();
-            await capture(session, '01', {
-                state: 'Live source citation inspection',
-                editorSurface: true,
-                keepHover: true,
-                managementButtonPresent: false,
-            });
-        }
-        if (views.has('02')) {
-            await page.mouse.move(0, 0);
-            const link = frame
-                .locator(
-                    `[data-kanade-source-editor-page-preview-title="${article.previewTitle}"]`,
-                )
-                .first();
-            const preview = frame.locator('.kanade-source-editor-page-preview');
-            await expect(async () => {
-                await link.hover();
-                await expect(preview).toBeVisible({ timeout: 2000 });
-                await expect(
-                    preview.locator(
-                        '.kanade-source-editor-page-preview__extract',
-                    ),
-                ).not.toHaveText('', { timeout: 2000 });
-            }).toPass({ timeout: 45000 });
-            await capture(session, '02', {
-                state: 'Live Nintendo Switch introduction preview',
-                editorSurface: true,
-                keepHover: true,
-                previewText: await preview.innerText(),
-            });
-        }
-        await page.mouse.move(0, 0);
-        panel = await openPanel(page, messages);
-        if (views.has('03')) {
-            await panel
-                .getByRole('tab', {
-                    name: messages['dialog.formattingTab'],
-                    exact: true,
-                })
-                .click();
-            await panel
-                .getByRole('checkbox', {
-                    name: messages['dialog.formatReferences'],
-                    exact: true,
-                })
-                .check();
-            await panel.locator('.cdx-dialog__body').evaluate((element) => {
-                element.scrollTop = 0;
-            });
-            await capture(session, '03', {
-                state: 'Shared article and citation formatting preferences',
-                panelText: await panel.innerText(),
-                layout: await panel.evaluate((element) => {
-                    const rectangle = (node) => {
-                        const { x, y, width, height } =
-                            node.getBoundingClientRect();
-                        return { x, y, width, height };
-                    };
-                    const body = element.querySelector('.cdx-dialog__body');
-                    return {
-                        bodyScrollTop: body.scrollTop,
-                        body: rectangle(body),
-                        formattingGroups: [
-                            ...element.querySelectorAll(
-                                '.kanade-source-editor-dialog__formatting-groups > fieldset',
-                            ),
-                        ].map((group) => ({
-                            text: group.innerText,
-                            rectangle: rectangle(group),
-                            legend: group.querySelector('legend')
-                                ? rectangle(group.querySelector('legend'))
-                                : null,
-                        })),
-                    };
-                }),
-            });
-        }
-        if (views.has('04')) {
-            await panel
-                .getByRole('tab', {
-                    name: messages['dialog.editorTab'],
-                    exact: true,
-                })
-                .click();
-            await capture(session, '04', {
-                state: 'Highlighting and source preview preferences',
-                panelText: await panel.innerText(),
-            });
-        }
-    } finally {
-        await session.context.close();
-    }
-}
-
-async function captureManager(browser, locale, messages) {
-    const article = captureWikis[locale].manager;
-    const session = await openSource(browser, article, locale);
-    const { page } = session;
-    try {
-        const panel = await openPanel(page, messages);
-        await panel
-            .getByRole('tab', {
-                name: messages['dialog.referencesTab'],
-                exact: true,
-            })
-            .click();
-        await panel
-            .getByRole('button', {
-                name: messages['dialog.manageReferences'],
-                exact: true,
-            })
-            .click();
-        const manager = page.locator('.kanade-source-editor-source-manager');
-        await expect(manager).toBeVisible({ timeout: 45000 });
-        if (views.has('05'))
-            await capture(session, '05', {
-                state: 'Live article sources and section filters',
-            });
-        if (views.has('06')) {
-            await page.setViewportSize({ width: 683, height: 768 });
-            await page
-                .locator('.kanade-source-editor-frame')
-                .evaluate((element) =>
-                    element.scrollIntoView({ block: 'start' }),
-                );
-            await capture(session, '06', {
-                state: 'Live article sources in a narrow desktop view',
-            });
-            await page.setViewportSize({ width: 1366, height: 768 });
-        }
-        if (views.has('07')) {
-            const citation = manager
-                .getByRole('row')
-                .filter({ hasText: article.citationText })
-                .first();
-            await citation
-                .getByRole('button', {
-                    name: messages['lookup.editSource'],
-                    exact: true,
-                })
-                .click();
-            const draft = page.locator(
-                '.kanade-source-editor-source-manager__draft-dialog',
-            );
-            await expect(draft).toBeVisible();
-            await draft.getByRole('heading').first().click();
-            const cancel = draft
-                .locator('.kanade-source-editor-source-manager__footer-actions')
-                .getByRole('button', {
-                    name: messages['common.cancel'],
-                    exact: true,
-                });
-            await expect(cancel).toHaveClass(/cdx-button--weight-quiet/u);
-            await capture(session, '07', {
-                state: 'Existing live citation draft with quiet Cancel',
-                draftText: await draft.innerText(),
-            });
-            await cancel.click();
-            await expect(draft).toBeHidden();
-        }
-        if (views.has('08')) {
-            await manager
-                .getByRole('tab', { name: messages['tabs.tools'], exact: true })
-                .click();
-            await capture(session, '08', {
-                state: 'Citation checks and navigation to shared formatting settings',
-                managerText: await manager.innerText(),
-            });
-        }
-    } finally {
-        await session.context.close();
-    }
-}
-
-async function captureHighlighting(browser, locale, messages) {
-    const session = await openSource(
-        browser,
-        captureWikis[locale].highlighting,
-        locale,
-    );
-    try {
-        const { page } = session;
-        await expect(
-            page
-                .frameLocator('.kanade-source-editor-frame')
-                .locator('.kanade-source-editor-editor'),
-        ).toContainText('Nintendo Switch');
-        const panel = await openPanel(page, messages);
-        await panel
-            .getByRole('tab', {
-                name: messages['dialog.editorTab'],
-                exact: true,
-            })
-            .click();
-        await capture(session, '09', {
-            state: 'Highlighting preferences over native Nintendo Switch source',
-            panelText: await panel.innerText(),
-        });
-    } finally {
-        await session.context.close();
-    }
-}
-
-async function captureTextUtilities(browser, locale, messages) {
     const session = await openSource(
         browser,
         captureWikis[locale].editor,
@@ -651,134 +322,26 @@ async function captureTextUtilities(browser, locale, messages) {
     );
     const { page } = session;
     try {
-        const controls = page.locator('#kanade-quick-access');
-        const editorAction = controls.locator(
-            '[data-kanade-quick-access-action="source-editor"]',
-        );
-        const toolsAction = controls.locator(
-            '[data-kanade-quick-access-action="source-editor-tools"]',
-        );
-        await expect(editorAction).toBeVisible();
-        await expect(toolsAction).toBeVisible();
-        if (views.has('11')) {
-            await page.setViewportSize({ width: 375, height: 667 });
-            await page
-                .locator('.kanade-source-editor-frame')
-                .evaluate((element) =>
-                    element.scrollIntoView({ block: 'start' }),
-                );
-            await expect(editorAction).toBeInViewport();
-            await expect(toolsAction).toBeInViewport();
-            await capture(session, '11', {
-                state: 'Horizontal bottom-right Format and Tools controls on mobile',
-                quickAccess: await controls.evaluate((element) => {
-                    const rectangle = (node) => {
-                        const { x, y, width, height } =
-                            node.getBoundingClientRect();
-                        return { x, y, width, height };
-                    };
-                    return {
-                        rectangle: rectangle(element),
-                        actions: [
-                            ...element.querySelectorAll(
-                                '[data-kanade-quick-access-action]',
-                            ),
-                        ].map((action) => ({
-                            id: action.getAttribute(
-                                'data-kanade-quick-access-action',
-                            ),
-                            label: action.textContent,
-                            rectangle: rectangle(action),
-                        })),
-                    };
-                }),
-            });
-            await page.setViewportSize({ width: 1366, height: 768 });
-        }
-        if (views.has('10')) {
-            await toolsAction.click();
-            const panel = page.locator('.kanade-source-editor-dialog');
-            await expect(panel).toBeVisible();
-            await expect(
-                panel.getByRole('tab', {
-                    name: messages['dialog.toolsTab'],
-                    exact: true,
-                }),
-            ).toHaveAttribute('aria-selected', 'true');
-            const inputOnly = session.info.originalReadOnly;
-            const pattern = inputOnly ? '' : String.raw`\bNintendo\b|任天堂`;
-            const replacement = inputOnly ? '' : '$& [preview]';
-            let outputSha256;
-            for (const number of ['1', '2']) {
-                for (const key of ['regex.pattern', 'regex.replacement'])
-                    await expect(
-                        panel.getByRole('textbox', {
-                            name: messages[key].replace('{number}', number),
-                            exact: true,
-                        }),
-                    ).toBeVisible();
-            }
-            if (!inputOnly) {
-                await panel
-                    .getByRole('textbox', {
-                        name: messages['regex.pattern'].replace(
-                            '{number}',
-                            '1',
-                        ),
-                        exact: true,
-                    })
-                    .fill(pattern);
-                await panel
-                    .getByRole('textbox', {
-                        name: messages['regex.replacement'].replace(
-                            '{number}',
-                            '1',
-                        ),
-                        exact: true,
-                    })
-                    .fill(replacement);
-                await panel
-                    .getByRole('button', {
-                        name: messages['regex.preview'],
-                        exact: true,
-                    })
-                    .click();
-                const output = panel.getByRole('textbox', {
-                    name: messages['regex.output'],
-                    exact: true,
-                });
-                await expect(output).toBeVisible();
-                await expect(output).toHaveValue(/\[preview\]/u);
-                outputSha256 = createHash('sha256')
-                    .update(await output.inputValue())
-                    .digest('hex');
-            }
-            await panel.locator('.cdx-dialog__body').evaluate((element) => {
-                element.scrollTop = 0;
-            });
-            await capture(session, '10', {
-                state: inputOnly
-                    ? 'Initial regular-expression replacement inputs on native read-only source'
-                    : 'Regular-expression replacement preview without applying source changes',
-                regex: {
-                    pattern,
-                    flags: 'g',
-                    replacement,
-                    inputOnly,
-                    previewOnly: !inputOnly,
-                    ...(outputSha256 ? { outputSha256 } : {}),
-                },
-                panelText: await panel.innerText(),
-            });
-            await panel
-                .locator('.cdx-dialog__footer')
-                .getByRole('button', {
-                    name: messages['dialog.cancel'],
-                    exact: true,
-                })
-                .click();
-            await expect(panel).toBeHidden();
-        }
+        const panel = await openPanel(page, messages);
+        await panel
+            .getByRole('tab', {
+                name: messages['dialog.formattingTab'],
+                exact: true,
+            })
+            .click();
+        await panel
+            .getByRole('checkbox', {
+                name: messages['dialog.formatReferences'],
+                exact: true,
+            })
+            .check();
+        await panel.locator('.cdx-dialog__body').evaluate((element) => {
+            element.scrollTop = 0;
+        });
+        await capture(session, '03', {
+            state: 'Shared article and citation formatting preferences',
+            panelText: await panel.innerText(),
+        });
     } finally {
         await session.context.close();
     }
@@ -804,10 +367,7 @@ try {
             locale,
         };
         for (const [kind, run, ownedViews] of [
-            ['editor', captureEditor, ['01', '02', '03', '04']],
-            ['manager', captureManager, ['05', '06', '07', '08']],
-            ['highlighting', captureHighlighting, ['09']],
-            ['text-utilities', captureTextUtilities, ['10', '11']],
+            ['editor', captureEditor, ['03']],
         ]) {
             const selectedViews = ownedViews.filter((view) => views.has(view));
             if (!selectedViews.length) continue;
@@ -852,4 +412,12 @@ try {
     await browser.close();
     await saveLedger();
 }
-if (ledger.failures.length) process.exitCode = 1;
+if (
+    ledger.failures.some(
+        (failure) =>
+            locales.includes(failure.locale) &&
+            failure.kind === 'editor' &&
+            failure.views?.some((view) => views.has(view)),
+    )
+)
+    process.exitCode = 1;

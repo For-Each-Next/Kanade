@@ -5,10 +5,8 @@
  * Table of contents:
  * 1. Imports
  * 2. createEditorServices
- * 3. loadCurrentPageSource
- * 4. findMissingLinks
- * 5. resolveRedirects
- * 6. collectRedirectTitles
+ * 3. resolveRedirects
+ * 4. collectRedirectTitles
  */
 
 import { resolveWikiPolicy } from '../domain/wiki-policy.ts';
@@ -17,7 +15,6 @@ import {
     parseFormatterSettings,
     type FormatterSettings,
 } from '../domain/formatter-settings.ts';
-import { collectLinkHelperTitles } from '../../library/wikitext-highlighting/highlighter.ts';
 import {
     applyTemplateRedirects,
     applyWikiLinkRedirects,
@@ -31,21 +28,10 @@ import type { EditorServiceDependencies } from './service-ports.ts';
 export function createEditorServices(
     dependencies: EditorServiceDependencies,
 ): EditorServices {
-    const { databaseName, namespaces, settings } = dependencies;
+    const { databaseName, settings } = dependencies;
     let acceptedSettings: FormatterSettings | undefined;
     return {
         wikiPolicy: resolveWikiPolicy(databaseName),
-        findMissingLinks: (source) => findMissingLinks(source, dependencies),
-        getHighlightOptions() {
-            const siteinfo = namespaces.current();
-            return {
-                databaseName,
-                imageOptions: siteinfo.imageOptions,
-                linkHelpers: databaseName === 'zhwiki',
-                namespaceSource: siteinfo.source,
-                templateMagicWords: siteinfo.templateMagicWords,
-            };
-        },
         isSectionEditing: dependencies.isSectionEditing,
         loadFormatterSettings: () => acceptedSettings ?? settings.load(),
         applyFormatterSettings(value) {
@@ -54,12 +40,7 @@ export function createEditorServices(
                 throw new TypeError('Formatter settings are invalid.');
             acceptedSettings = validated;
         },
-        async loadNamespaces() {
-            await namespaces.load();
-        },
         logger: dependencies.uiLogger,
-        loadPageSource: () => loadCurrentPageSource(dependencies),
-        loadPageSummary: dependencies.loadPageSummary,
         notify: dependencies.notify,
         resolveRedirects: (source, options) =>
             resolveRedirects(source, options, dependencies),
@@ -69,61 +50,6 @@ export function createEditorServices(
         },
         saveFormatterSettings: (value) => settings.save(value),
     };
-}
-
-async function loadCurrentPageSource({
-    getRevisionId,
-    loadRevisionSource,
-    logger,
-}: EditorServiceDependencies): Promise<string> {
-    const revisionId = getRevisionId();
-    const stopTimer = logger.startTimer('page-source.load', { revisionId });
-    try {
-        const source = await loadRevisionSource(revisionId);
-        stopTimer({ characterCount: source.length });
-        return source;
-    } catch (error) {
-        logger.warn('page-source.load.failed', { error, revisionId });
-        stopTimer({ outcome: 'failed' });
-        throw error;
-    }
-}
-
-async function findMissingLinks(
-    source: string,
-    {
-        databaseName,
-        namespaces,
-        lookupLinks,
-        logger,
-    }: EditorServiceDependencies,
-): ReturnType<EditorServices['findMissingLinks']> {
-    const titles = collectWikiLinkTitles(source);
-    if (databaseName === 'zhwiki') {
-        titles.push(
-            ...collectLinkHelperTitles(source, namespaces.current().source),
-        );
-    }
-    const checkedTitles = new Set(titles);
-    const stopTimer = logger.startTimer('links.lookup', {
-        itemCount: checkedTitles.size,
-    });
-    try {
-        const result = await lookupLinks([...checkedTitles]);
-        stopTimer({ missingCount: result.missing.size });
-        return {
-            checkedTitles,
-            linkClasses: result.missingLinkClasses,
-            missingTitles: result.missing,
-        };
-    } catch (error) {
-        logger.warn('links.lookup.failed', {
-            error,
-            itemCount: checkedTitles.size,
-        });
-        stopTimer({ outcome: 'failed' });
-        throw error;
-    }
 }
 
 async function resolveRedirects(

@@ -12,16 +12,12 @@ import type { FormatterSettings } from '../domain/formatter-settings.ts';
 import { getEditBox } from '../platform/mediawiki/edit-box/index.ts';
 import { initializeSourceEditorI18n, msg } from '../i18n/index.ts';
 import { createFormatterSettingsStore } from '../platform/browser/formatter-settings.ts';
-import { startRegexReplacement } from '../platform/browser/regex-replacement.ts';
 import {
     getDatabaseName,
-    getRevisionId,
     isSectionEditing,
 } from '../platform/mediawiki/editor-context.ts';
 import { createWikiNamespaceResolver } from '../platform/mediawiki/namespaces.ts';
 import { createActionNotifier } from '../platform/mediawiki/notifications.ts';
-import { loadPageRevisionSource } from '../platform/mediawiki/page-source.ts';
-import { createPageSummaryLoader } from '../platform/mediawiki/page-summary.ts';
 import { lookupWikiLinks } from '../platform/mediawiki/wiki-links.ts';
 import { getCurrentContentLanguage } from '../platform/wiki-policy.ts';
 import { createLogger } from '../../library/logging/logger.ts';
@@ -55,9 +51,7 @@ async function initialize(): Promise<void> {
     });
     const notify = createActionNotifier('source-editor');
     let openPanel:
-        | ((
-              initialTab?: 'formatting' | 'references' | 'editor' | 'tools',
-          ) => Promise<void>)
+        | ((initialTab?: 'formatting' | 'references') => Promise<void>)
         | undefined;
     const references = createReferenceManagement(logger, notify, async () => {
         await openPanel?.();
@@ -100,37 +94,26 @@ async function initialize(): Promise<void> {
     );
     const services = createEditorServices({
         databaseName,
-        getRevisionId,
         isSectionEditing,
         logger: mediaWikiLogger,
         uiLogger: logger.child('ui'),
         notify,
         namespaces: {
-            current: namespaces.current,
             load: () => namespaces.load(new mw.Api()),
         },
         settings: createFormatterSettingsStore(),
         lookupLinks: (titles) => lookupWikiLinks(new mw.Api(), titles),
-        loadRevisionSource: (revisionId) =>
-            loadPageRevisionSource(new mw.Api(), revisionId),
-        loadPageSummary: (target) =>
-            createPageSummaryLoader(
-                window.location.origin,
-                mw.util.wikiScript('api'),
-            )(target),
     });
     await startEditorIntegration({
         ...services,
-        runtimeOptions,
         contentLanguage: getCurrentContentLanguage(),
         openReferences: manageReferences,
-        startRegexReplacement,
         loadCitationFormattingContext: references.loadFormattingContext,
         registerPanelOpener(opener) {
             openPanel = opener;
         },
     });
-    // VisualEditor's source mode has no native textarea for the enhanced surface.
+    // VisualEditor's source mode has no native textarea for formatter actions.
     mw.hook('ve.wikitextInteractive').add(() => {
         void mw.loader
             .using(['mediawiki.util'])

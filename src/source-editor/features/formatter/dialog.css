@@ -82,29 +82,7 @@
     gap: var(--spacing-50, 8px);
 }
 
-.kanade-source-editor-dialog .kanade-source-editor-dialog__regex-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: var(--spacing-75, 12px);
-}
-
-.kanade-source-editor-dialog .kanade-source-editor-dialog__regex-rules {
-    display: grid;
-    gap: var(--spacing-150, 24px);
-}
-
-.kanade-source-editor-dialog .kanade-source-editor-dialog__regex-rule {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: var(--spacing-75, 12px);
-}
-
 @media (max-width: 639px) {
-    .kanade-source-editor-dialog .kanade-source-editor-dialog__regex-actions {
-        flex-direction: column;
-    }
     .kanade-source-editor-dialog .kanade-source-editor-dialog__columns {
         grid-template-columns: minmax(0, 1fr);
     }

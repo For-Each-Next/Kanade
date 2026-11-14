@@ -45,7 +45,6 @@ export const tools = [
         referenceIcons: true,
         compactInlineWhitespace: true,
         assets: {
-            __SOURCE_EDITOR_EDITOR_STYLES__: 'features/editor/styles.css',
             __SOURCE_EDITOR_PANEL_DIALOG_STYLES__:
                 'features/formatter/dialog.css',
             __SOURCE_EDITOR_PANEL_DIALOG_TEMPLATE__:

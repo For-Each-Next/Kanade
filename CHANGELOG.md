@@ -3,6 +3,24 @@
 Notable changes to Kanade are recorded here. All four tools share one project
 version and are built as independently installable scripts.
 
+## 0.1.6 - 2026-11-14
+
+### Changed
+
+- **Source Editor:** use the existing MediaWiki editor. MediaWiki settings alone
+  control CodeMirror activation and preferences; formatting and reference management
+  support the active CodeMirror document or native textarea.
+- **Source Editor:** remove the custom highlighter, source surface, preview controls,
+  regex replacement tools, and the option to enable CodeMirror for other content models.
+  Preserve saved formatting choices while ignoring retired editor preferences.
+- Build all four tool pairs at the shared project version **0.1.6**.
+
+### Added
+
+- **Source Editor:** optionally convert comma-separated citation authors in a batch,
+  such as `author=Smith, Jane` to `last=Smith|first=Jane`, including numbered authors.
+  Natural-order names and existing structured name fields remain unchanged.
+
 ## 0.1.5 - 2026-11-14
 
 ### Fixed

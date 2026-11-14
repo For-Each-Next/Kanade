@@ -151,8 +151,8 @@ test('initializes editor and reference messages together when MediaWiki becomes 
 test('an explicit translator includes source-editing and reference-management messages', () => {
     const translator = createSourceEditorI18n('zh-Hant');
     assert.equal(
-        translator.msg('dialog.referenceEditing'),
-        traditionalChinese['dialog.referenceEditing'],
+        translator.msg('dialog.referenceFormatting'),
+        traditionalChinese['dialog.referenceFormatting'],
     );
     assert.equal(
         translator.msg('draft.createSourceTitle'),
@@ -187,7 +187,7 @@ test('uses Japanese and Russian editor, reference, and diagnostic translations',
         const translator = createSourceEditorI18n(locale);
         for (const id of [
             'dialog.saveSettings',
-            'dialog.referenceEditing',
+            'dialog.referenceFormatting',
             'draft.createSourceTitle',
             'tools.openFormattingSettings',
             'feedback.settingsSaveFailed',

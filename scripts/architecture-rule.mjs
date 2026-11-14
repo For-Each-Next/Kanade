@@ -17,7 +17,6 @@ const pureLibraries = new Set([
     'data-validation',
     'new-page-list',
     'citation-metadata',
-    'wikitext-highlighting',
 ]);
 const pureLibraryContracts = new Set(['notifications/contracts.ts']);
 const compositionModules = new Map([
@@ -50,14 +49,6 @@ const libraryDependencies = new Map([
     ['data-validation', new Set(['data-validation'])],
     ['new-page-list', new Set(['new-page-list'])],
     ['citation-metadata', new Set(['citation-metadata'])],
-    [
-        'wikitext-highlighting',
-        new Set(['wikitext-highlighting', 'wikitext', 'wiki-titles']),
-    ],
-    [
-        'wikitext-textbox',
-        new Set(['wikitext-textbox', 'wikitext-highlighting']),
-    ],
     ['wikitext', new Set(['wikitext'])],
     ['mediawiki-edit-box', new Set(['mediawiki-edit-box'])],
     ['citoid', new Set(['citoid', 'data-validation'])],

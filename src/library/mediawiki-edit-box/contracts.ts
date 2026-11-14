@@ -18,6 +18,7 @@ export interface CodeMirrorEditor {
     surface?: VisualEditorSurface | null;
     textarea?: HTMLTextAreaElement | null;
     view?: {
+        composing?: boolean;
         dispatch?: (transaction: {
             changes: { from: number; insert: string; to: number };
             scrollIntoView?: boolean;

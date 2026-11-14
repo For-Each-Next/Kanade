@@ -44,7 +44,7 @@ import {
 import {
     classifyTemplateHead,
     type TemplateMagicWordCatalog,
-} from '../../library/wikitext-highlighting/magic-words.ts';
+} from '../../library/wikitext/magic-words.ts';
 
 export interface WikiLinkLookup {
     missing: Set<string>;

@@ -17,7 +17,7 @@ import {
 import {
     findChineseConversionValueRanges,
     normalizeChineseConversion,
-} from '../../library/wikitext-highlighting/conversion-rules.ts';
+} from '../../library/wikitext/conversion-rules.ts';
 import { formatHtmlTags } from './html-formatting.ts';
 
 export type CharacterWidthRatio = '2:1' | '5:3';

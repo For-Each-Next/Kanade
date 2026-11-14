@@ -194,7 +194,6 @@ test('public APIs, every domain, and pure library capabilities reject host globa
         'src/rev-copy/domain/example.ts',
         'src/library/notifications/example.ts',
         'src/library/wikitext/example.ts',
-        'src/library/wikitext-highlighting/example.ts',
         'src/library/wiki-titles/example.ts',
         'src/library/citation-metadata/example.ts',
         'src/library/i18n/example.ts',
@@ -218,7 +217,6 @@ test('public APIs, every domain, and pure library capabilities reject host globa
 test('pure shared rules are available to tool domains without permitting host libraries', () => {
     for (const capability of [
         'wikitext',
-        'wikitext-highlighting',
         'wiki-titles',
         'citation-metadata',
         'i18n',
@@ -241,35 +239,12 @@ test('pure shared rules are available to tool domains without permitting host li
             1,
         );
     }
-    for (const capability of [
-        'citoid',
-        'mediawiki-edit-box',
-        'wikitext-textbox',
-    ]) {
+    for (const capability of ['citoid', 'mediawiki-edit-box']) {
         assert.equal(
             lint(
                 'src/source-editor/domain/example.ts',
                 `import { host } from '../../library/${capability}/example.ts';`,
             ).length,
-            1,
-        );
-    }
-});
-
-test('textbox highlighting depends only on syntax, not editor contributions', () => {
-    assert.deepEqual(
-        lint(
-            'src/library/wikitext-textbox/index.ts',
-            "import { highlightWikitext } from '../wikitext-highlighting/highlighter.ts';",
-        ),
-        [],
-    );
-    for (const statement of [
-        "import { loadHostModules } from '../mediawiki-runtime/modules.ts';",
-        "import { preview } from '../../source-editor/features/editor/reference-tooltip.ts';",
-    ]) {
-        assert.equal(
-            lint('src/library/wikitext-textbox/index.ts', statement).length,
             1,
         );
     }

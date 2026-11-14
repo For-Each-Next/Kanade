@@ -43,18 +43,6 @@ export function getNamespacePrefixes(
     return catalog.getNamespacePrefixes(resolveCatalog(source), namespaceId);
 }
 
-export function stripNamespacePrefix(
-    value: string,
-    source: NamespaceSource,
-    namespaceId: number,
-): string {
-    return catalog.stripNamespacePrefix(
-        value,
-        resolveCatalog(source),
-        namespaceId,
-    );
-}
-
 export function formatNamespaceTitle(
     value: string,
     source: NamespaceSource,

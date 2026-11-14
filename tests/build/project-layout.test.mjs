@@ -23,7 +23,7 @@ async function createProject(context) {
             `docs/${directory}/README.md`,
             `config/typescript/${directory}.json`,
         ]),
-        'src/source-editor/features/editor/controller.ts',
+        'src/source-editor/platform/mediawiki/formatter-editor.ts',
         'src/source-editor/features/source-manager/controller.ts',
         'docs/source-editor/images/README.md',
         'scripts/source-editor/capture-live.mjs',

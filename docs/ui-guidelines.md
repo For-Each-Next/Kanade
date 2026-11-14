@@ -30,7 +30,7 @@ DOM reading order when columns stack. Let each component lay out its own label,
 description, control, and message. Do not use label typography to manufacture
 hierarchy that belongs in nested [Field][codex-field] markup.
 
-Source Editor's syntax-highlighted source, article previews, source diffs, and Revision Copy's
+Source Editor's article previews, source diffs, and Revision Copy's
 native inline row are distinct surfaces with their own rendering needs. Their
 styles must not spill into Codex controls. Preserve host portlet links, headings,
 and navigation, and scope lifecycle cleanup to the tool's own elements.

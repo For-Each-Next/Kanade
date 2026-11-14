@@ -160,22 +160,20 @@ the license, and integrity manifest. AI assistance covered this publication
 policy, stable installation links, and the executed-workflow regression for
 stable and prerelease CLI arguments; no runtime or data ownership changes.
 
-| Shared capability                    | Reason and limits                                                                                                                                                                                                                                                                                   |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/library/i18n/`                  | All four tools share locale resolution; Source Editor, Creator, and Assessor also share typed text and rich-part interpolation. Catalogs and Revision Copy's broader Chinese-variant acceptance remain with their tools.                                                                            |
-| `src/library/wikitext/`              | Source-preserving scanning of templates, parameters, links, comments, tags, and references, plus range transformations. Tools retain their citation, highlighting, article, and banner policies.                                                                                                    |
-| `src/library/wikitext-highlighting/` | Pure syntax segments and token colors shared by Source Editor and the bare textarea attachment. Existing token class names remain compatible; preview and missing-page behavior are not part of this capability.                                                                                    |
-| `src/library/wikitext-textbox/`      | An opt-in syntax overlay for gadget textareas. The native textarea owns editing; no host discovery, network, preview, reference management, or toolbar is installed.                                                                                                                                |
-| `src/library/wiki-titles/`           | Namespace catalogs and title operations. Canonical fallback and recorded English/Chinese Wikipedia aliases remain explicit policies rather than one universal normalization rule.                                                                                                                   |
-| `src/library/data-validation/`       | Boundary object guards and record readers preserve each caller's array and missing-value contract; product schema validation stays at the owning adapter.                                                                                                                                           |
-| `src/library/logging/`               | Structured logging with common level filtering, timing, bounded details, and sensitive-value redaction. Tool composition owns configuration and output.                                                                                                                                             |
-| `src/library/citoid/`                | Source Editor and Creator share raw metadata transport and response validation. Their citation normalization, pending-request ownership, and caches stay local.                                                                                                                                     |
-| `src/library/citation-metadata/`     | Source Editor and Creator share Zotero-to-CS1 template selection; their field normalization and serialization policies stay local.                                                                                                                                                                  |
-| `src/library/mediawiki-edit-box/`    | Source Editor and Creator share backing-editor discovery and native input delivery. Source Editor retains selection-preserving adapters and its stricter ownership check.                                                                                                                           |
-| `src/library/new-page-list/`         | Creator and Assessor share date ordering and section insertion; their accepted line syntax, archive parser, review, and write workflow remain distinct.                                                                                                                                             |
-| `src/library/quick-access/`          | Source Editor contributes Format and Tools actions to one bottom-right launcher. The library owns registration, presentation, and stale-disposer protection; Source Editor owns the actions and their state. Revision Copy uses inline/section entries; Creator and Assessor use native page tools. |
-| `src/library/notifications/`         | Source Editor, Creator, and Assessor share action-result notification policy while retaining local catalogs and tags. Revision Copy retains its Codex-toast and MediaWiki-fallback behavior.                                                                                                        |
-| `src/library/mediawiki-runtime/`     | Matching ResourceLoader/Vue/Codex contracts share validated loading mechanics and equal pending module sets. Failed loads are retryable. Tool component lists, mount owners, acceptance decisions, and dialog state remain local.                                                                   |
+| Shared capability                 | Reason and limits                                                                                                                                                                                                                                                                                        |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/library/i18n/`               | All four tools share locale resolution; Source Editor, Creator, and Assessor also share typed text and rich-part interpolation. Catalogs and Revision Copy's broader Chinese-variant acceptance remain with their tools.                                                                                 |
+| `src/library/wikitext/`           | Source-preserving scanning of templates, parameters, links, comments, tags, and references, plus range transformations. Tools retain their citation, article, and banner policies.                                                                                                                       |
+| `src/library/wiki-titles/`        | Namespace catalogs and title operations. Canonical fallback and recorded English/Chinese Wikipedia aliases remain explicit policies rather than one universal normalization rule.                                                                                                                        |
+| `src/library/data-validation/`    | Boundary object guards and record readers preserve each caller's array and missing-value contract; product schema validation stays at the owning adapter.                                                                                                                                                |
+| `src/library/logging/`            | Structured logging with common level filtering, timing, bounded details, and sensitive-value redaction. Tool composition owns configuration and output.                                                                                                                                                  |
+| `src/library/citoid/`             | Source Editor and Creator share raw metadata transport and response validation. Their citation normalization, pending-request ownership, and caches stay local.                                                                                                                                          |
+| `src/library/citation-metadata/`  | Source Editor and Creator share Zotero-to-CS1 template selection; their field normalization and serialization policies stay local.                                                                                                                                                                       |
+| `src/library/mediawiki-edit-box/` | Source Editor and Creator share backing-editor discovery and native input delivery. Source Editor retains selection-preserving adapters and its stricter ownership check.                                                                                                                                |
+| `src/library/new-page-list/`      | Creator and Assessor share date ordering and section insertion; their accepted line syntax, archive parser, review, and write workflow remain distinct.                                                                                                                                                  |
+| `src/library/quick-access/`       | Source Editor contributes Format and References actions to one bottom-right launcher. The library owns registration, presentation, and stale-disposer protection; Source Editor owns the actions and their state. Revision Copy uses inline/section entries; Creator and Assessor use native page tools. |
+| `src/library/notifications/`      | Source Editor, Creator, and Assessor share action-result notification policy while retaining local catalogs and tags. Revision Copy retains its Codex-toast and MediaWiki-fallback behavior.                                                                                                             |
+| `src/library/mediawiki-runtime/`  | Matching ResourceLoader/Vue/Codex contracts share validated loading mechanics and equal pending module sets. Failed loads are retryable. Tool component lists, mount owners, acceptance decisions, and dialog state remain local.                                                                        |
 
 A shared capability is justified by matching current consumers, not by two
 operations using the same API. Creator's operation-plan recovery and Assessor's
@@ -201,55 +199,16 @@ checks for source round-tripping, review/write ownership, stale responses, and
 recovery. Automated checks and agent review do not establish independent human
 review; manual release checks remain recorded in the maintenance guide.
 
-### Syntax-only gadget textboxes
+### Native source editors
 
-`src/library/wikitext-textbox/index.ts` exposes
-`attachWikitextHighlighting(textarea)`. A gadget imports and bundles this module
-with its own script; it does not install or start Source Editor. Attach it to an
-already mounted native textarea, refresh after programmatic value assignments,
-and destroy it when disposing the owning form or dialog:
-
-```ts
-// Relative import from src/<tool>/features/example.ts.
-import { attachWikitextHighlighting } from '../../library/wikitext-textbox/index.ts';
-
-const highlighting = attachWikitextHighlighting(textarea);
-textarea.value = source;
-highlighting.refresh();
-// When the owning interface closes:
-highlighting.destroy();
-```
-
-The attachment renders only escaped text and syntax spans in an aria-hidden
-overlay. Typing, selection, native undo, composition, form submission, disabled,
-and read-only behavior remain with the original textarea. It copies text metrics
-and synchronizes scrolling and resizing; syntax emphasis never changes character
-metrics. No link metadata becomes a clickable element or triggers a lookup.
-Repeated attachment returns the existing handle, and disposal removes only owned
-styles, listeners, observers, and wrapper. The caller owns dialog lifecycle and
-layout; this is not an automatic page-wide editor replacement.
-
-This minimal component inserts a block `.kanade-wikitext-textbox` wrapper. Give
-that wrapper any flex/grid placement rules and size the textarea directly;
-selectors such as `form > textarea` no longer match while attached. It does not
-preserve arbitrary inline or parent-dependent host layouts. Base colors are
-captured on attachment; later disabled/read-only changes retain syntax colors
-while preserving native editing restrictions. These limits keep the component
-small instead of adding a general host-layout or theme adapter.
-
-The pure highlighter and token palette were extracted from Source Editor, whose
-existing enhanced editor still owns its history, previews, and optional link
-checks. Its established token class names are retained to keep styling compatible.
-AI assistance covered this extraction and the minimal attachment. Offline browser
-tests cover native editing, focus/selection, composition, scrolling, form behavior,
-disposal, and the absence of network requests or extra editor controls.
-The 2026-10-21 `npm run verify` run passed all 1,802 unit/DOM/service tests,
-294 Playwright scenarios (13 skipped), and Revision Copy's seven-skin offline checks, along
-with formatting, lint, types, boundaries, unused-code checks, and all eight
-rebuilt distribution scripts. The syntax-only textbox has 11 focused browser
-cases; its offline visual comparison was inspected for line spacing, wrapping,
-and placeholder visibility. Manual screen-reader and human release review remain
-separate requirements.
+Source Editor uses the active MediaWiki source editor. MediaWiki CodeMirror owns
+syntax highlighting, preferences, search, folding, and editing history; its
+native enable/disable choice is respected. Kanade does not load or toggle that
+editor. Shared `src/library/mediawiki-edit-box/` adapters read and update the
+active CodeMirror document or textarea for explicit formatting and reference
+operations. Source-preserving conversion rules and magic-word classification
+remain in `src/library/wikitext/`; the former custom syntax engine, token palette,
+and native-textarea overlay attachment have been removed.
 
 ### Shared launcher
 

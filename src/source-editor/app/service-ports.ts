@@ -22,7 +22,6 @@ export interface FormatterSettingsStore {
 }
 
 interface NamespaceProvider {
-    current(): WikiNamespaceState;
     load(): Promise<WikiNamespaceState>;
 }
 
@@ -34,8 +33,5 @@ export interface EditorServiceDependencies {
     uiLogger: Logger;
     notify: EditorServices['notify'];
     isSectionEditing: EditorServices['isSectionEditing'];
-    getRevisionId(): number;
-    loadRevisionSource(revisionId: number): Promise<string>;
     lookupLinks(titles: string[]): Promise<WikiLinkLookup>;
-    loadPageSummary: EditorServices['loadPageSummary'];
 }

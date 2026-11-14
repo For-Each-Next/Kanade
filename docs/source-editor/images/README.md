@@ -1,9 +1,9 @@
 # Source Editor screenshot inventory
 
-Last reviewed: 2026-11-09.
+Last reviewed: 2026-11-14.
 
 Source Editor has one image collection for source editing, formatting,
-reference management, and text utilities. The maintained collection contains
+and reference management. The maintained collection contains
 exactly three images: capture profile 03 in English (`en`), Simplified Chinese (`zh-Hans`),
 and Traditional Chinese (`zh-Hant`). The view shows shared article and citation
 formatting preferences, captured from actual Wikipedia source pages using the
@@ -13,16 +13,19 @@ Chinese variants, following the shared
 [capture policy][review-policy].
 Article and citation text retain their actual source wording.
 
+The maintained images were regenerated on 2026-11-14 from the 0.1.6 build after
+migration to MediaWiki's native editor. They show the Formatting and References
+tabs and the opt-in comma-separated author conversion. Each image was inspected
+at its native 1366 × 768 size. Captures retained the verified source and native
+read-only state, did not change CodeMirror settings, and recorded no page errors
+or wiki writes.
+
 Additional interface states remain covered by offline browser tests. This
 collection keeps one view per language to limit the maintained documentation
 images while retaining language coverage.
 
-The three maintained formatting views were regenerated on 2026-11-09 from the
-0.1.3 build and inspected at their native 1366 × 768 size. The shared quick-access
-row behind the dialog includes Format, References, and Tools. Captures retained
-the verified native source and read-only state, and no wiki writes occurred.
-The ledger preserves unrelated historical failures for capture profiles outside
-this maintained view.
+The shared quick-access row behind the dialog includes Format and References.
+The ledger preserves unrelated historical failures for retired capture profiles.
 
 ## Image inventory
 
@@ -64,30 +67,18 @@ npm run build
 node scripts/source-editor/capture-live.mjs --views=03
 ```
 
-The script opens pinned Wikimedia source views, verifies their full native
-textarea content against the exact revision returned by the revisions API,
-checks that the native wiki identity matches the selected interface language,
-and then uses the tool's normal controls. It enables article-link previews with
-**Highlighting settings → Apply settings** for the current editor session;
-article formatting is not applied. It opens existing references for review and
-dismisses the draft with its quiet **Cancel** action. Wiki write requests are
-blocked, and every capture checks that the backing source still matches the
-initial native textarea.
+The script supports only maintained formatting profile 03. It opens pinned
+Wikimedia source views, verifies their full native textarea content against the
+exact revision returned by the revisions API, checks the native wiki identity,
+and opens Formatting through the tool's normal controls. It respects the native
+CodeMirror state and never toggles syntax highlighting or changes editor
+preferences. It checks the article-and-citation formatting option for the image
+without formatting source or saving preferences. Wiki write requests are blocked,
+and every capture checks that source and read-only state remain unchanged.
 
-The text-utility capture loads the same pinned Nintendo source. On a read-only
-native form it shows the initial two-pair form without entering values or
-requesting a preview. On an editable native form it prepares a replacement
-preview and records the actual output checksum, without applying it. The mobile capture shows
-the horizontal shared **Format** and **Tools** controls with both dialogs closed.
-It does not activate **Format**. Neither workflow
-stores text, changes editor source, or submits a wiki edit.
-
-The URLs request MediaWiki's classic source form with `veswitched=1`. On English
-Wikipedia, the capture waits for native CodeMirror and uses its **Syntax
-highlighting** toolbar toggle to expose the textarea before loading Source
-Editor. If MediaWiki's first-edit welcome appears, it is dismissed through its
-native **Start editing** action. The ledger records those native actions; neither
-the textarea's read-only state nor its source is changed.
+Earlier capture profiles involving the custom editor, hover previews, highlighting
+preferences, or regex tools have been retired. Their recorded source provenance
+below and ledger history remain evidence of those historical captures.
 
 Chromium uses the system HTTPS proxy on macOS when enabled. A capture environment
 can supply `KANADE_BROWSER_PROXY` explicitly. To inspect or replace a subset, use
@@ -160,11 +151,8 @@ on 2026-10-08 at 12:43:45.244 UTC and its SHA-256 is
 Live captures do not replay it. Thumbnail URLs may be returned by the service;
 the preview does not download or display article images, audio, or video.
 
-To intentionally refresh that offline response and its attribution metadata, run
-`node scripts/source-editor/fetch-preview-source.mjs` from the repository root.
-Review the changed revision, response, and provenance together before accepting
-the fixture update. This read-only helper does not regenerate maintained live
-screenshots.
+The former preview service and refresh helper have been removed with the custom
+editor. These source observations describe historical captures only.
 
 ## Eternal Sonata source and attribution
 

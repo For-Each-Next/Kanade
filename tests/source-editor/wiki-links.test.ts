@@ -22,7 +22,7 @@ import { lookupWikiLinks } from '../../src/source-editor/platform/mediawiki/wiki
 import type {
     MagicWordAliases,
     TemplateMagicWordCatalog,
-} from '../../src/library/wikitext-highlighting/magic-words.ts';
+} from '../../src/library/wikitext/magic-words.ts';
 
 const EXAMPLE_NAMESPACE_CATALOG = decodeNamespaceCatalog('examplewiki', {
     query: {

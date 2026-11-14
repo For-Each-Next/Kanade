@@ -88,7 +88,7 @@ test('dialog template compiles and renders translated content as text', async ()
 
 test('formatting applies a draft once without persisting it by default', async () => {
     const { bindings, formatted, saved, closed } = harness();
-    bindings.largeFont.value = true;
+    bindings.resolveRedirects.value = true;
     bindings.formatHtmlTags.value = true;
     bindings.indentBlockTemplates.value = true;
     bindings.indentSpaces.value = 3;
@@ -99,44 +99,19 @@ test('formatting applies a draft once without persisting it by default', async (
     assert.equal(formatted.length, 1);
     assert.equal(formatted[0].formatter.indentSpaces, 3);
     assert.equal(formatted[0].formatter.formatHtmlTags, true);
-    assert.equal(formatted[0].largeFont, true);
+    assert.equal(formatted[0].resolveRedirects, true);
     assert.deepEqual(closed, formatted);
     assert.deepEqual(saved, []);
     assert.equal(bindings.open.value, false);
 });
 
-test('applying editor settings never runs the formatter', async () => {
-    const { bindings, formatted, saved, closed } = harness();
-    bindings.activeTab.value = 'editor';
-    bindings.alternateReferenceColors.value = true;
-    bindings.ctrlClickLinks.value = false;
-    bindings.useCodeMirrorForOtherModels.value = true;
-    bindings.referenceEditing.value = false;
-    bindings.referenceLightweightEditing.value = true;
-    bindings.largeFont.value = true;
-    bindings.resolveRedirects.value = true;
-    bindings.updateFirstParameterMode('compact');
-    await bindings.apply();
-
-    assert.deepEqual(formatted, []);
-    assert.deepEqual(saved, []);
-    assert.equal(closed.length, 1);
-    assert.equal(closed[0]?.alternateReferenceColors, true);
-    assert.equal(closed[0]?.ctrlClickLinks, false);
-    assert.equal(closed[0]?.referenceEditing, false);
-    assert.equal(closed[0]?.referenceLightweightEditing, true);
-    assert.equal(closed[0]?.useCodeMirrorForOtherModels, true);
-    assert.equal(closed[0]?.largeFont, true);
-    assert.equal(closed[0]?.resolveRedirects, true);
-    assert.equal(closed[0]?.formatter.firstParameterLayout, 'compact');
-});
-
-test('citation choices restore and save alongside article and editor settings', async () => {
+test('citation choices restore and save alongside article settings', async () => {
     const initialSelection = createDefaultFormatterSettings();
     initialSelection.citationFormatting = {
         enabled: false,
         layout: 'block',
         compactReferences: true,
+        convertAuthorNames: false,
         separateReferenceDefinitions: true,
         formatScriptTitles: false,
         scriptTitleMode: 'always',
@@ -151,20 +126,20 @@ test('citation choices restore and save alongside article and editor settings', 
     assert.equal(bindings.formatScriptTitles.value, false);
     assert.equal(bindings.scriptTitleMode.value, 'always');
     bindings.formatHtmlTags.value = true;
-    bindings.largeFont.value = true;
+    bindings.resolveRedirects.value = true;
     await bindings.saveSettings();
     assert.deepEqual(
         saved[0].citationFormatting,
         initialSelection.citationFormatting,
     );
     assert.equal(saved[0].formatter.formatHtmlTags, true);
-    assert.equal(saved[0].largeFont, true);
+    assert.equal(saved[0].resolveRedirects, true);
     assert.equal(saved[0].references, undefined);
     assert.deepEqual(formatted, []);
     assert.deepEqual(closed, []);
 
     const reopened = harness({ initialSelection: saved[0] });
-    reopened.bindings.activeTab.value = 'editor';
+    reopened.bindings.activeTab.value = 'formatting';
     reopened.bindings.formatReferences.value = true;
     await reopened.bindings.apply();
     assert.deepEqual(reopened.closed[0]?.citationFormatting, {
@@ -172,7 +147,7 @@ test('citation choices restore and save alongside article and editor settings', 
         enabled: true,
     });
     assert.deepEqual(reopened.closed[0]?.references, { layout: 'block' });
-    assert.deepEqual(reopened.formatted, []);
+    assert.deepEqual(reopened.formatted, reopened.closed);
     assert.deepEqual(reopened.saved, []);
 });
 
@@ -223,8 +198,6 @@ test('citation language examples follow the target content language with either 
 for (const dismissal of ['cancel', 'escape'] as const) {
     test(`${dismissal} discards all drafts without applying or saving`, async () => {
         const { bindings, closed, saved, formatted } = harness();
-        bindings.ctrlClickLinks.value = false;
-        bindings.largeFont.value = true;
         bindings.resolveRedirects.value = true;
         bindings.formatReferences.value = true;
         bindings.referenceLayout.value = 'block';
@@ -248,7 +221,7 @@ for (const dismissal of ['cancel', 'escape'] as const) {
 test('preserve modes and dependent choices retain their configuration', async () => {
     const initial = createDefaultFormatterSettings();
     const { bindings, saved } = harness({ initialSelection: initial });
-    bindings.activeTab.value = 'editor';
+    bindings.activeTab.value = 'formatting';
     bindings.indentBlockTemplates.value = true;
     bindings.indentSpaces.value = 12;
     bindings.skipFirstLevelIndentation.value = true;
@@ -258,10 +231,6 @@ test('preserve modes and dependent choices retain their configuration', async ()
     bindings.updateFirstParameterMode('preserve');
     bindings.updateSubsequentParameterMode('preserve');
     bindings.resolveTemplateRedirects.value = true;
-    bindings.referenceEditing.value = false;
-    bindings.referenceLightweightEditing.value = true;
-    bindings.referencePreviews.value = false;
-    bindings.fullPageReferencePreviews.value = true;
     await bindings.saveSettings();
 
     const selection = saved[0];
@@ -274,10 +243,6 @@ test('preserve modes and dependent choices retain their configuration', async ()
     });
     assert.equal(selection.resolveRedirects, false);
     assert.equal(selection.resolveTemplateRedirects, true);
-    assert.equal(selection.referencePreviews, false);
-    assert.equal(selection.referenceEditing, false);
-    assert.equal(selection.referenceLightweightEditing, true);
-    assert.equal(selection.fullPageReferencePreviews, true);
 });
 
 test('indentation defaults to two spaces and restores saved widths above four', async () => {
@@ -361,10 +326,6 @@ test('saving settings keeps the dialog open and does not apply the draft', async
     const { bindings, closed, formatted, saved } = harness();
     const initialAnnouncement = bindings.announcement.value;
     assert.equal(initialAnnouncement, null);
-    bindings.alternateReferenceColors.value = true;
-    bindings.ctrlClickLinks.value = false;
-    bindings.syntaxHighlighting.value = false;
-    bindings.useCodeMirrorForOtherModels.value = true;
     bindings.formatReferences.value = true;
     bindings.referenceLayout.value = 'block';
     bindings.compactReferences.value = true;
@@ -375,15 +336,12 @@ test('saving settings keeps the dialog open and does not apply the draft', async
     await bindings.saveSettings();
     assert.equal(bindings.menuSelection.value, null);
     assert.equal(bindings.open.value, true);
-    assert.equal(saved[0].alternateReferenceColors, true);
-    assert.equal(saved[0].ctrlClickLinks, false);
     assert.equal(saved[0].formatter.formatHtmlTags, true);
-    assert.equal(saved[0].syntaxHighlighting, false);
-    assert.equal(saved[0].useCodeMirrorForOtherModels, true);
     assert.deepEqual(saved[0].citationFormatting, {
         enabled: true,
         layout: 'block',
         compactReferences: true,
+        convertAuthorNames: false,
         separateReferenceDefinitions: true,
         formatScriptTitles: false,
         scriptTitleMode: 'always',
@@ -405,17 +363,15 @@ test('reset restores every draft setting without applying or closing', async () 
         onReset() {
             resets += 1;
             assert.equal(bindings.indentSpaces.value, 12);
-            assert.equal(bindings.largeFont.value, true);
+            assert.equal(bindings.resolveRedirects.value, true);
         },
     });
     assert.deepEqual(
         bindings.menuItems.map(({ value }) => value),
-        ['clear-cache', 'reset-settings'],
+        ['reset-settings'],
     );
     assert.ok(!('action' in bindings.menuItems.at(-1)!));
-    bindings.activeTab.value = 'editor';
-    bindings.alternateReferenceColors.value = true;
-    bindings.ctrlClickLinks.value = false;
+    bindings.activeTab.value = 'formatting';
     bindings.characterWidthRatio.value = '2:1';
     bindings.updateFirstParameterMode('compact');
     bindings.updateSubsequentParameterMode('align-names-and-values');
@@ -424,18 +380,8 @@ test('reset restores every draft setting without applying or closing', async () 
     bindings.normalizeConversion.value = true;
     bindings.formatHtmlTags.value = true;
     bindings.skipFirstLevelIndentation.value = true;
-    bindings.fullPageReferencePreviews.value = true;
-    bindings.highlightMissing.value = true;
-    bindings.largeFont.value = true;
-    bindings.linkPreviews.value = true;
-    bindings.referenceEditing.value = false;
-    bindings.referenceLightweightEditing.value = true;
-    bindings.referencePreviews.value = false;
     bindings.resolveRedirects.value = true;
     bindings.resolveTemplateRedirects.value = true;
-    bindings.smallReferenceText.value = false;
-    bindings.syntaxHighlighting.value = false;
-    bindings.useCodeMirrorForOtherModels.value = true;
     bindings.formatReferences.value = true;
     bindings.referenceLayout.value = 'block';
     bindings.compactReferences.value = true;
@@ -447,7 +393,7 @@ test('reset restores every draft setting without applying or closing', async () 
     await bindings.onMenuAction('reset-settings');
 
     assert.equal(resets, 1);
-    assert.equal(bindings.activeTab.value, 'editor');
+    assert.equal(bindings.activeTab.value, 'formatting');
     assert.equal(bindings.menuSelection.value, null);
     assert.equal(bindings.open.value, true);
     assert.equal(bindings.error.value, '');
@@ -460,73 +406,14 @@ test('reset restores every draft setting without applying or closing', async () 
     assert.deepEqual(saved, [createDefaultFormatterSettings()]);
 });
 
-test('Ctrl/Cmd-click defaults on and restores a saved disabled choice', () => {
-    assert.equal(harness().bindings.ctrlClickLinks.value, true);
-    const initialSelection = createDefaultFormatterSettings();
-    initialSelection.ctrlClickLinks = false;
-
-    assert.equal(
-        harness({ initialSelection }).bindings.ctrlClickLinks.value,
-        false,
-    );
-});
-
-test('link navigation labels use the supplied platform modifier', () => {
-    for (const linkModifierKey of ['Ctrl', 'Command'] as const) {
-        const { bindings } = harness({ linkModifierKey });
-        assert.equal(
-            bindings.msg('dialog.ctrlClickLinks', {
-                modifier: bindings.linkModifierKey,
-            }),
-            `Hold ${linkModifierKey} and click link source to open a new tab`,
-        );
-    }
-});
-
-test('the reference color setting defaults off and restores a saved choice', () => {
-    assert.equal(harness().bindings.alternateReferenceColors.value, false);
-    const initialSelection = createDefaultFormatterSettings();
-    initialSelection.alternateReferenceColors = true;
-
-    assert.equal(
-        harness({ initialSelection }).bindings.alternateReferenceColors.value,
-        true,
-    );
-});
-
-test('reference editing defaults on and restores a saved disabled choice', () => {
-    assert.equal(harness().bindings.referenceEditing.value, true);
-    const initialSelection = createDefaultFormatterSettings();
-    initialSelection.referenceEditing = false;
-
-    assert.equal(
-        harness({ initialSelection }).bindings.referenceEditing.value,
-        false,
-    );
-});
-
-test('lightweight editing defaults off and restores a saved enabled choice', () => {
-    assert.equal(harness().bindings.referenceLightweightEditing.value, false);
-    const initialSelection = createDefaultFormatterSettings();
-    initialSelection.referenceLightweightEditing = true;
-
-    assert.equal(
-        harness({ initialSelection }).bindings.referenceLightweightEditing
-            .value,
-        true,
-    );
-});
-
-test('CodeMirror preference defaults off and restores a saved choice', () => {
-    assert.equal(harness().bindings.useCodeMirrorForOtherModels.value, false);
-    const initialSelection = createDefaultFormatterSettings();
-    initialSelection.useCodeMirrorForOtherModels = true;
-
-    assert.equal(
-        harness({ initialSelection }).bindings.useCodeMirrorForOtherModels
-            .value,
-        true,
-    );
+test('author conversion is an explicit citation option and saves with the formatter draft', async () => {
+    const { bindings, saved } = harness();
+    assert.equal(bindings.convertAuthorNames.value, false);
+    bindings.convertAuthorNames.value = true;
+    await bindings.saveSettings();
+    assert.equal(saved[0].citationFormatting.convertAuthorNames, true);
+    bindings.resetSettings();
+    assert.equal(bindings.convertAuthorNames.value, false);
 });
 
 test('HTML formatting defaults off and restores a saved choice', () => {
@@ -549,8 +436,8 @@ test('a failed reset preserves the draft and leaves an inline error', async () =
             throw failure;
         },
     });
-    bindings.activeTab.value = 'editor';
-    bindings.largeFont.value = true;
+    bindings.activeTab.value = 'formatting';
+    bindings.resolveRedirects.value = true;
     bindings.indentBlockTemplates.value = true;
     bindings.indentSpaces.value = 12;
     bindings.updateFirstParameterMode('compact');
@@ -563,7 +450,7 @@ test('a failed reset preserves the draft and leaves an inline error', async () =
     assert.deepEqual(errors, [[failure, 'reset-settings']]);
     assert.match(bindings.error.value, /Could not reset/u);
     assert.equal(bindings.announcement.value, null);
-    assert.equal(bindings.activeTab.value, 'editor');
+    assert.equal(bindings.activeTab.value, 'formatting');
     assert.equal(bindings.open.value, true);
     assert.deepEqual(closed, []);
     assert.deepEqual(formatted, []);
@@ -578,21 +465,17 @@ test('busy saving ignores duplicate actions and dismissal, and uses a snapshot',
         finishSave = resolve;
     });
     const snapshots: FormatterDialogSelection[] = [];
-    let clears = 0;
     let resets = 0;
     const { bindings, closed, formatted } = harness({
         onSave(selection) {
             snapshots.push(selection);
             return saving;
         },
-        onClearCache() {
-            clears += 1;
-        },
         onReset() {
             resets += 1;
         },
     });
-    bindings.largeFont.value = true;
+    bindings.resolveRedirects.value = true;
     bindings.formatReferences.value = true;
     bindings.referenceLayout.value = 'block';
     bindings.compactReferences.value = true;
@@ -603,6 +486,7 @@ test('busy saving ignores duplicate actions and dismissal, and uses a snapshot',
         enabled: true,
         layout: 'block',
         compactReferences: true,
+        convertAuthorNames: false,
         separateReferenceDefinitions: true,
         formatScriptTitles: false,
         scriptTitleMode: 'always',
@@ -617,25 +501,23 @@ test('busy saving ignores duplicate actions and dismissal, and uses a snapshot',
     bindings.onOpenChange(false);
     await bindings.apply();
     await bindings.saveSettings();
-    await bindings.onMenuAction('clear-cache');
     await bindings.onMenuAction('reset-settings');
     bindings.resetSettings();
     assert.equal(bindings.open.value, true);
-    assert.equal(bindings.largeFont.value, true);
+    assert.equal(bindings.resolveRedirects.value, true);
     assert.deepEqual(closed, []);
-    bindings.largeFont.value = false;
+    bindings.resolveRedirects.value = false;
     bindings.formatReferences.value = false;
     bindings.referenceLayout.value = 'inline';
     bindings.scriptTitleMode.value = 'non-latin';
-    bindings.activeTab.value = 'editor';
+    bindings.activeTab.value = 'formatting';
     finishSave();
     await pending;
     assert.equal(snapshots.length, 1);
-    assert.equal(snapshots[0].largeFont, true);
+    assert.equal(snapshots[0].resolveRedirects, true);
     assert.deepEqual(snapshots[0].citationFormatting, citationSnapshot);
     assert.deepEqual(formatted, []);
     assert.deepEqual(closed, []);
-    assert.equal(clears, 0);
     assert.equal(resets, 0);
     assert.equal(bindings.savingSettings.value, false);
     assert.ok(bindings.announcement.value);
@@ -676,16 +558,16 @@ test('formatting locks its action and draft snapshot until it completes', async 
             await pending;
         },
     });
-    bindings.largeFont.value = true;
+    bindings.resolveRedirects.value = true;
     bindings.formatReferences.value = true;
     bindings.referenceLayout.value = 'block';
     bindings.scriptTitleMode.value = 'always';
     const applying = bindings.apply();
-    bindings.largeFont.value = false;
+    bindings.resolveRedirects.value = false;
     bindings.formatReferences.value = false;
     bindings.referenceLayout.value = 'inline';
     bindings.scriptTitleMode.value = 'non-latin';
-    bindings.activeTab.value = 'editor';
+    bindings.activeTab.value = 'formatting';
     await bindings.apply();
     await bindings.saveSettings();
     bindings.onClose();
@@ -695,7 +577,7 @@ test('formatting locks its action and draft snapshot until it completes', async 
     finish();
     await applying;
     assert.equal(snapshots.length, 1);
-    assert.equal(snapshots[0].largeFont, true);
+    assert.equal(snapshots[0].resolveRedirects, true);
     assert.equal(snapshots[0].citationFormatting.enabled, true);
     assert.equal(snapshots[0].citationFormatting.layout, 'block');
     assert.equal(snapshots[0].citationFormatting.scriptTitleMode, 'always');
@@ -718,11 +600,11 @@ test('opening references accepts one snapshot without formatting or saving', asy
     bindings.formatReferences.value = true;
     bindings.referenceLayout.value = 'block';
     bindings.scriptTitleMode.value = 'always';
-    bindings.largeFont.value = true;
+    bindings.resolveRedirects.value = true;
     const opening = bindings.openReferences();
     bindings.formatReferences.value = false;
     bindings.scriptTitleMode.value = 'non-latin';
-    bindings.largeFont.value = false;
+    bindings.resolveRedirects.value = false;
     bindings.onClose();
     await bindings.openReferences();
     await bindings.saveSettings();
@@ -731,7 +613,7 @@ test('opening references accepts one snapshot without formatting or saving', asy
     finish();
     await opening;
     assert.equal(snapshots.length, 1);
-    assert.equal(snapshots[0].largeFont, true);
+    assert.equal(snapshots[0].resolveRedirects, true);
     assert.equal(snapshots[0].citationFormatting.enabled, true);
     assert.equal(snapshots[0].citationFormatting.scriptTitleMode, 'always');
     assert.deepEqual(closed, snapshots);
@@ -767,52 +649,6 @@ test('a failed references handoff retains the settings draft for retry', async (
     assert.deepEqual(saved, []);
 });
 
-test('cache menu action acts immediately without saving, applying, or closing', async () => {
-    let clears = 0;
-    const { bindings, closed, saved, formatted } = harness({
-        onClearCache() {
-            assert.equal(bindings.announcement.value, null);
-            clears += 1;
-        },
-    });
-    await bindings.onMenuAction('clear-cache');
-    const firstAnnouncement = bindings.announcement.value;
-    assert.ok(firstAnnouncement);
-    assert.match(firstAnnouncement.message, /Cache cleared/u);
-    await bindings.onMenuAction('clear-cache');
-    assert.ok(bindings.announcement.value);
-    assert.match(bindings.announcement.value.message, /Cache cleared/u);
-    assert.equal(bindings.announcement.value.id, firstAnnouncement.id + 1);
-    assert.equal(clears, 2);
-    assert.equal(bindings.menuSelection.value, null);
-    assert.equal(bindings.open.value, true);
-    assert.equal(bindings.error.value, '');
-    assert.deepEqual(closed, []);
-    assert.deepEqual(saved, []);
-    assert.deepEqual(formatted, []);
-});
-
-test('cache failures leave the dialog usable', async () => {
-    const failure = new Error('cache unavailable');
-    const { bindings, closed, errors, formatted, saved } = harness({
-        onClearCache() {
-            throw failure;
-        },
-    });
-    await bindings.onMenuAction('clear-cache');
-    assert.deepEqual(errors, [[failure, 'clear-cache']]);
-    assert.match(bindings.error.value, /Could not clear/u);
-    assert.equal(bindings.announcement.value, null);
-    assert.equal(bindings.open.value, true);
-    assert.deepEqual(closed, []);
-    assert.deepEqual(formatted, []);
-    assert.deepEqual(saved, []);
-    await bindings.apply();
-    assert.equal(formatted.length, 1);
-    assert.deepEqual(closed, formatted);
-    assert.equal(bindings.error.value, '');
-});
-
 test('other wikis allow HTML formatting and both width ratios but gate conversion rules', async () => {
     const initialSelection = createDefaultFormatterSettings();
     initialSelection.formatter.normalizeConversion = true;
@@ -845,12 +681,12 @@ test('format failure preserves drafts for retry without committing editor settin
             throw failure;
         },
     });
-    bindings.largeFont.value = true;
+    bindings.resolveRedirects.value = true;
     await bindings.apply();
     assert.deepEqual(errors, [[failure, 'format']]);
     assert.deepEqual(closed, []);
     assert.equal(bindings.open.value, true);
-    assert.equal(bindings.largeFont.value, true);
+    assert.equal(bindings.resolveRedirects.value, true);
     assert.equal(bindings.applying.value, false);
     assert.match(bindings.error.value, /Could not format/u);
     assert.equal(bindings.announcement.value, null);
@@ -863,13 +699,9 @@ function harness(overrides: Partial<FormatterDialogOptions> = {}) {
     const errors: unknown[][] = [];
     const bindings = createFormatterDialogBindings(createVueHarness(), {
         canNormalizeConversion: true,
-        supportsLinkHelpers: true,
         initialSelection: createDefaultFormatterSettings(),
-        linkHelperDocumentationUrl: '/wiki/Category:内部链接助手模板',
-        linkModifierKey: 'Ctrl',
         redirectPolicyUrl: '/wiki/WP:DONOTFIXIT',
         scope: 'page',
-        onClearCache() {},
         onReset() {},
         onClose(selection) {
             closed.push(selection);

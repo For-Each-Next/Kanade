@@ -125,8 +125,8 @@ export function resolveShortFootnoteCitation(
     );
 }
 
-/** Resolve the same bibliography entry for hover editing and reference management. */
-export function findShortFootnoteCitation(
+/** Resolve the bibliography entry for reference management. */
+function findShortFootnoteCitation(
     source: string,
     shortFootnote: string,
     normalizeTemplateName: TemplateNameNormalizer = DEFAULT_NORMALIZER,

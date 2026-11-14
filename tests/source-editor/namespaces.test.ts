@@ -88,11 +88,6 @@ test('missing magic-word siteinfo keeps wikilink redirects safe', async () => {
         assert.equal(state.redirectsSafe, true);
         assert.equal(state.templateRedirectsSafe, false);
         assert.equal(state.templateMagicWords, null);
-        assert.equal(
-            state.imageOptions?.named.caseInsensitive.has('alternativ') ??
-                false,
-            property !== 'magicwords',
-        );
         assert.equal(getNamespaceId(state.source, 'Pattern'), 10);
     }
 });
@@ -201,18 +196,6 @@ function assertLoadedSiteinfo(
         state.templateMagicWords.invoke.caseInsensitive.has('aufrufen'),
         true,
     );
-    assert.equal(
-        state.imageOptions?.named.caseInsensitive.has('alternativ'),
-        true,
-    );
-    assert.equal(
-        state.imageOptions?.literals.caseInsensitive.has('miniatur'),
-        true,
-    );
-    assert.equal(
-        state.imageOptions?.underscored.caseInsensitive.has('seite'),
-        true,
-    );
 }
 
 test('fresh siteinfo cache hydrates without a request and expires after 24 hours', async () => {
@@ -304,9 +287,6 @@ function createSiteinfo(): unknown {
             magicWord('local-function', ['local-function:', 'lokalfunktion:']),
             magicWord('invoke', ['invoke', 'aufrufen']),
             magicWord('local-variable', ['LOKALVARIABLE'], true),
-            magicWord('img_thumbnail', ['thumb', 'miniatur']),
-            magicWord('img_alt', ['alt=$1', 'alternativ=$1']),
-            magicWord('img_page', ['page_$1', 'seite_$1']),
         ],
         variables: ['local-variable'],
     });

@@ -1,5 +1,5 @@
 /**
- * @file src/library/wikitext-highlighting/magic-words.ts
+ * @file src/library/wikitext/magic-words.ts
  * Purpose: Classification for magic words that share template braces.
  *
  * Contents: Case-aware siteinfo aliases, template modifiers, and source-bound syntax.
@@ -10,7 +10,7 @@ import {
     type TopLevelRange,
     trimSourceRange,
     wikitext,
-} from '../wikitext/index.ts';
+} from './index.ts';
 
 interface BaseTemplateHeadSyntax {
     modifiers: SourceRange[];

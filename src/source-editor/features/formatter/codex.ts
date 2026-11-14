@@ -30,7 +30,6 @@ export interface CodexComponents {
     CdxCheckbox: unknown;
     CdxDialog: unknown;
     CdxField: unknown;
-    CdxIcon: unknown;
     CdxMessage: unknown;
     CdxMenuButton: unknown;
     CdxProgressBar: unknown;
@@ -38,7 +37,6 @@ export interface CodexComponents {
     CdxTab: unknown;
     CdxTabs: unknown;
     CdxTextInput: unknown;
-    CdxTextArea: unknown;
 }
 
 export interface ResourceLoaderRequire {
@@ -61,7 +59,6 @@ export function registerFormatterComponents(
     app.component('CdxCheckbox', Codex.CdxCheckbox);
     app.component('CdxDialog', Codex.CdxDialog);
     app.component('CdxField', Codex.CdxField);
-    app.component('CdxIcon', Codex.CdxIcon);
     app.component('CdxMessage', Codex.CdxMessage);
     app.component('CdxMenuButton', Codex.CdxMenuButton);
     app.component('CdxProgressBar', Codex.CdxProgressBar);
@@ -69,5 +66,4 @@ export function registerFormatterComponents(
     app.component('CdxTab', Codex.CdxTab);
     app.component('CdxTabs', Codex.CdxTabs);
     app.component('CdxTextInput', Codex.CdxTextInput);
-    app.component('CdxTextArea', Codex.CdxTextArea);
 }

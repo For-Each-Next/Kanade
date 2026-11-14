@@ -28,7 +28,6 @@ import type { EditorServices } from '../../src/source-editor/app/editor-contract
 
 import {
     createDefaultFormatterSettings,
-    getEditorFeatureSettings,
     type FormatterSettings,
 } from '../../src/source-editor/domain/formatter-settings.ts';
 import type { createFormatterDialogBindings } from '../../src/source-editor/features/formatter/dialog.ts';
@@ -125,7 +124,7 @@ test('equal formatter loads share the runtime while only the latest owner mounts
     }
 });
 
-test('accepted citation and editor settings are restored when reopening the panel', async () => {
+test('accepted citation and article settings are restored when reopening the panel', async () => {
     const errors: unknown[][] = [];
     const notifications: ActionNotification[] = [];
     const rendered: FormatterDialogBindings[] = [];
@@ -159,8 +158,8 @@ test('accepted citation and editor settings are restored when reopening the pane
             first.scriptTitleExampleLanguages('all-foreign'),
             'en, ja, ru',
         );
-        first.activeTab.value = 'editor';
-        first.largeFont.value = true;
+        first.activeTab.value = 'formatting';
+        first.resolveRedirects.value = true;
         first.formatReferences.value = true;
         first.referenceLayout.value = 'block';
         first.compactReferences.value = true;
@@ -170,11 +169,12 @@ test('accepted citation and editor settings are restored when reopening the pane
         await first.apply();
         first.onClose();
         assert.equal(accepted.length, 1);
-        assert.equal(accepted[0].largeFont, true);
+        assert.equal(accepted[0].resolveRedirects, true);
         assert.deepEqual(accepted[0].citationFormatting, {
             enabled: true,
             layout: 'block',
             compactReferences: true,
+            convertAuthorNames: false,
             separateReferenceDefinitions: true,
             formatScriptTitles: false,
             scriptTitleMode: 'always',
@@ -183,19 +183,19 @@ test('accepted citation and editor settings are restored when reopening the pane
 
         await openFormatter();
         const second = rendered[1];
-        assert.equal(second.largeFont.value, true);
+        assert.equal(second.resolveRedirects.value, true);
         assert.equal(second.formatReferences.value, true);
         assert.equal(second.referenceLayout.value, 'block');
         assert.equal(second.compactReferences.value, true);
         assert.equal(second.separateReferenceDefinitions.value, true);
         assert.equal(second.formatScriptTitles.value, false);
         assert.equal(second.scriptTitleMode.value, 'always');
-        second.largeFont.value = false;
+        second.resolveRedirects.value = false;
         second.scriptTitleMode.value = 'non-latin';
         second.onClose();
         assert.equal(accepted.length, 1);
         await openFormatter();
-        assert.equal(rendered[2].largeFont.value, true);
+        assert.equal(rendered[2].resolveRedirects.value, true);
         assert.equal(rendered[2].scriptTitleMode.value, 'always');
         rendered[2].onClose();
         assert.deepEqual(errors, []);
@@ -229,7 +229,7 @@ test('saving a panel draft persists every group without accepting it in memory',
     try {
         await openFormatter();
         const first = rendered[0];
-        first.largeFont.value = true;
+        first.resolveRedirects.value = true;
         first.formatHtmlTags.value = true;
         first.formatReferences.value = true;
         first.referenceLayout.value = 'block';
@@ -238,19 +238,19 @@ test('saving a panel draft persists every group without accepting it in memory',
         assert.equal(first.open.value, true);
         assert.deepEqual(accepted, []);
         assert.equal(persisted.length, 1);
-        assert.equal(persisted[0].largeFont, true);
+        assert.equal(persisted[0].resolveRedirects, true);
         assert.equal(persisted[0].formatter.formatHtmlTags, true);
         assert.equal(persisted[0].citationFormatting.layout, 'block');
         assert.equal(
             persisted[0].citationFormatting.scriptTitleMode,
             'all-foreign',
         );
-        first.largeFont.value = false;
+        first.resolveRedirects.value = false;
         first.scriptTitleMode.value = 'always';
         first.onClose();
         assert.deepEqual(accepted, []);
         await openFormatter();
-        assert.equal(rendered[1].largeFont.value, true);
+        assert.equal(rendered[1].resolveRedirects.value, true);
         assert.equal(rendered[1].formatHtmlTags.value, true);
         assert.equal(rendered[1].referenceLayout.value, 'block');
         assert.equal(rendered[1].scriptTitleMode.value, 'all-foreign');
@@ -371,20 +371,17 @@ test('the panel formats selected citations using the target content language', a
             })[
                 key as 'wgWikiID' | 'wgContentLanguage' | 'wgUserLanguage'
             ]) as typeof mw.config.get;
-        await createFormatterActions(services, () => ({
-            clearCache() {},
-            getFeatureSettings: () =>
-                getEditorFeatureSettings(createDefaultFormatterSettings()),
+        const controller = {
             getSelection: () => range,
-            replace(start, end, value) {
+            replace(start: number, end: number, value: string) {
                 replacements.push({ start, end, value });
                 textarea.value =
                     textarea.value.slice(0, start) +
                     value +
                     textarea.value.slice(end);
             },
-            setFeatureSettings() {},
-        })).open();
+        };
+        await createFormatterActions(services, () => controller).open();
         rendered[0].formatReferences.value = true;
         rendered[0].scriptTitleMode.value = 'all-foreign';
         await rendered[0].apply();
@@ -472,7 +469,7 @@ test('direct formatting uses saved settings, then accepted session settings whil
         assert.equal(rendered.length, 0);
         assert.equal(notifications.at(-1)?.type, 'success');
 
-        await actions.open('editor');
+        await actions.open('formatting');
         rendered[0].formatHtmlTags.value = false;
         await rendered[0].apply();
         textarea.value = source;
@@ -568,8 +565,6 @@ for (const phase of ['citation metadata', 'redirects'] as const) {
             textarea.value = source;
             let writes = 0;
             const controller = {
-                clearCache() {},
-                getFeatureSettings: () => getEditorFeatureSettings(settings),
                 getSelection: () => ({
                     start: textarea.selectionStart,
                     end: textarea.selectionEnd,
@@ -577,7 +572,6 @@ for (const phase of ['citation metadata', 'redirects'] as const) {
                 replace() {
                     writes += 1;
                 },
-                setFeatureSettings() {},
             };
             let currentController = controller;
             const actions = createFormatterActions(
@@ -731,25 +725,8 @@ function createServices(
 ): EditorServices {
     return {
         wikiPolicy: resolveWikiPolicy(''),
-        async findMissingLinks() {
-            return {
-                checkedTitles: new Set(),
-                linkClasses: [],
-                missingTitles: new Set(),
-            };
-        },
-        getHighlightOptions() {
-            return {};
-        },
         isSectionEditing: () => false,
         loadFormatterSettings: createDefaultFormatterSettings,
-        async loadNamespaces() {},
-        async loadPageSource() {
-            return '';
-        },
-        async loadPageSummary() {
-            return { kind: 'unavailable' };
-        },
         logger: createLogger('kanade-source-editor-test', {
             level: 'error',
             output: createLogOutput(errors),

@@ -37,7 +37,6 @@ export default {
         ),
         // These commands own dynamic runner and attributed fixture maintenance.
         'scripts/rev-copy/test-ui.mjs',
-        'scripts/source-editor/fetch-preview-source.mjs',
         'tests/**/*.test.{ts,mjs}',
         'tests/**/*.spec.ts',
         'tests/wpvg-assessor/ui/server.mjs',
@@ -65,10 +64,6 @@ export default {
             ['exports'],
         ]),
     ),
-    ignoreDependencies: [
-        'ext.CodeMirror',
-        'ext.CodeMirror.modes',
-        'ext.CodeMirror.mode.mediawiki',
-    ],
+    ignoreDependencies: ['ext.CodeMirror', 'ext.CodeMirror.mode.mediawiki'],
     ignoreBinaries: ['scutil'],
 };

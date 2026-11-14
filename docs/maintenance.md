@@ -13,7 +13,7 @@ not a security certification or a record of completed human review.
 
 ## Project and contacts
 
-Kanade is in development at root version 0.1.5. The [project repository][repository]
+Kanade is in development at root version 0.1.6. The [project repository][repository]
 hosts source and tagged release automation. A named maintainer and dedicated
 project contacts are not yet documented.
 The project owner must arrange
@@ -55,10 +55,10 @@ persistent data.
 
 | Owner and data                                     | Storage and identity                                                                                                                                                                                                                                                   | Retention and deletion                                                                                                                                                                                                                                                                                                        |
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source Editor preferences                          | Local storage: `kanade:source-editor:formatter-settings:v1`; validated schema 1 envelope. No article source or reference draft is included.                                                                                                                            | No automatic expiry. **More → Reset settings** deletes saved preferences. See [configuration](source-editor/configuration.md).                                                                                                                                                                                                |
+| Source Editor preferences                          | Local storage: `kanade:source-editor:formatter-settings:v1`; validated schema 1 envelope. No article source or reference draft is included.                                                                                                                            | No automatic expiry. **Reset settings** deletes saved formatting preferences. See [configuration](source-editor/configuration.md).                                                                                                                                                                                            |
 | Source Editor site metadata                        | Local storage: `kanade:source-editor:siteinfo:v1:<wiki>` for namespaces/site configuration.                                                                                                                                                                            | Valid for 24 hours; invalid or expired records are removed when read. Remove the specific record in browser site storage to clear it immediately.                                                                                                                                                                             |
 | Source Editor citation TemplateData                | Local storage: `kanade:source-editor:template-data:v1`, with wiki identity in the envelope; up to 64 metadata entries.                                                                                                                                                 | Refresh is requested after seven days. A failed refresh can retain stale metadata, so seven days is not a deletion deadline. Remove this record in browser site storage to delete it.                                                                                                                                         |
-| Source Editor working source and lookup results    | Host editor and page memory: source, selection, reference drafts, summaries, link checks, and whole-page references.                                                                                                                                                   | Tool memory ends on reload/navigation. **More → Clear cache** clears the documented lookup results and invalidates pending results while preserving source and preferences. Save or copy unsaved source before leaving; host draft recovery is outside this tool's guarantee.                                                 |
+| Source Editor working source and lookup results    | Host editor and page memory: source, selection, reference drafts, and reference-manager results.                                                                                                                                                                       | Tool memory ends on reload/navigation. Native CodeMirror preferences are managed by MediaWiki. Save or copy unsaved source before leaving; host draft recovery is outside this tool's guarantee.                                                                                                                              |
 | Revision Copy lookups and generated text           | Page/tab memory; revision and attribution caches each hold up to 200 validated responses. The clipboard receives text only through a copy action.                                                                                                                      | Reload ends the caches; failures are discarded. A latest-by-title lookup remains a snapshot until eviction or reload. The browser/operating system controls clipboard retention. No persistent Revision Copy browser store is implemented.                                                                                    |
 | Article Creator form history and temporary draft   | Local storage: `vg-stub-creator-form-history`, `vg-stub-creator-form-draft`, `vg-stub-creator-form-draft-page`, and `vg-stub-creator-form-draft-saved-at`. Includes names, prose, source URLs, citation edits, target titles, and save times.                          | History keeps at most 20 entries; no time-based expiry. **History** supports restoring, exporting, importing, and deleting saved entries. The temporary draft is separate from history; remove its three records in browser site storage to delete it. These keys are origin scoped, not account scoped.                      |
 | Article Creator category evidence                  | Local storage: `vg-stub-creator-category-cache:<page>`. Contains title-resolution evidence and observation times.                                                                                                                                                      | Existing-category evidence is valid for 24 hours; missing-category evidence for one hour. Expiry is checked during use and persistence, not by background deletion. Remove the corresponding record to clear it.                                                                                                              |
@@ -186,17 +186,17 @@ The 2026-10-17 cleanup uses functional tool IDs and the runtime names in
 version remain stable. These decisions distinguish retired integration identity
 from source syntax and saved user work that still need support.
 
-| Owner or candidate                                              | Decision and evidence                                                                                                                                                                                                                             |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source Editor configuration aliases and raw preference fallback | Retired integration entrypoints. Only the validated pre-load configuration and versioned preference envelope are read. The new preference key begins with defaults; no automatic legacy record import or deletion occurs.                         |
-| Source Editor backend interface                                 | Consumer contract moved to `app/contracts/editor-backend.ts`; textarea-local symbol registration remains a platform concern. Both editor and reference-management consumers retain accepted-source, selection, composition, and undo protections. |
-| Creator/Assessor feature composition wrappers                   | Composition belongs in `app/interface.ts`. Feature modules consume contracts rather than selecting concrete platform adapters. Dialog mounts retain their existing lifecycle owners.                                                              |
-| Duplicated action notification and matching host loading        | Consolidated into named library capabilities with shared tests. Tool messages, component choices, mount state, and write policy remain local. Revision Copy's different toast/fallback behavior remains local.                                    |
-| Creator saved name-shape conversion                             | Retained at the validated input boundary. History restoration, imported drafts, and direct article processing can contain the older shape; canonicalization preserves row/citation identities and evidence.                                       |
-| Assessor recognition of stored generated summaries              | Retained for existing reviewed drafts and queues. Known generated wording can be consolidated while custom reviewed summaries remain verbatim.                                                                                                    |
-| Supported citation parameter aliases and opaque source          | Retained content behavior. Existing wiki syntax and unknown/opaque source are not dead code merely because their spelling is older.                                                                                                               |
-| Pure public exports                                             | Retained intentional APIs for deterministic source, links, attribution, article, and assessment operations; documented in each architecture guide. Internal exports remain covered by unused-code checks.                                         |
-| Captured article/game content and third-party credit            | Retained exact factual provenance, real game titles/URLs, Cacycle's wikEd credit, licenses, source revisions, image bytes, and capture-ledger evidence. Owned identity is not a reason to rename content or erase authorship.                     |
+| Owner or candidate                                              | Decision and evidence                                                                                                                                                                                                                        |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Source Editor configuration aliases and raw preference fallback | Retired integration entrypoints. Only the validated pre-load configuration and versioned preference envelope are read. The new preference key begins with defaults; no automatic legacy record import or deletion occurs.                    |
+| Source Editor backend interface                                 | The host-backend contract remains at `app/contracts/editor-backend.ts`; host-owned registrations are read by the platform adapter. Native source and reference-management operations retain explicit acceptance and stale-result protection. |
+| Creator/Assessor feature composition wrappers                   | Composition belongs in `app/interface.ts`. Feature modules consume contracts rather than selecting concrete platform adapters. Dialog mounts retain their existing lifecycle owners.                                                         |
+| Duplicated action notification and matching host loading        | Consolidated into named library capabilities with shared tests. Tool messages, component choices, mount state, and write policy remain local. Revision Copy's different toast/fallback behavior remains local.                               |
+| Creator saved name-shape conversion                             | Retained at the validated input boundary. History restoration, imported drafts, and direct article processing can contain the older shape; canonicalization preserves row/citation identities and evidence.                                  |
+| Assessor recognition of stored generated summaries              | Retained for existing reviewed drafts and queues. Known generated wording can be consolidated while custom reviewed summaries remain verbatim.                                                                                               |
+| Supported citation parameter aliases and opaque source          | Retained content behavior. Existing wiki syntax and unknown/opaque source are not dead code merely because their spelling is older.                                                                                                          |
+| Pure public exports                                             | Retained intentional APIs for deterministic source, links, attribution, article, and assessment operations; documented in each architecture guide. Internal exports remain covered by unused-code checks.                                    |
+| Captured article/game content and third-party credit            | Retained exact factual provenance, real game titles/URLs, Cacycle's wikEd credit, licenses, source revisions, image bytes, and capture-ledger evidence. Owned identity is not a reason to rename content or erase authorship.                |
 
 No feature receives a second startup, backing editor, draft store, or write owner.
 Independent scripts bundle shared capabilities without combining their workflows.
@@ -263,18 +263,6 @@ The temporary checklist and its audit exemption were removed. Repeated builds
 produced identical manifests and hashes for exactly eight scripts plus
 `LICENSE.txt` and `manifest.json`; the root version remains 0.1.0.
 
-Integration also exposed a source-selection race: a scheduled metadata redraw
-could restore a collapsed native range before a fresh Select All event arrived.
-The new deterministic browser regressions failed before the fix in both
-highlighting and plain-source modes. Scheduled redraws now capture the live
-focused range only when DOM and native source still agree; explicit native,
-tool, and history replacements retain their own range. The new regressions and
-existing multiline cases passed 20 repeated checks, including replacement,
-undo, redo, and focus, before the final full run. Current notification-tag and
-versioned-preference fixtures were updated without weakening their behavior
-assertions. Automated independent review checked configuration, storage
-preservation, dependency enforcement, audit exceptions, and editor ownership.
-
 Existing maintained screenshots and their capture ledgers are historical evidence
 from the recorded builds. The identity cleanup preserves image bytes, article
 revisions, source terms, dimensions, and checksums. No live documentation recapture
@@ -304,6 +292,26 @@ dates and source observations remain unchanged. Collector contact is supplied
 through local configuration, and local environment files are excluded from Git.
 Public attribution, screenshots, source revisions, and saved-work contracts
 remain intact.
+
+The 2026-11-14 Source Editor cleanup delegates source editing and syntax
+highlighting to MediaWiki's native editor choice. It removes Kanade's custom
+iframe editor, highlighter, preview popups, editor settings, standalone overlay,
+and regex worker. Formatting and reference management retain explicit acceptance,
+source ownership, stale-result protection, and native CodeMirror/textarea access.
+MediaWiki owns CodeMirror settings; Kanade never loads, enables, disables, or
+configures it. Existing valid formatting preferences remain usable, and removed
+editor preference fields are ignored. Source, reference drafts, Creator history,
+and Assessor recovery records are not deleted.
+
+Substantial AI assistance covered implementation, dependency cleanup, documentation,
+and regression updates. The complete `npm run verify` pipeline passed for 0.1.6:
+1,573 unit tests and 203 browser scenarios, all four script pairs and integrity
+checks, and Revision Copy's seven offline skin fixtures. Ten optional screenshot
+scenarios were skipped. The three maintained formatting screenshots were regenerated from the 0.1.6
+build on live English and Chinese Wikipedia source pages and inspected at
+1366 × 768. All three retained their native source and read-only state and
+recorded no page errors or wiki writes. Historical ledger entries retain their
+original attribution. No manual accessibility or human acceptance is claimed.
 
 Human review, manual keyboard/screen-reader acceptance, supported-host contrast
 review, live-host acceptance, and hosted CI/publication remain unperformed unless

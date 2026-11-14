@@ -2,24 +2,8 @@
  * @file src/source-editor/domain/formatter-settings.ts
  * Purpose: Validated Source Editor editor, article, and citation preferences shared by UI and storage.
  *
- * Table of contents:
- * 1. Imports
- * 2. CitationFormattingSettings and FormatterSettings
- * 3. EditorFeatureSettings
- * 4. Default citation and formatter settings
- * 5. getEditorFeatureSettings
- * 6. withEditorFeatureSettings
- * 7. parseFormatterSettings
- * 8. parseFormatterOptions
- * 9. parseEditorFeatures
- * 10. isRecord
- * 11. isFirstParameterLayout
- * 12. isSubsequentParameterLayout
- * 13. isCharacterWidthRatio
- * 14. isIndentSpaces
- * 15. parseCitationFormattingSettings
+ * Contents: Formatter preferences, defaults, and persisted-value validation.
  */
-
 import { isRecord } from '../../library/data-validation/records.ts';
 
 import type {
@@ -30,6 +14,7 @@ import type {
 import type { ScriptTitleMode } from './source-manager.ts';
 
 export interface CitationFormattingSettings {
+    convertAuthorNames: boolean;
     enabled: boolean;
     layout: 'inline' | 'block';
     compactReferences: boolean;
@@ -40,45 +25,15 @@ export interface CitationFormattingSettings {
 
 export interface FormatterSettings {
     citationFormatting: CitationFormattingSettings;
-    alternateReferenceColors: boolean;
-    ctrlClickLinks: boolean;
-    fullPageReferencePreviews: boolean;
     formatter: FormatterOptions;
-    highlightMissing: boolean;
-    largeFont: boolean;
-    linkPreviews: boolean;
-    referenceEditing: boolean;
-    referenceLightweightEditing: boolean;
-    referencePreviews: boolean;
     resolveRedirects: boolean;
     resolveTemplateRedirects: boolean;
-    smallReferenceText: boolean;
-    syntaxHighlighting: boolean;
-    useCodeMirrorForOtherModels: boolean;
 }
-
-export type EditorFeatureSettings = Pick<
-    FormatterSettings,
-    | 'alternateReferenceColors'
-    | 'ctrlClickLinks'
-    | 'fullPageReferencePreviews'
-    | 'highlightMissing'
-    | 'largeFont'
-    | 'linkPreviews'
-    | 'referenceEditing'
-    | 'referenceLightweightEditing'
-    | 'referencePreviews'
-    | 'smallReferenceText'
-    | 'syntaxHighlighting'
->;
 
 /** Creates choices used when no saved configuration is valid. */
 export function createDefaultFormatterSettings(): FormatterSettings {
     return {
         citationFormatting: createDefaultCitationFormattingSettings(),
-        alternateReferenceColors: false,
-        ctrlClickLinks: true,
-        fullPageReferencePreviews: false,
         formatter: {
             characterWidthRatio: '5:3',
             firstParameterLayout: 'align-values',
@@ -91,56 +46,21 @@ export function createDefaultFormatterSettings(): FormatterSettings {
             skipFirstLevelIndentation: false,
             subsequentParameterLayout: 'align-names',
         },
-        highlightMissing: false,
-        largeFont: false,
-        linkPreviews: false,
-        referenceEditing: true,
-        referenceLightweightEditing: false,
-        referencePreviews: true,
         resolveRedirects: false,
         resolveTemplateRedirects: false,
-        smallReferenceText: true,
-        syntaxHighlighting: true,
-        useCodeMirrorForOtherModels: false,
     };
 }
 
 function createDefaultCitationFormattingSettings(): CitationFormattingSettings {
     return {
         enabled: false,
+        convertAuthorNames: false,
         layout: 'inline',
         compactReferences: false,
         separateReferenceDefinitions: false,
         formatScriptTitles: true,
         scriptTitleMode: 'non-latin',
     };
-}
-
-/** Copies editor behaviors from a formatter configuration. */
-export function getEditorFeatureSettings(
-    settings: FormatterSettings,
-): EditorFeatureSettings {
-    return {
-        alternateReferenceColors: settings.alternateReferenceColors,
-        ctrlClickLinks: settings.ctrlClickLinks,
-        fullPageReferencePreviews: settings.fullPageReferencePreviews,
-        highlightMissing: settings.highlightMissing,
-        largeFont: settings.largeFont,
-        linkPreviews: settings.linkPreviews,
-        referenceEditing: settings.referenceEditing,
-        referenceLightweightEditing: settings.referenceLightweightEditing,
-        referencePreviews: settings.referencePreviews,
-        smallReferenceText: settings.smallReferenceText,
-        syntaxHighlighting: settings.syntaxHighlighting,
-    };
-}
-
-/** Replaces editor behaviors while preserving formatter choices. */
-export function withEditorFeatureSettings(
-    settings: FormatterSettings,
-    features: EditorFeatureSettings,
-): FormatterSettings {
-    return { ...settings, ...features };
 }
 
 /** Validates and copies one persisted formatter configuration. */
@@ -151,14 +71,25 @@ export function parseFormatterSettings(
         return undefined;
     }
     const formatter = parseFormatterOptions(value.formatter);
-    const features = parseEditorFeatures(value);
     const citationFormatting = parseCitationFormattingSettings(
         value.citationFormatting,
     );
-    if (formatter == null || features == null || citationFormatting == null) {
+    if (
+        formatter == null ||
+        citationFormatting == null ||
+        typeof value.resolveRedirects !== 'boolean' ||
+        typeof value.resolveTemplateRedirects !== 'boolean'
+    ) {
         return undefined;
     }
-    return { ...features, formatter, citationFormatting };
+    // Older v1 records can contain retired editor preferences. Preserve valid
+    // formatting choices without carrying those preferences into new saves.
+    return {
+        citationFormatting,
+        formatter,
+        resolveRedirects: value.resolveRedirects,
+        resolveTemplateRedirects: value.resolveTemplateRedirects,
+    };
 }
 
 function parseFormatterOptions(value: unknown): FormatterOptions | undefined {
@@ -194,57 +125,6 @@ function parseFormatterOptions(value: unknown): FormatterOptions | undefined {
     };
 }
 
-function parseEditorFeatures(
-    value: Record<string, unknown>,
-): Omit<FormatterSettings, 'formatter' | 'citationFormatting'> | undefined {
-    if (
-        (value.alternateReferenceColors !== undefined &&
-            typeof value.alternateReferenceColors !== 'boolean') ||
-        (value.ctrlClickLinks !== undefined &&
-            typeof value.ctrlClickLinks !== 'boolean') ||
-        typeof value.fullPageReferencePreviews !== 'boolean' ||
-        typeof value.highlightMissing !== 'boolean' ||
-        typeof value.largeFont !== 'boolean' ||
-        typeof value.linkPreviews !== 'boolean' ||
-        (value.referenceEditing !== undefined &&
-            typeof value.referenceEditing !== 'boolean') ||
-        (value.referenceLightweightEditing !== undefined &&
-            typeof value.referenceLightweightEditing !== 'boolean') ||
-        typeof value.referencePreviews !== 'boolean' ||
-        typeof value.resolveRedirects !== 'boolean' ||
-        typeof value.resolveTemplateRedirects !== 'boolean' ||
-        typeof value.smallReferenceText !== 'boolean' ||
-        (value.syntaxHighlighting !== undefined &&
-            typeof value.syntaxHighlighting !== 'boolean') ||
-        (value.useCodeMirrorForOtherModels !== undefined &&
-            typeof value.useCodeMirrorForOtherModels !== 'boolean')
-    ) {
-        return undefined;
-    }
-    return {
-        // Preserve choices saved before alternate reference colors existed.
-        alternateReferenceColors: value.alternateReferenceColors === true,
-        // Modified link clicks were enabled before this setting existed.
-        ctrlClickLinks: value.ctrlClickLinks !== false,
-        fullPageReferencePreviews: value.fullPageReferencePreviews,
-        highlightMissing: value.highlightMissing,
-        largeFont: value.largeFont,
-        linkPreviews: value.linkPreviews,
-        // Keep tooltip editing enabled for configurations saved before its toggle.
-        referenceEditing: value.referenceEditing !== false,
-        // The optional inline interaction remains off in older configurations.
-        referenceLightweightEditing: value.referenceLightweightEditing === true,
-        referencePreviews: value.referencePreviews,
-        resolveRedirects: value.resolveRedirects,
-        resolveTemplateRedirects: value.resolveTemplateRedirects,
-        smallReferenceText: value.smallReferenceText,
-        // Preserve configurations saved before the highlighting toggle existed.
-        syntaxHighlighting: value.syntaxHighlighting !== false,
-        // Older configurations did not request CodeMirror for other models.
-        useCodeMirrorForOtherModels: value.useCodeMirrorForOtherModels === true,
-    };
-}
-
 function isFirstParameterLayout(value: unknown): value is FirstParameterLayout {
     return value === 'align-values' || value === 'compact';
 }
@@ -275,6 +155,8 @@ function parseCitationFormattingSettings(
     if (
         !isRecord(value) ||
         typeof value.enabled !== 'boolean' ||
+        (value.convertAuthorNames !== undefined &&
+            typeof value.convertAuthorNames !== 'boolean') ||
         (value.layout !== 'inline' && value.layout !== 'block') ||
         typeof value.compactReferences !== 'boolean' ||
         typeof value.separateReferenceDefinitions !== 'boolean' ||
@@ -287,6 +169,7 @@ function parseCitationFormattingSettings(
     }
     return {
         enabled: value.enabled,
+        convertAuthorNames: value.convertAuthorNames === true,
         layout: value.layout,
         compactReferences: value.compactReferences,
         separateReferenceDefinitions: value.separateReferenceDefinitions,

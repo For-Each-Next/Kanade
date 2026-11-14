@@ -4,18 +4,13 @@
  *
  * Table of contents:
  * 1. getDatabaseName
- * 2. getRevisionId
- * 3. isSectionEditing
+ * 2. isSectionEditing
  */
 
 import { getCurrentWikiId } from '../wiki-policy.ts';
 
 export function getDatabaseName(): string {
     return getCurrentWikiId();
-}
-
-export function getRevisionId(): number {
-    return Number(mw.config.get('wgCurRevisionId'));
 }
 
 export function isSectionEditing(): boolean {

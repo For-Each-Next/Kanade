@@ -14,18 +14,12 @@ import { loadHostModules } from '../../library/mediawiki-runtime/modules.ts';
 import type { EditorServices } from './editor-contracts.ts';
 import { formatArticleSource } from '../domain/formatting.ts';
 import { formatSourceScriptTitles } from '../domain/source-manager.ts';
-import {
-    getEditorFeatureSettings,
-    withEditorFeatureSettings,
-    type EditorFeatureSettings,
-} from '../domain/formatter-settings.ts';
 import { msg } from '../i18n/index.ts';
 import {
     createFormatterDialogComponent,
     type FormatterDialogSelection,
     type FormatterDialogTab,
 } from '../features/formatter/dialog.ts';
-import { createRegexToolsSession } from '../features/formatter/regex-tools.ts';
 import {
     registerFormatterComponents,
     type ResourceLoaderRequire,
@@ -37,12 +31,12 @@ const TEXTAREA_ID = 'wpTextbox1';
 const HOST_ID = 'kanade-source-editor-dialog-host';
 
 interface FormatterEditor {
-    clearCache(): void;
-    getFeatureSettings(): EditorFeatureSettings;
+    read?(): string;
+    getVersion?(): unknown;
+    isComposing?(): boolean;
     getSelection(): { start: number; end: number };
     isAttached?(): boolean;
     replace(start: number, end: number, value: string): void;
-    setFeatureSettings(settings: EditorFeatureSettings): void;
 }
 
 /** Creates dialog and direct actions sharing accepted settings and source writes. */
@@ -51,15 +45,6 @@ export function createFormatterActions(
     getController: (
         textarea: HTMLTextAreaElement,
     ) => FormatterEditor | undefined,
-    setFeatureSettings: (
-        textarea: HTMLTextAreaElement,
-        settings: EditorFeatureSettings,
-    ) => void = (textarea, settings) =>
-        getController(textarea)?.setFeatureSettings(settings),
-    getFeatureSettings: (
-        textarea: HTMLTextAreaElement,
-    ) => EditorFeatureSettings | undefined = (textarea) =>
-        getController(textarea)?.getFeatureSettings(),
 ): {
     open(initialTab?: FormatterDialogTab): Promise<void>;
     format(): Promise<void>;
@@ -85,6 +70,7 @@ export function createFormatterActions(
         }
         const request = ++latestRequest;
         const controller = getController(textarea);
+        const version = controller?.getVersion?.();
         const range = controller?.getSelection() ?? {
             start: textarea.selectionStart,
             end: textarea.selectionEnd,
@@ -105,8 +91,12 @@ export function createFormatterActions(
             String(mw.config.get('wgPageName') ?? '') === pageIdentity &&
             getController(textarea) === controller &&
             controller?.isAttached?.() !== false &&
-            textarea.selectionStart === range.start &&
-            textarea.selectionEnd === range.end;
+            controller?.getVersion?.() === version &&
+            !controller?.isComposing?.() &&
+            (controller?.getSelection().start ?? textarea.selectionStart) ===
+                range.start &&
+            (controller?.getSelection().end ?? textarea.selectionEnd) ===
+                range.end;
         textarea.addEventListener('compositionstart', invalidate);
         textarea.addEventListener('input', invalidate);
         window.addEventListener('pagehide', leavePage);
@@ -160,18 +150,25 @@ export function createFormatterActions(
             return;
         }
         try {
-            const range = getController(textarea)?.getSelection() ?? {
+            const controller = getController(textarea);
+            const version = controller?.getVersion?.();
+            const range = controller?.getSelection() ?? {
                 end: textarea.selectionEnd,
                 start: textarea.selectionStart,
             };
-            const source = textarea.value;
+            const source = getController(textarea)?.read?.() ?? textarea.value;
             const pageIdentity = String(mw.config.get('wgPageName') ?? '');
             activeDialogCleanup?.();
             const require = (await loadHostModules(mw.loader, [
                 'vue',
                 '@wikimedia/codex',
             ])) as ResourceLoaderRequire;
-            if (request === latestRequest && textarea.isConnected) {
+            if (
+                request === latestRequest &&
+                textarea.isConnected &&
+                getController(textarea) === controller &&
+                controller?.getVersion?.() === version
+            ) {
                 mountFormatterDialog(
                     require,
                     textarea,
@@ -202,41 +199,15 @@ export function createFormatterActions(
         pageIdentity: string,
         initialTab?: FormatterDialogTab,
     ): void {
+        const controller = getController(textarea);
+        const version = controller?.getVersion?.();
         const Vue = require('vue');
         const Codex = require('@wikimedia/codex');
         const host = document.createElement('div');
         let application: VueApp | null = null;
         host.id = HOST_ID;
         document.documentElement.append(host);
-        let sourceComposing = false;
-        const beginComposition = (): void => {
-            sourceComposing = true;
-        };
-        const endComposition = (): void => {
-            sourceComposing = false;
-        };
-        textarea.addEventListener('compositionstart', beginComposition);
-        textarea.addEventListener('compositionend', endComposition);
-        const regexTools = createRegexToolsSession({
-            startTask: services.startRegexReplacement,
-            source,
-            range,
-            read: () => textarea.value,
-            isCurrent: () =>
-                textarea.isConnected &&
-                !textarea.readOnly &&
-                !textarea.disabled &&
-                !sourceComposing &&
-                document.getElementById(TEXTAREA_ID) === textarea &&
-                String(mw.config.get('wgPageName') ?? '') === pageIdentity,
-            write: (start, end, value) =>
-                writeFormattedSource(textarea, { start, end }, value, true),
-        });
-
         function cleanup(): void {
-            regexTools.invalidate();
-            textarea.removeEventListener('compositionstart', beginComposition);
-            textarea.removeEventListener('compositionend', endComposition);
             const mountedApplication = application;
             application = null;
             try {
@@ -255,20 +226,9 @@ export function createFormatterActions(
                 'zhwiki';
             const component = createFormatterDialogComponent(Vue, {
                 initialTab,
-                regexTools,
                 canNormalizeConversion: isChineseWikipedia,
-                supportsLinkHelpers:
-                    services.getHighlightOptions().linkHelpers === true,
                 initialSelection: getDialogInitialSelection(textarea),
                 contentLanguage: services.contentLanguage,
-                linkHelperDocumentationUrl: isChineseWikipedia
-                    ? mw.util.getUrl('Category:内部链接助手模板')
-                    : `https://zh.wikipedia.org/wiki/Category:${encodeURIComponent('内部链接助手模板')}`,
-                linkModifierKey: /Mac|iPhone|iPad|iPod/iu.test(
-                    document.defaultView?.navigator.platform ?? '',
-                )
-                    ? 'Command'
-                    : 'Ctrl',
                 redirectPolicyUrl: mw.util.getUrl('WP:DONOTFIXIT'),
                 scope:
                     range.start !== range.end
@@ -276,22 +236,10 @@ export function createFormatterActions(
                         : services.isSectionEditing()
                           ? 'section'
                           : 'page',
-                onClearCache() {
-                    getController(textarea)?.clearCache();
-                    services.notify({
-                        key: 'cache-cleared',
-                        message: msg('feedback.cacheCleared'),
-                        type: 'success',
-                    });
-                },
                 onClose(selection) {
                     if (selection != null) {
                         sessionFormatterSettings.set(textarea, selection);
                         services.applyFormatterSettings?.(selection);
-                        setFeatureSettings(
-                            textarea,
-                            getEditorFeatureSettings(selection),
-                        );
                     }
                     cleanup();
                 },
@@ -316,7 +264,18 @@ export function createFormatterActions(
                     });
                 },
                 onSubmit: (selection) =>
-                    applyFormatting(textarea, selection, range),
+                    applyFormatting(
+                        textarea,
+                        selection,
+                        range,
+                        () =>
+                            getController(textarea) === controller &&
+                            controller?.getVersion?.() === version &&
+                            String(mw.config.get('wgPageName') ?? '') ===
+                                pageIdentity &&
+                            (getController(textarea)?.read?.() ??
+                                textarea.value) === source,
+                    ),
                 ...(services.openReferences
                     ? {
                           onOpenReferences: (
@@ -338,13 +297,10 @@ export function createFormatterActions(
     function getDialogInitialSelection(
         textarea: HTMLTextAreaElement,
     ): FormatterDialogSelection {
-        const saved =
+        return (
             sessionFormatterSettings.get(textarea) ??
-            services.loadFormatterSettings();
-        const features = getFeatureSettings(textarea);
-        return features == null
-            ? saved
-            : withEditorFeatureSettings(saved, features);
+            services.loadFormatterSettings()
+        );
     }
 
     async function applyFormatting(
@@ -354,7 +310,9 @@ export function createFormatterActions(
         isCurrent: () => boolean = () => true,
     ): Promise<void> {
         const selected = range.start !== range.end;
-        const originalSource = textarea.value;
+        const controller = getController(textarea);
+        const pageIdentity = String(mw.config.get('wgPageName') ?? '');
+        const originalSource = controller?.read?.() ?? textarea.value;
         const source = selected
             ? originalSource.slice(range.start, range.end)
             : originalSource;
@@ -385,6 +343,7 @@ export function createFormatterActions(
                 : {
                       ...citationContext,
                       layout: citations.layout,
+                      convertAuthorNames: citations.convertAuthorNames,
                       compactReferences: citations.compactReferences,
                       separateReferenceDefinitions:
                           citations.separateReferenceDefinitions,
@@ -409,7 +368,11 @@ export function createFormatterActions(
                 !textarea.isConnected ||
                 textarea.readOnly ||
                 textarea.disabled ||
-                textarea.value !== originalSource
+                getController(textarea) !== controller ||
+                controller?.isAttached?.() === false ||
+                controller?.isComposing?.() === true ||
+                String(mw.config.get('wgPageName') ?? '') !== pageIdentity ||
+                (controller?.read?.() ?? textarea.value) !== originalSource
             ) {
                 throw new Error(
                     'The source changed or is unavailable. Run the formatter again.',
@@ -429,7 +392,9 @@ export function createFormatterActions(
         }
         const controller = getController(textarea);
         const start = selected ? range.start : 0;
-        const end = selected ? range.end : textarea.value.length;
+        const end = selected
+            ? range.end
+            : (controller?.read?.() ?? textarea.value).length;
         if (controller != null) {
             controller.replace(start, end, formatted);
             return;

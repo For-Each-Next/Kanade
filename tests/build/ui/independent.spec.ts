@@ -90,11 +90,7 @@ test('independent compact scripts open Chinese Wikipedia tools and format the ba
         action: 'edit',
     });
     await installTools(page, 'min.js');
-    await expect(
-        page.locator(
-            '.kanade-source-editor-frame[data-kanade-source-editor-ready="true"]',
-        ),
-    ).toBeVisible();
+    await expect(page.locator('#kanade-source-editor-panel')).toBeVisible();
     await expect(page.locator('#kanade-vg-stub-creator-launcher')).toHaveCount(
         1,
     );
@@ -178,9 +174,7 @@ for (const [action, artifact] of [
             await expect(page.locator('.kanade-rev-copy-row')).toHaveCount(1);
         else {
             await expect(
-                page.locator(
-                    '.kanade-source-editor-frame[data-kanade-source-editor-ready="true"]',
-                ),
+                page.locator('#kanade-source-editor-panel'),
             ).toBeVisible();
             await page.locator('#kanade-source-editor-panel a').click();
             await expect(
@@ -217,11 +211,7 @@ for (const compactFirst of [false, true]) {
         const first = compactFirst ? 'min.js' : 'user.js';
         const second = compactFirst ? 'user.js' : 'min.js';
         await installTools(page, first);
-        await expect(
-            page.locator(
-                '.kanade-source-editor-frame[data-kanade-source-editor-ready="true"]',
-            ),
-        ).toBeVisible();
+        await expect(page.locator('#kanade-source-editor-panel')).toBeVisible();
         await expect(
             page.locator('#kanade-vg-stub-creator-launcher'),
         ).toHaveCount(1);
@@ -233,7 +223,7 @@ for (const compactFirst of [false, true]) {
             page.locator(
                 '#kanade-quick-access [data-kanade-quick-access-action]',
             ),
-        ).toHaveCount(3);
+        ).toHaveCount(2);
         await expect(
             page.locator('[data-kanade-quick-access-action="wpvg-assessor"]'),
         ).toHaveCount(0);
@@ -248,7 +238,7 @@ for (const compactFirst of [false, true]) {
         });
         await installTools(page, second);
         await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(
-            1,
+            0,
         );
         await expect(page.locator('#kanade-source-editor-panel')).toHaveCount(
             1,
@@ -318,7 +308,7 @@ test('independent userscripts wait for MediaWiki and ResourceLoader before mount
         await install(page, `${basename}.user.js`);
     await expect(
         page.locator(
-            '.kanade-source-editor-frame, #kanade-vg-stub-creator-launcher, #kanade-wpvg-assessor-launcher',
+            '#kanade-source-editor-panel, #kanade-vg-stub-creator-launcher, #kanade-wpvg-assessor-launcher',
         ),
     ).toHaveCount(0);
     await page.evaluate(() => {
@@ -331,17 +321,13 @@ test('independent userscripts wait for MediaWiki and ResourceLoader before mount
         .toBeGreaterThan(0);
     await expect(
         page.locator(
-            '.kanade-source-editor-frame, #kanade-vg-stub-creator-launcher, #kanade-wpvg-assessor-launcher',
+            '#kanade-source-editor-panel, #kanade-vg-stub-creator-launcher, #kanade-wpvg-assessor-launcher',
         ),
     ).toHaveCount(0);
     await page.evaluate(() =>
         (globalThis as any).__independent.releaseResources(),
     );
-    await expect(
-        page.locator(
-            '.kanade-source-editor-frame[data-kanade-source-editor-ready="true"]',
-        ),
-    ).toBeVisible();
+    await expect(page.locator('#kanade-source-editor-panel')).toBeVisible();
     await expect(page.locator('#kanade-vg-stub-creator-launcher')).toHaveCount(
         1,
     );
@@ -354,7 +340,7 @@ for (const [width, height] of [
     [683, 768],
     [1366, 768],
 ]) {
-    test(`bottom-right quick access fits ${width}px, opens Tools with Enter, and restores focus`, async ({
+    test(`bottom-right quick access fits ${width}px, opens references with Enter, and restores focus`, async ({
         page,
     }) => {
         await page.setViewportSize({ width, height });
@@ -365,14 +351,14 @@ for (const [width, height] of [
         });
         await installTools(page, 'user.js');
         const dock = page.locator('#kanade-quick-access');
-        const tools = dock.locator(
-            '[data-kanade-quick-access-action="source-editor-tools"]',
+        const references = dock.locator(
+            '[data-kanade-quick-access-action="source-editor-references"]',
         );
         const actions = dock.locator('[data-kanade-quick-access-action]');
-        await expect(tools).toBeVisible();
+        await expect(references).toBeVisible();
         await expect(
             dock.locator('[data-kanade-quick-access-action]'),
-        ).toHaveCount(3);
+        ).toHaveCount(2);
         expect(
             await dock
                 .locator('[data-kanade-quick-access-action]')
@@ -381,11 +367,7 @@ for (const [width, height] of [
                         item.getAttribute('data-kanade-quick-access-action'),
                     ),
                 ),
-        ).toEqual([
-            'source-editor',
-            'source-editor-references',
-            'source-editor-tools',
-        ]);
+        ).toEqual(['source-editor', 'source-editor-references']);
         await expect(
             page.locator('[data-kanade-quick-access-action="rev-copy"]'),
         ).toHaveCount(0);
@@ -429,16 +411,13 @@ for (const [width, height] of [
             await page.keyboard.press('Tab');
             await expect(actions.nth(index)).toBeFocused();
         }
-        await tools.focus();
+        await references.focus();
         await page.keyboard.press('Enter');
         const dialog = page.getByRole('dialog', {
-            name: 'Source Editor',
+            name: 'Source Editor references',
             exact: true,
         });
         await expect(dialog).toBeVisible();
-        await expect(
-            dialog.getByRole('tab', { name: 'Tools', exact: true }),
-        ).toHaveAttribute('aria-selected', 'true');
         await expect
             .poll(() =>
                 dialog.evaluate((element) =>
@@ -448,12 +427,9 @@ for (const [width, height] of [
                 ),
             )
             .toBe('dialog');
-        await dialog
-            .getByRole('textbox', { name: 'Find 1', exact: true })
-            .click();
         await page.keyboard.press('Escape');
         await expect(dialog).toBeHidden();
-        await expect(tools).toBeFocused();
+        await expect(references).toBeFocused();
         expect((await snapshot(page)).writes).toEqual([]);
     });
 }
@@ -698,6 +674,6 @@ function installHostBoundary(options: WikiOptions): void {
             callback();
         },
     };
-    globals.sourceEditorConfig = { highlightDelay: 0 };
+    globals.sourceEditorConfig = {};
     if (options.delayedMediaWiki) delete globals.mw;
 }

@@ -54,7 +54,6 @@ declare global {
     const __SOURCE_EDITOR_REFERENCE_CLOSE_DIALOG_TEMPLATE__: string;
     const __SOURCE_EDITOR_REFERENCE_CLOSE_DIALOG_STYLES__: string;
     const __GADGET_VERSION__: string;
-    const __SOURCE_EDITOR_EDITOR_STYLES__: string;
     const __SOURCE_EDITOR_PANEL_DIALOG_TEMPLATE__: string;
     const __SOURCE_EDITOR_PANEL_DIALOG_STYLES__: string;
     const __SOURCE_EDITOR_REFERENCE_ICONS__: Record<

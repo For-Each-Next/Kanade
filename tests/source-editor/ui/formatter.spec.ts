@@ -40,23 +40,6 @@ interface NativeNotification {
 
 const projectRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const initialSource = '==Heading==\nText   ';
-const screenshotLocales = [
-    {
-        locale: 'en',
-        editSource: 'Edit source',
-        editorTab: 'Highlighting settings',
-    },
-    {
-        locale: 'zh-Hant',
-        editSource: '編輯原始碼',
-        editorTab: '語法凸顯設定',
-    },
-    {
-        locale: 'zh-Hans',
-        editSource: '编辑源代码',
-        editorTab: '高亮设定',
-    },
-] as const;
 let runtime: string;
 
 test.beforeAll(async () => {
@@ -79,145 +62,6 @@ test.beforeAll(async () => {
         write: false,
     });
     runtime = result.outputFiles[0].text;
-});
-
-test.describe('documentation screenshots', () => {
-    test.skip(process.env.DOCUMENTATION_SCREENSHOTS !== '1', 'Opt-in capture');
-    test.use({ viewport: { width: 1024, height: 768 }, deviceScaleFactor: 1 });
-
-    for (const fixture of screenshotLocales) {
-        test(`${fixture.locale} captures citation, link preview, and both panel tabs`, async ({
-            page,
-        }, testInfo) => {
-            await page.emulateMedia({ reducedMotion: 'reduce' });
-            const source = await readFile(
-                `${projectRoot}tests/source-editor/fixtures/nintendo.wikitext`,
-                'utf8',
-            );
-            const preview = JSON.parse(
-                await readFile(
-                    `${projectRoot}tests/source-editor/fixtures/nintendo-switch.summary.json`,
-                    'utf8',
-                ),
-            );
-            await mountFormatter(page, {
-                locale: fixture.locale,
-                wikiId: 'zhwiki',
-                source,
-                open: false,
-                settings: {
-                    ...createDefaultFormatterSettings(),
-                    linkPreviews: true,
-                },
-            });
-            await page.addStyleTag({
-                content: `#editform::before { content: ${JSON.stringify(`任天堂 · ${fixture.editSource}`)}; display: block; font-size: 28px; margin-bottom: 12px; } .kanade-source-editor-frame { width: 100%; height: 600px; }`,
-            });
-            await page
-                .locator('.kanade-source-editor-frame')
-                .evaluate((element) => {
-                    (element as HTMLIFrameElement).style.height = '600px';
-                    const editor = (
-                        element as HTMLIFrameElement
-                    ).contentDocument?.querySelector<HTMLElement>(
-                        '.kanade-source-editor-editor',
-                    );
-                    if (editor) editor.style.fontSize = '16px';
-                });
-            await page.route('**/w/api.php**', async (route) => {
-                await route.fulfill({
-                    contentType: 'application/json',
-                    body: JSON.stringify({
-                        query: {
-                            pages: [
-                                {
-                                    pageid: preview.pageid,
-                                    title: preview.title,
-                                },
-                            ],
-                        },
-                    }),
-                });
-            });
-            await page.route(
-                '**/api/rest_v1/page/summary/**',
-                async (route) => {
-                    await route.fulfill({
-                        contentType: 'application/json',
-                        body: JSON.stringify(preview),
-                    });
-                },
-            );
-            const imageDir = testInfo.outputPath('documentation-screenshots');
-            await mkdir(imageDir, { recursive: true });
-            const frame = page.frameLocator('.kanade-source-editor-frame');
-            await frame
-                .locator('[data-kanade-source-editor-reference]')
-                .filter({ hasText: 'トヨタの5倍超' })
-                .first()
-                .hover();
-            await expect(
-                frame.locator('.kanade-source-editor-tooltip'),
-            ).toBeVisible();
-            await expect(
-                frame.locator('.kanade-source-editor-tooltip'),
-            ).toContainText('トヨタの5倍超');
-            await expect(
-                frame.locator('.kanade-source-editor-tooltip__value').first(),
-            ).toHaveCSS('font-family', 'monospace');
-            await expect(
-                frame.locator('.kanade-source-editor-tooltip__key').first(),
-            ).toHaveCSS('font-family', 'sans-serif');
-            await page.screenshot({
-                path: `${imageDir}/screenshot01.${fixture.locale}.png`,
-                animations: 'disabled',
-            });
-            await page.mouse.move(0, 0);
-            await frame
-                .locator(
-                    '[data-kanade-source-editor-page-preview-title="任天堂Switch"]',
-                )
-                .first()
-                .hover();
-            await expect(
-                frame.locator('.kanade-source-editor-page-preview'),
-            ).toBeVisible();
-            await expect(
-                frame.locator('.kanade-source-editor-page-preview__extract'),
-            ).toHaveText(preview.extract);
-            await expect(
-                frame.locator(
-                    '.kanade-source-editor-page-preview__description',
-                ),
-            ).toHaveText(preview.description);
-            await page.screenshot({
-                path: `${imageDir}/screenshot02.${fixture.locale}.png`,
-                animations: 'disabled',
-            });
-            await page.mouse.move(0, 0);
-            await expect(
-                frame.locator('.kanade-source-editor-page-preview'),
-            ).toBeHidden();
-            await page.locator('#kanade-source-editor-panel a').click();
-            await expect(page.getByRole('dialog')).toBeVisible();
-            await expect(page.getByRole('dialog')).toHaveAttribute(
-                'lang',
-                fixture.locale,
-            );
-            await page.screenshot({
-                path: `${imageDir}/screenshot03.${fixture.locale}.png`,
-                animations: 'disabled',
-            });
-            await page
-                .getByRole('tab', { name: fixture.editorTab, exact: true })
-                .click();
-            await page.screenshot({
-                path: `${imageDir}/screenshot04.${fixture.locale}.png`,
-                animations: 'disabled',
-            });
-            await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-        });
-    }
 });
 
 test('Source Editor gadget and userscript installations share one editor and launcher', async ({
@@ -243,7 +87,7 @@ test('Source Editor gadget and userscript installations share one editor and lau
                 (window as any)[Symbol.for('kanade.source-editor.startup')],
         ),
     ).toBe(true);
-    await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(1);
+    await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(0);
     await expect(page.locator('#p-cactions a')).toHaveCount(1);
     await expect(page.locator('#kanade-source-editor-panel')).toHaveCount(1);
     await expect(page.locator('#wpTextbox1')).toHaveValue(source);
@@ -476,7 +320,7 @@ for (const [locale, messages] of [
     });
 }
 
-test('Source Editor source-manager edits share the editor selection and undo history', async ({
+test('Source Editor source-manager edits preserve the native editor selection and source', async ({
     page,
 }) => {
     const source =
@@ -485,23 +329,11 @@ test('Source Editor source-manager edits share the editor selection and undo his
     page.on('pageerror', (error) => errors.push(error.message));
     await mountFormatter(page, { source, wikiId: 'enwiki', open: false });
     const textarea = page.locator('#wpTextbox1');
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
+    const editor = page.locator('#wpTextbox1');
     await editor.focus();
-    await editor.evaluate((element) => {
-        const document = element.ownerDocument;
-        const text = document
-            .createTreeWalker(element, NodeFilter.SHOW_TEXT)
-            .nextNode();
-        if (!text) throw new Error('The source editor has no text.');
-        const range = document.createRange();
-        range.setStart(text, 5);
-        range.setEnd(text, 13);
-        const selection = document.getSelection();
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-    });
+    await editor.evaluate((element: HTMLTextAreaElement) =>
+        element.setSelectionRange(5, 13),
+    );
     await expect
         .poll(() =>
             textarea.evaluate((element) => [
@@ -556,27 +388,15 @@ test('Source Editor source-manager edits share the editor selection and undo his
         .getByRole('button', { name: 'Close', exact: true })
         .click();
     await expect(manager).toBeHidden();
-    await expect(editor).toHaveText(accepted);
+    await expect(editor).toHaveValue(accepted);
     await expect
         .poll(() =>
-            textarea.evaluate((element) => [
-                (element as HTMLTextAreaElement).selectionStart,
-                (element as HTMLTextAreaElement).selectionEnd,
+            textarea.evaluate((element: HTMLTextAreaElement) => [
+                element.selectionStart,
+                element.selectionEnd,
             ]),
         )
         .toEqual([5, 13]);
-    await editor.focus();
-    await page.keyboard.press('ControlOrMeta+z');
-    await expect(textarea).toHaveValue(source);
-    await expect(editor).toHaveText(source);
-    expect(
-        await editor.evaluate((element) =>
-            element.ownerDocument.getSelection()?.toString(),
-        ),
-    ).toBe('selected');
-    await page.keyboard.press('ControlOrMeta+Shift+z');
-    await expect(textarea).toHaveValue(accepted);
-    await expect(editor).toHaveText(accepted);
     expect(errors).toEqual([]);
 });
 
@@ -676,7 +496,7 @@ test('Codex tabs expose relevant controls and a live template example', async ({
     await mountFormatter(page);
     const dialog = page.getByRole('dialog');
     await expect(dialog).toHaveAccessibleName('Source Editor');
-    await expect(page.getByRole('tab')).toHaveCount(4);
+    await expect(page.getByRole('tab')).toHaveCount(2);
     await expect(
         page.getByRole('tab', { name: 'Formatting', exact: true }),
     ).toHaveAttribute('aria-selected', 'true');
@@ -712,19 +532,6 @@ test('Codex tabs expose relevant controls and a live template example', async ({
     await expect(
         page.getByRole('tab', { name: 'References', exact: true }),
     ).toHaveAttribute('aria-selected', 'true');
-    await page.keyboard.press('ArrowRight');
-    await expect(
-        page.getByRole('tab', { name: 'Highlighting settings', exact: true }),
-    ).toHaveAttribute('aria-selected', 'true');
-    await page.keyboard.press('ArrowRight');
-    await expect(
-        page.getByRole('tab', { name: 'Tools', exact: true }),
-    ).toHaveAttribute('aria-selected', 'true');
-    await expect(
-        page.getByRole('textbox', { name: 'Find 1', exact: true }),
-    ).toBeVisible();
-    await page.keyboard.press('ArrowLeft');
-    await page.keyboard.press('ArrowLeft');
     await page.keyboard.press('ArrowLeft');
     await expect(formattingTab).toHaveAttribute('aria-selected', 'true');
     const example = dialog.locator('pre');
@@ -797,95 +604,6 @@ test('Codex tabs expose relevant controls and a live template example', async ({
     await capture(page, 'templates-en');
 
     await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(
-        page.getByText(
-            'Change how the editor looks and shows previews. These options do not change the wikitext.',
-            { exact: true },
-        ),
-    ).toBeInViewport();
-    await expect(
-        page.getByRole('button', { name: 'Apply settings', exact: true }),
-    ).toBeVisible();
-    const groups = page
-        .getByRole('tabpanel', {
-            name: 'Highlighting settings',
-            exact: true,
-        })
-        .getByRole('group');
-    const expectedGroups = [
-        {
-            name: 'Syntax highlighting',
-            controls: [
-                'Use Source Editor to highlight wikitext pages',
-                'Use CodeMirror for other content models',
-            ],
-        },
-        {
-            name: 'Text and colors',
-            controls: [
-                'Use larger text',
-                'Use smaller text for references and notes',
-                'Alternate pink and blue for consecutive references',
-            ],
-        },
-        {
-            name: 'Links',
-            controls: [
-                /^Hold (?:Ctrl|Command) and click link source to open a new tab$/u,
-                'Show page previews on hover',
-                'Automatically mark missing page titles in red',
-            ],
-        },
-        {
-            name: 'Reference popups',
-            controls: [
-                'Reference tag inspection',
-                'Read the full page source when editing a section',
-                'Enable editing while inspecting references',
-                'Use lightweight reference editing',
-            ],
-        },
-    ];
-    await expect(groups).toHaveCount(expectedGroups.length);
-    for (const [index, expected] of expectedGroups.entries()) {
-        const group = groups.nth(index);
-        await expect(group).toHaveAccessibleName(expected.name);
-        const controls = group.getByRole('checkbox');
-        await expect(controls).toHaveCount(expected.controls.length);
-        for (const [controlIndex, name] of expected.controls.entries()) {
-            await expect(controls.nth(controlIndex)).toHaveAccessibleName(name);
-        }
-    }
-    await capture(page, 'editor-en');
-    await page
-        .getByRole('checkbox', {
-            name: 'Reference tag inspection',
-            exact: true,
-        })
-        .uncheck();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Read the full page source when editing a section',
-            exact: true,
-        }),
-    ).toBeDisabled();
-    await page
-        .getByRole('button', { name: 'More options', exact: true })
-        .focus();
-    await page.keyboard.press('Enter');
-    await expect(page.getByRole('menu')).toBeVisible();
-    await capture(page, 'menu-en');
-    await page.keyboard.press('End');
-    await page.keyboard.press('ArrowUp');
-    await page.keyboard.press('Enter');
-    await expectSuccessNotification(
-        page,
-        'cache-cleared',
-        'Cache cleared. Data will reload as needed.',
-    );
-    await page
         .getByRole('button', { name: 'Cancel', exact: true })
         .last()
         .click();
@@ -894,35 +612,21 @@ test('Codex tabs expose relevant controls and a live template example', async ({
     expect(errors).toEqual([]);
 });
 
-test('cancel and Escape discard display changes and restore keyboard focus', async ({
+test('cancel and Escape discard formatting drafts and restore keyboard focus', async ({
     page,
 }) => {
     await mountFormatter(page);
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
-    const before = await editor.evaluate(
-        (element) => getComputedStyle(element).fontSize,
-    );
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await page
-        .getByRole('checkbox', { name: 'Use larger text', exact: true })
-        .check();
+    const formatHtml = page.getByRole('checkbox', {
+        name: 'Format HTML tags',
+        exact: true,
+    });
+    await formatHtml.check();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    expect(
-        await editor.evaluate((element) => getComputedStyle(element).fontSize),
-    ).toBe(before);
+    await expect(page.locator('#wpTextbox1')).toHaveValue(initialSource);
     await expect(page.locator('#kanade-source-editor-panel a')).toBeFocused();
     await page.locator('#kanade-source-editor-panel a').click();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(
-        page.getByRole('checkbox', { name: 'Use larger text', exact: true }),
-    ).not.toBeChecked();
+    await expect(formatHtml).not.toBeChecked();
 });
 
 test('overlapping formatter loads create one dialog and one cleanup owner', async ({
@@ -958,633 +662,10 @@ test('overlapping formatter loads create one dialog and one cleanup owner', asyn
     );
 });
 
-test('editor settings apply without formatting and persist only when requested', async ({
-    page,
-}) => {
-    await mountFormatter(page);
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    const codeMirror = page.getByRole('checkbox', {
-        name: 'Use CodeMirror for other content models',
-        exact: true,
-    });
-    await expect(codeMirror).not.toBeChecked();
-    await expect(
-        page.getByRole('link', { name: 'CodeMirror' }),
-    ).toHaveAttribute(
-        'href',
-        'https://www.mediawiki.org/wiki/Extension:CodeMirror',
-    );
-    await codeMirror.check();
-    await page
-        .getByRole('checkbox', { name: 'Use larger text', exact: true })
-        .check();
-    await page
-        .getByRole('button', { name: 'Apply settings', exact: true })
-        .click();
-    await expect(page.getByRole('dialog')).toHaveCount(0);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(initialSource);
-    expect(await storedSettings(page)).toBeNull();
-    await page.locator('#kanade-source-editor-panel a').click();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(
-        page.getByRole('checkbox', { name: 'Use larger text', exact: true }),
-    ).toBeChecked();
-    await expect(codeMirror).toBeChecked();
-    await codeMirror.uncheck();
-    await page
-        .getByRole('checkbox', { name: 'Use larger text', exact: true })
-        .uncheck();
-    const save = page.getByRole('button', {
-        name: 'Save settings',
-        exact: true,
-    });
-    await save.focus();
-    await page.keyboard.press('Enter');
-    await expectSuccessNotification(
-        page,
-        'settings-saved',
-        'Settings saved in this browser.',
-    );
-    expect((await storedSettings(page))?.largeFont).toBe(false);
-    expect((await storedSettings(page))?.useCodeMirrorForOtherModels).toBe(
-        false,
-    );
-    // Saving changed choices again must work, too.
-    await page
-        .getByRole('checkbox', { name: 'Use larger text', exact: true })
-        .check();
-    await codeMirror.check();
-    await save.focus();
-    await page.keyboard.press('Space');
-    await expectSuccessNotification(
-        page,
-        'settings-saved',
-        'Settings saved in this browser.',
-        2,
-    );
-    expect((await storedSettings(page))?.largeFont).toBe(true);
-    expect((await storedSettings(page))?.useCodeMirrorForOtherModels).toBe(
-        true,
-    );
-    await expect(page.locator('#wpTextbox1')).toHaveValue(initialSource);
-    await page
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .last()
-        .click();
-    expect((await storedSettings(page))?.largeFont).toBe(true);
-});
-
-test('Ctrl/Cmd-click navigation can be disabled, saved, and re-enabled', async ({
-    page,
-}) => {
-    const source = 'A [[Example navigation target]] B';
-    const setting = page.getByRole('checkbox', {
-        name: /^Hold (?:Ctrl|Command) and click link source to open a new tab$/u,
-        exact: true,
-    });
-    const openHighlighting = async () => {
-        await page
-            .getByRole('tab', { name: 'Highlighting settings', exact: true })
-            .click();
-    };
-    const apply = page.getByRole('button', {
-        name: 'Apply settings',
-        exact: true,
-    });
-    const recordOpens = () =>
-        page.evaluate(() => {
-            const opened: string[] = [];
-            (globalThis as any).__openedLinks = opened;
-            window.open = (url) => {
-                opened.push(String(url));
-                return null;
-            };
-        });
-    const clickLink = async () => {
-        const link = page
-            .frameLocator('.kanade-source-editor-frame')
-            .locator(
-                '.kanade-source-editor-editor [data-kanade-source-editor-href="/wiki/Example_navigation_target"]',
-            )
-            .filter({ hasText: 'Example navigation target' });
-        await link.evaluate((element) =>
-            element.ownerDocument.getSelection()?.removeAllRanges(),
-        );
-        await link.click({
-            modifiers: [process.platform === 'darwin' ? 'Meta' : 'Control'],
-        });
-    };
-    const openedLinks = () =>
-        page.evaluate(() => (globalThis as any).__openedLinks);
-
-    await mountFormatter(page, { source });
-    await recordOpens();
-    await openHighlighting();
-    await expect(setting).toBeChecked();
-    await setting.uncheck();
-    await apply.click();
-    await clickLink();
-    expect(await openedLinks()).toEqual([]);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-
-    await page.locator('#kanade-source-editor-panel a').click();
-    await openHighlighting();
-    await expect(setting).not.toBeChecked();
-    await page
-        .getByRole('button', { name: 'Save settings', exact: true })
-        .click();
-    expect((await storedSettings(page))?.ctrlClickLinks).toBe(false);
-
-    await mountFormatter(page, { source });
-    await recordOpens();
-    await openHighlighting();
-    await expect(setting).not.toBeChecked();
-    await page
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .last()
-        .click();
-    await clickLink();
-    expect(await openedLinks()).toEqual([]);
-
-    await page.locator('#kanade-source-editor-panel a').click();
-    await openHighlighting();
-    await setting.check();
-    const highlighting = page.getByRole('checkbox', {
-        name: 'Use Source Editor to highlight wikitext pages',
-        exact: true,
-    });
-    await highlighting.uncheck();
-    await expect(setting).toBeDisabled();
-    await highlighting.check();
-    await expect(setting).toBeChecked();
-    await apply.click();
-    await clickLink();
-    expect(await openedLinks()).toEqual(['/wiki/Example_navigation_target']);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-});
-
-for (const [platform, modifier] of [
-    ['MacIntel', 'Command'],
-    ['Win32', 'Ctrl'],
-] as const) {
-    test(`link navigation names ${modifier} on ${platform} and limits its description to Chinese Wikipedia`, async ({
-        page,
-    }) => {
-        for (const wikiId of ['zhwiki', 'examplewiki']) {
-            await mountFormatter(page, { locale: 'en', platform, wikiId });
-            await page
-                .getByRole('tab', {
-                    name: 'Highlighting settings',
-                    exact: true,
-                })
-                .click();
-            await expect(
-                page.getByRole('checkbox', {
-                    name: `Hold ${modifier} and click link source to open a new tab`,
-                    exact: true,
-                }),
-            ).toBeVisible();
-            const description = page.getByText(
-                'Also supports the foreign page title in interlanguage link templates.',
-                { exact: true },
-            );
-            if (wikiId === 'zhwiki') {
-                await expect(description).toBeVisible();
-            } else {
-                await expect(description).toHaveCount(0);
-            }
-            const documentation = page.getByRole('link', {
-                name: 'interlanguage link templates',
-                exact: true,
-            });
-            await expect(documentation).toHaveCount(
-                wikiId === 'zhwiki' ? 3 : 1,
-            );
-            for (const link of await documentation.all()) {
-                await expect(link).toHaveAttribute(
-                    'href',
-                    wikiId === 'zhwiki'
-                        ? '/wiki/Category:内部链接助手模板'
-                        : 'https://zh.wikipedia.org/wiki/Category:%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5%E5%8A%A9%E6%89%8B%E6%A8%A1%E6%9D%BF',
-                );
-                await expect(link).toHaveAttribute('target', '_blank');
-                await expect(link).toHaveAttribute(
-                    'rel',
-                    'noopener noreferrer',
-                );
-            }
-            await expect(page.getByRole('dialog')).not.toContainText(
-                '{{link-en}}',
-            );
-            await expect(page.getByRole('dialog')).not.toContainText('{{tsl}}');
-        }
-    });
-}
-
-test('alternating reference backgrounds follow applied settings and survive saving', async ({
-    page,
-}) => {
-    const source =
-        '<ref>First</ref><ref name="second" />{{sfn|a}}<ref name="third">Third</ref>' +
-        ' prose {{efn|Note one}}{{efn|Note two}}' +
-        ' prose <ref>Mixed ref</ref>{{efn|Mixed note}}' +
-        ' prose {{efn|Outer note <ref>Nested ref</ref>}}{{efn|Next note}}';
-    await mountFormatter(page, { source });
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
-    const setting = page.getByRole('checkbox', {
-        name: 'Alternate pink and blue for consecutive references',
-        exact: true,
-    });
-    const apply = page.getByRole('button', {
-        name: 'Apply settings',
-        exact: true,
-    });
-    const openHighlighting = async () => {
-        await page
-            .getByRole('tab', { name: 'Highlighting settings', exact: true })
-            .click();
-    };
-    const styleAt = (text: string) =>
-        editor.evaluate((element, offset) => {
-            let remaining = offset;
-            for (const node of element.childNodes) {
-                const length = node.textContent?.length ?? 0;
-                if (remaining < length) {
-                    const style = getComputedStyle(
-                        node instanceof Element ? node : element,
-                    );
-                    return {
-                        background: style.backgroundColor,
-                        color: style.color,
-                    };
-                }
-                remaining -= length;
-            }
-            throw new Error('Reference text was not rendered');
-        }, source.indexOf(text));
-
-    await openHighlighting();
-    await expect(setting).not.toBeChecked();
-    const normal = await styleAt('First');
-    const second = await styleAt('second');
-    expect(normal.background).toBe('rgb(243, 225, 247)');
-    expect(second.background).toBe(normal.background);
-    const templateBackground = 'rgb(246, 246, 246)';
-    expect((await styleAt('Note one')).background).toBe(templateBackground);
-    expect((await styleAt('Note two')).background).toBe(templateBackground);
-    expect((await styleAt('Nested ref')).background).toBe(normal.background);
-    await setting.check();
-    await page
-        .getByRole('button', { name: 'Save settings', exact: true })
-        .click();
-    expect((await storedSettings(page))?.alternateReferenceColors).toBe(true);
-    expect(await styleAt('second')).toEqual(second);
-    await apply.click();
-    await expect
-        .poll(async () => (await styleAt('second')).background)
-        .not.toBe(normal.background);
-    const alternate = await styleAt('second');
-    expect(alternate.background).toBe('rgb(230, 242, 255)');
-    expect(alternate.color).toBe(second.color);
-    expect((await styleAt('Note one')).background).toBe(templateBackground);
-    expect((await styleAt('Note two')).background).toBe(templateBackground);
-    expect((await styleAt('Mixed ref')).background).toBe(normal.background);
-    expect((await styleAt('Mixed note')).background).toBe(templateBackground);
-    expect((await styleAt('Outer note')).background).toBe(templateBackground);
-    expect((await styleAt('Nested ref')).background).toBe(normal.background);
-    expect((await styleAt('Next note')).background).toBe(templateBackground);
-    expect((await styleAt('sfn')).background).toBe(alternate.background);
-    expect((await styleAt('Third')).background).toBe(normal.background);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-
-    await mountFormatter(page, { source });
-    await openHighlighting();
-    await expect(setting).toBeChecked();
-    expect((await styleAt('second')).background).toBe(alternate.background);
-    const highlighting = page.getByRole('checkbox', {
-        name: 'Use Source Editor to highlight wikitext pages',
-        exact: true,
-    });
-    await highlighting.uncheck();
-    await expect(setting).toBeDisabled();
-    await apply.click();
-    await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(0);
-    await expect(page.locator('#wpTextbox1')).toBeVisible();
-    await page.locator('#kanade-source-editor-panel a').click();
-    await openHighlighting();
-    await highlighting.check();
-    await expect(setting).toBeChecked();
-    await apply.click();
-    await expect
-        .poll(async () => (await styleAt('second')).background)
-        .toBe(alternate.background);
-
-    await page.locator('#kanade-source-editor-panel a').click();
-    await openHighlighting();
-    await setting.uncheck();
-    await apply.click();
-    await expect
-        .poll(async () => (await styleAt('second')).background)
-        .toBe(normal.background);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-});
-
-test('Efn and NoteTag retain small template shading while embedded references alternate colors', async ({
-    page,
-}) => {
-    const source =
-        '游戏中的角色向玩家道别<ref name=":4" /><ref name="DREAM" ' +
-        'details="{{URL|https://example.test/interview|55億年後になくなる地球}}. 完結編 :2" />' +
-        '{{Efn|部分游戏内容译名综合参考自以下来源：' +
-        '{{lang|en|[[Note link]]}} https://example.test/note &nbsp; ' +
-        '<ref>{{Cite web |title=MOTHER系列参战斗士 琉加 #37 {{!}} 任天堂明星大乱斗 特别版 ' +
-        '|url=https://example.test/fighter |language=zh-Hans}}</ref>' +
-        '<ref name=":2" details="{{URL|https://example.test/guide|地球冒险3}}. 攻略人行道 :90-93" />' +
-        '<ref name="UCG" details="阿修罗. {{url|https://example.test/mother3|Mother3 攻略透解}} :58-63" />' +
-        '<ref>{{Cite journal |author=张永 |title=地球冒险3 接上期 ' +
-        '|url=https://example.test/journal |journal=掌机迷 |page=78-83}}</ref>}}。' +
-        ' {{outer|{{NoteTag|Nested note {{lang|en|Nested value}}}}}}';
-    await mountFormatter(page, {
-        source,
-        settings: {
-            ...createDefaultFormatterSettings(),
-            alternateReferenceColors: true,
-        },
-    });
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
-    const pink = 'rgb(243, 225, 247)';
-    const blue = 'rgb(230, 242, 255)';
-    const gray = 'rgb(246, 246, 246)';
-    const nestedGray = 'rgb(228, 228, 228)';
-    const deeperGray = 'rgb(218, 218, 218)';
-    const expectedStyles = [
-        [':4', pink],
-        ['DREAM', blue],
-        ['55億年後', blue],
-        ['Efn', gray],
-        ['部分游戏内容', gray],
-        ['lang', nestedGray],
-        ['en|', nestedGray],
-        ['Note link', nestedGray],
-        ['https://example.test/note', gray],
-        ['&nbsp;', gray],
-        ['<ref>{{Cite web', pink],
-        ['MOTHER系列', pink],
-        ['任天堂明星', pink],
-        ['<ref name=":2"', blue],
-        ['攻略人行道', blue],
-        ['<ref name="UCG"', pink],
-        ['Mother3 攻略', pink],
-        ['<ref>{{Cite journal', blue],
-        ['掌机迷', blue],
-        ['</ref>}}', blue],
-        ['}}。', gray],
-        ['NoteTag', nestedGray],
-        ['Nested note', nestedGray],
-        ['Nested value', deeperGray],
-    ] as const;
-    const styles = () =>
-        editor.evaluate(
-            (element, offsets) =>
-                offsets.map((offset) => {
-                    let remaining = offset;
-                    for (const node of element.childNodes) {
-                        const length = node.textContent?.length ?? 0;
-                        if (remaining < length) {
-                            const style = getComputedStyle(
-                                node instanceof Element ? node : element,
-                            );
-                            return {
-                                background: style.backgroundColor,
-                                fontSize: Number.parseFloat(style.fontSize),
-                            };
-                        }
-                        remaining -= length;
-                    }
-                    throw new Error('Explanatory note text was not rendered');
-                }),
-            expectedStyles.map(([text]) => source.indexOf(text)),
-        );
-    const editorFontSize = await editor.evaluate((element) =>
-        Number.parseFloat(getComputedStyle(element).fontSize),
-    );
-    const smallStyles = await styles();
-    for (const [index, [text, background]] of expectedStyles.entries()) {
-        expect(smallStyles[index]?.background, text).toBe(background);
-        expect(smallStyles[index]?.fontSize, text).toBeCloseTo(
-            editorFontSize * 0.86,
-            2,
-        );
-    }
-
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await page
-        .getByRole('checkbox', {
-            name: 'Use smaller text for references and notes',
-            exact: true,
-        })
-        .uncheck();
-    await page
-        .getByRole('button', { name: 'Apply settings', exact: true })
-        .click();
-    const fullStyles = await styles();
-    for (const [index, [text, background]] of expectedStyles.entries()) {
-        expect(fullStyles[index]?.background, text).toBe(background);
-        expect(fullStyles[index]?.fontSize, text).toBe(editorFontSize);
-    }
-    await expect(editor).toHaveText(source);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-});
-
-test('reference editing stays visible under its disabled parent and retains saved choices', async ({
-    page,
-}) => {
-    const source = '<ref>{{cite book|title=Book}}</ref>';
-    await mountFormatter(page, { source, open: false });
-    const frame = page.frameLocator('.kanade-source-editor-frame');
-    const editor = frame.locator('.kanade-source-editor-editor');
-    const reference = editor
-        .locator('[data-kanade-source-editor-reference]')
-        .first();
-    const tooltip = frame.locator('.kanade-source-editor-tooltip');
-    const setting = page.getByRole('checkbox', {
-        name: 'Enable editing while inspecting references',
-        exact: true,
-    });
-    const previews = page.getByRole('checkbox', {
-        name: 'Reference tag inspection',
-        exact: true,
-    });
-    const highlighting = page.getByRole('checkbox', {
-        name: 'Use Source Editor to highlight wikitext pages',
-        exact: true,
-    });
-    const lightweight = page.getByRole('checkbox', {
-        name: 'Use lightweight reference editing',
-        exact: true,
-    });
-    const fullPage = page.getByRole('checkbox', {
-        name: 'Read the full page source when editing a section',
-        exact: true,
-    });
-    const apply = page.getByRole('button', {
-        name: 'Apply settings',
-        exact: true,
-    });
-    const openHighlighting = async () => {
-        await page.locator('#kanade-source-editor-panel a').click();
-        await page
-            .getByRole('tab', { name: 'Highlighting settings', exact: true })
-            .click();
-    };
-
-    await reference.hover();
-    await expect(
-        tooltip.getByRole('button', {
-            name: "Edit field 'title'",
-            exact: true,
-        }),
-    ).toBeVisible();
-    await expect(
-        tooltip.getByRole('button', { name: 'Manage reference', exact: true }),
-    ).toHaveCount(0);
-    await editor.press('Escape');
-    await openHighlighting();
-    await expect(setting).toBeChecked();
-    await expect(lightweight).not.toBeChecked();
-    const parentBounds = await previews.boundingBox();
-    const editingBounds = await setting.boundingBox();
-    const fullPageBounds = await fullPage.boundingBox();
-    const lightweightBounds = await lightweight.boundingBox();
-    expect(parentBounds).not.toBeNull();
-    expect(editingBounds).not.toBeNull();
-    expect(fullPageBounds).not.toBeNull();
-    expect(lightweightBounds).not.toBeNull();
-    expect(editingBounds!.x).toBeCloseTo(parentBounds!.x, 0);
-    expect(fullPageBounds!.x).toBeCloseTo(parentBounds!.x, 0);
-    expect(lightweightBounds!.x).toBeCloseTo(editingBounds!.x, 0);
-    await lightweight.check();
-    await fullPage.check();
-    await setting.uncheck();
-    await expect(lightweight).toBeDisabled();
-    await expect(lightweight).toBeChecked();
-    await previews.uncheck();
-    await expect(setting).toBeVisible();
-    await expect(setting).toBeDisabled();
-    await expect(fullPage).toBeVisible();
-    await expect(fullPage).toBeDisabled();
-    await expect(fullPage).toBeChecked();
-    await expect(lightweight).toBeDisabled();
-    await previews.check();
-    await expect(setting).not.toBeChecked();
-    await expect(fullPage).toBeEnabled();
-    await expect(fullPage).toBeChecked();
-    await highlighting.uncheck();
-    await expect(setting).toBeDisabled();
-    await highlighting.check();
-    await expect(setting).toBeEnabled();
-    await expect(setting).not.toBeChecked();
-    await page
-        .getByRole('button', { name: 'Save settings', exact: true })
-        .click();
-    expect((await storedSettings(page))?.referenceEditing).toBe(false);
-    expect((await storedSettings(page))?.referencePreviews).toBe(true);
-    expect((await storedSettings(page))?.referenceLightweightEditing).toBe(
-        true,
-    );
-    expect((await storedSettings(page))?.fullPageReferencePreviews).toBe(true);
-    await apply.click();
-    await reference.hover();
-    await expect(tooltip).toBeVisible();
-    await expect(tooltip).toContainText('Book');
-    await expect(
-        tooltip.getByRole('button', { name: /^Edit field /u }),
-    ).toHaveCount(0);
-    await expect(
-        tooltip.getByRole('button', { name: 'Manage reference', exact: true }),
-    ).toHaveCount(0);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-
-    await mountFormatter(page, { source, open: false });
-    await reference.hover();
-    await expect(tooltip).toBeVisible();
-    await expect(tooltip).toContainText('Book');
-    await expect(
-        tooltip.getByRole('button', { name: /^Edit field /u }),
-    ).toHaveCount(0);
-    await expect(
-        tooltip.getByRole('button', { name: 'Manage reference', exact: true }),
-    ).toHaveCount(0);
-    await editor.press('Escape');
-    await openHighlighting();
-    await expect(setting).not.toBeChecked();
-    await chooseMore(page, 'Reset settings');
-    await expect(setting).toBeChecked();
-    await expect(lightweight).not.toBeChecked();
-    await expect(fullPage).not.toBeChecked();
-    await apply.click();
-    await reference.hover();
-    await expect(
-        tooltip.getByRole('button', {
-            name: "Edit field 'title'",
-            exact: true,
-        }),
-    ).toBeVisible();
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-});
-
-test('section sub-references combine local details with the full-page parent', async ({
-    page,
-}) => {
-    const source = '<ref name="Parent" details="p. 48" />';
-    await mountFormatter(page, {
-        source,
-        section: true,
-        open: false,
-        pageSource:
-            '<ref name="Parent">{{cite book|title=Outside section}}</ref>\n' +
-            source,
-        settings: {
-            ...createDefaultFormatterSettings(),
-            fullPageReferencePreviews: true,
-        },
-    });
-    const frame = page.frameLocator('.kanade-source-editor-frame');
-    const reference = frame
-        .locator('[data-kanade-source-editor-reference]')
-        .first();
-    const tooltip = frame.locator('.kanade-source-editor-tooltip');
-
-    await reference.hover();
-    await expect(tooltip).toBeVisible();
-    await expect(tooltip).toContainText('Sub-reference content');
-    await expect(tooltip).toContainText('p. 48');
-    await expect(tooltip).toContainText('Outside section');
-    await expect(
-        tooltip.locator('.kanade-source-editor-tooltip__missing'),
-    ).toHaveCount(0);
-    await expect(frame.locator('.kanade-source-editor-editor')).toHaveText(
-        source,
-    );
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-});
-
-test('Reset settings removes saved choices and restores both tabs without applying them', async ({
+test('Reset settings removes saved choices and restores the formatter draft without applying it', async ({
     page,
 }) => {
     const settings = createDefaultFormatterSettings();
-    settings.largeFont = true;
-    settings.linkPreviews = true;
     settings.resolveRedirects = true;
     settings.formatter.indentBlockTemplates = true;
     settings.formatter.indentSpaces = 4;
@@ -1593,26 +674,6 @@ test('Reset settings removes saved choices and restores both tabs without applyi
     await page.evaluate(() =>
         localStorage.setItem('another-gadget.settings', 'keep this value'),
     );
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
-    const initialFontSize = await editor.evaluate(
-        (element) => getComputedStyle(element).fontSize,
-    );
-    // Establish an applied session override before resetting its saved base.
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await page
-        .getByRole('checkbox', {
-            name: 'Reference tag inspection',
-            exact: true,
-        })
-        .uncheck();
-    await page
-        .getByRole('button', { name: 'Apply settings', exact: true })
-        .click();
-    await page.locator('#kanade-source-editor-panel a').click();
     const indentation = page.getByRole('checkbox', {
         name: 'Indent nested templates',
         exact: true,
@@ -1623,7 +684,6 @@ test('Reset settings removes saved choices and restores both tabs without applyi
     });
     await indentSpaces.fill('12');
     await chooseMore(page, 'Reset settings');
-
     await expectSuccessNotification(
         page,
         'settings-reset',
@@ -1640,59 +700,18 @@ test('Reset settings removes saved choices and restores both tabs without applyi
     await expect(indentSpaces).toBeDisabled();
     await expect(
         page.getByRole('checkbox', {
-            name: 'Leave the first nesting level unindented',
-            exact: true,
-        }),
-    ).not.toBeChecked();
-    await expect(
-        page.getByRole('checkbox', {
             name: 'Replace redirects with target page titles',
             exact: true,
         }),
     ).not.toBeChecked();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(
-        page.getByRole('checkbox', { name: 'Use larger text', exact: true }),
-    ).not.toBeChecked();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Show page previews on hover',
-            exact: true,
-        }),
-    ).not.toBeChecked();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Reference tag inspection',
-            exact: true,
-        }),
-    ).toBeChecked();
     await expect(page.locator('#wpTextbox1')).toHaveValue(initialSource);
-    expect(
-        await editor.evaluate((element) => getComputedStyle(element).fontSize),
-    ).toBe(initialFontSize);
-
-    // Reopening keeps formatter defaults and reflects the unchanged editor.
     await page
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .last()
+        .getByRole('dialog')
+        .locator('.kanade-source-editor-dialog__cancel')
         .click();
     await page.locator('#kanade-source-editor-panel a').click();
     await expect(indentation).not.toBeChecked();
     await expect(indentSpaces).toHaveValue('2');
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(
-        page.getByRole('checkbox', { name: 'Use larger text', exact: true }),
-    ).toBeChecked();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Reference tag inspection',
-            exact: true,
-        }),
-    ).not.toBeChecked();
     expect(await storedSettings(page)).toBeNull();
 });
 
@@ -1741,30 +760,11 @@ test('format selection uses the range captured before dialog focus moves', async
 }) => {
     const source = '[[ Selected ]]\n\n[[ Untouched ]]';
     await mountFormatter(page, { source, open: false });
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
+    const editor = page.locator('#wpTextbox1');
     await editor.focus();
-    await editor.evaluate((element) => {
-        const range = element.ownerDocument.createRange();
-        range.selectNodeContents(element);
-        const walker = element.ownerDocument.createTreeWalker(
-            element,
-            NodeFilter.SHOW_TEXT,
-        );
-        let remaining = '[[ Selected ]]'.length;
-        while (walker.nextNode()) {
-            const length = walker.currentNode.textContent?.length ?? 0;
-            if (remaining <= length) {
-                range.setEnd(walker.currentNode, remaining);
-                break;
-            }
-            remaining -= length;
-        }
-        const selection = element.ownerDocument.getSelection();
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-    });
+    await editor.evaluate((element: HTMLTextAreaElement) =>
+        element.setSelectionRange(0, '[[ Selected ]]'.length),
+    );
     await page.locator('#kanade-source-editor-panel a').click();
     await page
         .getByRole('button', { name: 'Format selection', exact: true })
@@ -1785,36 +785,17 @@ for (const [locale, label] of [
     ['en', 'Format'],
     ['zh-Hant', '格式化'],
 ] as const) {
-    test(`the ${locale} Format shortcut formats a selection directly and preserves editor undo`, async ({
+    test(`the ${locale} Format shortcut formats a selection directly`, async ({
         page,
     }) => {
         const source = '[[ Selected ]]\n\n[[ Untouched ]]';
         await mountFormatter(page, { source, locale, open: false });
         const textarea = page.locator('#wpTextbox1');
-        const editor = page
-            .frameLocator('.kanade-source-editor-frame')
-            .locator('.kanade-source-editor-editor');
+        const editor = page.locator('#wpTextbox1');
         await editor.focus();
-        await editor.evaluate((element) => {
-            const range = element.ownerDocument.createRange();
-            range.selectNodeContents(element);
-            const walker = element.ownerDocument.createTreeWalker(
-                element,
-                NodeFilter.SHOW_TEXT,
-            );
-            let remaining = '[[ Selected ]]'.length;
-            while (walker.nextNode()) {
-                const length = walker.currentNode.textContent?.length ?? 0;
-                if (remaining <= length) {
-                    range.setEnd(walker.currentNode, remaining);
-                    break;
-                }
-                remaining -= length;
-            }
-            const selection = element.ownerDocument.getSelection();
-            selection?.removeAllRanges();
-            selection?.addRange(range);
-        });
+        await editor.evaluate((element: HTMLTextAreaElement) =>
+            element.setSelectionRange(0, '[[ Selected ]]'.length),
+        );
         await expect
             .poll(() =>
                 textarea.evaluate((element: HTMLTextAreaElement) => [
@@ -1833,10 +814,6 @@ for (const [locale, label] of [
         expect((await nativeNotifications(page)).at(-1)?.options.type).toBe(
             'success',
         );
-        await editor.focus();
-        await page.keyboard.press('ControlOrMeta+z');
-        await expect(textarea).toHaveValue(source);
-        await expect(editor).toHaveText(source);
         expect(await storedSettings(page)).toBeNull();
     });
 }
@@ -1860,7 +837,6 @@ for (const [width, height] of [
         await expect(page.locator('#kanade-quick-access button')).toHaveText([
             'Format',
             'References',
-            'Tools',
         ]);
         await shortcut.focus();
         await page.keyboard.press('Enter');
@@ -1887,7 +863,6 @@ test('the Format shortcut preserves native input composition and works after com
     page,
 }) => {
     const settings = createDefaultFormatterSettings();
-    settings.syntaxHighlighting = false;
     await mountFormatter(page, { settings, open: false });
     const textarea = page.locator('#wpTextbox1');
     const shortcut = page.locator(
@@ -1904,298 +879,41 @@ test('the Format shortcut preserves native input composition and works after com
     await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 
-for (const { width, height, locale, messages } of [
-    { width: 375, height: 667, locale: 'en', messages: english },
-    { width: 683, height: 768, locale: 'ru', messages: russian },
-    { width: 1366, height: 768, locale: 'en', messages: english },
-]) {
-    test(`numbered regex pairs preserve sequence, options, focus, and bounds at ${width}px in ${locale}`, async ({
-        page,
-    }) => {
-        await page.setViewportSize({ width, height });
-        await mountFormatter(page, { source: 'a A', locale });
-        await page
-            .getByRole('tab', {
-                name: messages['dialog.toolsTab'],
-                exact: true,
-            })
-            .click();
-        const find = (number: number) =>
-            page.getByRole('textbox', {
-                name: messages['regex.pattern'].replace(
-                    '{number}',
-                    String(number),
-                ),
-                exact: true,
-            });
-        const replace = (number: number) =>
-            page.getByRole('textbox', {
-                name: messages['regex.replacement'].replace(
-                    '{number}',
-                    String(number),
-                ),
-                exact: true,
-            });
-        await expect(find(1)).toBeVisible();
-        await expect(find(2)).toBeVisible();
-        await expect(
-            page.getByRole('textbox', {
-                name: messages['regex.flags'],
-                exact: true,
-            }),
-        ).toHaveCount(0);
-        await find(1).fill('a');
-        await replace(1).fill('b');
-        await find(2).fill('b');
-        await replace(2).fill('c');
-        await page
-            .getByText(messages['regex.options'], { exact: true })
-            .click();
-        await page
-            .getByRole('textbox', {
-                name: messages['regex.flags'],
-                exact: true,
-            })
-            .fill('gi');
-        await page
-            .getByRole('button', {
-                name: messages['regex.preview'],
-                exact: true,
-            })
-            .click();
-        await expect(
-            page.getByRole('textbox', {
-                name: messages['regex.output'],
-                exact: true,
-            }),
-        ).toHaveValue('c c');
-        await expect(page.locator('#wpTextbox1')).toHaveValue('a A');
-        await page
-            .getByRole('button', { name: messages['regex.apply'], exact: true })
-            .click();
-        await expect(page.locator('#wpTextbox1')).toHaveValue('c c');
-        await page
-            .getByRole('button', { name: messages['regex.undo'], exact: true })
-            .click();
-        await expect(page.locator('#wpTextbox1')).toHaveValue('a A');
-        await page
-            .getByRole('button', {
-                name: messages['regex.addRule'],
-                exact: true,
-            })
-            .click();
-        await expect(find(3)).toBeFocused();
-        await page
-            .getByRole('button', {
-                name: messages['regex.removeRule'].replace('{number}', '2'),
-                exact: true,
-            })
-            .click();
-        await expect(find(2)).toBeFocused();
-        await expect(find(1)).toHaveValue('a');
-        await replace(2).fill('line');
-        await replace(2).press('End');
-        await replace(2).press('Enter');
-        await expect(replace(2)).toHaveValue('line\n');
-        const bounds = await page
-            .locator('.kanade-source-editor-dialog')
-            .evaluate((dialog) => {
-                const rectangle = dialog.getBoundingClientRect();
-                return {
-                    left: rectangle.left,
-                    right: rectangle.right,
-                    overflow: dialog.scrollWidth > dialog.clientWidth + 1,
-                };
-            });
-        expect(bounds.left).toBeGreaterThanOrEqual(0);
-        expect(bounds.right).toBeLessThanOrEqual(width);
-        expect(bounds.overflow).toBe(false);
+test('author-name conversion is opt-in and preserves names without a comma', async ({
+    page,
+}) => {
+    const source =
+        '<ref>{{cite book|title=One|author=Smith, Jane}}</ref>\n<ref>{{cite book|title=Two|author=Jane Smith}}</ref>';
+    await mountFormatter(page, { source, wikiId: 'enwiki' });
+    const conversion = page.getByRole('checkbox', {
+        name: 'Split comma-separated author names',
+        exact: true,
     });
-}
-
-test('regex tools open compact options and focus invalid flags', async ({
-    page,
-}) => {
-    await mountFormatter(page, { source: 'a' });
-    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
-    await page.getByRole('textbox', { name: 'Find 1', exact: true }).fill('a');
-    await page.getByText('Options', { exact: true }).click();
-    await page.getByRole('textbox', { name: 'Flags', exact: true }).fill('gg');
-    await page.getByText('Options', { exact: true }).click();
+    await expect(conversion).not.toBeChecked();
+    await expect(conversion).toBeDisabled();
     await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
+        .getByRole('checkbox', {
+            name: 'Format citations with the article',
+            exact: true,
+        })
+        .check();
+    await conversion.check();
+    await page
+        .getByRole('button', { name: 'Save settings', exact: true })
         .click();
-    await expect(
-        page.getByRole('textbox', { name: 'Flags', exact: true }),
-    ).toBeFocused();
-    await expect(
-        page.getByText('Use each supported JavaScript flag at most once:', {
-            exact: false,
-        }),
-    ).toBeVisible();
-    await expect(page.locator('#wpTextbox1')).toHaveValue('a');
-});
-
-test('regex tools preview and apply only the captured selection, with guarded undo', async ({
-    page,
-}) => {
-    await mountFormatter(page, { source: 'a aa a', open: false });
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
-    await editor.focus();
-    await editor.evaluate((element) => {
-        const walker = element.ownerDocument.createTreeWalker(
-            element,
-            NodeFilter.SHOW_TEXT,
-        );
-        walker.nextNode();
-        const range = element.ownerDocument.createRange();
-        range.setStart(walker.currentNode, 2);
-        range.setEnd(walker.currentNode, 4);
-        const selection = element.ownerDocument.getSelection();
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-    });
-    await page.locator('#kanade-source-editor-panel a').click();
-    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
-    await expect(
-        page.getByText(
-            'Replaces only the selection captured when this panel opened.',
-        ),
-    ).toBeAttached();
+    expect(
+        (await storedSettings(page))?.citationFormatting.convertAuthorNames,
+    ).toBe(true);
+    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
     await page
-        .getByRole('textbox', { name: 'Find 1', exact: true })
-        .fill('(a)');
-    await page
-        .getByRole('textbox', { name: 'Replace 1', exact: true })
-        .fill('$1b');
-    await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
+        .getByRole('button', { name: 'Format page', exact: true })
         .click();
-    await expect(
-        page.getByRole('textbox', { name: 'Resulting source', exact: true }),
-    ).toHaveValue('abab');
-    await expect(page.getByText('Matches: 2', { exact: true })).toBeVisible();
-    await expect(page.locator('#wpTextbox1')).toHaveValue('a aa a');
-    await page
-        .getByRole('button', { name: 'Apply replacements', exact: true })
-        .click();
-    await expect(page.locator('#wpTextbox1')).toHaveValue('a abab a');
-    await expect(page.getByRole('dialog')).toBeVisible();
-    await page
-        .getByRole('button', { name: 'Undo replacement', exact: true })
-        .click();
-    await expect(page.locator('#wpTextbox1')).toHaveValue('a aa a');
-    await expect(
-        page.getByRole('button', { name: 'Apply replacements', exact: true }),
-    ).toBeDisabled();
-});
-
-test('regex tools reject stale sources and preserve later edits', async ({
-    page,
-}) => {
-    await mountFormatter(page, { source: 'a aa a' });
-    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
-    await page.getByRole('textbox', { name: 'Find 1', exact: true }).fill('a');
-    await page
-        .getByRole('textbox', { name: 'Replace 1', exact: true })
-        .fill('b');
-    await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
-        .click();
-    await expect(
-        page.getByRole('textbox', { name: 'Resulting source', exact: true }),
-    ).toHaveValue('b bb b');
-    await page
-        .locator('#wpTextbox1')
-        .evaluate((textarea: HTMLTextAreaElement) => {
-            textarea.value = 'Later edit';
-            textarea.dispatchEvent(new Event('input', { bubbles: true }));
-        });
-    await page
-        .getByRole('button', { name: 'Apply replacements', exact: true })
-        .click();
-    await expect(
-        page.getByText('The source or page changed after this panel opened.', {
-            exact: false,
-        }),
-    ).toBeVisible();
-    await expect(page.locator('#wpTextbox1')).toHaveValue('Later edit');
-});
-
-test('regex tools stop catastrophic expressions without blocking the dialog', async ({
-    page,
-}) => {
-    await mountFormatter(page, { source: 'a'.repeat(100) + '!' });
-    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
-    await page
-        .getByRole('textbox', { name: 'Find 1', exact: true })
-        .fill('(a+)+$');
-    await page
-        .getByRole('textbox', { name: 'Replace 1', exact: true })
-        .fill('b');
-    await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
-        .click();
-    await expect(
-        page.getByText('The expression took too long and was stopped.', {
-            exact: false,
-        }),
-    ).toBeVisible();
-    await page.getByRole('textbox', { name: 'Find 1', exact: true }).fill('!$');
-    await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
-        .click();
-    await expect(
-        page.getByRole('textbox', { name: 'Resulting source', exact: true }),
-    ).toHaveValue('a'.repeat(100) + 'b');
-    await page
-        .locator('.kanade-source-editor-dialog__regex-actions')
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .click();
-    await expect(page.getByRole('dialog')).toHaveCount(0);
-});
-
-test('regex tools expose invalid patterns and worker-start errors while preserving drafts', async ({
-    page,
-}) => {
-    await mountFormatter(page, { source: 'a aa a' });
-    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
-    await page.getByRole('textbox', { name: 'Find 1', exact: true }).fill('[');
-    await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
-        .click();
-    await expect(
-        page.getByRole('textbox', { name: 'Find 1', exact: true }),
-    ).toBeFocused();
-    await expect(
-        page.getByText(
-            'This expression or flag combination is not supported.',
-            { exact: false },
-        ),
-    ).toBeVisible();
-    await page.evaluate(() => {
-        globalThis.Worker = class {
-            constructor() {
-                throw new Error('Worker blocked by fixture');
-            }
-        } as unknown as typeof Worker;
-    });
-    await page.getByRole('textbox', { name: 'Find 1', exact: true }).fill('a');
-    await page
-        .getByRole('button', { name: 'Preview replacements', exact: true })
-        .click();
-    await expect(
-        page.getByText(
-            'This browser could not start the isolated replacement worker.',
-            { exact: false },
-        ),
-    ).toBeVisible();
-    await expect(
-        page.getByRole('textbox', { name: 'Find 1', exact: true }),
-    ).toHaveValue('a');
-    await expect(page.locator('#wpTextbox1')).toHaveValue('a aa a');
+    await expect(page.locator('#wpTextbox1')).toHaveValue(
+        /last\s*=\s*Smith\s*\|\s*first\s*=\s*Jane/u,
+    );
+    await expect(page.locator('#wpTextbox1')).toHaveValue(
+        /author\s*=\s*Jane Smith/u,
+    );
 });
 
 test('section edits name the formatting scope explicitly', async ({ page }) => {
@@ -2337,11 +1055,7 @@ for (const [locale, saveLabel] of [
         await mountFormatter(page, { locale });
         const dialog = page.getByRole('dialog');
         await expect(dialog).toHaveAttribute('lang', locale);
-        for (const [index, name] of [
-            'formatting',
-            'references',
-            'editor',
-        ].entries()) {
+        for (const [index, name] of ['formatting', 'references'].entries()) {
             await page.getByRole('tab').nth(index).click();
             await expect(
                 dialog
@@ -2375,7 +1089,7 @@ for (const [locale, saveLabel] of [
             .locator('.kanade-source-editor-dialog__more button')
             .click();
         await expect(page.getByRole('menu')).toBeInViewport();
-        await expect(page.getByRole('menu').getByRole('option')).toHaveCount(2);
+        await expect(page.getByRole('menu').getByRole('option')).toHaveCount(1);
         for (const item of await page
             .getByRole('menu')
             .getByRole('option')
@@ -2459,309 +1173,8 @@ for (const wikiId of ['enwiki', 'zhwiki', 'examplewiki']) {
             `${converted}\n<ref name="222" />\n` +
             '<ref name="222" style="key1: a; key2: b;">123</ref>';
         await expect(page.locator('#wpTextbox1')).toHaveValue(expected);
-        await expect(
-            page
-                .frameLocator('.kanade-source-editor-frame')
-                .locator('.kanade-source-editor-editor'),
-        ).toHaveText(expected);
     });
 }
-
-test('disabled native CodeMirror keeps its textarea hidden until Source Editor highlighting is disabled', async ({
-    page,
-}) => {
-    await mountFormatter(page, { nativeCodeMirror: true, open: false });
-    const textarea = page.locator('#wpTextbox1');
-    const wrapper = page.locator(
-        '.ext-codemirror-wrapper.ext-codemirror-wrapper--hidden',
-    );
-    await expect(page.locator('.kanade-source-editor-frame')).toBeVisible();
-    await expect(textarea).toBeHidden();
-    await expect(textarea).toHaveValue(initialSource);
-    await expect(textarea).toHaveJSProperty('readOnly', false);
-    await expect(wrapper.locator('#wpTextbox1')).toHaveCount(1);
-    await expect(wrapper.locator('.cm-editor')).toBeHidden();
-
-    await page.locator('#kanade-source-editor-panel a').click();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await page
-        .getByRole('checkbox', {
-            name: 'Use Source Editor to highlight wikitext pages',
-            exact: true,
-        })
-        .uncheck();
-    await page
-        .getByRole('button', { name: 'Apply settings', exact: true })
-        .click();
-    await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(0);
-    await expect(textarea).toBeVisible();
-    await expect(textarea).toHaveValue(initialSource);
-    await expect(textarea).toHaveJSProperty('readOnly', false);
-    await expect(wrapper.locator('#wpTextbox1')).toHaveCount(1);
-    await expect(wrapper.locator('.cm-editor')).toBeHidden();
-});
-
-test('disabling highlighting restores the native textarea and retains display choices', async ({
-    page,
-}) => {
-    const settings = {
-        ...createDefaultFormatterSettings(),
-        largeFont: true,
-    };
-    await mountFormatter(page, { settings });
-    const textarea = page.locator('#wpTextbox1');
-    const nativeFontSize = await textarea.evaluate(
-        (element) => getComputedStyle(element).fontSize,
-    );
-    const editor = page
-        .frameLocator('.kanade-source-editor-frame')
-        .locator('.kanade-source-editor-editor');
-    const enhancedFontSize = await editor.evaluate(
-        (element) => getComputedStyle(element).fontSize,
-    );
-    const highlighting = page.getByRole('checkbox', {
-        name: 'Use Source Editor to highlight wikitext pages',
-        exact: true,
-    });
-    const largeFont = page.getByRole('checkbox', {
-        name: 'Use larger text',
-        exact: true,
-    });
-    await expect(editor.locator('span').first()).toBeVisible();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await highlighting.uncheck();
-    for (const name of ['Text and colors', 'Links', 'Reference popups']) {
-        const controls = page
-            .getByRole('group', { name, exact: true })
-            .getByRole('checkbox');
-        for (const control of await controls.all()) {
-            await expect(control).toBeDisabled();
-        }
-    }
-    await expect(largeFont).toBeChecked();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Use CodeMirror for other content models',
-            exact: true,
-        }),
-    ).toBeEnabled();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Reference tag inspection',
-            exact: true,
-        }),
-    ).toBeChecked();
-    await page
-        .getByRole('button', { name: 'Apply settings', exact: true })
-        .click();
-    await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(0);
-    await expect(textarea).toBeVisible();
-    await expect(textarea).toHaveValue(initialSource);
-    expect(
-        await textarea.evaluate(
-            (element) => getComputedStyle(element).fontSize,
-        ),
-    ).toBe(nativeFontSize);
-    await textarea.focus();
-    await textarea.evaluate((element: HTMLTextAreaElement) => {
-        element.setSelectionRange(element.value.length, element.value.length);
-    });
-    await textarea.press('!');
-    await expect(textarea).toHaveValue(`${initialSource}!`);
-    await page.locator('#kanade-source-editor-panel a').click();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(highlighting).not.toBeChecked();
-    await expect(largeFont).toBeDisabled();
-    await expect(largeFont).toBeChecked();
-    await chooseMore(page, 'Reset settings');
-    await expect(highlighting).toBeChecked();
-    await expect(largeFont).not.toBeChecked();
-    await page
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .last()
-        .click();
-    await expect(page.locator('.kanade-source-editor-frame')).toHaveCount(0);
-    await expect(textarea).toBeVisible();
-    await page.locator('#kanade-source-editor-panel a').click();
-    await page
-        .getByRole('tab', { name: 'Highlighting settings', exact: true })
-        .click();
-    await expect(highlighting).not.toBeChecked();
-    await expect(largeFont).toBeDisabled();
-    await expect(largeFont).toBeChecked();
-    await highlighting.check();
-    await expect(largeFont).toBeEnabled();
-    await expect(
-        page.getByRole('checkbox', {
-            name: 'Reference tag inspection',
-            exact: true,
-        }),
-    ).toBeEnabled();
-    await page
-        .getByRole('button', { name: 'Apply settings', exact: true })
-        .click();
-    await expect(textarea).toBeHidden();
-    await expect(textarea).toHaveValue(`${initialSource}!`);
-    await expect(editor).toHaveText(`${initialSource}!`);
-    await expect(editor.locator('span').first()).toBeVisible();
-    expect(
-        await editor.evaluate((element) => getComputedStyle(element).fontSize),
-    ).toBe(enhancedFontSize);
-});
-
-test('Clear cache refreshes missing titles and page summaries without changing source or settings', async ({
-    page,
-}) => {
-    const source = '[[Cached]] [[Missing]]';
-    const settings = {
-        ...createDefaultFormatterSettings(),
-        linkPreviews: true,
-    };
-    await mountFormatter(page, { source, settings, open: false });
-    let missing = true;
-    let summaries = 0;
-    await page.route(/\/w\/api\.php(?:\?|$)/u, async (route) => {
-        const title = new URL(route.request().url()).searchParams.get('titles');
-        await route.fulfill({
-            contentType: 'application/json',
-            body: JSON.stringify({
-                query: {
-                    pages: [
-                        {
-                            title,
-                            ...(title === 'Missing' && missing
-                                ? { missing: true }
-                                : { pageid: 1 }),
-                        },
-                    ],
-                },
-            }),
-        });
-    });
-    await page.route('**/api/rest_v1/page/summary/**', async (route) => {
-        summaries += 1;
-        await route.fulfill({
-            contentType: 'application/json',
-            body: JSON.stringify({
-                title: 'Cached',
-                extract: `Summary ${summaries}`,
-            }),
-        });
-    });
-    const frame = page.frameLocator('.kanade-source-editor-frame');
-    const absent = frame.locator(
-        '[data-kanade-source-editor-page-preview-title="Missing"]',
-    );
-    const cached = frame.locator(
-        '[data-kanade-source-editor-page-preview-title="Cached"]',
-    );
-    const extract = frame.locator(
-        '.kanade-source-editor-page-preview__extract',
-    );
-    await absent.hover();
-    await expect(absent).toHaveClass(
-        /kanade-source-editor-token--page-missing/u,
-    );
-    await cached.hover();
-    await expect(extract).toHaveText('Summary 1');
-    await page.mouse.move(2, 2);
-    await expect(extract).toHaveCount(0);
-    await cached.hover();
-    await expect(extract).toHaveText('Summary 1');
-    expect(summaries).toBe(1);
-
-    missing = false;
-    await page.locator('#kanade-source-editor-panel a').click();
-    await chooseMore(page, 'Clear cache');
-    await expect(absent).not.toHaveClass(
-        /kanade-source-editor-token--page-missing/u,
-    );
-    await expectSuccessNotification(
-        page,
-        'cache-cleared',
-        'Cache cleared. Data will reload as needed.',
-    );
-    expect(await storedSettings(page)).toEqual(settings);
-    await expect(page.locator('#wpTextbox1')).toHaveValue(source);
-    await page
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .last()
-        .click();
-    await cached.hover();
-    await expect(extract).toHaveText('Summary 2');
-    await absent.hover();
-    await expect(extract).toHaveText('Summary 3');
-    await expect(absent).not.toHaveClass(
-        /kanade-source-editor-token--page-missing/u,
-    );
-});
-
-test('page summaries requested before Clear cache cannot replace fresh cached results', async ({
-    page,
-}) => {
-    await mountFormatter(page, {
-        source: '[[Cached]]',
-        open: false,
-        settings: { ...createDefaultFormatterSettings(), linkPreviews: true },
-    });
-    let finishOld!: () => void;
-    const oldResponse = new Promise<void>((resolve) => {
-        finishOld = resolve;
-    });
-    let oldFinished = false;
-    let summaries = 0;
-    await page.route(/\/w\/api\.php(?:\?|$)/u, (route) =>
-        route.fulfill({
-            contentType: 'application/json',
-            body: JSON.stringify({
-                query: { pages: [{ title: 'Cached', pageid: 1 }] },
-            }),
-        }),
-    );
-    await page.route('**/api/rest_v1/page/summary/**', async (route) => {
-        summaries += 1;
-        const stale = summaries === 1;
-        if (stale) await oldResponse;
-        await route.fulfill({
-            contentType: 'application/json',
-            body: JSON.stringify({
-                title: 'Cached',
-                extract: stale ? 'Stale summary' : 'Fresh summary',
-            }),
-        });
-        if (stale) oldFinished = true;
-    });
-    const frame = page.frameLocator('.kanade-source-editor-frame');
-    const title = frame.locator(
-        '[data-kanade-source-editor-page-preview-title="Cached"]',
-    );
-    const extract = frame.locator(
-        '.kanade-source-editor-page-preview__extract',
-    );
-    await title.hover();
-    await expect.poll(() => summaries).toBe(1);
-    await page.locator('#kanade-source-editor-panel a').click();
-    await chooseMore(page, 'Clear cache');
-    await page
-        .getByRole('button', { name: 'Cancel', exact: true })
-        .last()
-        .click();
-    await title.hover();
-    await expect(extract).toHaveText('Fresh summary');
-    finishOld();
-    await expect.poll(() => oldFinished).toBe(true);
-    await page.mouse.move(2, 2);
-    await expect(extract).toHaveCount(0);
-    await title.hover();
-    await expect(extract).toHaveText('Fresh summary');
-    expect(summaries).toBe(2);
-});
 
 async function chooseMore(page: Page, name: string): Promise<void> {
     await page
@@ -2971,7 +1384,6 @@ async function mountFormatter(
         wikiId?: string;
         contentLanguage?: string;
         settings?: FormatterSettings;
-        nativeCodeMirror?: boolean;
     } = {},
 ): Promise<void> {
     // Every request is served locally; the fixture never contacts a wiki.
@@ -2996,25 +1408,6 @@ async function mountFormatter(
         '<form id="editform"><div id="p-cactions"></div><textarea id="wpTextbox1" name="wpTextbox1" aria-label="Wikitext editor"></textarea></form><div class="mw-notification-area-overlay" role="status"></div>',
     );
     await page.locator('#wpTextbox1').fill(options.source ?? initialSource);
-    if (options.nativeCodeMirror) {
-        await page.locator('#wpTextbox1').evaluate((element) => {
-            const wrapper = element.ownerDocument.createElement('div');
-            wrapper.className =
-                'ext-codemirror-wrapper ext-codemirror-wrapper--hidden';
-            const editor = element.ownerDocument.createElement('div');
-            editor.className = 'cm-editor';
-            editor.textContent = 'Native CodeMirror editor';
-            element.before(wrapper);
-            wrapper.append(element, editor);
-        });
-        // Native CodeMirror's disabled-state rule outranks a single class selector.
-        await page.addStyleTag({
-            content:
-                '.ext-codemirror-wrapper textarea { display: none !important; } ' +
-                '.ext-codemirror-wrapper--hidden .cm-editor { display: none !important; } ' +
-                '.ext-codemirror-wrapper--hidden textarea { display: initial !important; }',
-        });
-    }
     await page.addScriptTag({ content: runtime });
     await page.addStyleTag({
         path: fileURLToPath(
@@ -3173,7 +1566,7 @@ async function mountFormatter(
                     wikiScript: () => '/w/api.php',
                 },
             };
-            (globalThis as any).sourceEditorConfig = { highlightDelay: 0 };
+            (globalThis as any).sourceEditorConfig = {};
         },
         {
             locale: options.locale ?? 'en',
@@ -3193,18 +1586,10 @@ async function mountFormatter(
             'utf8',
         ),
     });
-    if (options.settings?.syntaxHighlighting === false) {
-        await page.evaluate(async () => {
-            await (window as any)[Symbol.for('kanade.source-editor.startup')];
-        });
-        await expect(page.locator('#wpTextbox1')).toBeVisible();
-    } else {
-        await expect(
-            page.locator(
-                '.kanade-source-editor-frame[data-kanade-source-editor-ready="true"]',
-            ),
-        ).toBeVisible();
-    }
+    await page.evaluate(async () => {
+        await (window as any)[Symbol.for('kanade.source-editor.startup')];
+    });
+    await expect(page.locator('#wpTextbox1')).toBeVisible();
     if (options.open !== false) {
         await page.locator('#kanade-source-editor-panel a').click();
         await expect(page.getByRole('dialog')).toBeVisible();

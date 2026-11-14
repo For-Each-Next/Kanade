@@ -21,8 +21,6 @@ import {
 import {
     createDefaultFormatterSettings,
     type FormatterSettings,
-    getEditorFeatureSettings,
-    withEditorFeatureSettings,
 } from '../../src/source-editor/domain/formatter-settings.ts';
 
 test('formatter settings round trip through local storage', () => {
@@ -31,13 +29,7 @@ test('formatter settings round trip through local storage', () => {
     const settings = createConfiguredSettings();
 
     assert.deepEqual(store.load(), createDefaultFormatterSettings());
-    assert.equal(store.load().alternateReferenceColors, false);
-    assert.equal(store.load().ctrlClickLinks, true);
     assert.equal(store.load().formatter.formatHtmlTags, false);
-    assert.equal(store.load().linkPreviews, false);
-    assert.equal(store.load().referenceEditing, true);
-    assert.equal(store.load().referenceLightweightEditing, false);
-    assert.equal(store.load().useCodeMirrorForOtherModels, false);
     store.save(settings);
 
     assert.deepEqual(store.load(), settings);
@@ -115,6 +107,8 @@ test('invalid citation preferences are rejected without replacing saved settings
         {},
         ...[
             { enabled: 'yes' },
+            { convertAuthorNames: 'yes' },
+            { convertAuthorNames: null },
             { layout: 'table' },
             { compactReferences: 1 },
             { separateReferenceDefinitions: null },
@@ -159,7 +153,6 @@ test('clearing saved settings restores defaults and preserves unrelated data', (
 
     assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), null);
     assert.deepEqual(store.load(), createDefaultFormatterSettings());
-    assert.equal(store.load().ctrlClickLinks, true);
     assert.equal(storage.getItem('another-gadget.settings'), 'keep this value');
     assert.doesNotThrow(() => store.clear());
 });
@@ -213,15 +206,6 @@ test('saving invalid indentation widths fails validation', () => {
     assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), null);
 });
 
-test('missing link preview setting falls back to 0.1.0 defaults', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.linkPreviews;
-    const storage = new MemorySettingsStorage(serializeSettings(stored));
-    const store = createFormatterSettingsStore(() => storage);
-
-    assert.deepEqual(store.load(), createDefaultFormatterSettings());
-});
-
 test('saving an incomplete configuration fails validation', () => {
     const storage = new MemorySettingsStorage();
     const store = createFormatterSettingsStore(() => storage);
@@ -232,168 +216,52 @@ test('saving an incomplete configuration fails validation', () => {
     assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), null);
 });
 
-test('older settings retain their choices and enable syntax highlighting', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.syntaxHighlighting;
-    const store = createFormatterSettingsStore(
-        () => new MemorySettingsStorage(serializeSettings(stored)),
-    );
-    assert.deepEqual(store.load(), { ...stored, syntaxHighlighting: true });
-});
-
-test('older settings retain their choices and enable modified link clicks', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.ctrlClickLinks;
-    const store = createFormatterSettingsStore(
-        () => new MemorySettingsStorage(serializeSettings(stored)),
-    );
-
-    assert.deepEqual(store.load(), { ...stored, ctrlClickLinks: true });
-});
-
-test('older settings retain their choices and enable reference editing', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.referenceEditing;
-    const store = createFormatterSettingsStore(
-        () => new MemorySettingsStorage(serializeSettings(stored)),
-    );
-
-    assert.deepEqual(store.load(), { ...stored, referenceEditing: true });
-});
-
-test('reference editing follows current editor choices without altering saved settings', () => {
-    const saved = createConfiguredSettings();
-    const features = getEditorFeatureSettings(saved);
-
-    assert.equal(features.referenceEditing, false);
-    features.referenceEditing = true;
-    assert.equal(saved.referenceEditing, false);
-    assert.deepEqual(withEditorFeatureSettings(saved, features), {
-        ...saved,
-        referenceEditing: true,
-    });
-});
-
-test('older settings retain their choices with lightweight editing disabled', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.referenceLightweightEditing;
-    const store = createFormatterSettingsStore(
-        () => new MemorySettingsStorage(serializeSettings(stored)),
-    );
-
-    assert.deepEqual(store.load(), {
-        ...stored,
-        referenceLightweightEditing: false,
-    });
-});
-
-test('lightweight editing follows current editor choices without altering saved settings', () => {
-    const saved = createConfiguredSettings();
-    const features = getEditorFeatureSettings(saved);
-
-    assert.equal(features.referenceLightweightEditing, true);
-    features.referenceLightweightEditing = false;
-    assert.equal(saved.referenceLightweightEditing, true);
-    assert.deepEqual(withEditorFeatureSettings(saved, features), {
-        ...saved,
-        referenceLightweightEditing: false,
-    });
-});
-
-test('saving invalid lightweight editing choices fails validation', () => {
-    const storage = new MemorySettingsStorage();
-    const store = createFormatterSettingsStore(() => storage);
-    for (const referenceLightweightEditing of [
-        null,
-        0,
-        1,
-        'true',
-        'false',
-        {},
-        [],
-    ]) {
-        const settings: unknown = {
-            ...createConfiguredSettings(),
-            referenceLightweightEditing,
-        };
-        assert.throws(
-            () => store.save(settings as FormatterSettings),
-            /invalid/u,
-        );
-    }
-    assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), null);
-});
-
-test('saving invalid reference editing choices fails validation', () => {
-    const storage = new MemorySettingsStorage();
-    const store = createFormatterSettingsStore(() => storage);
-    for (const referenceEditing of [null, 0, 1, 'true', 'false', {}, []]) {
-        const settings: unknown = {
-            ...createConfiguredSettings(),
-            referenceEditing,
-        };
-        assert.throws(
-            () => store.save(settings as FormatterSettings),
-            /invalid/u,
-        );
-    }
-    assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), null);
-});
-
-test('modified link click choices follow the current editor settings', () => {
-    const saved = createConfiguredSettings();
-    const features = getEditorFeatureSettings(saved);
-
-    assert.equal(features.ctrlClickLinks, false);
-    features.ctrlClickLinks = true;
-    assert.equal(saved.ctrlClickLinks, false);
-    assert.deepEqual(withEditorFeatureSettings(saved, features), {
-        ...saved,
-        ctrlClickLinks: true,
-    });
-});
-
-test('saving invalid modified link click choices fails validation', () => {
-    const storage = new MemorySettingsStorage();
+test('old v1 settings preserve formatter choices and discard retired editor preferences', () => {
+    const settings = createConfiguredSettings();
+    const stored = {
+        ...settings,
+        syntaxHighlighting: false,
+        ctrlClickLinks: 'retired',
+        linkPreviews: true,
+        referenceEditing: false,
+        useCodeMirrorForOtherModels: true,
+    };
+    const serialized = serializeSettings(stored);
+    const storage = new MemorySettingsStorage(serialized);
     const store = createFormatterSettingsStore(() => storage);
 
-    for (const ctrlClickLinks of [null, 0, 1, 'true', 'false', {}, []]) {
-        const settings: unknown = {
-            ...createConfiguredSettings(),
-            ctrlClickLinks,
-        };
-
-        assert.throws(
-            () => store.save(settings as FormatterSettings),
-            /invalid/u,
-        );
-    }
-    assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), null);
+    assert.deepEqual(store.load(), settings);
+    assert.equal(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY), serialized);
+    store.save(store.load());
+    assert.deepEqual(
+        JSON.parse(storage.getItem(FORMATTER_SETTINGS_STORAGE_KEY) ?? ''),
+        {
+            schemaVersion: 1,
+            settings,
+        },
+    );
 });
 
-test('older settings retain their choices without alternating reference colors', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.alternateReferenceColors;
+test('older citation settings keep author conversion disabled', () => {
+    const settings = createConfiguredSettings();
+    const stored = {
+        ...settings,
+        citationFormatting: { ...settings.citationFormatting },
+    };
+    delete (
+        stored.citationFormatting as Partial<
+            FormatterSettings['citationFormatting']
+        >
+    ).convertAuthorNames;
     const store = createFormatterSettingsStore(
         () => new MemorySettingsStorage(serializeSettings(stored)),
     );
-
     assert.deepEqual(store.load(), {
-        ...stored,
-        alternateReferenceColors: false,
-    });
-});
-
-test('older settings leave CodeMirror disabled for other content models', () => {
-    const stored: Partial<FormatterSettings> = createConfiguredSettings();
-    delete stored.useCodeMirrorForOtherModels;
-    const store = createFormatterSettingsStore(
-        () => new MemorySettingsStorage(serializeSettings(stored)),
-    );
-
-    assert.deepEqual(store.load(), {
-        ...stored,
-        useCodeMirrorForOtherModels: false,
+        ...settings,
+        citationFormatting: {
+            ...settings.citationFormatting,
+            convertAuthorNames: false,
+        },
     });
 });
 
@@ -431,6 +299,8 @@ function createInvalidSettings(): unknown[] {
     return [
         { ...valid, formatter: { ...valid.formatter, formatHtmlTags: 'yes' } },
         { ...valid, formatter: { ...valid.formatter, formatHtmlTags: null } },
+        { ...valid, resolveRedirects: 'yes' },
+        { ...valid, resolveTemplateRedirects: null },
         {
             ...valid,
             formatter: { ...valid.formatter, indentSpaces: -1 },
@@ -460,20 +330,6 @@ function createInvalidSettings(): unknown[] {
                 skipFirstLevelIndentation: undefined,
             },
         },
-        { ...valid, smallReferenceText: undefined },
-        { ...valid, linkPreviews: 'yes' },
-        { ...valid, referenceEditing: 'yes' },
-        { ...valid, referenceEditing: null },
-        { ...valid, referenceLightweightEditing: 'yes' },
-        { ...valid, referenceLightweightEditing: null },
-        { ...valid, syntaxHighlighting: 'no' },
-        { ...valid, alternateReferenceColors: 'yes' },
-        { ...valid, alternateReferenceColors: null },
-        { ...valid, useCodeMirrorForOtherModels: 'yes' },
-        ...[null, 0, 1, 'true', 'false', {}, []].map((ctrlClickLinks) => ({
-            ...valid,
-            ctrlClickLinks,
-        })),
     ];
 }
 
@@ -501,15 +357,13 @@ function createConfiguredSettings(): FormatterSettings {
     return {
         citationFormatting: {
             enabled: true,
+            convertAuthorNames: true,
             layout: 'block',
             compactReferences: true,
             separateReferenceDefinitions: true,
             formatScriptTitles: true,
             scriptTitleMode: 'all-foreign',
         },
-        alternateReferenceColors: true,
-        ctrlClickLinks: false,
-        fullPageReferencePreviews: true,
         formatter: {
             characterWidthRatio: '2:1',
             firstParameterLayout: 'compact',
@@ -522,17 +376,8 @@ function createConfiguredSettings(): FormatterSettings {
             skipFirstLevelIndentation: true,
             subsequentParameterLayout: 'align-names-and-values',
         },
-        highlightMissing: true,
-        largeFont: true,
-        linkPreviews: true,
-        referenceEditing: false,
-        referenceLightweightEditing: true,
-        referencePreviews: false,
         resolveRedirects: true,
         resolveTemplateRedirects: true,
-        smallReferenceText: false,
-        syntaxHighlighting: false,
-        useCodeMirrorForOtherModels: true,
     };
 }
 

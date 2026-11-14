@@ -5,10 +5,10 @@ wiki articles: **Source Editor**, **Revision Copy**, **Article Creator**, and
 **Article Assessor**. Install the tools you need; each opens in its supported wiki
 and page context. Source, dependencies, verification, and versioning share one root.
 
-**Last reviewed:** 2026-11-14. **Status:** development at version 0.1.5.
+**Last reviewed:** 2026-11-14. **Status:** development at version 0.1.6.
 Source and tagged release automation are hosted in the [project repository][repository].
 [Maintenance](docs/maintenance.md) records release readiness and ownership gaps.
-See the [changelog](CHANGELOG.md) for version 0.1.5 release notes.
+See the [changelog](CHANGELOG.md) for version 0.1.6 release notes.
 
 Start with [installation](#install-and-use), [configuration and data](#configuration-and-data),
 or [contributing](CONTRIBUTING.md). The [maintenance guide](docs/maintenance.md)
@@ -22,25 +22,23 @@ the same eight scripts in local `dist/`.
 
 | Distribution                                      | Purpose                                                    | Userscript manager                                 | Wiki script                                      |
 | ------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
-| [Source Editor](docs/source-editor/README.md)     | Edit, highlight, format, and manage references.            | [source_editor.user.js][source_editor.user.js]     | [source_editor.min.js][source_editor.min.js]     |
+| [Source Editor](docs/source-editor/README.md)     | Format source and manage references.                       | [source_editor.user.js][source_editor.user.js]     | [source_editor.min.js][source_editor.min.js]     |
 | [Revision Copy](docs/rev-copy/README.md)          | Copy page, revision, section, and attribution wikitext.    | [rev_copy.user.js][rev_copy.user.js]               | [rev_copy.min.js][rev_copy.min.js]               |
 | [Article Creator](docs/vg-stub-creator/README.md) | Prepare Chinese Wikipedia video-game articles.             | [vg_stub_creator.user.js][vg_stub_creator.user.js] | [vg_stub_creator.min.js][vg_stub_creator.min.js] |
 | [Article Assessor](docs/wpvg-assessor/README.md)  | Assess and maintain Chinese Wikipedia video-game articles. | [wpvg_assessor.user.js][wpvg_assessor.user.js]     | [wpvg_assessor.min.js][wpvg_assessor.min.js]     |
 
 ### Source Editor
 
-Open **Edit source** for live highlighting, link previews, and citation inspection.
-The **Source Editor** panel combines formatting, reference management, and highlighting
-settings. Create or reuse references, review proposed source, and publish through
-[MediaWiki][mediawiki]. Accepted changes stay in the same editor and undo history until you publish.
+Open **Edit source** and use **Source Editor** for formatting and reference
+management. Syntax highlighting, search, replacement, folding, and editor
+preferences belong to [MediaWiki CodeMirror][codemirror], enabled or disabled
+through MediaWiki's editing preferences. Source Editor uses your active native
+editor. Accepted changes stay in that editor for review until you publish through
+[MediaWiki][mediawiki].
 
-Buttons in the bottom-right corner provide Source Editor actions available on
-the current page. Revision Copy uses its inline toolbar and section popups.
+Buttons in the bottom-right corner provide **Format** and **References** actions
+on eligible source pages. Revision Copy uses its inline toolbar and section popups.
 Article Creator and Article Assessor open from page tools.
-In a native source editor, **Tools** opens the regex replacer. Enter a pattern,
-replacement, and flags; preview the changes before choosing **Apply replacements**.
-An active selection limits the operation to that range. Otherwise it uses the
-current source. The panel also offers **Undo replacement** for its last change.
 
 [![Source Editor showing shared article and citation formatting preferences](docs/source-editor/images/screenshot01.en.png)](docs/source-editor/images/screenshot01.en.png)
 
@@ -136,7 +134,7 @@ preserve the editor or draft for review.
 
 | Tool             | Configuration and retained data                                                                                                                                                                                                               |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Source Editor    | [Configuration](docs/source-editor/configuration.md): saved editor and formatting preferences, site metadata, and citation TemplateData caches in browser local storage; source text and citation drafts are not saved as settings.           |
+| Source Editor    | [Configuration](docs/source-editor/configuration.md): saved formatting preferences, site metadata, and citation TemplateData caches in browser local storage; source text and citation drafts are not saved as settings.                      |
 | Revision Copy    | [Configuration](docs/rev-copy/configuration.md): pre-load options and page/revision lookup caches held in memory until reload.                                                                                                                |
 | Article Creator  | [Configuration](docs/vg-stub-creator/configuration.md): browser-local form history and drafts, with tab-scoped checkpoints for unfinished operations. Its History dialog can import, export, and delete entries.                              |
 | Article Assessor | [Review and recovery](docs/wpvg-assessor/review-workflow.md): staged drafts persist in local storage per wiki and account; read snapshots remain in the current tab's session storage, and public creation dates are cached in local storage. |
@@ -223,3 +221,4 @@ screenshot provenance.
 [vg_stub_creator.min.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/vg_stub_creator.min.js
 [wpvg_assessor.user.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/wpvg_assessor.user.js
 [wpvg_assessor.min.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/wpvg_assessor.min.js
+[codemirror]: https://www.mediawiki.org/wiki/Help:Extension:CodeMirror

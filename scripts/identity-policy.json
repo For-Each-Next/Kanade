@@ -51,12 +51,12 @@
         {
             "id": "host-editor-ownership",
             "paths": [
-                "src/source-editor/features/editor/surface.ts",
+                "src/source-editor/platform/mediawiki/formatter-editor.ts",
                 "dist/source_editor.user.js",
                 "dist/source_editor.min.js"
             ],
             "fragment": "window.wikEd?.useWikEd",
-            "reason": "Checks the externally owned editor before attaching another editing surface."
+            "reason": "Rejects formatter writes behind an externally owned editing surface."
         },
         {
             "id": "editor-interoperability",
@@ -66,7 +66,6 @@
                 "tests/library/mediawiki-edit-box.test.ts",
                 "tests/source-editor/edit-box.test.ts",
                 "tests/source-editor/editor-backend.test.ts",
-                "tests/source-editor/ui/editor.spec.ts",
                 "docs/architecture.md",
                 "docs/source-editor/architecture.md",
                 "dist/source_editor.user.js",

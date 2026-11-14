@@ -241,7 +241,7 @@ the annotation before validating both its type and its triggering commit.
 
 ## Version control and releases
 
-Use `trunk` as the default branch. The current root version is 0.1.5; local
+Use `trunk` as the default branch. The current root version is 0.1.6; local
 cleanup does not publish a release. Preserve a recoverable source checkpoint
 before broad changes. Once a remote and baseline are established, start each
 task from current `trunk` on a branch such as
