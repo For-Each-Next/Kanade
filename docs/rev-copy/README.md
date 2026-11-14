@@ -16,12 +16,15 @@ reads page information and copies text without publishing wiki edits.
 
 ## Install and open
 
-Install [rev_copy.user.js](../../dist/rev_copy.user.js) in a userscript manager, or
-paste [rev_copy.min.js](../../dist/rev_copy.min.js) into your wiki's
+Install [rev_copy.user.js][latest-userscript] in a userscript manager, or
+paste [rev_copy.min.js][latest-compact] into your wiki's
 `Special:MyPage/common.js`. You can also paste the compact script into the browser
 console for the current page visit. Reload after installation; the toolbar
 appears above page content. Remove the userscript or its `common.js` code to
 uninstall it.
+
+Both download links follow the latest stable release. For a local build, use
+the matching files in `dist/`.
 
 Open Advanced copy from the row's **Tools** action or a section's copy popup.
 Revision Copy adds no floating bottom-right button.
@@ -67,3 +70,6 @@ captured article or media content.
 - [Architecture](architecture.md) and [interface details](ui-guidelines.md).
 - [Development](../development.md) and [documentation](../documentation.md).
 - [CC0-1.0 license](../../LICENSE); captured Wikimedia content retains its own terms.
+
+[latest-userscript]: https://github.com/For-Each-Next/Kanade/releases/latest/download/rev_copy.user.js
+[latest-compact]: https://github.com/For-Each-Next/Kanade/releases/latest/download/rev_copy.min.js

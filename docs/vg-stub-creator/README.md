@@ -1,6 +1,6 @@
 # Article Creator
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-14.
 
 Prepare Chinese Wikipedia video-game stub articles from game metadata. Review the
 generated article and related operations before confirming a save.
@@ -15,12 +15,15 @@ generated article and related operations before confirming a save.
 
 ## Install and open
 
-Install [vg_stub_creator.user.js](../../dist/vg_stub_creator.user.js) in a
+Install [vg_stub_creator.user.js][latest-userscript] in a
 userscript manager, or paste
-[vg_stub_creator.min.js](../../dist/vg_stub_creator.min.js) into
+[vg_stub_creator.min.js][latest-compact] into
 `Special:MyPage/common.js`. The userscript supports English and Chinese Wikipedia.
 Install it on both wikis when starting from an English article. Remove it by
 disabling the userscript or deleting its `common.js` code.
+
+Both download links follow the latest stable release. For a local build, use
+the matching files in `dist/`.
 
 See the [project installation guide](../../README.md#install-and-use) for shared
 build and installation methods.
@@ -83,3 +86,5 @@ actual Wikipedia page checks and record English and both Chinese interface varia
 [capture-source]: https://zh.wikipedia.org/w/index.php?title=%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3_%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E&oldid=94743103
 [capture-history]: https://zh.wikipedia.org/w/index.php?title=%E4%BF%A1%E8%B3%B4%E9%88%B4%E9%9F%B3_%EF%BD%9E%E8%95%AD%E9%82%A6%E4%B9%8B%E5%A4%A2%EF%BD%9E&action=history
 [capture-license]: https://creativecommons.org/licenses/by-sa/4.0/
+[latest-userscript]: https://github.com/For-Each-Next/Kanade/releases/latest/download/vg_stub_creator.user.js
+[latest-compact]: https://github.com/For-Each-Next/Kanade/releases/latest/download/vg_stub_creator.min.js

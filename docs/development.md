@@ -1,6 +1,6 @@
 # Development guide
 
-Last reviewed: 2026-10-24.
+Last reviewed: 2026-11-14.
 
 This is the authoritative development guide for Kanade.
 [Documentation](documentation.md) defines shared and tool-specific writing rules.
@@ -230,7 +230,9 @@ checks that the annotated tag matches the root package and lockfile version and
 points to the triggering commit, and runs the complete verification pipeline
 before publishing a GitHub release. It attaches
 all eight generated scripts, `LICENSE.txt`, and `manifest.json`, with generated
-release notes; prerelease versions produce GitHub prereleases. A local build
+release notes. Stable releases explicitly become GitHub's latest release, so
+`releases/latest/download/<artifact>` remains a fixed download URL. Prerelease
+versions produce GitHub prereleases and leave the latest stable release unchanged. A local build
 does not publish files or edit live wiki pages.
 
 Release checkpoint validation first refetches the exact remote tag. Checkout
@@ -239,7 +241,7 @@ the annotation before validating both its type and its triggering commit.
 
 ## Version control and releases
 
-Use `trunk` as the default branch. The current root version is 0.1.4; local
+Use `trunk` as the default branch. The current root version is 0.1.5; local
 cleanup does not publish a release. Preserve a recoverable source checkpoint
 before broad changes. Once a remote and baseline are established, start each
 task from current `trunk` on a branch such as

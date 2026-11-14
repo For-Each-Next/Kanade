@@ -277,7 +277,7 @@ test('publication restores the remote annotated tag after checkout and requires 
     );
 });
 
-test('the release CLI receives all eight independent scripts and metadata and preserves prerelease behavior', async (t) => {
+test('the release CLI receives all artifacts and makes stable releases latest while excluding prereleases', async (t) => {
     const directory = await fixtureDirectory(t);
     const files = [...artifactNames, 'LICENSE.txt', 'manifest.json'];
     await mkdir(join(directory, 'dist'));
@@ -315,6 +315,7 @@ test('the release CLI receives all eight independent scripts and metadata and pr
         );
         assert.ok(args.includes('--verify-tag'));
         assert.ok(args.includes('--generate-notes'));
+        assert.equal(args.includes('--latest'), prerelease === 'false');
         assert.equal(args.includes('--prerelease'), prerelease === 'true');
         assert.equal(args.includes('--latest=false'), prerelease === 'true');
     }

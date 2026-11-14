@@ -13,7 +13,7 @@ not a security certification or a record of completed human review.
 
 ## Project and contacts
 
-Kanade is in development at root version 0.1.4. The [project repository][repository]
+Kanade is in development at root version 0.1.5. The [project repository][repository]
 hosts source and tagged release automation. A named maintainer and dedicated
 project contacts are not yet documented.
 The project owner must arrange
@@ -211,7 +211,7 @@ criterion; **Pending** identifies work without recorded completion. These
 statuses do not assert public publication, a successful remote CI run, security
 compliance, or WCAG conformance.
 
-Repository and version metadata were updated on 2026-10-24; other criteria
+Repository and version metadata were updated on 2026-11-14; other criteria
 retain their recorded assessment until separately reviewed.
 
 | Release criterion                          | Status  | Evidence or remaining work                                                                                                                                                                              |

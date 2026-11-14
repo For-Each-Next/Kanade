@@ -1,6 +1,6 @@
 # Documentation guide
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-14.
 
 This is the shared writing authority for Kanade. It covers the project
 overview, shared design guidance, each tool's Markdown, screenshots, and
@@ -58,8 +58,9 @@ The capabilities users need to recognize the tool.
 
 ## Install and open
 
-Link ../../dist/<basename>.user.js and ../../dist/<basename>.min.js.
-Link the root installation guide for build and installation methods.
+Link the latest stable release downloads for <basename>.user.js and <basename>.min.js.
+Use https://github.com/For-Each-Next/Kanade/releases/latest/download/<filename>.
+Link the root installation guide for build and installation methods; local builds use dist/.
 State supported wikis, how to open the tool, and how to remove it.
 
 ## Use
@@ -79,9 +80,11 @@ guide clearly identifies them; current installation instructions use current
 names. Mark illustrative revision IDs as examples unless they identify a
 recorded fixture or capture.
 
-Link local distribution files until an actual published project release exists. Do not use
-former per-tool repositories as installation sources. Keep technical details in
-the architecture or maintenance guide that owns them.
+Use the fixed `releases/latest/download/<filename>` URLs from the project
+repository for installation links. They select the current stable release while
+preserving the artifact basenames. Build-from-source instructions use local
+`dist/` files. Do not use former per-tool repositories as installation sources.
+Keep technical details in the architecture or maintenance guide that owns them.
 
 The root overview lists the four independently installable tool pairs. Tool guides
 describe their current tool and link the shared build and installation methods.

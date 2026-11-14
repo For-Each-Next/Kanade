@@ -1,6 +1,6 @@
 # Article Assessor
 
-Last reviewed: 2026-11-10.
+Last reviewed: 2026-11-14.
 
 Assess video-game articles on Chinese Wikipedia and maintain the WikiProject's
 new-page records. The tool saves reviewed edits using your logged-in wiki account.
@@ -15,12 +15,15 @@ new-page records. The tool saves reviewed edits using your logged-in wiki accoun
 
 ## Install and open
 
-Install [wpvg_assessor.user.js](../../dist/wpvg_assessor.user.js) in a userscript
-manager, or paste [wpvg_assessor.min.js](../../dist/wpvg_assessor.min.js) into your
+Install [wpvg_assessor.user.js][latest-userscript] in a userscript
+manager, or paste [wpvg_assessor.min.js][latest-compact] into your
 Chinese Wikipedia `Special:MyPage/common.js`. Reload and choose **Article Assessor**
 from page tools on an article or talk page. Disable the userscript or remove its
 `common.js` code to uninstall it. Labels support English, both Chinese variants,
 Japanese, and Russian.
+
+Both download links follow the latest stable release. For a local build, use
+the matching files in `dist/`.
 
 To open the appropriate Assessor interface directly, add `?wpvg-assessor=1` to
 the page URL, or `&wpvg-assessor=1` if it already has a query string. The tool
@@ -136,3 +139,5 @@ text retain their stated terms.
 
 [petscan]: https://petscan.toolforge.org/
 [talk-page-layout]: https://en.wikipedia.org/wiki/Wikipedia:Talk_page_layout#Lead_(bannerspace)
+[latest-userscript]: https://github.com/For-Each-Next/Kanade/releases/latest/download/wpvg_assessor.user.js
+[latest-compact]: https://github.com/For-Each-Next/Kanade/releases/latest/download/wpvg_assessor.min.js

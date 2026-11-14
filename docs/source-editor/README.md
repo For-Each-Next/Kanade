@@ -1,6 +1,6 @@
 # Source Editor
 
-Last reviewed: 2026-11-09.
+Last reviewed: 2026-11-14.
 
 Source Editor combines source editing, reference management, and wikitext formatting
 in one tool. Accepted changes return to the same editor for review and publication.
@@ -19,8 +19,8 @@ in one tool. Accepted changes return to the same editor for review and publicati
 
 ## Install and open
 
-Install [source_editor.user.js](../../dist/source_editor.user.js) in a userscript manager, or paste
-[source_editor.min.js](../../dist/source_editor.min.js) into your wiki's
+Install [source_editor.user.js][latest-userscript] in a userscript manager, or paste
+[source_editor.min.js][latest-compact] into your wiki's
 `Special:MyPage/common.js`. Choose one method and reload an **Edit source** page.
 Open **Source Editor** in page tools. Its **References** tab provides **Manage references**.
 The bottom-right **Format** button formats the selected text immediately,
@@ -31,7 +31,10 @@ and wrap when the viewport is narrow.
 See the [project installation guide](../../README.md#install-and-use) for the
 shared build and installation methods.
 
-For a temporary session, paste the complete [source_editor.min.js](../../dist/source_editor.min.js)
+Both download links follow the latest stable release. For a local build, use
+the matching files in `dist/`.
+
+For a temporary session, paste the complete [source_editor.min.js][latest-compact]
 file into the browser console ([F12][developer-tools], then **Console**) and press
 Enter. The tool remains loaded until the page is reloaded.
 
@@ -124,3 +127,5 @@ Source Editor builds on [Cacycle's wikEd](https://en.wikipedia.org/wiki/User:Cac
 [codex]: https://doc.wikimedia.org/codex/latest/
 [codemirror]: https://www.mediawiki.org/wiki/Extension:CodeMirror
 [visualeditor-source]: https://www.mediawiki.org/wiki/Help:VisualEditor/User_guide#Switching_between_the_visual_and_wikitext_editors
+[latest-userscript]: https://github.com/For-Each-Next/Kanade/releases/latest/download/source_editor.user.js
+[latest-compact]: https://github.com/For-Each-Next/Kanade/releases/latest/download/source_editor.min.js

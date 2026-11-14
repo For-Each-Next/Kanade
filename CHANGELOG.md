@@ -3,6 +3,22 @@
 Notable changes to Kanade are recorded here. All four tools share one project
 version and are built as independently installable scripts.
 
+## 0.1.5 - 2026-11-14
+
+### Fixed
+
+- **Revision Copy:** limit revision-date requests to five seconds, then retain
+  page-only copying on failure. Notifications load on demand so their module
+  cannot block the native toolbar. Preserve displayed revisions and retryable
+  timestamp-cache failures.
+
+### Changed
+
+- Publish stable releases explicitly as GitHub's latest release and use fixed
+  `releases/latest/download/<artifact>` links in installation guides. Prereleases
+  continue to leave the latest stable release unchanged.
+- Build all four tool pairs at the shared project version **0.1.5**.
+
 ## 0.1.4 - 2026-11-14
 
 ### Changed

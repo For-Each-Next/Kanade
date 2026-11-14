@@ -73,8 +73,8 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
           RELEASE_PRERELEASE: ${{ needs.verify.outputs.prerelease }}
         run: |
-          release_options=()
+          release_options=(--latest)
           if [ "$RELEASE_PRERELEASE" = true ]; then
-            release_options+=(--prerelease --latest=false)
+            release_options=(--prerelease --latest=false)
           fi
           gh release create "$RELEASE_TAG" dist/*.user.js dist/*.min.js dist/LICENSE.txt dist/manifest.json --verify-tag --generate-notes "${release_options[@]}"

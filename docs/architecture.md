@@ -1,6 +1,6 @@
 # Architecture
 
-Last reviewed: 2026-10-21.
+Last reviewed: 2026-11-14.
 
 Kanade is one source project with four independently installable browser
 tools. One root version, dependency tree, build, and verification pipeline produce
@@ -150,6 +150,15 @@ Release checkpoint validation refetches the exact remote tag before checking
 its annotation and target commit. This preserves validation when checkout has
 replaced its local tag with a commit reference. AI-assisted offline regressions
 exercise that replacement and retain rejection of unannotated or mismatched tags.
+
+Stable releases explicitly become GitHub's latest release. Installation links
+use `releases/latest/download/<artifact>` with the existing artifact basenames,
+so their URLs stay fixed as releases advance. Prereleases use `--latest=false`
+and leave these links pointing to the stable release. The release workflow
+still publishes only after full verification and includes all eight scripts,
+the license, and integrity manifest. AI assistance covered this publication
+policy, stable installation links, and the executed-workflow regression for
+stable and prerelease CLI arguments; no runtime or data ownership changes.
 
 | Shared capability                    | Reason and limits                                                                                                                                                                                                                                                                                   |
 | ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -5,10 +5,10 @@ wiki articles: **Source Editor**, **Revision Copy**, **Article Creator**, and
 **Article Assessor**. Install the tools you need; each opens in its supported wiki
 and page context. Source, dependencies, verification, and versioning share one root.
 
-**Last reviewed:** 2026-11-14. **Status:** development at version 0.1.4.
+**Last reviewed:** 2026-11-14. **Status:** development at version 0.1.5.
 Source and tagged release automation are hosted in the [project repository][repository].
 [Maintenance](docs/maintenance.md) records release readiness and ownership gaps.
-See the [changelog](CHANGELOG.md) for version 0.1.4 release notes.
+See the [changelog](CHANGELOG.md) for version 0.1.5 release notes.
 
 Start with [installation](#install-and-use), [configuration and data](#configuration-and-data),
 or [contributing](CONTRIBUTING.md). The [maintenance guide](docs/maintenance.md)
@@ -16,15 +16,16 @@ records project ownership, external dependencies, recovery, and release readines
 
 ## Tools
 
-Build from this checkout, then use the installation scripts linked below in
-`dist/`. Tagged builds are published to [GitHub releases][releases] after verification.
+Download the latest stable installation scripts below from [GitHub releases][releases].
+These fixed URLs follow each stable release. Building from this checkout generates
+the same eight scripts in local `dist/`.
 
-| Distribution                                      | Purpose                                                    | Userscript manager                                      | Wiki script                                           |
-| ------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------- |
-| [Source Editor](docs/source-editor/README.md)     | Edit, highlight, format, and manage references.            | [source_editor.user.js](dist/source_editor.user.js)     | [source_editor.min.js](dist/source_editor.min.js)     |
-| [Revision Copy](docs/rev-copy/README.md)          | Copy page, revision, section, and attribution wikitext.    | [rev_copy.user.js](dist/rev_copy.user.js)               | [rev_copy.min.js](dist/rev_copy.min.js)               |
-| [Article Creator](docs/vg-stub-creator/README.md) | Prepare Chinese Wikipedia video-game articles.             | [vg_stub_creator.user.js](dist/vg_stub_creator.user.js) | [vg_stub_creator.min.js](dist/vg_stub_creator.min.js) |
-| [Article Assessor](docs/wpvg-assessor/README.md)  | Assess and maintain Chinese Wikipedia video-game articles. | [wpvg_assessor.user.js](dist/wpvg_assessor.user.js)     | [wpvg_assessor.min.js](dist/wpvg_assessor.min.js)     |
+| Distribution                                      | Purpose                                                    | Userscript manager                                 | Wiki script                                      |
+| ------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
+| [Source Editor](docs/source-editor/README.md)     | Edit, highlight, format, and manage references.            | [source_editor.user.js][source_editor.user.js]     | [source_editor.min.js][source_editor.min.js]     |
+| [Revision Copy](docs/rev-copy/README.md)          | Copy page, revision, section, and attribution wikitext.    | [rev_copy.user.js][rev_copy.user.js]               | [rev_copy.min.js][rev_copy.min.js]               |
+| [Article Creator](docs/vg-stub-creator/README.md) | Prepare Chinese Wikipedia video-game articles.             | [vg_stub_creator.user.js][vg_stub_creator.user.js] | [vg_stub_creator.min.js][vg_stub_creator.min.js] |
+| [Article Assessor](docs/wpvg-assessor/README.md)  | Assess and maintain Chinese Wikipedia video-game articles. | [wpvg_assessor.user.js][wpvg_assessor.user.js]     | [wpvg_assessor.min.js][wpvg_assessor.min.js]     |
 
 ### Source Editor
 
@@ -214,3 +215,11 @@ screenshot provenance.
 [codex]: https://doc.wikimedia.org/codex/latest/
 [repository]: https://github.com/For-Each-Next/Kanade
 [releases]: https://github.com/For-Each-Next/Kanade/releases
+[source_editor.user.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/source_editor.user.js
+[source_editor.min.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/source_editor.min.js
+[rev_copy.user.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/rev_copy.user.js
+[rev_copy.min.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/rev_copy.min.js
+[vg_stub_creator.user.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/vg_stub_creator.user.js
+[vg_stub_creator.min.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/vg_stub_creator.min.js
+[wpvg_assessor.user.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/wpvg_assessor.user.js
+[wpvg_assessor.min.js]: https://github.com/For-Each-Next/Kanade/releases/latest/download/wpvg_assessor.min.js
